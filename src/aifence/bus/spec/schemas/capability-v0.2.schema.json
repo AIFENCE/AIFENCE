@@ -1,0 +1,85 @@
+{
+  "$defs": {
+    "Capabilities": {
+      "properties": {
+        "codebooks": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Codebooks",
+          "type": "array"
+        },
+        "fallback_modes": {
+          "items": {
+            "enum": [
+              "natural_language",
+              "literal",
+              "reference"
+            ],
+            "type": "string"
+          },
+          "title": "Fallback Modes",
+          "type": "array"
+        },
+        "latent_spaces": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Latent Spaces",
+          "type": "array"
+        },
+        "max_packet_bytes": {
+          "default": 8192,
+          "exclusiveMinimum": 0,
+          "title": "Max Packet Bytes",
+          "type": "integer"
+        },
+        "protocol_versions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Protocol Versions",
+          "type": "array"
+        },
+        "supports_deltas": {
+          "default": true,
+          "title": "Supports Deltas",
+          "type": "boolean"
+        },
+        "supports_patterns": {
+          "default": true,
+          "title": "Supports Patterns",
+          "type": "boolean"
+        },
+        "supports_refs": {
+          "default": true,
+          "title": "Supports Refs",
+          "type": "boolean"
+        }
+      },
+      "title": "Capabilities",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "capabilities": {
+      "$ref": "#/$defs/Capabilities"
+    },
+    "codebook_fingerprints": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Codebook Fingerprints",
+      "type": "object"
+    },
+    "protocol": {
+      "const": "sage/0.2",
+      "default": "sage/0.2",
+      "title": "Protocol",
+      "type": "string"
+    }
+  },
+  "title": "ProtocolCapability",
+  "type": "object"
+}

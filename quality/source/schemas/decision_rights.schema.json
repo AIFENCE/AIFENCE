@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/decision_rights.schema.json",
+  "title": "BizIQ Decision Rights",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decision_id",
+    "decision",
+    "trigger",
+    "performer",
+    "decision_owner",
+    "right"
+  ],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "trigger": {
+      "type": "string",
+      "minLength": 1
+    },
+    "performer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decision_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "right": {
+      "enum": [
+        "MUST",
+        "MAY",
+        "MUST_NOT",
+        "APPROVAL_REQUIRED",
+        "STOP_AND_ESCALATE",
+        "CONSULT",
+        "INFORM"
+      ]
+    },
+    "approval_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_limit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_limit_state": {
+      "enum": [
+        "VERIFIED",
+        "ORGANIZATION_SPECIFIC_NOT_SUPPLIED",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "approval_limit_provenance": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "consulted_roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "informed_roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "escalation_path": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "containment": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notification_targets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "restart_condition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "restart_authorizer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "restart_authority_state": {
+      "enum": [
+        "VERIFIED",
+        "ORGANIZATION_SPECIFIC_NOT_SUPPLIED",
+        "NOT_REQUIRED"
+      ]
+    },
+    "segregation_rule": {
+      "type": "string"
+    },
+    "fallback_if_owner_unavailable": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "right": {
+            "const": "APPROVAL_REQUIRED"
+          }
+        },
+        "required": [
+          "right"
+        ]
+      },
+      "then": {
+        "required": [
+          "approval_owner",
+          "approval_limit_state",
+          "required_evidence"
+        ],
+        "properties": {
+          "required_evidence": {
+            "minItems": 1
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "required": [
+                "approval_limit"
+              ]
+            },
+            "then": {
+              "properties": {
+                "approval_limit_state": {
+                  "const": "VERIFIED"
+                }
+              },
+              "required": [
+                "approval_limit_provenance"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "right": {
+            "const": "STOP_AND_ESCALATE"
+          }
+        },
+        "required": [
+          "right"
+        ]
+      },
+      "then": {
+        "required": [
+          "containment",
+          "notification_targets",
+          "escalation_path",
+          "restart_condition",
+          "restart_authority_state",
+          "required_evidence"
+        ],
+        "properties": {
+          "notification_targets": {
+            "minItems": 1
+          },
+          "escalation_path": {
+            "minItems": 1
+          },
+          "required_evidence": {
+            "minItems": 1
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "restart_authority_state": {
+                  "const": "VERIFIED"
+                }
+              },
+              "required": [
+                "restart_authority_state"
+              ]
+            },
+            "then": {
+              "required": [
+                "restart_authorizer"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

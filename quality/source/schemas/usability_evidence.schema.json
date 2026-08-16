@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BizIQ Usability Evidence",
+  "type": "object",
+  "required": [
+    "path_id",
+    "entry_cue",
+    "primary_action",
+    "state_preserved",
+    "result"
+  ],
+  "properties": {
+    "path_id": {
+      "type": "string"
+    },
+    "entry_cue": {
+      "type": "boolean"
+    },
+    "primary_action": {
+      "type": "boolean"
+    },
+    "required_information_adjacent": {
+      "type": "boolean"
+    },
+    "state_preserved": {
+      "type": "boolean"
+    },
+    "success_feedback": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "recovery_path": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "keyboard_completion": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "touch_completion": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "avoidable_friction": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "result": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "UNVERIFIED"
+      ]
+    }
+  }
+}

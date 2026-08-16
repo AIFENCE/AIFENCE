@@ -1,0 +1,521 @@
+[
+  {
+    "id": "e2e.landscaping.local-service",
+    "prompt": "Create a production front-end website for a residential landscaping company.",
+    "expected": [
+      "canonical identity preserves landscaping/horticulture",
+      "customer-facing profile resolves local-service/B2C where supported",
+      "does not inherit industrial construction UI solely from keyword overlap",
+      "public-facing visual bundle active",
+      "rendered-pixel review required"
+    ]
+  },
+  {
+    "id": "e2e.generic-template-rejection",
+    "prompt": "Create a premium website for a local service business.",
+    "expected": [
+      "three materially different directions considered",
+      "brand-specific fingerprint present",
+      "generic competitor swap test fails generic output",
+      "repetitive 3-card template patterns rejected"
+    ]
+  },
+  {
+    "id": "e2e.frontend-only-form",
+    "prompt": "Create a front-end-only lead-generation site with a quote form.",
+    "expected": [
+      "front-end-only semantics explicit",
+      "no fake backend persistence",
+      "form behavior communicates actual submission behavior",
+      "no dead controls"
+    ]
+  },
+  {
+    "id": "e2e.unknown-business-facts",
+    "prompt": "Create a site for a company with only its name and industry supplied.",
+    "expected": [
+      "no invented testimonials, years, certifications, addresses, prices, guarantees, or customer counts",
+      "unknown facts stay unknown",
+      "trust design uses non-fabricated evidence"
+    ]
+  },
+  {
+    "id": "e2e.asset-fidelity",
+    "prompt": "Create a premium landscaping landing page with visual assets.",
+    "expected": [
+      "proof-media hierarchy applied",
+      "low-detail generic SVG cannot stand in for proof-bearing work",
+      "key media receives explicit art direction",
+      "local/self-contained assets when generated"
+    ]
+  },
+  {
+    "id": "e2e.mobile-quality",
+    "prompt": "Create a production marketing website.",
+    "expected": [
+      "mobile is recomposed, not merely shrunk",
+      "touch targets and navigation states checked",
+      "desktop and mobile rendered review required when tools exist"
+    ]
+  },
+  {
+    "id": "e2e.auth-risk-reroute",
+    "prompt": "Add login, account settings, file uploads, and payments to the app.",
+    "expected": [
+      "risk overlays re-evaluated",
+      "security/privacy controls activated",
+      "permission/data classification required",
+      "secrets excluded from client code"
+    ]
+  },
+  {
+    "id": "e2e.no-render-tool",
+    "prompt": "Create a production visual website when browser rendering is unavailable.",
+    "expected": [
+      "rendered-pixel gate marked unverified rather than passed",
+      "source checks still performed",
+      "limitation disclosed",
+      "no claim of visually validated output"
+    ]
+  },
+  {
+    "id": "e2e.pack-failure-postmortem",
+    "prompt": "A real-world BizIQ-generated artifact passes static QA but looks generic. Improve BizIQ.",
+    "expected": [
+      "root cause classified at pack level",
+      "new regression fixture added or existing one strengthened",
+      "one-off artifact patch alone is insufficient",
+      "rule-pruning/overlap considered"
+    ]
+  },
+  {
+    "id": "e2e.delivery-self-contained",
+    "prompt": "Deliver a production static website as files.",
+    "expected": [
+      "deliverable manifest present",
+      "runtime remote placeholders rejected unless explicitly required",
+      "asset links verified",
+      "setup and handoff instructions clear"
+    ]
+  },
+  {
+    "id": "e2e.component-craft-polish",
+    "prompt": "Create a production front-end dashboard with navigation, filters, tables, cards, statuses, and contextual actions.",
+    "expected": [
+      "Domain 26 production craft controls are active",
+      "coherent icon system is explicitly resolved when useful",
+      "important components have task-specific anatomy rather than universal rounded cards",
+      "interactive affordances and states are deliberate",
+      "dense operational content prioritizes scanning, numeric alignment, statuses, contextual actions, and drill-down",
+      "component craft is inspected in rendered QA when tools exist"
+    ]
+  },
+  {
+    "id": "e2e.dashboard-feature-depth",
+    "prompt": "Create a production front-end-only payments dashboard with search, filters, analytics, payment details, customers, and settings.",
+    "expected": [
+      "feature names are not treated as self-defining",
+      "high-value features resolve purpose and user job",
+      "information, primary/secondary actions, interaction model, and applicable states are defined",
+      "responsive and accessibility behavior are resolved at feature level",
+      "sample/front-end-only data and backend-dependent behavior remain truthful",
+      "observable acceptance criteria exist for important interactions"
+    ]
+  },
+  {
+    "id": "e2e.iconography-craft",
+    "prompt": "Create a polished SaaS dashboard with navigation and many utility actions.",
+    "expected": [
+      "one coherent professional icon family is selected when useful",
+      "icon coverage is audited across navigation, utilities, statuses, and contextual actions",
+      "icon-only controls have accessible names",
+      "incompatible icon families are not mixed accidentally"
+    ]
+  },
+  {
+    "id": "e2e.feature-state-depth",
+    "prompt": "Create a production search and filtering workflow.",
+    "expected": [
+      "default, selected/filter-active, loading when applicable, no-results, filtered-empty, and error/recovery states are considered",
+      "empty and filtered-empty are distinguished when causes differ",
+      "keyboard and accessibility behavior are resolved",
+      "observable acceptance criteria exist"
+    ]
+  },
+  {
+    "id": "e2e.card-genericity-rejection",
+    "prompt": "Create a premium interface where every feature is presented in identical rounded cards.",
+    "expected": [
+      "card-surface-specificity fails the generic treatment",
+      "recovery/refinement is triggered",
+      "functionally different content receives differentiated anatomy or interaction treatment",
+      "quality is not passed solely because spacing and colors are clean"
+    ]
+  },
+  {
+    "id": "e2e.mobile-feature-recomposition",
+    "prompt": "Create a desktop-heavy operational dashboard and make it production responsive.",
+    "expected": [
+      "responsive-feature-recomposition is active",
+      "table/list/filter/navigation behavior changes intentionally on narrow viewports",
+      "desktop information hierarchy is not merely stacked",
+      "touch and keyboard affordances remain usable"
+    ]
+  },
+  {
+    "id": "e2e.artifact-contract-resolution",
+    "prompt": "Create a production payments dashboard.",
+    "expected": [
+      "dashboard artifact contract resolved before detailed UI",
+      "high-value features compile before component design",
+      "dashboard acceptance profile selected",
+      "Domain 27 active"
+    ]
+  },
+  {
+    "id": "e2e.feature-compiler-self-defining-noun",
+    "prompt": "Add search, filters, analytics, customers, settings, and notifications.",
+    "expected": [
+      "feature nouns decomposed into user jobs/information/actions/states",
+      "dependencies and truth semantics resolved",
+      "implementation does not begin from names alone"
+    ]
+  },
+  {
+    "id": "e2e.component-compiler-anatomy",
+    "prompt": "Implement the compiled dashboard features using reusable components.",
+    "expected": [
+      "component anatomy follows feature information/task",
+      "variant/state matrix exists for important components",
+      "unrelated features are not forced into identical cards"
+    ]
+  },
+  {
+    "id": "e2e.structural-fingerprint-rejection",
+    "prompt": "Create a premium local-business site using navbar, centered hero, three service cards, testimonial cards, FAQ, CTA, footer.",
+    "expected": [
+      "candidate fingerprint compared to common templates",
+      "high similarity triggers differentiation recovery",
+      "category conventions may remain only with meaningful differentiation"
+    ]
+  },
+  {
+    "id": "e2e.adversarial-repair-loop",
+    "prompt": "The first rendered production interface is technically complete but has weak mobile hierarchy and shallow empty states.",
+    "expected": [
+      "independent critics identify mobile/feature failures",
+      "repair plan prioritizes task correctness before polish",
+      "affected views/states re-rendered and re-evaluated"
+    ]
+  },
+  {
+    "id": "e2e.quality-floor-no-average",
+    "prompt": "A production artifact scores extremely high overall but accessibility is below its required floor.",
+    "expected": [
+      "accessibility floor fails",
+      "high aggregate cannot compensate",
+      "release remains blocked until recovery or an explicit UNVERIFIED limitation"
+    ]
+  },
+  {
+    "id": "e2e.blind-benchmark-integrity",
+    "prompt": "Compare BizIQ and non-BizIQ outputs in a benchmark.",
+    "expected": [
+      "matched conditions",
+      "opaque randomized IDs",
+      "judges do not see condition",
+      "scores lock before unblinding",
+      "private holdout kept outside public repo"
+    ]
+  },
+  {
+    "id": "e2e.benchmark-overfit-guard",
+    "prompt": "A new rule improves the public benchmark but hurts private holdout dashboard usability.",
+    "expected": [
+      "improvement claim blocked or qualified",
+      "holdout regression investigated",
+      "rule pruning/refinement considered",
+      "public mean alone is insufficient"
+    ]
+  },
+  {
+    "id": "e2e.mobile-320-control-compression",
+    "prompt": "Dense desktop controls must transform at 320px without clipping or hiding task-critical state.",
+    "expected": [
+      "Dense desktop controls must transform at 320px without clipping or hiding task-critical state.",
+      "direct evidence required",
+      "failure triggers Recovery"
+    ]
+  },
+  {
+    "id": "e2e.mobile-table-task-preservation",
+    "prompt": "Dense tables must preserve the investigation task through an explicit mobile data transformation.",
+    "expected": [
+      "Dense tables must preserve the investigation task through an explicit mobile data transformation.",
+      "direct evidence required",
+      "failure triggers Recovery"
+    ]
+  },
+  {
+    "id": "e2e.mobile-sticky-collision",
+    "prompt": "Sticky/fixed layers must not occlude focus, content, or primary actions.",
+    "expected": [
+      "Sticky/fixed layers must not occlude focus, content, or primary actions.",
+      "direct evidence required",
+      "failure triggers Recovery"
+    ]
+  },
+  {
+    "id": "e2e.document-decision-depth",
+    "prompt": "Documents must pass decision/evidence depth rather than app-state counts.",
+    "expected": [
+      "Documents must pass decision/evidence depth rather than app-state counts.",
+      "direct evidence required",
+      "failure triggers Recovery"
+    ]
+  },
+  {
+    "id": "e2e.document-editorial-craft",
+    "prompt": "Document structure and visual grammar must be type-specific and non-card-generic.",
+    "expected": [
+      "Document structure and visual grammar must be type-specific and non-card-generic.",
+      "direct evidence required",
+      "failure triggers Recovery"
+    ]
+  },
+  {
+    "id": "e2e.accessibility-keyboard-evidence",
+    "prompt": "Critical paths require keyboard/focus evidence, not source inference.",
+    "expected": [
+      "Critical paths require keyboard/focus evidence, not source inference.",
+      "direct evidence required",
+      "failure triggers Recovery"
+    ]
+  },
+  {
+    "id": "e2e.accessibility-dynamic-feedback",
+    "prompt": "Errors and async state changes require programmatic feedback evidence.",
+    "expected": [
+      "Errors and async state changes require programmatic feedback evidence.",
+      "direct evidence required",
+      "failure triggers Recovery"
+    ]
+  },
+  {
+    "id": "e2e.completeness-priority-closure",
+    "prompt": "Any missing P0/P1 coverage row blocks completeness regardless of aggregate score.",
+    "expected": [
+      "Any missing P0/P1 coverage row blocks completeness regardless of aggregate score.",
+      "direct evidence required",
+      "failure triggers Recovery"
+    ]
+  },
+  {
+    "id": "e2e.feature-depth-level-five",
+    "prompt": "P0/P1 product features require information/action/state/responsive/accessibility/dependency closure.",
+    "expected": [
+      "P0/P1 product features require information/action/state/responsive/accessibility/dependency closure.",
+      "direct evidence required",
+      "failure triggers Recovery"
+    ]
+  },
+  {
+    "id": "e2e.repair-preserves-genericity",
+    "prompt": "Responsive/accessibility repair must not regress genericity resistance into universal cards or template stacking.",
+    "expected": [
+      "Responsive/accessibility repair must not regress genericity resistance into universal cards or template stacking.",
+      "direct evidence required",
+      "failure triggers Recovery"
+    ]
+  },
+  {
+    "id": "e2e.usability-task-friction",
+    "prompt": "A primary workflow is feature-complete but the next action and required evidence are unclear.",
+    "expected": [
+      "task-friction trace identifies ambiguity",
+      "primary action and required evidence become legible",
+      "state and recovery remain preserved"
+    ]
+  },
+  {
+    "id": "e2e.action-hierarchy-overflow",
+    "prompt": "The only P0 action has been placed inside an unlabeled overflow menu on mobile.",
+    "expected": [
+      "P0 route is surfaced or overflow trigger becomes explicit",
+      "action hierarchy remains accessible",
+      "genericity is rechecked"
+    ]
+  },
+  {
+    "id": "e2e.form-state-preservation",
+    "prompt": "Validation fails after a long form and user-entered values disappear.",
+    "expected": [
+      "state-loss fails usability",
+      "input is preserved",
+      "error and recovery are adjacent to affected controls"
+    ]
+  },
+  {
+    "id": "e2e.feedback-recovery-legibility",
+    "prompt": "A consequential action produces no visible pending/success/error feedback.",
+    "expected": [
+      "feedback gap fails",
+      "status becomes programmatically and visually legible",
+      "retry or continuation path is explicit"
+    ]
+  },
+  {
+    "id": "e2e.visual-finish-equal-weight",
+    "prompt": "A technically polished page gives every section equal visual emphasis.",
+    "expected": [
+      "visual critic rejects flat hierarchy",
+      "hierarchy is recalibrated",
+      "rendered evidence confirms improved scanning"
+    ]
+  },
+  {
+    "id": "e2e.visual-finish-optical-rhythm",
+    "prompt": "Spacing tokens are mathematically consistent but icon/text/control alignment looks uneven.",
+    "expected": [
+      "optical defect is recorded",
+      "alignment/rhythm is calibrated",
+      "cross-viewport finish is re-rendered"
+    ]
+  },
+  {
+    "id": "e2e.document-truth-boundaries",
+    "prompt": "A decision memo contains assumptions and recommendations styled like supplied facts.",
+    "expected": [
+      "truth boundary fails",
+      "provenance/status becomes visible",
+      "recommendation remains distinct from evidence"
+    ]
+  },
+  {
+    "id": "e2e.generated-proof-boundary",
+    "prompt": "Generated imagery in a service website appears to be real completed work.",
+    "expected": [
+      "proof implication fails truthfulness",
+      "generated visual is relabeled/repositioned",
+      "no false project proof remains"
+    ]
+  },
+  {
+    "id": "e2e.document-operations-responsive-detail",
+    "prompt": "Page-level overflow is zero but a narrow action table loses label/value relationships.",
+    "expected": [
+      "macro overflow check is insufficient",
+      "task-level responsive-detail audit fails",
+      "semantic relationship is restored"
+    ]
+  },
+  {
+    "id": "e2e.measurement-ceiling-detection",
+    "prompt": "A frozen usability scorer has a theoretical maximum below the production usability floor.",
+    "expected": [
+      "frozen score remains unchanged",
+      "instrument is marked non-dispositive for the floor",
+      "independent floor-capable evidence is required"
+    ]
+  },
+  {
+    "id": "e2e.operations-2-authority-classification",
+    "prompt": "Draft an SOP for a regulated operational task using only general context.",
+    "expected": [
+      "procedure authority class is explicit",
+      "generated detail is not presented as verified regulation or company policy",
+      "missing authoritative source remains UNVERIFIED",
+      "verification task is surfaced"
+    ]
+  },
+  {
+    "id": "e2e.operations-2-role-accountability",
+    "prompt": "Define an operations manager role for a growing service business.",
+    "expected": [
+      "role purpose and accountabilities compiled",
+      "decision ownership and exclusions explicit",
+      "authority limits are not invented",
+      "interfaces, evidence duties, and KPI ownership represented"
+    ]
+  },
+  {
+    "id": "e2e.operations-2-executable-procedure",
+    "prompt": "Turn a generic field-service technician SOP into a task-specific work procedure.",
+    "expected": [
+      "exact task/trigger resolved",
+      "ordered actor-specific steps present",
+      "decision/check/evidence/failure paths present",
+      "definition of done observable"
+    ]
+  },
+  {
+    "id": "e2e.operations-2-decision-rights",
+    "prompt": "Create a workflow with approvals but no supplied dollar thresholds.",
+    "expected": [
+      "MUST/MAY/MUST NOT/APPROVAL REQUIRED boundaries explicit",
+      "unknown limits remain placeholders",
+      "stop-and-escalate path present",
+      "no fabricated approval threshold"
+    ]
+  },
+  {
+    "id": "e2e.operations-2-exception-recovery",
+    "prompt": "Create an SOP for a process that can fail midway.",
+    "expected": [
+      "failure detection and containment present",
+      "recovery/rollback or safe continuation defined",
+      "exception evidence and owner present",
+      "handoff or restart condition explicit"
+    ]
+  },
+  {
+    "id": "e2e.operations-2-evidence-dod",
+    "prompt": "Create an auditable operational procedure.",
+    "expected": [
+      "material steps map to proportionate evidence",
+      "system-of-record placeholders remain truthful when unknown",
+      "handoff acceptance explicit",
+      "definition of done is more than final action attempted"
+    ]
+  },
+  {
+    "id": "e2e.operations-2-kpi-governance",
+    "prompt": "Define KPIs for a service operation with no supplied targets.",
+    "expected": [
+      "metric formula or explicit calculation unknown present",
+      "scope/inclusions/exclusions/source/owner defined",
+      "target marked organization-specific rather than invented",
+      "balancing metric or gaming risk considered"
+    ]
+  },
+  {
+    "id": "e2e.operations-2-current-authority",
+    "prompt": "Create a procedure that depends on current jurisdiction-specific requirements.",
+    "expected": [
+      "current authoritative research triggered when tools exist",
+      "scope/jurisdiction/version/currentness checked",
+      "source requirement separated from organization control",
+      "UNVERIFIED used when evidence unavailable"
+    ]
+  },
+  {
+    "id": "e2e.operations-2-change-control",
+    "prompt": "Modify an approved procedure after a system and policy change.",
+    "expected": [
+      "affected steps and authority sources re-evaluated",
+      "approval/effective state updated",
+      "superseded procedure handled",
+      "regression/validation coverage rerun"
+    ]
+  },
+  {
+    "id": "e2e.operations-2-profile-not-authority",
+    "prompt": "Use an existing operations profile SOP to create a production procedure.",
+    "expected": [
+      "profile SOP used as baseline context only",
+      "compiler resolves exact subindustry/task",
+      "profile prose is not treated as approved company procedure",
+      "Domain 31 acceptance applied"
+    ]
+  }
+]

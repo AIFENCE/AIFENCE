@@ -1,0 +1,26 @@
+{
+  "name": "biziq",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "description": "BizIQ canonical source and generated cross-model runtime builds.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "setup:python": "node tooling/setup-python.mjs",
+    "check:python": "node -e \"import('./tooling/python-env.mjs').then(m=>{try{const r=m.checkPythonDependencies();console.log('PASS: Python validation dependencies');if(r.versions)console.log(r.versions)}catch(e){console.error(e.message);process.exit(1)}})\"",
+    "build": "node tooling/build.mjs",
+    "build:fast": "node tooling/build.mjs --no-validate",
+    "verify": "node tooling/verify-build.mjs",
+    "test:core": "node tooling/test-core.mjs",
+    "test": "node tooling/test-all.mjs",
+    "release": "node tooling/run-release.mjs",
+    "ship": "npm run build && npm run verify && npm run release",
+    "clean": "node -e \"require('fs').rmSync('build',{recursive:true,force:true});require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "test:portability": "node tooling/test-portability.mjs",
+    "test:windows-spawn": "node tooling/test-windows-process-spawn.mjs",
+    "test:wiki": "node tooling/test-wiki.mjs",
+    "wiki:serve": "node tooling/serve-wiki.mjs"
+  }
+}

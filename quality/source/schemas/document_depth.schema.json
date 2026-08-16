@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/document_depth.schema.json",
+  "type": "object",
+  "required": [
+    "document_id",
+    "decision_question",
+    "evidence_chain",
+    "findings",
+    "recommendations",
+    "status"
+  ],
+  "properties": {
+    "document_id": {
+      "type": "string"
+    },
+    "decision_question": {
+      "type": "string"
+    },
+    "evidence_chain": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "UNVERIFIED"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,12 @@
+{
+  "servers": {
+    "biziq": {
+      "type": "stdio",
+      "command": "biziq",
+      "args": [
+        "mcp",
+        "--stdio"
+      ]
+    }
+  }
+}

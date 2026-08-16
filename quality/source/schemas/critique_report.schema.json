@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/critique_report.schema.json",
+  "title": "BizIQ Critique Report",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "critic",
+    "issues"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "critic": {
+      "enum": [
+        "visual",
+        "feature-depth",
+        "accessibility-responsive",
+        "truth-implementation",
+        "genericity"
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "issue_id",
+          "dimension",
+          "severity",
+          "evidence",
+          "why_it_matters",
+          "required_fix",
+          "revalidation_method",
+          "status"
+        ],
+        "properties": {
+          "issue_id": {
+            "type": "string"
+          },
+          "dimension": {
+            "type": "string"
+          },
+          "severity": {
+            "enum": [
+              "P0",
+              "P1",
+              "P2",
+              "P3"
+            ]
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "why_it_matters": {
+            "type": "string"
+          },
+          "affected": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "required_fix": {
+            "type": "string"
+          },
+          "revalidation_method": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "open",
+              "fixed",
+              "unverified",
+              "accepted-exception"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

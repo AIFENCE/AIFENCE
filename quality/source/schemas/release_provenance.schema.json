@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"biziq://schemas/release_provenance.schema.json",
+  "title":"BizIQ Release Provenance",
+  "type":"object",
+  "required":["runtime_version","core_revision","pack_version","source_tree_sha256","build_sha256","compatibility","archives"],
+  "properties":{
+    "runtime_version":{"type":"string"},"core_revision":{"type":"string"},"pack_version":{"type":"string"},"source_tree_sha256":{"type":"string"},"build_sha256":{"type":"string"},
+    "compatibility":{"type":"object"},"node":{"type":"string"},"python":{"type":"string"},"archives":{"type":"array","items":{"type":"object","required":["name","sha256"],"properties":{"name":{"type":"string"},"sha256":{"type":"string"}},"additionalProperties":true}}
+  },"additionalProperties":true
+}

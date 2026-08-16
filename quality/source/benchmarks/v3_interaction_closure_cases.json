@@ -1,0 +1,51 @@
+[
+  {
+    "id": "IC-001",
+    "artifact_type": "Dashboard",
+    "name": "Payments mobile transaction recovery",
+    "failure_pattern": "Desktop transaction detail/recovery surface is hidden on 320/390.",
+    "required_checks": [
+      "interactive control closure",
+      "mobile task preservation"
+    ],
+    "required_task": "inspect-transaction-recover",
+    "required_viewports": [
+      320,
+      390
+    ],
+    "acceptance": "The transaction detail/recovery task remains reachable and completable through an equivalent mobile surface; no task-critical action is removed."
+  },
+  {
+    "id": "IC-002",
+    "artifact_type": "Web App / SaaS / Portal",
+    "name": "SaaS mobile editable detail",
+    "failure_pattern": "Desktop editable detail pane disappears on 320/390.",
+    "required_checks": [
+      "interactive control closure",
+      "mobile task preservation"
+    ],
+    "required_task": "open-edit-save-or-cancel-detail",
+    "required_viewports": [
+      320,
+      390
+    ],
+    "acceptance": "Selection, detail/edit, validation, save/cancel, recovery, and return context remain available through an equivalent mobile composition."
+  },
+  {
+    "id": "IC-003",
+    "artifact_type": "Dashboard",
+    "name": "Analytics exhaustive enabled-control closure",
+    "failure_pattern": "Visible navigation, period, overflow, or filter controls render enabled without observable behavior.",
+    "required_checks": [
+      "interactive control closure"
+    ],
+    "required_task": "analytics-control-closure",
+    "required_viewports": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "acceptance": "Every enabled visible control has observable behavior; dead-control count is zero and no enabled control is omitted from evidence."
+  }
+]

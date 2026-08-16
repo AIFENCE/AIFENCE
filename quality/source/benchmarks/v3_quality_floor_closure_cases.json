@@ -1,0 +1,46 @@
+[
+  {
+    "id": "qfc-001-saas-structural-genericity",
+    "artifact_family": "saas-web-app",
+    "source_benchmark": "Core 1.7.1 real artifact",
+    "failure_pattern": "SaaS genericity resistance 8.9 after interaction closure",
+    "required_checks": [
+      "task-derived structural decisions",
+      "four grammar families",
+      "competitor-swap resistance",
+      "template similarity < 0.61",
+      "rendered differentiation observations"
+    ],
+    "acceptance": "genericity evidence validator PASS"
+  },
+  {
+    "id": "qfc-002-analytics-structural-genericity",
+    "artifact_family": "dashboard",
+    "source_benchmark": "Core 1.7.1 real artifact",
+    "failure_pattern": "Analytics genericity resistance 8.8 after dead-control closure",
+    "required_checks": [
+      "task-derived analytical topology",
+      "four grammar families",
+      "competitor-swap resistance",
+      "template similarity < 0.61",
+      "rendered differentiation observations"
+    ],
+    "acceptance": "genericity evidence validator PASS"
+  },
+  {
+    "id": "qfc-003-b2b-decision-depth",
+    "artifact_family": "marketing-website",
+    "source_benchmark": "Core 1.7.1 real artifact",
+    "failure_pattern": "B2B feature depth 8.9",
+    "required_checks": [
+      "two P0/P1 buyer decision paths",
+      "evidence inputs",
+      "fit/qualification",
+      "objection/risk handling",
+      "next action",
+      "downstream state",
+      "observable artifact surfaces"
+    ],
+    "acceptance": "decision depth evidence validator PASS"
+  }
+]

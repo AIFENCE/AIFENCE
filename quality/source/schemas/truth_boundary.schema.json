@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BizIQ Truth Boundary",
+  "type": "object",
+  "required": [
+    "statement",
+    "status"
+  ],
+  "properties": {
+    "statement": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "Supplied",
+        "Verified",
+        "Sample",
+        "Generated visual",
+        "Assumption",
+        "Unknown",
+        "Interpretation",
+        "Recommendation"
+      ]
+    },
+    "source": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "limitation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decision_affected": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "verification_next_step": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

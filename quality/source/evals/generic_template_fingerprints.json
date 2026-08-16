@@ -1,0 +1,373 @@
+[
+  {
+    "id": "generic.marketing.centered-three-card",
+    "artifact_family": "marketing-website",
+    "shell": "top-nav",
+    "opening": "centered-hero",
+    "sequence": [
+      "hero",
+      "logo-strip",
+      "three-card-features",
+      "testimonials",
+      "faq",
+      "cta",
+      "footer"
+    ],
+    "motifs": [
+      "equal-card-grid",
+      "centered-section-heading",
+      "pill-cta"
+    ],
+    "container_ratio": "high",
+    "alignment_bias": "centered",
+    "cta_positions": [
+      "hero",
+      "bottom-band"
+    ],
+    "mobile_transforms": [
+      "stack-cards"
+    ]
+  },
+  {
+    "id": "generic.marketing.split-hero-card-grid",
+    "artifact_family": "marketing-website",
+    "shell": "top-nav",
+    "opening": "50-50-split-hero",
+    "sequence": [
+      "hero",
+      "trust-logos",
+      "three-card-services",
+      "image-text-split",
+      "testimonials",
+      "faq",
+      "cta",
+      "footer"
+    ],
+    "motifs": [
+      "equal-card-grid",
+      "alternating-splits",
+      "rounded-media"
+    ],
+    "container_ratio": "high",
+    "alignment_bias": "alternating",
+    "cta_positions": [
+      "hero",
+      "bottom-band"
+    ],
+    "mobile_transforms": [
+      "stack-splits",
+      "stack-cards"
+    ]
+  },
+  {
+    "id": "generic.local-service-template",
+    "artifact_family": "local-service-website",
+    "shell": "top-nav",
+    "opening": "headline-background-photo",
+    "sequence": [
+      "hero",
+      "three-service-cards",
+      "about-split",
+      "testimonials",
+      "service-area",
+      "faq",
+      "contact",
+      "footer"
+    ],
+    "motifs": [
+      "icon-service-cards",
+      "star-testimonials",
+      "rounded-form"
+    ],
+    "container_ratio": "high",
+    "alignment_bias": "centered",
+    "cta_positions": [
+      "hero",
+      "sticky-mobile",
+      "contact"
+    ],
+    "mobile_transforms": [
+      "stack-cards"
+    ]
+  },
+  {
+    "id": "generic.saas-card-dashboard",
+    "artifact_family": "saas-web-app",
+    "shell": "left-sidebar-topbar",
+    "opening": "page-title",
+    "sequence": [
+      "metric-cards",
+      "large-chart-card",
+      "activity-cards",
+      "table-card"
+    ],
+    "motifs": [
+      "rounded-metric-cards",
+      "chart-card",
+      "table-in-card"
+    ],
+    "container_ratio": "very-high",
+    "alignment_bias": "grid",
+    "cta_positions": [
+      "top-right"
+    ],
+    "mobile_transforms": [
+      "stack-cards"
+    ]
+  },
+  {
+    "id": "generic.dashboard-metric-grid",
+    "artifact_family": "dashboard",
+    "shell": "left-sidebar",
+    "opening": "page-title",
+    "sequence": [
+      "four-metric-cards",
+      "two-chart-cards",
+      "recent-activity-card"
+    ],
+    "motifs": [
+      "metric-card-grid",
+      "chart-card-grid",
+      "activity-card"
+    ],
+    "container_ratio": "very-high",
+    "alignment_bias": "grid",
+    "cta_positions": [
+      "top-right"
+    ],
+    "mobile_transforms": [
+      "stack-cards"
+    ]
+  },
+  {
+    "id": "generic.ecommerce-card-catalog",
+    "artifact_family": "ecommerce",
+    "shell": "top-nav",
+    "opening": "promo-banner",
+    "sequence": [
+      "category-tabs",
+      "product-card-grid",
+      "newsletter",
+      "footer"
+    ],
+    "motifs": [
+      "equal-product-cards",
+      "pill-filters",
+      "promo-band"
+    ],
+    "container_ratio": "high",
+    "alignment_bias": "grid",
+    "cta_positions": [
+      "product-cards"
+    ],
+    "mobile_transforms": [
+      "two-column-grid"
+    ]
+  },
+  {
+    "id": "generic.portfolio-grid",
+    "artifact_family": "portfolio",
+    "shell": "minimal-top-nav",
+    "opening": "large-type-hero",
+    "sequence": [
+      "hero",
+      "project-grid",
+      "about",
+      "clients",
+      "contact"
+    ],
+    "motifs": [
+      "masonry-or-card-grid",
+      "large-type",
+      "hover-reveal"
+    ],
+    "container_ratio": "medium",
+    "alignment_bias": "editorial",
+    "cta_positions": [
+      "contact"
+    ],
+    "mobile_transforms": [
+      "single-column-projects"
+    ]
+  },
+  {
+    "id": "generic.pricing-saas-landing",
+    "artifact_family": "marketing-website",
+    "shell": "top-nav",
+    "opening": "centered-hero",
+    "sequence": [
+      "hero",
+      "logo-strip",
+      "feature-grid",
+      "product-screenshot",
+      "pricing-cards",
+      "faq",
+      "cta"
+    ],
+    "motifs": [
+      "feature-card-grid",
+      "browser-frame",
+      "three-pricing-cards"
+    ],
+    "container_ratio": "high",
+    "alignment_bias": "centered",
+    "cta_positions": [
+      "hero",
+      "pricing",
+      "bottom"
+    ],
+    "mobile_transforms": [
+      "stack-cards"
+    ]
+  },
+  {
+    "id": "generic.operations-kanban",
+    "artifact_family": "operations-workflow",
+    "shell": "sidebar",
+    "opening": "toolbar",
+    "sequence": [
+      "three-kanban-columns",
+      "task-cards"
+    ],
+    "motifs": [
+      "equal-task-cards",
+      "status-pills"
+    ],
+    "container_ratio": "very-high",
+    "alignment_bias": "columns",
+    "cta_positions": [
+      "toolbar"
+    ],
+    "mobile_transforms": [
+      "horizontal-kanban"
+    ]
+  },
+  {
+    "id": "generic.report-cards",
+    "artifact_family": "document-report",
+    "shell": "document",
+    "opening": "title-summary",
+    "sequence": [
+      "executive-summary",
+      "three-finding-cards",
+      "chart-cards",
+      "recommendation-card"
+    ],
+    "motifs": [
+      "finding-cards",
+      "callout-cards",
+      "rounded-charts"
+    ],
+    "container_ratio": "high",
+    "alignment_bias": "grid",
+    "cta_positions": [],
+    "mobile_transforms": []
+  },
+  {
+    "id": "generic.regulated-corporate",
+    "artifact_family": "regulated-public-interface",
+    "shell": "top-nav",
+    "opening": "stock-photo-split",
+    "sequence": [
+      "hero",
+      "credential-strip",
+      "service-cards",
+      "team",
+      "testimonials",
+      "faq",
+      "contact"
+    ],
+    "motifs": [
+      "credential-badges",
+      "service-cards",
+      "profile-cards"
+    ],
+    "container_ratio": "high",
+    "alignment_bias": "centered",
+    "cta_positions": [
+      "hero",
+      "contact"
+    ],
+    "mobile_transforms": [
+      "stack-cards"
+    ]
+  },
+  {
+    "id": "generic.admin-settings",
+    "artifact_family": "saas-web-app",
+    "shell": "left-sidebar",
+    "opening": "page-title",
+    "sequence": [
+      "settings-tabs",
+      "form-cards",
+      "danger-zone-card"
+    ],
+    "motifs": [
+      "form-card",
+      "section-card",
+      "pill-tabs"
+    ],
+    "container_ratio": "very-high",
+    "alignment_bias": "left",
+    "cta_positions": [
+      "form-footer"
+    ],
+    "mobile_transforms": [
+      "stack-sections"
+    ]
+  },
+  {
+    "id": "generic.saas-master-detail-queue",
+    "artifact_family": "saas-web-app",
+    "shell": "left-sidebar-topbar",
+    "opening": "page-title-toolbar",
+    "sequence": [
+      "filter-toolbar",
+      "queue-list",
+      "detail-pane",
+      "action-footer"
+    ],
+    "motifs": [
+      "sidebar-nav",
+      "list-or-table",
+      "right-detail-panel",
+      "status-pills"
+    ],
+    "container_ratio": "high",
+    "alignment_bias": "grid",
+    "cta_positions": [
+      "toolbar",
+      "detail-pane"
+    ],
+    "mobile_transforms": [
+      "list-to-detail-sheet"
+    ]
+  },
+  {
+    "id": "generic.analytics-kpi-chart-segment",
+    "artifact_family": "dashboard",
+    "shell": "left-sidebar",
+    "opening": "page-title-period-tabs",
+    "sequence": [
+      "metric-row",
+      "main-chart",
+      "segment-list",
+      "insight-card"
+    ],
+    "motifs": [
+      "metric-card-grid",
+      "chart-card",
+      "segment-table",
+      "period-pills"
+    ],
+    "container_ratio": "very-high",
+    "alignment_bias": "grid",
+    "cta_positions": [
+      "top-right",
+      "chart"
+    ],
+    "mobile_transforms": [
+      "stack-cards"
+    ]
+  }
+]

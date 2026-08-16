@@ -1,0 +1,10 @@
+[
+  {"id":"EP-001","family":"website","failure":"production surface leaks P0 / truth-boundary compiler vocabulary","expected":"emission naturalization FAIL"},
+  {"id":"EP-002","family":"website","failure":"artifact uses generic decision/proof/workflow scaffold without declared domain markers","expected":"emitted substance FAIL"},
+  {"id":"EP-003","family":"mobile","failure":"mobile surface contains correct structure but insufficient domain states/actions/outcomes","expected":"emitted substance FAIL"},
+  {"id":"EP-004","family":"brand","failure":"brand guide exposes internal QA/closure labels","expected":"emission naturalization FAIL"},
+  {"id":"EP-005","family":"cli","failure":"Node CLI contains parser-invalid reserved-keyword usage","expected":"universal executable syntax FAIL"},
+  {"id":"EP-006","family":"cli","failure":"syntax-valid CLI has no direct runtime execution evidence","expected":"universal executable runtime FAIL"},
+  {"id":"EP-007","family":"cli","failure":"syntax-valid CLI runtime exits outside expected behavior","expected":"universal executable runtime FAIL"},
+  {"id":"EP-008","family":"cross-family","failure":"naturalized concrete artifact plus syntax-valid directly exercised executable","expected":"both Core 1.8.3 gates PASS"}
+]

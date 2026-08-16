@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BizIQ Quality Measurement Calibration",
+  "type": "object",
+  "required": [
+    "dimension",
+    "instrument",
+    "floor",
+    "theoretical_maximum",
+    "disposition"
+  ],
+  "properties": {
+    "dimension": {
+      "type": "string"
+    },
+    "instrument": {
+      "type": "string"
+    },
+    "floor": {
+      "type": "number"
+    },
+    "theoretical_maximum": {
+      "type": "number"
+    },
+    "disposition": {
+      "enum": [
+        "DISPOSITIVE",
+        "NON-DISPOSITIVE",
+        "UNVERIFIED"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "fallback_evidence": {
+      "type": "string"
+    }
+  }
+}

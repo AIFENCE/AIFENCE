@@ -1,0 +1,62 @@
+[
+  {
+    "id": "FDC-001",
+    "family": "fixed-document",
+    "failure": "four requested topics but only one substantive conclusion",
+    "expected": "FAIL until >=3 distinct findings and >=3 implications/actions"
+  },
+  {
+    "id": "FDC-002",
+    "family": "fixed-document",
+    "failure": "findings paraphrase section headings",
+    "expected": "FAIL"
+  },
+  {
+    "id": "FDC-003",
+    "family": "fixed-document",
+    "failure": "deep report with 3 findings, 3 actions, 4 evidence points, 2 provenance markers, 2 takeaways",
+    "expected": "PASS"
+  },
+  {
+    "id": "CMP-001",
+    "family": "composite",
+    "failure": "deck and model valid independently but no shared assumptions/provenance",
+    "expected": "FAIL"
+  },
+  {
+    "id": "CMP-002",
+    "family": "composite",
+    "failure": "deck and model share scenario names, assumptions, handoffs, provenance, child acceptance refs",
+    "expected": "PASS"
+  },
+  {
+    "id": "CMP-003",
+    "family": "composite",
+    "failure": "responsive child overflows at 320",
+    "expected": "FAIL"
+  },
+  {
+    "id": "CMP-004",
+    "family": "composite",
+    "failure": "responsive children pass 320/390 width-safe containment",
+    "expected": "PASS"
+  },
+  {
+    "id": "ROU-001",
+    "family": "routing",
+    "failure": "contract renewal workspace classified as generic web app",
+    "expected": "Dashboard"
+  },
+  {
+    "id": "ROU-002",
+    "family": "routing",
+    "failure": "contract editing workspace incorrectly classified as dashboard",
+    "expected": "Web App / SaaS / Portal"
+  },
+  {
+    "id": "COMPAT-001",
+    "family": "compatibility",
+    "failure": "1.8.4 family emission/naturalization/executable systems regress",
+    "expected": "prior tests remain PASS"
+  }
+]

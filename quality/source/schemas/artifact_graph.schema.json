@@ -1,0 +1,12 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"biziq://schemas/artifact_graph.schema.json",
+  "title":"BizIQ Artifact Graph",
+  "type":"object",
+  "required":["kind","nodes","sharedContext"],
+  "properties":{
+    "kind":{"enum":["single","composite"]},
+    "nodes":{"type":"array","minItems":1,"items":{"type":"object","required":["id","type","role"],"properties":{"id":{"type":"string"},"type":{"type":"string"},"role":{"enum":["primary","supporting"]},"contractChain":{"type":"array","items":{"type":"string"}},"artifactContract":{"type":["string","null"]}},"additionalProperties":true}},
+    "sharedContext":{"type":"array","items":{"type":"string"}}
+  },"additionalProperties":false
+}

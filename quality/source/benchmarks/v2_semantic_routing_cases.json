@@ -1,0 +1,460 @@
+[
+  {
+    "id": "SR-001",
+    "category": "routing",
+    "title": "Hospital foundation collision",
+    "prompt": "Create a donor website for a hospital foundation.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-002",
+    "category": "routing",
+    "title": "Homepage collision",
+    "prompt": "Create a homepage for a consulting firm.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-003",
+    "category": "routing",
+    "title": "Report collision",
+    "prompt": "Write a quarterly report for a consulting firm.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-004",
+    "category": "negation",
+    "title": "No login banking site",
+    "prompt": "Create a public banking website with no login and no transactions.",
+    "artifact_contracts": [
+      "marketing-website",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-005",
+    "category": "negation",
+    "title": "No backend portal concept",
+    "prompt": "Create a high-fidelity customer portal concept, front-end only, with no backend.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-006",
+    "category": "artifact",
+    "title": "Native app",
+    "prompt": "Create a native iOS banking app.",
+    "artifact_contracts": [
+      "native-mobile-app",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-007",
+    "category": "artifact",
+    "title": "Pitch deck",
+    "prompt": "Create an investor pitch deck for a robotics company.",
+    "artifact_contracts": [
+      "presentation-deck"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-008",
+    "category": "artifact",
+    "title": "Spreadsheet model",
+    "prompt": "Build a three-statement financial model spreadsheet.",
+    "artifact_contracts": [
+      "spreadsheet-financial-model"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-009",
+    "category": "artifact",
+    "title": "Brand identity",
+    "prompt": "Design a logo and visual identity for a coffee brand.",
+    "artifact_contracts": [
+      "brand-identity"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-010",
+    "category": "artifact",
+    "title": "Email campaign",
+    "prompt": "Create a lifecycle email campaign for trial users.",
+    "artifact_contracts": [
+      "email-campaign"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-011",
+    "category": "artifact",
+    "title": "Marketing storyboard",
+    "prompt": "Create a video storyboard for a launch campaign.",
+    "artifact_contracts": [
+      "marketing-creative"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-012",
+    "category": "artifact",
+    "title": "CLI",
+    "prompt": "Build a CLI developer tool for deploying projects.",
+    "artifact_contracts": [
+      "cli-developer-tool"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-013",
+    "category": "artifact",
+    "title": "Fixed PDF",
+    "prompt": "Create a print-ready annual report PDF.",
+    "artifact_contracts": [
+      "document-report",
+      "fixed-format-document"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-014",
+    "category": "composite",
+    "title": "Portal and homepage",
+    "prompt": "Create a customer portal with a marketing homepage.",
+    "artifact_contracts": [
+      "saas-web-app",
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-015",
+    "category": "composite",
+    "title": "Brand and website",
+    "prompt": "Create a new brand identity and launch website.",
+    "artifact_contracts": [
+      "brand-identity",
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-016",
+    "category": "composite",
+    "title": "Deck and model",
+    "prompt": "Create an investor deck and supporting financial model spreadsheet.",
+    "artifact_contracts": [
+      "presentation-deck",
+      "spreadsheet-financial-model"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-017",
+    "category": "risk",
+    "title": "Physical safety separation",
+    "prompt": "Create a public website for a construction company with no login or data collection.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-018",
+    "category": "risk",
+    "title": "Payment exposure",
+    "prompt": "Create a payments dashboard with role-based access for a fintech company.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-019",
+    "category": "reference",
+    "title": "Stripe abstraction",
+    "prompt": "Create a Stripe-like payments dashboard concept.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-020",
+    "category": "fidelity",
+    "title": "High fidelity concept",
+    "prompt": "Create a polished high-fidelity dashboard concept, front-end only.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-021",
+    "category": "fidelity",
+    "title": "Low fidelity concept",
+    "prompt": "Create a low-fidelity dashboard concept for navigation exploration.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-022",
+    "category": "negation",
+    "title": "No PII",
+    "prompt": "Create a healthcare marketing site that does not collect PII or patient data.",
+    "artifact_contracts": [
+      "marketing-website",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-023",
+    "category": "negation",
+    "title": "No tracking",
+    "prompt": "Create a travel website without GPS or location tracking.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-024",
+    "category": "artifact",
+    "title": "Android app",
+    "prompt": "Create an Android mobile app for field technicians.",
+    "artifact_contracts": [
+      "native-mobile-app"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-025",
+    "category": "artifact",
+    "title": "Newsletter sequence",
+    "prompt": "Create a newsletter email sequence for members.",
+    "artifact_contracts": [
+      "email-campaign"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-026",
+    "category": "artifact",
+    "title": "Developer command line",
+    "prompt": "Create a command-line utility for repository audits.",
+    "artifact_contracts": [
+      "cli-developer-tool"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-027",
+    "category": "artifact",
+    "title": "Board presentation",
+    "prompt": "Create a board presentation about annual performance.",
+    "artifact_contracts": [
+      "presentation-deck"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-028",
+    "category": "composite",
+    "title": "Ecommerce and campaign",
+    "prompt": "Create an ecommerce storefront and launch email campaign.",
+    "artifact_contracts": [
+      "ecommerce-marketplace",
+      "email-campaign"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-029",
+    "category": "risk",
+    "title": "Internal dashboard",
+    "prompt": "Create an internal operations dashboard with no authentication in this front-end-only prototype.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  },
+  {
+    "id": "SR-030",
+    "category": "routing",
+    "title": "Foundation models true positive",
+    "prompt": "Create a developer website for a foundation models AI company.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "semantic routing",
+      "contract resolution",
+      "risk exposure",
+      "retrieval precision"
+    ]
+  }
+]

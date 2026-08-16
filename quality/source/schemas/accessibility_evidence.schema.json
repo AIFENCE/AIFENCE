@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/accessibility_evidence.schema.json",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "critical_paths",
+    "status"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "critical_paths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "keyboard",
+          "focus",
+          "labels",
+          "feedback",
+          "reflow",
+          "status"
+        ]
+      }
+    },
+    "automated_findings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "UNVERIFIED"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

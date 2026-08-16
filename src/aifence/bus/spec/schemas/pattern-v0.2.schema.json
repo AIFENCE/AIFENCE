@@ -1,0 +1,213 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "ambiguity_score": {
+      "default": 0.0,
+      "minimum": 0.0,
+      "title": "Ambiguity Score",
+      "type": "number"
+    },
+    "calibrated_reliability": {
+      "default": 1.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Calibrated Reliability",
+      "type": "number"
+    },
+    "canonical": {
+      "title": "Canonical",
+      "type": "string"
+    },
+    "children": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Children",
+      "type": "array"
+    },
+    "codebook": {
+      "title": "Codebook",
+      "type": "string"
+    },
+    "composition": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Composition",
+      "type": "array"
+    },
+    "concept_code": {
+      "title": "Concept Code",
+      "type": "string"
+    },
+    "concept_version": {
+      "minimum": 1,
+      "title": "Concept Version",
+      "type": "integer"
+    },
+    "confidence": {
+      "default": 1.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "dominant_source_share": {
+      "default": 1.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Dominant Source Share",
+      "type": "number"
+    },
+    "estimated_savings_bytes": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Estimated Savings Bytes",
+      "type": "integer"
+    },
+    "interoperability_score": {
+      "default": 1.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Interoperability Score",
+      "type": "number"
+    },
+    "last_used_at": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Last Used At"
+    },
+    "occurrence_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Occurrence Count",
+      "type": "integer"
+    },
+    "pattern_id": {
+      "title": "Pattern Id",
+      "type": "string"
+    },
+    "relation_structure": {
+      "additionalProperties": true,
+      "title": "Relation Structure",
+      "type": "object"
+    },
+    "semantic_variance": {
+      "default": 0.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Semantic Variance",
+      "type": "number"
+    },
+    "shadow_samples": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Shadow Samples",
+      "type": "integer"
+    },
+    "shadow_success_rate": {
+      "anyOf": [
+        {
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Shadow Success Rate"
+    },
+    "signature": {
+      "title": "Signature",
+      "type": "string"
+    },
+    "source_diversity": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Source Diversity",
+      "type": "integer"
+    },
+    "status": {
+      "default": "shadow",
+      "enum": [
+        "shadow",
+        "validated",
+        "active",
+        "cooling",
+        "deprecated",
+        "retired"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "task_utility": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Task Utility"
+    },
+    "trust_scope": {
+      "default": "session",
+      "enum": [
+        "session",
+        "project",
+        "workspace",
+        "domain",
+        "federation"
+      ],
+      "title": "Trust Scope",
+      "type": "string"
+    },
+    "trust_score": {
+      "default": 0.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Trust Score",
+      "type": "number"
+    },
+    "use_count": {
+      "default": 0,
+      "minimum": 0,
+      "title": "Use Count",
+      "type": "integer"
+    },
+    "utility_score": {
+      "default": 0.0,
+      "title": "Utility Score",
+      "type": "number"
+    },
+    "version": {
+      "minimum": 1,
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "pattern_id",
+    "concept_code",
+    "concept_version",
+    "version",
+    "codebook",
+    "signature",
+    "canonical",
+    "composition"
+  ],
+  "title": "ProtocolPattern",
+  "type": "object"
+}

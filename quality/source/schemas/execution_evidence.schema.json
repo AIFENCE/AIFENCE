@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/execution_evidence.schema.json",
+  "title": "BizIQ Executable Evidence Record",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "profile",
+    "evidence_type",
+    "result",
+    "provenance"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile": {
+      "enum": [
+        "browser",
+        "spreadsheet",
+        "presentation",
+        "document",
+        "cli",
+        "native-mobile",
+        "other"
+      ]
+    },
+    "evidence_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "check_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "timestamp": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "tool": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "target": {
+      "type": [
+        "string",
+        "object",
+        "null"
+      ]
+    },
+    "result": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "UNAVAILABLE",
+        "UNVERIFIED"
+      ]
+    },
+    "observations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "hashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "provenance": {
+      "enum": [
+        "direct",
+        "inferred",
+        "unavailable"
+      ]
+    },
+    "details": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "result": {
+            "const": "PASS"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "provenance": {
+            "const": "direct"
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,4770 @@
+[
+  {
+    "id": "R001",
+    "kind": "type",
+    "request": "Create a website for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R002",
+    "kind": "type",
+    "request": "Create a landing page for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R003",
+    "kind": "type",
+    "request": "Create a marketing site for a fictional organization. education audience. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R004",
+    "kind": "type",
+    "request": "Create a public site for a fictional organization. recovery state. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R005",
+    "kind": "type",
+    "request": "Create a website for a fictional organization. email-shaped fields. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R006",
+    "kind": "type",
+    "request": "Create a landing page for a fictional organization. subscription assumptions. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R007",
+    "kind": "type",
+    "request": "Create a marketing site for a fictional organization. reporting deadline. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R008",
+    "kind": "type",
+    "request": "Create a public site for a fictional organization. dashboard metric in appendix. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R009",
+    "kind": "type",
+    "request": "Create a website for a fictional organization. website URL field. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R010",
+    "kind": "type",
+    "request": "Create a landing page for a fictional organization. portal reference only. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R011",
+    "kind": "type",
+    "request": "Create a marketing site for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R012",
+    "kind": "type",
+    "request": "Create a public site for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R013",
+    "kind": "type",
+    "request": "Create a dashboard for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R014",
+    "kind": "type",
+    "request": "Create a command center for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R015",
+    "kind": "type",
+    "request": "Create a analytics dashboard for a fictional organization. education audience. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R016",
+    "kind": "type",
+    "request": "Create a scorecard for a fictional organization. recovery state. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R017",
+    "kind": "type",
+    "request": "Create a dashboard for a fictional organization. email-shaped fields. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R018",
+    "kind": "type",
+    "request": "Create a command center for a fictional organization. subscription assumptions. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R019",
+    "kind": "type",
+    "request": "Create a analytics dashboard for a fictional organization. reporting deadline. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R020",
+    "kind": "type",
+    "request": "Create a scorecard for a fictional organization. dashboard metric in appendix. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R021",
+    "kind": "type",
+    "request": "Create a dashboard for a fictional organization. website URL field. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R022",
+    "kind": "type",
+    "request": "Create a command center for a fictional organization. portal reference only. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R023",
+    "kind": "type",
+    "request": "Create a analytics dashboard for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R024",
+    "kind": "type",
+    "request": "Create a scorecard for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R025",
+    "kind": "type",
+    "request": "Create a mobile app for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R026",
+    "kind": "type",
+    "request": "Create a iOS app for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R027",
+    "kind": "type",
+    "request": "Create a Android app for a fictional organization. education audience. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R028",
+    "kind": "type",
+    "request": "Create a mobile app for a fictional organization. recovery state. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R029",
+    "kind": "type",
+    "request": "Create a iOS app for a fictional organization. email-shaped fields. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R030",
+    "kind": "type",
+    "request": "Create a Android app for a fictional organization. subscription assumptions. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R031",
+    "kind": "type",
+    "request": "Create a mobile app for a fictional organization. reporting deadline. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R032",
+    "kind": "type",
+    "request": "Create a iOS app for a fictional organization. dashboard metric in appendix. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R033",
+    "kind": "type",
+    "request": "Create a Android app for a fictional organization. website URL field. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R034",
+    "kind": "type",
+    "request": "Create a mobile app for a fictional organization. portal reference only. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R035",
+    "kind": "type",
+    "request": "Create a iOS app for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R036",
+    "kind": "type",
+    "request": "Create a Android app for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R037",
+    "kind": "type",
+    "request": "Create a pitch deck for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R038",
+    "kind": "type",
+    "request": "Create a presentation for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R039",
+    "kind": "type",
+    "request": "Create a slide deck for a fictional organization. education audience. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R040",
+    "kind": "type",
+    "request": "Create a 6-slide deck for a fictional organization. recovery state. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R041",
+    "kind": "type",
+    "request": "Create a pitch deck for a fictional organization. email-shaped fields. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R042",
+    "kind": "type",
+    "request": "Create a presentation for a fictional organization. subscription assumptions. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R043",
+    "kind": "type",
+    "request": "Create a slide deck for a fictional organization. reporting deadline. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R044",
+    "kind": "type",
+    "request": "Create a 6-slide deck for a fictional organization. dashboard metric in appendix. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R045",
+    "kind": "type",
+    "request": "Create a pitch deck for a fictional organization. website URL field. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R046",
+    "kind": "type",
+    "request": "Create a presentation for a fictional organization. portal reference only. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R047",
+    "kind": "type",
+    "request": "Create a slide deck for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R048",
+    "kind": "type",
+    "request": "Create a 6-slide deck for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Presentation / Deck"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R049",
+    "kind": "type",
+    "request": "Create a spreadsheet for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R050",
+    "kind": "type",
+    "request": "Create a financial model for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R051",
+    "kind": "type",
+    "request": "Create a workbook for a fictional organization. education audience. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R052",
+    "kind": "type",
+    "request": "Create a Excel model for a fictional organization. recovery state. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R053",
+    "kind": "type",
+    "request": "Create a spreadsheet for a fictional organization. email-shaped fields. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R054",
+    "kind": "type",
+    "request": "Create a financial model for a fictional organization. subscription assumptions. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R055",
+    "kind": "type",
+    "request": "Create a workbook for a fictional organization. reporting deadline. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R056",
+    "kind": "type",
+    "request": "Create a Excel model for a fictional organization. dashboard metric in appendix. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R057",
+    "kind": "type",
+    "request": "Create a spreadsheet for a fictional organization. website URL field. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R058",
+    "kind": "type",
+    "request": "Create a financial model for a fictional organization. portal reference only. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R059",
+    "kind": "type",
+    "request": "Create a workbook for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R060",
+    "kind": "type",
+    "request": "Create a Excel model for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R061",
+    "kind": "type",
+    "request": "Create a brand identity for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R062",
+    "kind": "type",
+    "request": "Create a logo system for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R063",
+    "kind": "type",
+    "request": "Create a visual identity for a fictional organization. education audience. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R064",
+    "kind": "type",
+    "request": "Create a brand identity for a fictional organization. recovery state. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R065",
+    "kind": "type",
+    "request": "Create a logo system for a fictional organization. email-shaped fields. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R066",
+    "kind": "type",
+    "request": "Create a visual identity for a fictional organization. subscription assumptions. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R067",
+    "kind": "type",
+    "request": "Create a brand identity for a fictional organization. reporting deadline. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R068",
+    "kind": "type",
+    "request": "Create a logo system for a fictional organization. dashboard metric in appendix. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R069",
+    "kind": "type",
+    "request": "Create a visual identity for a fictional organization. website URL field. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R070",
+    "kind": "type",
+    "request": "Create a brand identity for a fictional organization. portal reference only. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R071",
+    "kind": "type",
+    "request": "Create a logo system for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R072",
+    "kind": "type",
+    "request": "Create a visual identity for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Brand Identity / Logo"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R073",
+    "kind": "type",
+    "request": "Create a email campaign for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R074",
+    "kind": "type",
+    "request": "Create a email sequence for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R075",
+    "kind": "type",
+    "request": "Create a onboarding email sequence for a fictional organization. education audience. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R076",
+    "kind": "type",
+    "request": "Create a email campaign for a fictional organization. recovery state. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R077",
+    "kind": "type",
+    "request": "Create a email sequence for a fictional organization. email-shaped fields. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R078",
+    "kind": "type",
+    "request": "Create a onboarding email sequence for a fictional organization. subscription assumptions. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R079",
+    "kind": "type",
+    "request": "Create a email campaign for a fictional organization. reporting deadline. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R080",
+    "kind": "type",
+    "request": "Create a email sequence for a fictional organization. dashboard metric in appendix. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R081",
+    "kind": "type",
+    "request": "Create a onboarding email sequence for a fictional organization. website URL field. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R082",
+    "kind": "type",
+    "request": "Create a email campaign for a fictional organization. portal reference only. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R083",
+    "kind": "type",
+    "request": "Create a email sequence for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R084",
+    "kind": "type",
+    "request": "Create a onboarding email sequence for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Email / Campaign"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R085",
+    "kind": "type",
+    "request": "Create a CLI tool for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R086",
+    "kind": "type",
+    "request": "Create a command-line utility for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R087",
+    "kind": "type",
+    "request": "Create a developer tool for a fictional organization. education audience. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R088",
+    "kind": "type",
+    "request": "Create a CLI tool for a fictional organization. recovery state. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R089",
+    "kind": "type",
+    "request": "Create a command-line utility for a fictional organization. email-shaped fields. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R090",
+    "kind": "type",
+    "request": "Create a developer tool for a fictional organization. subscription assumptions. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R091",
+    "kind": "type",
+    "request": "Create a CLI tool for a fictional organization. reporting deadline. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R092",
+    "kind": "type",
+    "request": "Create a command-line utility for a fictional organization. dashboard metric in appendix. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R093",
+    "kind": "type",
+    "request": "Create a developer tool for a fictional organization. website URL field. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R094",
+    "kind": "type",
+    "request": "Create a CLI tool for a fictional organization. portal reference only. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R095",
+    "kind": "type",
+    "request": "Create a command-line utility for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R096",
+    "kind": "type",
+    "request": "Create a developer tool for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R097",
+    "kind": "type",
+    "request": "Create a PDF report for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R098",
+    "kind": "type",
+    "request": "Create a fixed-format document for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R099",
+    "kind": "type",
+    "request": "Create a print-ready report for a fictional organization. education audience. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R100",
+    "kind": "type",
+    "request": "Create a PDF report for a fictional organization. recovery state. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R101",
+    "kind": "type",
+    "request": "Create a fixed-format document for a fictional organization. email-shaped fields. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R102",
+    "kind": "type",
+    "request": "Create a print-ready report for a fictional organization. subscription assumptions. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R103",
+    "kind": "type",
+    "request": "Create a PDF report for a fictional organization. reporting deadline. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R104",
+    "kind": "type",
+    "request": "Create a fixed-format document for a fictional organization. dashboard metric in appendix. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R105",
+    "kind": "type",
+    "request": "Create a print-ready report for a fictional organization. website URL field. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R106",
+    "kind": "type",
+    "request": "Create a PDF report for a fictional organization. portal reference only. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R107",
+    "kind": "type",
+    "request": "Create a fixed-format document for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R108",
+    "kind": "type",
+    "request": "Create a print-ready report for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Fixed-Format Document / PDF"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R109",
+    "kind": "type",
+    "request": "Create a customer portal for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R110",
+    "kind": "type",
+    "request": "Create a web app for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R111",
+    "kind": "type",
+    "request": "Create a SaaS workspace for a fictional organization. education audience. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R112",
+    "kind": "type",
+    "request": "Create a customer portal for a fictional organization. recovery state. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R113",
+    "kind": "type",
+    "request": "Create a web app for a fictional organization. email-shaped fields. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R114",
+    "kind": "type",
+    "request": "Create a SaaS workspace for a fictional organization. subscription assumptions. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R115",
+    "kind": "type",
+    "request": "Create a customer portal for a fictional organization. reporting deadline. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R116",
+    "kind": "type",
+    "request": "Create a web app for a fictional organization. dashboard metric in appendix. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R117",
+    "kind": "type",
+    "request": "Create a SaaS workspace for a fictional organization. website URL field. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R118",
+    "kind": "type",
+    "request": "Create a customer portal for a fictional organization. portal reference only. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R119",
+    "kind": "type",
+    "request": "Create a web app for a fictional organization. insurance participation unknown. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R120",
+    "kind": "type",
+    "request": "Create a SaaS workspace for a fictional organization. architecture fit review. Use sample data and no unsupported claims.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R121",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no login. Use sample records. Iteration 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R122",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no login. Use sample records. Iteration 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R123",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no login. Use sample records. Iteration 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R124",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no login. Use sample records. Iteration 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R125",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no login. Use sample records. Iteration 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R126",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no login. Use sample records. Iteration 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R127",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no login. Use sample records. Iteration 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R128",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no login. Use sample records. Iteration 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R129",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no login. Use sample records. Iteration 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R130",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no login. Use sample records. Iteration 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R131",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without authentication. Use sample records. Iteration 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R132",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without authentication. Use sample records. Iteration 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R133",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without authentication. Use sample records. Iteration 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R134",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without authentication. Use sample records. Iteration 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R135",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without authentication. Use sample records. Iteration 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R136",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without authentication. Use sample records. Iteration 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R137",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without authentication. Use sample records. Iteration 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R138",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without authentication. Use sample records. Iteration 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R139",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without authentication. Use sample records. Iteration 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R140",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without authentication. Use sample records. Iteration 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent"
+    }
+  },
+  {
+    "id": "R141",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no payments. Use sample records. Iteration 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R142",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no payments. Use sample records. Iteration 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R143",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no payments. Use sample records. Iteration 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R144",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no payments. Use sample records. Iteration 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R145",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no payments. Use sample records. Iteration 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R146",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no payments. Use sample records. Iteration 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R147",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no payments. Use sample records. Iteration 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R148",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no payments. Use sample records. Iteration 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R149",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no payments. Use sample records. Iteration 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R150",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no payments. Use sample records. Iteration 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R151",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without billing or checkout. Use sample records. Iteration 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R152",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without billing or checkout. Use sample records. Iteration 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R153",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without billing or checkout. Use sample records. Iteration 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R154",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without billing or checkout. Use sample records. Iteration 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R155",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without billing or checkout. Use sample records. Iteration 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R156",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without billing or checkout. Use sample records. Iteration 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R157",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without billing or checkout. Use sample records. Iteration 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R158",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without billing or checkout. Use sample records. Iteration 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R159",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without billing or checkout. Use sample records. Iteration 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R160",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without billing or checkout. Use sample records. Iteration 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "payments": "absent"
+    }
+  },
+  {
+    "id": "R161",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with front-end only. Use sample records. Iteration 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R162",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with front-end only. Use sample records. Iteration 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R163",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with front-end only. Use sample records. Iteration 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R164",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with front-end only. Use sample records. Iteration 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R165",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with front-end only. Use sample records. Iteration 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R166",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with front-end only. Use sample records. Iteration 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R167",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with front-end only. Use sample records. Iteration 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R168",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with front-end only. Use sample records. Iteration 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R169",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with front-end only. Use sample records. Iteration 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R170",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with front-end only. Use sample records. Iteration 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R171",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no backend. Use sample records. Iteration 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R172",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no backend. Use sample records. Iteration 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R173",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no backend. Use sample records. Iteration 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R174",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no backend. Use sample records. Iteration 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R175",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no backend. Use sample records. Iteration 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R176",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no backend. Use sample records. Iteration 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R177",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no backend. Use sample records. Iteration 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R178",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no backend. Use sample records. Iteration 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R179",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no backend. Use sample records. Iteration 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R180",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no backend. Use sample records. Iteration 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R181",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with does not collect PII. Use sample records. Iteration 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "sensitiveData": "absent"
+    }
+  },
+  {
+    "id": "R182",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with does not collect PII. Use sample records. Iteration 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "sensitiveData": "absent"
+    }
+  },
+  {
+    "id": "R183",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with does not collect PII. Use sample records. Iteration 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "sensitiveData": "absent"
+    }
+  },
+  {
+    "id": "R184",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with does not collect PII. Use sample records. Iteration 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "sensitiveData": "absent"
+    }
+  },
+  {
+    "id": "R185",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with does not collect PII. Use sample records. Iteration 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "sensitiveData": "absent"
+    }
+  },
+  {
+    "id": "R186",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with does not collect PII. Use sample records. Iteration 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "sensitiveData": "absent"
+    }
+  },
+  {
+    "id": "R187",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with does not collect PII. Use sample records. Iteration 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "sensitiveData": "absent"
+    }
+  },
+  {
+    "id": "R188",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with does not collect PII. Use sample records. Iteration 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "sensitiveData": "absent"
+    }
+  },
+  {
+    "id": "R189",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with does not collect PII. Use sample records. Iteration 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "sensitiveData": "absent"
+    }
+  },
+  {
+    "id": "R190",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with does not collect PII. Use sample records. Iteration 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "sensitiveData": "absent"
+    }
+  },
+  {
+    "id": "R191",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no GPS or location tracking. Use sample records. Iteration 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "location": "absent"
+    }
+  },
+  {
+    "id": "R192",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no GPS or location tracking. Use sample records. Iteration 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "location": "absent"
+    }
+  },
+  {
+    "id": "R193",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no GPS or location tracking. Use sample records. Iteration 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "location": "absent"
+    }
+  },
+  {
+    "id": "R194",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no GPS or location tracking. Use sample records. Iteration 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "location": "absent"
+    }
+  },
+  {
+    "id": "R195",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no GPS or location tracking. Use sample records. Iteration 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "location": "absent"
+    }
+  },
+  {
+    "id": "R196",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no GPS or location tracking. Use sample records. Iteration 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "location": "absent"
+    }
+  },
+  {
+    "id": "R197",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no GPS or location tracking. Use sample records. Iteration 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "location": "absent"
+    }
+  },
+  {
+    "id": "R198",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no GPS or location tracking. Use sample records. Iteration 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "location": "absent"
+    }
+  },
+  {
+    "id": "R199",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no GPS or location tracking. Use sample records. Iteration 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "location": "absent"
+    }
+  },
+  {
+    "id": "R200",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no GPS or location tracking. Use sample records. Iteration 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "location": "absent"
+    }
+  },
+  {
+    "id": "R201",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without uploads or comments. Use sample records. Iteration 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "uploadsUgc": "absent"
+    }
+  },
+  {
+    "id": "R202",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without uploads or comments. Use sample records. Iteration 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "uploadsUgc": "absent"
+    }
+  },
+  {
+    "id": "R203",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without uploads or comments. Use sample records. Iteration 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "uploadsUgc": "absent"
+    }
+  },
+  {
+    "id": "R204",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without uploads or comments. Use sample records. Iteration 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "uploadsUgc": "absent"
+    }
+  },
+  {
+    "id": "R205",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without uploads or comments. Use sample records. Iteration 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "uploadsUgc": "absent"
+    }
+  },
+  {
+    "id": "R206",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without uploads or comments. Use sample records. Iteration 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "uploadsUgc": "absent"
+    }
+  },
+  {
+    "id": "R207",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without uploads or comments. Use sample records. Iteration 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "uploadsUgc": "absent"
+    }
+  },
+  {
+    "id": "R208",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without uploads or comments. Use sample records. Iteration 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "uploadsUgc": "absent"
+    }
+  },
+  {
+    "id": "R209",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without uploads or comments. Use sample records. Iteration 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "uploadsUgc": "absent"
+    }
+  },
+  {
+    "id": "R210",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with without uploads or comments. Use sample records. Iteration 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "uploadsUgc": "absent"
+    }
+  },
+  {
+    "id": "R211",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no roles or access control. Use sample records. Iteration 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "permissions": "absent"
+    }
+  },
+  {
+    "id": "R212",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no roles or access control. Use sample records. Iteration 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "permissions": "absent"
+    }
+  },
+  {
+    "id": "R213",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no roles or access control. Use sample records. Iteration 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "permissions": "absent"
+    }
+  },
+  {
+    "id": "R214",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no roles or access control. Use sample records. Iteration 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "permissions": "absent"
+    }
+  },
+  {
+    "id": "R215",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no roles or access control. Use sample records. Iteration 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "permissions": "absent"
+    }
+  },
+  {
+    "id": "R216",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no roles or access control. Use sample records. Iteration 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "permissions": "absent"
+    }
+  },
+  {
+    "id": "R217",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no roles or access control. Use sample records. Iteration 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "permissions": "absent"
+    }
+  },
+  {
+    "id": "R218",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no roles or access control. Use sample records. Iteration 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "permissions": "absent"
+    }
+  },
+  {
+    "id": "R219",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no roles or access control. Use sample records. Iteration 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "permissions": "absent"
+    }
+  },
+  {
+    "id": "R220",
+    "kind": "negation",
+    "request": "Create a high-fidelity internal dashboard with no roles or access control. Use sample records. Iteration 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "permissions": "absent"
+    }
+  },
+  {
+    "id": "R221",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R222",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R223",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R224",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R225",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R226",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R227",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R228",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R229",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R230",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R231",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 10.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R232",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 11.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R233",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 12.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R234",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 13.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R235",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 14.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R236",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 15.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R237",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 16.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R238",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 17.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R239",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 18.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R240",
+    "kind": "coordinated-negation",
+    "request": "Create an internal dashboard, front-end only, with no login or payments. Sample data only 19.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {
+      "authentication": "absent",
+      "payments": "absent",
+      "backend": "absent"
+    }
+  },
+  {
+    "id": "R241",
+    "kind": "positive-exposure",
+    "request": "Create a web app with login and role-based access. Use fictional data 0.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "authentication": "present"
+    }
+  },
+  {
+    "id": "R242",
+    "kind": "positive-exposure",
+    "request": "Create a web app with login and role-based access. Use fictional data 1.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "authentication": "present"
+    }
+  },
+  {
+    "id": "R243",
+    "kind": "positive-exposure",
+    "request": "Create a web app with login and role-based access. Use fictional data 2.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "authentication": "present"
+    }
+  },
+  {
+    "id": "R244",
+    "kind": "positive-exposure",
+    "request": "Create a web app with login and role-based access. Use fictional data 3.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "authentication": "present"
+    }
+  },
+  {
+    "id": "R245",
+    "kind": "positive-exposure",
+    "request": "Create a web app with login and role-based access. Use fictional data 4.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "authentication": "present"
+    }
+  },
+  {
+    "id": "R246",
+    "kind": "positive-exposure",
+    "request": "Create a web app with login and role-based access. Use fictional data 5.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "authentication": "present"
+    }
+  },
+  {
+    "id": "R247",
+    "kind": "positive-exposure",
+    "request": "Create a web app with login and role-based access. Use fictional data 6.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "authentication": "present"
+    }
+  },
+  {
+    "id": "R248",
+    "kind": "positive-exposure",
+    "request": "Create a web app with login and role-based access. Use fictional data 7.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "authentication": "present"
+    }
+  },
+  {
+    "id": "R249",
+    "kind": "positive-exposure",
+    "request": "Create a web app with payment transactions and refunds. Use fictional data 0.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "payments": "present"
+    }
+  },
+  {
+    "id": "R250",
+    "kind": "positive-exposure",
+    "request": "Create a web app with payment transactions and refunds. Use fictional data 1.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "payments": "present"
+    }
+  },
+  {
+    "id": "R251",
+    "kind": "positive-exposure",
+    "request": "Create a web app with payment transactions and refunds. Use fictional data 2.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "payments": "present"
+    }
+  },
+  {
+    "id": "R252",
+    "kind": "positive-exposure",
+    "request": "Create a web app with payment transactions and refunds. Use fictional data 3.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "payments": "present"
+    }
+  },
+  {
+    "id": "R253",
+    "kind": "positive-exposure",
+    "request": "Create a web app with payment transactions and refunds. Use fictional data 4.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "payments": "present"
+    }
+  },
+  {
+    "id": "R254",
+    "kind": "positive-exposure",
+    "request": "Create a web app with payment transactions and refunds. Use fictional data 5.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "payments": "present"
+    }
+  },
+  {
+    "id": "R255",
+    "kind": "positive-exposure",
+    "request": "Create a web app with payment transactions and refunds. Use fictional data 6.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "payments": "present"
+    }
+  },
+  {
+    "id": "R256",
+    "kind": "positive-exposure",
+    "request": "Create a web app with payment transactions and refunds. Use fictional data 7.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "payments": "present"
+    }
+  },
+  {
+    "id": "R257",
+    "kind": "positive-exposure",
+    "request": "Create a web app with patient data. Use fictional data 0.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "sensitiveData": "present"
+    }
+  },
+  {
+    "id": "R258",
+    "kind": "positive-exposure",
+    "request": "Create a web app with patient data. Use fictional data 1.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "sensitiveData": "present"
+    }
+  },
+  {
+    "id": "R259",
+    "kind": "positive-exposure",
+    "request": "Create a web app with patient data. Use fictional data 2.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "sensitiveData": "present"
+    }
+  },
+  {
+    "id": "R260",
+    "kind": "positive-exposure",
+    "request": "Create a web app with patient data. Use fictional data 3.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "sensitiveData": "present"
+    }
+  },
+  {
+    "id": "R261",
+    "kind": "positive-exposure",
+    "request": "Create a web app with patient data. Use fictional data 4.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "sensitiveData": "present"
+    }
+  },
+  {
+    "id": "R262",
+    "kind": "positive-exposure",
+    "request": "Create a web app with patient data. Use fictional data 5.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "sensitiveData": "present"
+    }
+  },
+  {
+    "id": "R263",
+    "kind": "positive-exposure",
+    "request": "Create a web app with patient data. Use fictional data 6.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "sensitiveData": "present"
+    }
+  },
+  {
+    "id": "R264",
+    "kind": "positive-exposure",
+    "request": "Create a web app with patient data. Use fictional data 7.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "sensitiveData": "present"
+    }
+  },
+  {
+    "id": "R265",
+    "kind": "positive-exposure",
+    "request": "Create a web app with live GPS location. Use fictional data 0.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "location": "present"
+    }
+  },
+  {
+    "id": "R266",
+    "kind": "positive-exposure",
+    "request": "Create a web app with live GPS location. Use fictional data 1.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "location": "present"
+    }
+  },
+  {
+    "id": "R267",
+    "kind": "positive-exposure",
+    "request": "Create a web app with live GPS location. Use fictional data 2.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "location": "present"
+    }
+  },
+  {
+    "id": "R268",
+    "kind": "positive-exposure",
+    "request": "Create a web app with live GPS location. Use fictional data 3.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "location": "present"
+    }
+  },
+  {
+    "id": "R269",
+    "kind": "positive-exposure",
+    "request": "Create a web app with live GPS location. Use fictional data 4.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "location": "present"
+    }
+  },
+  {
+    "id": "R270",
+    "kind": "positive-exposure",
+    "request": "Create a web app with live GPS location. Use fictional data 5.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "location": "present"
+    }
+  },
+  {
+    "id": "R271",
+    "kind": "positive-exposure",
+    "request": "Create a web app with live GPS location. Use fictional data 6.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "location": "present"
+    }
+  },
+  {
+    "id": "R272",
+    "kind": "positive-exposure",
+    "request": "Create a web app with live GPS location. Use fictional data 7.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "location": "present"
+    }
+  },
+  {
+    "id": "R273",
+    "kind": "positive-exposure",
+    "request": "Create a web app with user uploads and comments. Use fictional data 0.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "uploadsUgc": "present"
+    }
+  },
+  {
+    "id": "R274",
+    "kind": "positive-exposure",
+    "request": "Create a web app with user uploads and comments. Use fictional data 1.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "uploadsUgc": "present"
+    }
+  },
+  {
+    "id": "R275",
+    "kind": "positive-exposure",
+    "request": "Create a web app with user uploads and comments. Use fictional data 2.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "uploadsUgc": "present"
+    }
+  },
+  {
+    "id": "R276",
+    "kind": "positive-exposure",
+    "request": "Create a web app with user uploads and comments. Use fictional data 3.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "uploadsUgc": "present"
+    }
+  },
+  {
+    "id": "R277",
+    "kind": "positive-exposure",
+    "request": "Create a web app with user uploads and comments. Use fictional data 4.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "uploadsUgc": "present"
+    }
+  },
+  {
+    "id": "R278",
+    "kind": "positive-exposure",
+    "request": "Create a web app with user uploads and comments. Use fictional data 5.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "uploadsUgc": "present"
+    }
+  },
+  {
+    "id": "R279",
+    "kind": "positive-exposure",
+    "request": "Create a web app with user uploads and comments. Use fictional data 6.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "uploadsUgc": "present"
+    }
+  },
+  {
+    "id": "R280",
+    "kind": "positive-exposure",
+    "request": "Create a web app with user uploads and comments. Use fictional data 7.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "uploadsUgc": "present"
+    }
+  },
+  {
+    "id": "R281",
+    "kind": "positive-exposure",
+    "request": "Create a web app with admin and operator permissions. Use fictional data 0.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "permissions": "present"
+    }
+  },
+  {
+    "id": "R282",
+    "kind": "positive-exposure",
+    "request": "Create a web app with admin and operator permissions. Use fictional data 1.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "permissions": "present"
+    }
+  },
+  {
+    "id": "R283",
+    "kind": "positive-exposure",
+    "request": "Create a web app with admin and operator permissions. Use fictional data 2.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "permissions": "present"
+    }
+  },
+  {
+    "id": "R284",
+    "kind": "positive-exposure",
+    "request": "Create a web app with admin and operator permissions. Use fictional data 3.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "permissions": "present"
+    }
+  },
+  {
+    "id": "R285",
+    "kind": "positive-exposure",
+    "request": "Create a web app with admin and operator permissions. Use fictional data 4.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "permissions": "present"
+    }
+  },
+  {
+    "id": "R286",
+    "kind": "positive-exposure",
+    "request": "Create a web app with admin and operator permissions. Use fictional data 5.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "permissions": "present"
+    }
+  },
+  {
+    "id": "R287",
+    "kind": "positive-exposure",
+    "request": "Create a web app with admin and operator permissions. Use fictional data 6.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "permissions": "present"
+    }
+  },
+  {
+    "id": "R288",
+    "kind": "positive-exposure",
+    "request": "Create a web app with admin and operator permissions. Use fictional data 7.",
+    "types": [
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {
+      "permissions": "present"
+    }
+  },
+  {
+    "id": "R289",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 0.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R290",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 1.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R291",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 2.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R292",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 3.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R293",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 4.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R294",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 5.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R295",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 6.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R296",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 7.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R297",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 8.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R298",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 9.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R299",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 10.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R300",
+    "kind": "composite",
+    "request": "Create a brand identity and a website for a fictional company. Keep shared brand/context consistent. Case 11.",
+    "types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R301",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 0.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R302",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 1.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R303",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 2.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R304",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 3.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R305",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 4.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R306",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 5.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R307",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 6.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R308",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 7.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R309",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 8.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R310",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 9.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R311",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 10.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R312",
+    "kind": "composite",
+    "request": "Create a marketing website plus customer portal for a fictional company. Keep shared brand/context consistent. Case 11.",
+    "types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R313",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 0.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R314",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 1.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R315",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 2.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R316",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 3.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R317",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 4.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R318",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 5.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R319",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 6.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R320",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 7.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R321",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 8.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R322",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 9.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R323",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 10.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R324",
+    "kind": "composite",
+    "request": "Create a pitch deck plus financial model for a fictional company. Keep shared brand/context consistent. Case 11.",
+    "types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R325",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 0.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R326",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 1.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R327",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 2.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R328",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 3.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R329",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 4.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R330",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 5.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R331",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 6.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R332",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 7.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R333",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 8.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R334",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 9.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R335",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 10.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R336",
+    "kind": "composite",
+    "request": "Create a mobile app plus admin dashboard for a fictional company. Keep shared brand/context consistent. Case 11.",
+    "types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R337",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 0.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R338",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 1.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R339",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 2.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R340",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 3.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R341",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 4.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R342",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 5.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R343",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 6.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R344",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 7.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R345",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 8.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R346",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 9.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R347",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 10.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R348",
+    "kind": "composite",
+    "request": "Create a documentation plus CLI tool for a fictional company. Keep shared brand/context consistent. Case 11.",
+    "types": [
+      "Documentation / Repository Architecture",
+      "CLI / Developer Tool"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R349",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 0.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R350",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 1.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R351",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 2.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R352",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 3.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R353",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 4.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R354",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 5.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R355",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 6.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R356",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 7.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R357",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 8.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R358",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 9.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R359",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 10.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R360",
+    "kind": "composite",
+    "request": "Create a email campaign plus landing page for a fictional company. Keep shared brand/context consistent. Case 11.",
+    "types": [
+      "Email / Campaign",
+      "Website / Landing Page"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R361",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 0.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R362",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 1.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R363",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 2.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R364",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 3.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R365",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 4.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R366",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 5.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R367",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 6.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R368",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 7.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R369",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 8.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R370",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 9.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R371",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 10.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R372",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 11.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R373",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 12.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R374",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 13.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R375",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 14.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R376",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 15.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R377",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 16.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R378",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 17.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R379",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 18.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R380",
+    "kind": "fidelity",
+    "request": "Create a Stripe-like payments dashboard concept, front end only, high fidelity. Case 19.",
+    "types": [
+      "Dashboard"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R381",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 0.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R382",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 1.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R383",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 2.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R384",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 3.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R385",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 4.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R386",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 5.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R387",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 6.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R388",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 7.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R389",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 8.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R390",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 9.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R391",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 10.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R392",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 11.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R393",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 12.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R394",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 13.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R395",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 14.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R396",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 15.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R397",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 16.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R398",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 17.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R399",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 18.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R400",
+    "kind": "fidelity",
+    "request": "Create a rough low-fidelity mobile app wireframe for a volunteer team. Case 19.",
+    "types": [
+      "Native / Mobile App"
+    ],
+    "exposures": {}
+  },
+  {
+    "id": "R401",
+    "kind": "industry-collision",
+    "request": "Create a hospital foundation website. Fictional sample case 0.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Nonprofits & NGOs"
+    }
+  },
+  {
+    "id": "R402",
+    "kind": "industry-collision",
+    "request": "Create a hospital foundation website. Fictional sample case 1.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Nonprofits & NGOs"
+    }
+  },
+  {
+    "id": "R403",
+    "kind": "industry-collision",
+    "request": "Create a hospital foundation website. Fictional sample case 2.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Nonprofits & NGOs"
+    }
+  },
+  {
+    "id": "R404",
+    "kind": "industry-collision",
+    "request": "Create a hospital foundation website. Fictional sample case 3.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Nonprofits & NGOs"
+    }
+  },
+  {
+    "id": "R405",
+    "kind": "industry-collision",
+    "request": "Create a hospital foundation website. Fictional sample case 4.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Nonprofits & NGOs"
+    }
+  },
+  {
+    "id": "R406",
+    "kind": "industry-collision",
+    "request": "Create a hospital foundation website. Fictional sample case 5.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Nonprofits & NGOs"
+    }
+  },
+  {
+    "id": "R407",
+    "kind": "industry-collision",
+    "request": "Create a hospital foundation website. Fictional sample case 6.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Nonprofits & NGOs"
+    }
+  },
+  {
+    "id": "R408",
+    "kind": "industry-collision",
+    "request": "Create a hospital foundation website. Fictional sample case 7.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Nonprofits & NGOs"
+    }
+  },
+  {
+    "id": "R409",
+    "kind": "industry-collision",
+    "request": "Create a homepage for a furniture studio. Fictional sample case 0.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Furniture"
+    }
+  },
+  {
+    "id": "R410",
+    "kind": "industry-collision",
+    "request": "Create a homepage for a furniture studio. Fictional sample case 1.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Furniture"
+    }
+  },
+  {
+    "id": "R411",
+    "kind": "industry-collision",
+    "request": "Create a homepage for a furniture studio. Fictional sample case 2.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Furniture"
+    }
+  },
+  {
+    "id": "R412",
+    "kind": "industry-collision",
+    "request": "Create a homepage for a furniture studio. Fictional sample case 3.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Furniture"
+    }
+  },
+  {
+    "id": "R413",
+    "kind": "industry-collision",
+    "request": "Create a homepage for a furniture studio. Fictional sample case 4.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Furniture"
+    }
+  },
+  {
+    "id": "R414",
+    "kind": "industry-collision",
+    "request": "Create a homepage for a furniture studio. Fictional sample case 5.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Furniture"
+    }
+  },
+  {
+    "id": "R415",
+    "kind": "industry-collision",
+    "request": "Create a homepage for a furniture studio. Fictional sample case 6.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Furniture"
+    }
+  },
+  {
+    "id": "R416",
+    "kind": "industry-collision",
+    "request": "Create a homepage for a furniture studio. Fictional sample case 7.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Furniture"
+    }
+  },
+  {
+    "id": "R417",
+    "kind": "industry-collision",
+    "request": "Create a port report PDF. Fictional sample case 0.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R418",
+    "kind": "industry-collision",
+    "request": "Create a port report PDF. Fictional sample case 1.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R419",
+    "kind": "industry-collision",
+    "request": "Create a port report PDF. Fictional sample case 2.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R420",
+    "kind": "industry-collision",
+    "request": "Create a port report PDF. Fictional sample case 3.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R421",
+    "kind": "industry-collision",
+    "request": "Create a port report PDF. Fictional sample case 4.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R422",
+    "kind": "industry-collision",
+    "request": "Create a port report PDF. Fictional sample case 5.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R423",
+    "kind": "industry-collision",
+    "request": "Create a port report PDF. Fictional sample case 6.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R424",
+    "kind": "industry-collision",
+    "request": "Create a port report PDF. Fictional sample case 7.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R425",
+    "kind": "industry-collision",
+    "request": "Create a architecture fit robotics website. Fictional sample case 0.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R426",
+    "kind": "industry-collision",
+    "request": "Create a architecture fit robotics website. Fictional sample case 1.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R427",
+    "kind": "industry-collision",
+    "request": "Create a architecture fit robotics website. Fictional sample case 2.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R428",
+    "kind": "industry-collision",
+    "request": "Create a architecture fit robotics website. Fictional sample case 3.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R429",
+    "kind": "industry-collision",
+    "request": "Create a architecture fit robotics website. Fictional sample case 4.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R430",
+    "kind": "industry-collision",
+    "request": "Create a architecture fit robotics website. Fictional sample case 5.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R431",
+    "kind": "industry-collision",
+    "request": "Create a architecture fit robotics website. Fictional sample case 6.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R432",
+    "kind": "industry-collision",
+    "request": "Create a architecture fit robotics website. Fictional sample case 7.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R433",
+    "kind": "industry-collision",
+    "request": "Create a insurance participation dental website. Fictional sample case 0.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Dental Industry"
+    }
+  },
+  {
+    "id": "R434",
+    "kind": "industry-collision",
+    "request": "Create a insurance participation dental website. Fictional sample case 1.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Dental Industry"
+    }
+  },
+  {
+    "id": "R435",
+    "kind": "industry-collision",
+    "request": "Create a insurance participation dental website. Fictional sample case 2.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Dental Industry"
+    }
+  },
+  {
+    "id": "R436",
+    "kind": "industry-collision",
+    "request": "Create a insurance participation dental website. Fictional sample case 3.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Dental Industry"
+    }
+  },
+  {
+    "id": "R437",
+    "kind": "industry-collision",
+    "request": "Create a insurance participation dental website. Fictional sample case 4.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Dental Industry"
+    }
+  },
+  {
+    "id": "R438",
+    "kind": "industry-collision",
+    "request": "Create a insurance participation dental website. Fictional sample case 5.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Dental Industry"
+    }
+  },
+  {
+    "id": "R439",
+    "kind": "industry-collision",
+    "request": "Create a insurance participation dental website. Fictional sample case 6.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Dental Industry"
+    }
+  },
+  {
+    "id": "R440",
+    "kind": "industry-collision",
+    "request": "Create a insurance participation dental website. Fictional sample case 7.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Dental Industry"
+    }
+  },
+  {
+    "id": "R441",
+    "kind": "industry-collision",
+    "request": "Create a email field CSV CLI. Fictional sample case 0.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R442",
+    "kind": "industry-collision",
+    "request": "Create a email field CSV CLI. Fictional sample case 1.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R443",
+    "kind": "industry-collision",
+    "request": "Create a email field CSV CLI. Fictional sample case 2.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R444",
+    "kind": "industry-collision",
+    "request": "Create a email field CSV CLI. Fictional sample case 3.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R445",
+    "kind": "industry-collision",
+    "request": "Create a email field CSV CLI. Fictional sample case 4.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R446",
+    "kind": "industry-collision",
+    "request": "Create a email field CSV CLI. Fictional sample case 5.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R447",
+    "kind": "industry-collision",
+    "request": "Create a email field CSV CLI. Fictional sample case 6.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R448",
+    "kind": "industry-collision",
+    "request": "Create a email field CSV CLI. Fictional sample case 7.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R449",
+    "kind": "industry-collision",
+    "request": "Create a data recovery state dashboard. Fictional sample case 0.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R450",
+    "kind": "industry-collision",
+    "request": "Create a data recovery state dashboard. Fictional sample case 1.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R451",
+    "kind": "industry-collision",
+    "request": "Create a data recovery state dashboard. Fictional sample case 2.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R452",
+    "kind": "industry-collision",
+    "request": "Create a data recovery state dashboard. Fictional sample case 3.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R453",
+    "kind": "industry-collision",
+    "request": "Create a data recovery state dashboard. Fictional sample case 4.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R454",
+    "kind": "industry-collision",
+    "request": "Create a data recovery state dashboard. Fictional sample case 5.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R455",
+    "kind": "industry-collision",
+    "request": "Create a data recovery state dashboard. Fictional sample case 6.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R456",
+    "kind": "industry-collision",
+    "request": "Create a data recovery state dashboard. Fictional sample case 7.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R457",
+    "kind": "industry-collision",
+    "request": "Create a education audience museum website. Fictional sample case 0.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Museums"
+    }
+  },
+  {
+    "id": "R458",
+    "kind": "industry-collision",
+    "request": "Create a education audience museum website. Fictional sample case 1.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Museums"
+    }
+  },
+  {
+    "id": "R459",
+    "kind": "industry-collision",
+    "request": "Create a education audience museum website. Fictional sample case 2.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Museums"
+    }
+  },
+  {
+    "id": "R460",
+    "kind": "industry-collision",
+    "request": "Create a education audience museum website. Fictional sample case 3.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Museums"
+    }
+  },
+  {
+    "id": "R461",
+    "kind": "industry-collision",
+    "request": "Create a education audience museum website. Fictional sample case 4.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Museums"
+    }
+  },
+  {
+    "id": "R462",
+    "kind": "industry-collision",
+    "request": "Create a education audience museum website. Fictional sample case 5.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Museums"
+    }
+  },
+  {
+    "id": "R463",
+    "kind": "industry-collision",
+    "request": "Create a education audience museum website. Fictional sample case 6.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Museums"
+    }
+  },
+  {
+    "id": "R464",
+    "kind": "industry-collision",
+    "request": "Create a education audience museum website. Fictional sample case 7.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": "Museums"
+    }
+  },
+  {
+    "id": "R465",
+    "kind": "industry-collision",
+    "request": "Create a subscription assumptions financial model. Fictional sample case 0.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R466",
+    "kind": "industry-collision",
+    "request": "Create a subscription assumptions financial model. Fictional sample case 1.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R467",
+    "kind": "industry-collision",
+    "request": "Create a subscription assumptions financial model. Fictional sample case 2.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R468",
+    "kind": "industry-collision",
+    "request": "Create a subscription assumptions financial model. Fictional sample case 3.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R469",
+    "kind": "industry-collision",
+    "request": "Create a subscription assumptions financial model. Fictional sample case 4.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R470",
+    "kind": "industry-collision",
+    "request": "Create a subscription assumptions financial model. Fictional sample case 5.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R471",
+    "kind": "industry-collision",
+    "request": "Create a subscription assumptions financial model. Fictional sample case 6.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R472",
+    "kind": "industry-collision",
+    "request": "Create a subscription assumptions financial model. Fictional sample case 7.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R473",
+    "kind": "industry-collision",
+    "request": "Create a payments are explicitly disabled dashboard. Fictional sample case 0.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R474",
+    "kind": "industry-collision",
+    "request": "Create a payments are explicitly disabled dashboard. Fictional sample case 1.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R475",
+    "kind": "industry-collision",
+    "request": "Create a payments are explicitly disabled dashboard. Fictional sample case 2.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R476",
+    "kind": "industry-collision",
+    "request": "Create a payments are explicitly disabled dashboard. Fictional sample case 3.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R477",
+    "kind": "industry-collision",
+    "request": "Create a payments are explicitly disabled dashboard. Fictional sample case 4.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R478",
+    "kind": "industry-collision",
+    "request": "Create a payments are explicitly disabled dashboard. Fictional sample case 5.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R479",
+    "kind": "industry-collision",
+    "request": "Create a payments are explicitly disabled dashboard. Fictional sample case 6.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  },
+  {
+    "id": "R480",
+    "kind": "industry-collision",
+    "request": "Create a payments are explicitly disabled dashboard. Fictional sample case 7.",
+    "types": [],
+    "exposures": {
+      "expectedIndustry": null
+    }
+  }
+]

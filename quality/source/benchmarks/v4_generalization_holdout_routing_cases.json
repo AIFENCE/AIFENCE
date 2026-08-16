@@ -1,0 +1,294 @@
+[
+  {
+    "id": "H01",
+    "family": "web",
+    "prompt": "Create a production-ready public website for Northline Dental, a two-location dental clinic. Front end only. Explain preventive, restorative, and emergency care without inventing credentials, pricing, reviews, or clinical outcomes. Make appointment intent clear while stating that availability and insurance participation are unknown.",
+    "expected_types": [
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "H02",
+    "family": "web",
+    "prompt": "Create a premium B2B website for VectorFoundry, an industrial robotics integration company. Front end only. Help plant engineering and operations buyers evaluate architecture fit, implementation readiness, safety boundaries, and next steps without inventing customer logos, certifications, integrations, or performance claims.",
+    "expected_types": [
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "H03",
+    "family": "web",
+    "prompt": "Create a public website for Meridian Museum of Design. Front end only. Support exhibitions, visit planning, membership, and education audiences. Do not invent current exhibition dates, collection facts, accessibility accommodations, ticket pricing, or sponsors; show unknowns clearly.",
+    "expected_types": [
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "H04",
+    "family": "web",
+    "prompt": "Create a premium public website for HelioPeak Solar, a residential solar installer. Front end only. Explain assessment, design, permitting, installation, monitoring, and service. Avoid unsupported savings, incentives, warranties, financing, ratings, licenses, or service-area claims.",
+    "expected_types": [
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "H05",
+    "family": "dashboard",
+    "prompt": "Create a high-fidelity internal claims operations dashboard for a fictional insurer. Front end only. Support triage, claim inspection, document status, fraud-review handoff, supervisor escalation, and recovery from failed actions. Use sample data and clearly label it.",
+    "expected_types": [
+      "Dashboard"
+    ]
+  },
+  {
+    "id": "H06",
+    "family": "dashboard",
+    "prompt": "Create a high-fidelity logistics exception dashboard for a regional freight operator. Front end only. Support lane filtering, shipment inspection, delay cause, owner assignment, customer-impact context, recovery action, and return-to-queue continuity with sample data.",
+    "expected_types": [
+      "Dashboard"
+    ]
+  },
+  {
+    "id": "H07",
+    "family": "portal",
+    "prompt": "Create an internal education administration portal for managing course sections, instructor assignments, enrollment exceptions, and accommodation-request routing. Front end only. Use fictional sample data, avoid claiming legal compliance, and preserve permissions/PII boundaries.",
+    "expected_types": [
+      "Web App / SaaS / Portal"
+    ]
+  },
+  {
+    "id": "H08",
+    "family": "dashboard",
+    "prompt": "Create an internal cyber incident triage dashboard for a defensive security team. Front end only. Support alert grouping, evidence inspection, severity reasoning, containment handoff, owner assignment, and case timeline without offensive instructions or real customer data.",
+    "expected_types": [
+      "Dashboard"
+    ]
+  },
+  {
+    "id": "H09",
+    "family": "mobile",
+    "prompt": "Design a production-quality mobile commuter app for a fictional regional transit network. Front end prototype. Support route search, saved commute, service-advisory awareness, stop detail, and recovery when live-arrival data is unavailable. Do not invent real schedules.",
+    "expected_types": [
+      "Native / Mobile App"
+    ]
+  },
+  {
+    "id": "H10",
+    "family": "mobile",
+    "prompt": "Design a mobile field-inspection app for equipment maintenance teams. Front end prototype. Support assigned inspections, checklist completion, photo placeholder, issue severity, offline state, sync recovery, and supervisor handoff using sample data.",
+    "expected_types": [
+      "Native / Mobile App"
+    ]
+  },
+  {
+    "id": "H11",
+    "family": "mobile",
+    "prompt": "Design a mobile app for nonprofit volunteers. Front end prototype. Support shift discovery, signup, check-in state, task instructions, cancellation, and coordinator messaging placeholders without inventing real organizations or background-check status.",
+    "expected_types": [
+      "Native / Mobile App"
+    ]
+  },
+  {
+    "id": "H12",
+    "family": "mobile",
+    "prompt": "Design a privacy-conscious personal budgeting mobile app. Front end prototype. Support category review, recurring expenses, goal planning, transaction labeling, and an explicit disconnected-bank state. Do not imply banking connectivity or financial advice.",
+    "expected_types": [
+      "Native / Mobile App"
+    ]
+  },
+  {
+    "id": "H13",
+    "family": "deck",
+    "prompt": "Create a 6-slide quarterly board review deck for a fictional B2B software company using clearly labeled sample metrics. Cover performance, customer health, product progress, risks, priorities, and decisions requested.",
+    "expected_types": [
+      "Presentation / Deck"
+    ]
+  },
+  {
+    "id": "H14",
+    "family": "deck",
+    "prompt": "Create a 6-slide fundraising strategy deck for a fictional youth arts nonprofit. Use sample figures only. Cover donor mix, campaign narrative, channel plan, stewardship, risks, and next-quarter actions.",
+    "expected_types": [
+      "Presentation / Deck"
+    ]
+  },
+  {
+    "id": "H15",
+    "family": "deck",
+    "prompt": "Create a 6-slide product launch kickoff deck for a fictional workflow product. Align goals, audiences, scope, milestones, roles, launch risks, readiness gates, and immediate next actions.",
+    "expected_types": [
+      "Presentation / Deck"
+    ]
+  },
+  {
+    "id": "H16",
+    "family": "deck",
+    "prompt": "Create a 6-slide market trends briefing for a fictional industrial automation strategy team. Use illustrative sample data rather than current market claims. Show trend signals, implications, scenarios, strategic options, risks, and watch items.",
+    "expected_types": [
+      "Presentation / Deck"
+    ]
+  },
+  {
+    "id": "H17",
+    "family": "spreadsheet",
+    "prompt": "Create an annual SaaS operating budget spreadsheet with assumptions, monthly revenue, headcount, operating expenses, cash runway, base/upside/downside scenarios, and variance-friendly structure. Use fictional sample inputs and formulas.",
+    "expected_types": [
+      "Spreadsheet / Financial Model"
+    ]
+  },
+  {
+    "id": "H18",
+    "family": "spreadsheet",
+    "prompt": "Create a project tracker workbook for a multi-team product launch with workstreams, tasks, owners, priority, status, dates, dependencies, risks, and a compact launch dashboard using sample data.",
+    "expected_types": [
+      "Spreadsheet / Financial Model"
+    ]
+  },
+  {
+    "id": "H19",
+    "family": "spreadsheet",
+    "prompt": "Create a B2B sales pipeline workbook with opportunities, stages, owners, deal values, probability, expected close, forecast category, next action, and weighted forecast dashboard using fictional sample data.",
+    "expected_types": [
+      "Spreadsheet / Financial Model"
+    ]
+  },
+  {
+    "id": "H20",
+    "family": "spreadsheet",
+    "prompt": "Create a 12-month operating calendar workbook for a consumer subscription business with campaigns, product releases, planning cycles, reporting deadlines, dependencies, owners, and monthly summary views using sample data.",
+    "expected_types": [
+      "Spreadsheet / Financial Model"
+    ]
+  },
+  {
+    "id": "H21",
+    "family": "pdf",
+    "prompt": "Create a polished fixed-format system design report for a fictional event-processing platform. Cover requirements, architecture, components, data flow, failure modes, observability, security boundaries, tradeoffs, and open decisions. Avoid claiming an implemented system.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "H22",
+    "family": "pdf",
+    "prompt": "Create a polished experiment analysis report for a fictional onboarding experiment using illustrative sample results. Cover hypothesis, methodology, results, interpretation, limitations, decision, and follow-up experiment.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "H23",
+    "family": "pdf",
+    "prompt": "Create a fictional investment committee memo for evaluating a made-up vertical SaaS company. Clearly label all numbers as illustrative. Cover thesis, market assumptions, product, economics, risks, valuation framework, diligence gaps, and recommendation conditions.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "H24",
+    "family": "pdf",
+    "prompt": "Create an internal policy memorandum for a fictional company governing employee use of generative AI. Do not claim legal compliance. Cover scope, permitted use, prohibited data, review requirements, disclosure, incident handling, ownership, exceptions, and open legal questions.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "H25",
+    "family": "brand",
+    "prompt": "Create a brand identity concept for Ember Atlas, a fictional specialty coffee roaster. Include wordmark direction, symbol concept, typography, palette roles, packaging cues, photography direction, iconography, and do/don\u2019t guidance without implying an existing brand.",
+    "expected_types": [
+      "Brand Identity / Logo"
+    ]
+  },
+  {
+    "id": "H26",
+    "family": "brand",
+    "prompt": "Create a brand identity concept for Axial Grove, a fictional warehouse robotics startup. Include brand idea, wordmark/symbol direction, typography, palette roles, interface cues, diagram style, motion principles, and anti-cliche guidance.",
+    "expected_types": [
+      "Brand Identity / Logo"
+    ]
+  },
+  {
+    "id": "H27",
+    "family": "email",
+    "prompt": "Create a 4-email onboarding sequence for a fictional B2B workflow SaaS product. Emails should progress from first value to setup, collaboration, and recovery if activation stalls. Do not invent customer results or integrations.",
+    "expected_types": [
+      "Email / Campaign"
+    ]
+  },
+  {
+    "id": "H28",
+    "family": "email",
+    "prompt": "Create a 4-email invitation campaign for a fictional design conference. Include announcement, speaker-preview placeholder, agenda-value email, and last-call email. Do not invent real speakers, venue facts, pricing, or attendance counts.",
+    "expected_types": [
+      "Email / Campaign"
+    ]
+  },
+  {
+    "id": "H29",
+    "family": "cli",
+    "prompt": "Create a small local CLI tool that reads a text log file and prints counts by level, top repeated error signatures, and a non-zero exit code for unreadable input. Include --help and sample fixture; no network calls.",
+    "expected_types": [
+      "CLI / Developer Tool"
+    ]
+  },
+  {
+    "id": "H30",
+    "family": "cli",
+    "prompt": "Create a small local CLI tool that reads a JSON list of commits and generates categorized Markdown release notes. Include --help, validation errors, deterministic output, and sample fixture; no GitHub/network calls.",
+    "expected_types": [
+      "CLI / Developer Tool"
+    ]
+  },
+  {
+    "id": "H31",
+    "family": "cli",
+    "prompt": "Create a small local CLI tool that compares two JSON schema-like files and reports added, removed, and changed top-level fields. Include --help, invalid-JSON handling, exit codes, and sample fixtures.",
+    "expected_types": [
+      "CLI / Developer Tool"
+    ]
+  },
+  {
+    "id": "H32",
+    "family": "cli",
+    "prompt": "Create a local CLI tool that audits a CSV for missing required columns, blank values, duplicate IDs, and malformed email-shaped fields. Include --help, clear stderr, exit codes, and sample fixture; no external services.",
+    "expected_types": [
+      "CLI / Developer Tool"
+    ]
+  },
+  {
+    "id": "H33",
+    "family": "composite",
+    "prompt": "Create a cohesive brand identity concept plus a front-end-only marketing website for Juniper Oven, a fictional neighborhood bakery. Avoid inventing hours, address, prices, reviews, or awards. Shared brand decisions should visibly carry into the website.",
+    "expected_types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "H34",
+    "family": "composite",
+    "prompt": "Create a front-end-only public website plus authenticated-customer-portal concept for a fictional HVAC company. Public side should explain service categories without invented licenses/reviews; portal should use sample appointment/equipment data and preserve clear authentication/backend boundaries.",
+    "expected_types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal"
+    ]
+  },
+  {
+    "id": "H35",
+    "family": "composite",
+    "prompt": "Create a 6-slide operating plan deck plus a financial model workbook for a fictional subscription business. Use the same clearly labeled sample assumptions across both. The deck should explain scenarios, priorities, risks, and decisions; the workbook should calculate monthly runway and scenario outcomes.",
+    "expected_types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model"
+    ]
+  },
+  {
+    "id": "H36",
+    "family": "composite",
+    "prompt": "Create a mobile registration/check-in app concept plus an admin dashboard for a fictional community sports league. Use sample data. Support participant registration state, schedule placeholders, check-in, exception handling, admin roster review, and handoff while avoiding claims about background checks or real schedules.",
+    "expected_types": [
+      "Native / Mobile App",
+      "Dashboard"
+    ]
+  }
+]

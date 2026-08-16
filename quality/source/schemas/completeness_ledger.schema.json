@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/completeness_ledger.schema.json",
+  "type": "object",
+  "required": [
+    "artifact_id",
+    "rows",
+    "status"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string"
+    },
+    "rows": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "requirement",
+          "priority",
+          "implementation",
+          "verification",
+          "status"
+        ]
+      }
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "UNVERIFIED"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

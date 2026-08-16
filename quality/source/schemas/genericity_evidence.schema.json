@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/genericity_evidence.schema.json",
+  "title": "BizIQ Dense Product Genericity Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_id",
+    "artifact_family",
+    "structural_decisions",
+    "component_grammars",
+    "task_structure_links",
+    "template_similarity",
+    "competitor_swap_test",
+    "rendered_observations",
+    "status"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_family": {
+      "enum": [
+        "saas-web-app",
+        "dashboard",
+        "portal",
+        "other-dense-product"
+      ]
+    },
+    "structural_decisions": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "source",
+          "decision",
+          "non_cosmetic",
+          "swap_resistant"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "source": {
+            "enum": [
+              "user-job",
+              "workflow",
+              "domain-data",
+              "proof-model",
+              "brand",
+              "content"
+            ]
+          },
+          "decision": {
+            "type": "string",
+            "minLength": 8
+          },
+          "non_cosmetic": {
+            "const": true
+          },
+          "swap_resistant": {
+            "const": true
+          }
+        }
+      }
+    },
+    "component_grammars": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 2
+      }
+    },
+    "task_structure_links": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "required": [
+          "task_id",
+          "region",
+          "reason"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 8
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "template_similarity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "best_match_id",
+        "score",
+        "threshold"
+      ],
+      "properties": {
+        "best_match_id": {
+          "type": "string"
+        },
+        "score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "threshold": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "competitor_swap_test": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "passes",
+        "break_reasons"
+      ],
+      "properties": {
+        "passes": {
+          "const": true
+        },
+        "break_reasons": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "minLength": 8
+          }
+        }
+      }
+    },
+    "rendered_observations": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "string",
+        "minLength": 8
+      }
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "UNVERIFIED"
+      ]
+    }
+  }
+}

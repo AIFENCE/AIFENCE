@@ -1,0 +1,43 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "message_id": {
+      "title": "Message Id",
+      "type": "string"
+    },
+    "observed_at": {
+      "title": "Observed At",
+      "type": "string"
+    },
+    "packet_id": {
+      "title": "Packet Id",
+      "type": "string"
+    },
+    "receiver": {
+      "title": "Receiver",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "acked",
+        "nacked"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "workspace": {
+      "default": "default",
+      "title": "Workspace",
+      "type": "string"
+    }
+  },
+  "required": [
+    "message_id",
+    "packet_id",
+    "receiver",
+    "status",
+    "observed_at"
+  ],
+  "title": "ProtocolAck",
+  "type": "object"
+}

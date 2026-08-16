@@ -1,0 +1,284 @@
+[
+  {
+    "id": "v2.quality-closure.001.account-review-decision-workspace",
+    "category": "saas",
+    "title": "Account review decision workspace",
+    "prompt": "Create a production front-end account review workspace where the next action, evidence needed, exceptions, and recovery are immediately clear. Include search, filters, review detail, validation, and simulated persistence without toolbar crowding.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "usability",
+      "feature_depth",
+      "accessibility"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.002.incident-response-triage-dashboard",
+    "category": "dashboards",
+    "title": "Incident response triage dashboard",
+    "prompt": "Create a dense incident triage dashboard with clear severity/action hierarchy, ownership, evidence, filters, drill-down, retry/recovery, and no ambiguous competing primary actions.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "usability",
+      "visual_quality",
+      "responsiveness"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.003.high-consideration-product-decision",
+    "category": "ecommerce",
+    "title": "High-consideration product decision",
+    "prompt": "Create a premium product-detail experience that reduces decision friction across variant selection, comparison, policy unknowns, cart feedback, and recovery without inventing inventory or fulfillment facts.",
+    "artifact_contracts": [
+      "ecommerce-marketplace"
+    ],
+    "evaluation_emphasis": [
+      "usability",
+      "truthfulness",
+      "visual_quality"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.004.exception-approval-workflow",
+    "category": "operations",
+    "title": "Exception approval workflow",
+    "prompt": "Create an exception approval workflow with explicit prerequisites, evidence, approve/reject hierarchy, destructive separation, preserved state, and recoverable validation errors.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "usability",
+      "completeness",
+      "accessibility"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.005.architectural-landscape-studio-visual-finish",
+    "category": "websites",
+    "title": "Architectural landscape studio visual finish",
+    "prompt": "Create a premium landscape architecture studio website with restrained but distinctive editorial hierarchy, calibrated typography/spacing, purposeful imagery, and inquiry flow without invented projects, awards, clients, or locations.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "genericity_resistance",
+      "truthfulness"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.006.specialty-home-service-visual-finish",
+    "category": "websites",
+    "title": "Specialty home service visual finish",
+    "prompt": "Create a premium local-service website with refined visual hierarchy, service decision support, proof boundaries, quote flow, and mobile polish without invented reviews, project claims, credentials, or service areas.",
+    "artifact_contracts": [
+      "local-service-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "usability",
+      "truthfulness"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.007.research-operations-visual-finish",
+    "category": "saas",
+    "title": "Research operations visual finish",
+    "prompt": "Create a production research-operations workspace with strong information hierarchy, precise surfaces, coherent density, sample data, and clear task states without generic metric-card repetition.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "genericity_resistance",
+      "usability"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.008.investment-decision-memo-visual-finish",
+    "category": "documents",
+    "title": "Investment decision memo visual finish",
+    "prompt": "Create a premium investment decision memo with disciplined editorial hierarchy, evidence tables, alternatives, risks, recommendation, actions, and explicit unknowns.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "truthfulness",
+      "feature_depth"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.009.vendor-evidence-provenance-memo",
+    "category": "documents",
+    "title": "Vendor evidence provenance memo",
+    "prompt": "Create a vendor due-diligence memo that clearly distinguishes supplied evidence, assumptions, unknowns, interpretations, and recommendations; unresolved claims must carry verification owners.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "truthfulness",
+      "completeness",
+      "feature_depth"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.010.experiment-evidence-boundary-report",
+    "category": "documents",
+    "title": "Experiment evidence boundary report",
+    "prompt": "Create an experiment report that separates observed results from interpretation, limitations, assumptions, and recommendation; do not imply statistical facts that were not supplied.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "truthfulness",
+      "feature_depth",
+      "visual_quality"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.011.legal-research-boundary-memo",
+    "category": "documents",
+    "title": "Legal research boundary memo",
+    "prompt": "Create a legal research memo using only supplied/sample authority placeholders, clearly separating authority, assumptions, unknown jurisdiction facts, analysis, and recommendations without implying legal advice.",
+    "artifact_contracts": [
+      "document-report",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "truthfulness",
+      "accessibility",
+      "visual_quality"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.012.clinical-education-truth-boundary",
+    "category": "regulated",
+    "title": "Clinical education truth boundary",
+    "prompt": "Create a clinical education page that visibly separates general educational content from unknown clinician, diagnosis, treatment, insurance, availability, and outcome facts.",
+    "artifact_contracts": [
+      "marketing-website",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "truthfulness",
+      "usability",
+      "visual_quality"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.013.board-action-table-at-320",
+    "category": "documents",
+    "title": "Board action table at 320",
+    "prompt": "Create a responsive board decision memo with an action table, risk matrix, citations, long owner names, and long identifiers that remains readable and semantically intact at 320px.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "responsiveness",
+      "visual_quality",
+      "accessibility"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.014.postmortem-timeline-at-narrow-viewport",
+    "category": "documents",
+    "title": "Postmortem timeline at narrow viewport",
+    "prompt": "Create a responsive incident postmortem with timeline, evidence callouts, contributing factors, owners, and action table that preserves relationships at 320/390px.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "responsiveness",
+      "feature_depth",
+      "accessibility"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.015.long-label-multilingual-operations-queue",
+    "category": "operations",
+    "title": "Long-label multilingual operations queue",
+    "prompt": "Create an operations queue with long translated labels, owner names, statuses, evidence notes, exceptions, and primary actions that remains task-complete at 320px.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "responsiveness",
+      "usability",
+      "accessibility"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.016.audit-handoff-with-sticky-controls",
+    "category": "operations",
+    "title": "Audit handoff with sticky controls",
+    "prompt": "Create a responsive audit handoff workflow with evidence, status, sticky navigation/action controls, errors, and confirmation; ensure no collision at 320/390/768px.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "responsiveness",
+      "accessibility",
+      "usability"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.017.keyboard-first-settings-recovery",
+    "category": "saas",
+    "title": "Keyboard-first settings recovery",
+    "prompt": "Create a settings workflow with clear action hierarchy, validation, unsaved-state warning, retry/recovery, keyboard completion, and visible focus while keeping destructive reset separate.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "usability",
+      "accessibility",
+      "implementation_correctness"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.018.filter-context-preservation",
+    "category": "dashboards",
+    "title": "Filter context preservation",
+    "prompt": "Create an investigative dashboard where filter/search/selection context is preserved through drill-down, error, retry, and return; show sample-data boundaries clearly.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "usability",
+      "truthfulness",
+      "feature_depth"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.019.generated-media-proof-boundary",
+    "category": "edge-cases",
+    "title": "Generated media proof boundary",
+    "prompt": "Create a premium local-service concept using generated imagery for atmosphere while making it impossible to mistake those visuals for completed projects, customer proof, or verified staff.",
+    "artifact_contracts": [
+      "local-service-website"
+    ],
+    "evaluation_emphasis": [
+      "truthfulness",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.quality-closure.020.floor-capable-usability-evidence",
+    "category": "edge-cases",
+    "title": "Floor-capable usability evidence",
+    "prompt": "Create a dense front-end workflow and include observable evidence for orientation, primary-action clarity, state preservation, success/error feedback, recovery, keyboard completion, and 320px task completion.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "usability",
+      "accessibility",
+      "responsiveness"
+    ]
+  }
+]

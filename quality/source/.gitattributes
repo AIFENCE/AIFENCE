@@ -1,0 +1,7 @@
+# Canonical BizIQ text line endings
+* text=auto eol=lf
+*.zip binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary

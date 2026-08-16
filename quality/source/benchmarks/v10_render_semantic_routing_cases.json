@@ -1,0 +1,55 @@
+[
+  {
+    "id": "R186-01",
+    "kind": "semantic-equivalence",
+    "expect": "PASS",
+    "term": "sync recovery",
+    "surface": "Failed sync preserves the draft. Retry sync when connectivity returns."
+  },
+  {
+    "id": "R186-02",
+    "kind": "semantic-equivalence",
+    "expect": "FAIL",
+    "term": "sync recovery",
+    "surface": "Profile preferences and account settings."
+  },
+  {
+    "id": "R186-03",
+    "kind": "fixed-document-render",
+    "expect": "PASS",
+    "description": "direct render evidence with no collision/clipping"
+  },
+  {
+    "id": "R186-04",
+    "kind": "fixed-document-render",
+    "expect": "FAIL",
+    "description": "render evidence reports overlap"
+  },
+  {
+    "id": "R186-05",
+    "kind": "fixed-document-accessibility",
+    "expect": "FAIL",
+    "description": "reading order not directly verified"
+  },
+  {
+    "id": "R186-06",
+    "kind": "workspace-routing",
+    "expect": "Dashboard",
+    "request": "Create a service renewal monitoring workspace for account leaders to track health, deadlines, risk, evidence, and decisions."
+  },
+  {
+    "id": "R186-07",
+    "kind": "workspace-routing",
+    "expect": "Web App / SaaS / Portal",
+    "request": "Create a service renewal editing workspace to create records, edit terms, assign tasks, and manage approvals."
+  },
+  {
+    "id": "R186-08",
+    "kind": "composite-routing",
+    "expect": [
+      "Fixed-Format Document / PDF",
+      "Presentation / Deck"
+    ],
+    "request": "Create a fixed analytical report plus executive decision deck for leadership."
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "id":"dpfp-001-payments",
+    "artifact_family":"dashboard",
+    "source_benchmark":"Core 1.7.3 fresh no-repair six-pair benchmark",
+    "failure_pattern":"Payments fresh treatment below 9.0 in visual quality/completeness/feature depth/accessibility",
+    "required_checks":["desktop/390/320 visual finish","exhaustive P0/P1 completion","direct accessibility critical path","payments Level-5 operational loop"],
+    "acceptance":"dense product quality evidence validator PASS"
+  },
+  {
+    "id":"dpfp-002-saas",
+    "artifact_family":"saas-web-app",
+    "source_benchmark":"Core 1.7.3 fresh no-repair six-pair benchmark",
+    "failure_pattern":"SaaS fresh treatment below 9.0 in visual quality/completeness/accessibility",
+    "required_checks":["desktop/390/320 visual finish","exhaustive P0/P1 completion","direct accessibility critical path","three Level-5 features"],
+    "acceptance":"dense product quality evidence validator PASS"
+  },
+  {
+    "id":"dpfp-003-analytics",
+    "artifact_family":"dashboard",
+    "source_benchmark":"Core 1.7.3 fresh no-repair six-pair benchmark",
+    "failure_pattern":"Analytics fresh treatment below 9.0 in visual quality/completeness/feature depth/accessibility",
+    "required_checks":["desktop/390/320 visual finish","exhaustive P0/P1 completion","direct accessibility critical path","analytics Level-5 decision loop"],
+    "acceptance":"dense product quality evidence validator PASS"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"biziq://schemas/context_graph.schema.json",
+  "title":"BizIQ Context Graph",
+  "type":"object",
+  "required":["industry","artifactExposure","platform","implementationMaturity","visualFidelity"],
+  "properties":{
+    "industry":{"type":"object"},"subindustry":{"type":"object"},"businessModel":{"type":"object"},
+    "audiences":{"type":"array","items":{"type":"string"}},"userRoles":{"type":"array","items":{"type":"string"}},
+    "artifactExposure":{"type":"object","additionalProperties":{"type":"object","required":["state","source"],"properties":{"state":{"enum":["present","absent","unknown"]},"source":{"type":"string"}},"additionalProperties":true}},
+    "publicOrInternal":{"enum":["public","internal","unknown"]},"platform":{"type":"string"},"revenueModel":{"type":"string"},
+    "dataClasses":{"type":"array","items":{"type":"string"}},"authentication":{"enum":["present","absent","unknown"]},"transactions":{"enum":["present","absent","unknown"]},
+    "backendStatus":{"enum":["present","absent","unknown"]},"integrationStatus":{"type":"string"},"jurisdiction":{"type":["string","null"]},
+    "contentProvenance":{"type":"string"},"implementationMaturity":{"type":"string"},"visualFidelity":{"type":"string"},"referenceInspirations":{"type":"array"}
+  },
+  "additionalProperties":true
+}

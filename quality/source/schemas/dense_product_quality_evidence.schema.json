@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://biziq.local/schemas/dense_product_quality_evidence.schema.json",
+  "title": "BizIQ Dense Product First-Pass Quality Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["artifact_id","artifact_family","provenance","visual_finish","completeness","accessibility","feature_depth","status"],
+  "properties": {
+    "artifact_id": {"type":"string","minLength":1},
+    "artifact_family": {"enum":["saas-web-app","dashboard","portal"]},
+    "product_flavor": {"enum":["general","payments","analytics"]},
+    "provenance": {"const":"direct"},
+    "visual_finish": {
+      "type":"object","additionalProperties":false,
+      "required":["viewports","hierarchy","surface_roles","typography_roles","control_alignment","state_surfaces","material_defects","status"],
+      "properties": {
+        "viewports":{"type":"array","items":{"type":"integer","enum":[320,390,768,1440]},"allOf":[{"contains":{"const":320}},{"contains":{"const":390}},{"contains":{"const":1440}}],"uniqueItems":true},
+        "hierarchy":{"type":"object","required":["dominant_region","secondary_regions"],"properties":{"dominant_region":{"type":"string","minLength":3},"secondary_regions":{"type":"array","minItems":2,"items":{"type":"string","minLength":2}}}},
+        "surface_roles":{"type":"array","minItems":3,"uniqueItems":true,"items":{"type":"string","minLength":2}},
+        "typography_roles":{"type":"array","minItems":5,"uniqueItems":true,"items":{"type":"string","minLength":2}},
+        "control_alignment":{"type":"boolean"},
+        "state_surfaces":{"type":"array","minItems":3,"uniqueItems":true,"items":{"type":"string","minLength":2}},
+        "material_defects":{"type":"array","items":{"type":"string"}},
+        "rendered_observations":{"type":"array","minItems":3,"items":{"type":"string","minLength":4}},
+        "status":{"enum":["PASS","FAIL","UNVERIFIED"]}
+      }
+    },
+    "completeness": {
+      "type":"object","additionalProperties":false,
+      "required":["features","missing_applicable_rows","status"],
+      "properties": {
+        "features":{"type":"array","minItems":3,"items":{"type":"object","additionalProperties":false,"required":["feature_id","priority","coverage","status"],"properties":{"feature_id":{"type":"string","minLength":1},"priority":{"enum":["P0","P1"]},"coverage":{"type":"array","minItems":10,"uniqueItems":true,"items":{"enum":["entry-orientation","information-evidence","primary-action","contextual-action","normal","empty-no-results","loading-partial-stale","error-recovery","permission-unavailable","success-feedback","detail-drilldown","responsive-320-390","accessibility","truth-data-semantics","dependency","acceptance-evidence"]}},"na_reasons":{"type":"object","additionalProperties":{"type":"string","minLength":3}},"status":{"enum":["PASS","FAIL","UNVERIFIED"]}}}},
+        "missing_applicable_rows":{"type":"array","maxItems":0},
+        "status":{"enum":["PASS","FAIL","UNVERIFIED"]}
+      }
+    },
+    "accessibility": {
+      "type":"object","additionalProperties":false,
+      "required":["critical_paths","unlabelled_enabled_controls","status"],
+      "properties": {
+        "critical_paths":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["task_id","named_controls","keyboard_complete","visible_focus","focus_order_return","programmatic_feedback","non_color_meaning","target_readability","reflow_320_390","errors_associated","status"],"properties":{"task_id":{"type":"string","minLength":1},"named_controls":{"type":"boolean"},"keyboard_complete":{"type":"boolean"},"visible_focus":{"type":"boolean"},"focus_order_return":{"type":"boolean"},"programmatic_feedback":{"type":"boolean"},"non_color_meaning":{"type":"boolean"},"target_readability":{"type":"boolean"},"reflow_320_390":{"type":"boolean"},"errors_associated":{"type":"boolean"},"status":{"enum":["PASS","FAIL","UNVERIFIED"]}}}},
+        "unlabelled_enabled_controls":{"type":"array","maxItems":0},
+        "status":{"enum":["PASS","FAIL","UNVERIFIED"]}
+      }
+    },
+    "feature_depth": {
+      "type":"object","additionalProperties":false,
+      "required":["level5_features","workflow_loop","status"],
+      "properties": {
+        "level5_features":{"type":"array","minItems":3,"items":{"type":"object","required":["feature_id","user_job","level","roles","status"],"properties":{"feature_id":{"type":"string","minLength":1},"user_job":{"type":"string","minLength":4},"level":{"const":5},"roles":{"type":"array","minItems":1,"items":{"enum":["investigation-inspection","decision-action-recovery","continuity-comparison"]}},"status":{"enum":["PASS","FAIL","UNVERIFIED"]}}}},
+        "workflow_loop":{"type":"array","minItems":6,"items":{"type":"string","minLength":2}},
+        "status":{"enum":["PASS","FAIL","UNVERIFIED"]}
+      }
+    },
+    "status": {"enum":["PASS","FAIL","UNVERIFIED"]}
+  }
+}

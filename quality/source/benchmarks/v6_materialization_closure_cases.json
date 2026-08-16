@@ -1,0 +1,72 @@
+[
+  {
+    "id": "MAT-01",
+    "family": "website",
+    "request": "Create a premium public website for a regional commercial roofing company.",
+    "failure_pattern": "generic/internal QA-shaped output",
+    "acceptance": "domain-specific materialization, naturalized user-facing language, no internal BizIQ vocabulary leakage"
+  },
+  {
+    "id": "MAT-02",
+    "family": "mobile",
+    "request": "Create a native mobile field-inspection app for commercial property teams.",
+    "failure_pattern": "generic/internal QA-shaped output",
+    "acceptance": "domain-specific materialization, naturalized user-facing language, no internal BizIQ vocabulary leakage"
+  },
+  {
+    "id": "MAT-03",
+    "family": "brand",
+    "request": "Create a complete brand identity for an industrial robotics integrator.",
+    "failure_pattern": "generic/internal QA-shaped output",
+    "acceptance": "domain-specific materialization, naturalized user-facing language, no internal BizIQ vocabulary leakage"
+  },
+  {
+    "id": "MAT-04",
+    "family": "email",
+    "request": "Create a four-email onboarding campaign for a payroll platform.",
+    "failure_pattern": "generic/internal QA-shaped output",
+    "acceptance": "domain-specific materialization, naturalized user-facing language, no internal BizIQ vocabulary leakage"
+  },
+  {
+    "id": "MAT-05",
+    "family": "cli",
+    "request": "Create a CLI for validating logistics manifests before import.",
+    "failure_pattern": "generic/internal QA-shaped output",
+    "acceptance": "domain-specific materialization, naturalized user-facing language, no internal BizIQ vocabulary leakage"
+  },
+  {
+    "id": "MAT-06",
+    "family": "presentation",
+    "request": "Create an executive deck for a battery-storage deployment program.",
+    "failure_pattern": "generic/internal QA-shaped output",
+    "acceptance": "domain-specific materialization, naturalized user-facing language, no internal BizIQ vocabulary leakage"
+  },
+  {
+    "id": "MAT-07",
+    "family": "spreadsheet",
+    "request": "Create a scenario model for a multi-site restaurant expansion.",
+    "failure_pattern": "generic/internal QA-shaped output",
+    "acceptance": "domain-specific materialization, naturalized user-facing language, no internal BizIQ vocabulary leakage"
+  },
+  {
+    "id": "MAT-08",
+    "family": "fixed-document",
+    "request": "Create a fixed-format implementation readiness report for a hospital network.",
+    "failure_pattern": "generic/internal QA-shaped output",
+    "acceptance": "domain-specific materialization, naturalized user-facing language, no internal BizIQ vocabulary leakage"
+  },
+  {
+    "id": "MAT-09",
+    "family": "marketing-creative",
+    "request": "Create a multi-placement recruitment campaign for skilled machinists.",
+    "failure_pattern": "generic/internal QA-shaped output",
+    "acceptance": "domain-specific materialization, naturalized user-facing language, no internal BizIQ vocabulary leakage"
+  },
+  {
+    "id": "MAT-10",
+    "family": "composite",
+    "request": "Create a brand identity, public website, and onboarding email sequence for a managed IT provider.",
+    "failure_pattern": "generic/internal QA-shaped output",
+    "acceptance": "domain-specific materialization, naturalized user-facing language, no internal BizIQ vocabulary leakage"
+  }
+]

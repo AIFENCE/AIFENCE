@@ -1,0 +1,375 @@
+{
+  "$defs": {
+    "WireAtomV2": {
+      "additionalProperties": false,
+      "properties": {
+        "c": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "C"
+        },
+        "e": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "E"
+        },
+        "h": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "H"
+        },
+        "l": {
+          "anyOf": [
+            {},
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "L"
+        },
+        "p": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "P"
+        },
+        "q": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Q"
+        },
+        "v": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "V"
+        }
+      },
+      "title": "WireAtomV2",
+      "type": "object"
+    },
+    "WireProvenanceV2": {
+      "additionalProperties": false,
+      "properties": {
+        "d": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "D"
+        },
+        "p": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "P"
+        },
+        "q": {
+          "anyOf": [
+            {
+              "maximum": 1.0,
+              "minimum": 0.0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Q"
+        },
+        "s": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "S"
+        },
+        "t": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "T"
+        }
+      },
+      "title": "WireProvenanceV2",
+      "type": "object"
+    },
+    "WireSignatureV2": {
+      "additionalProperties": false,
+      "properties": {
+        "alg": {
+          "const": "Ed25519",
+          "default": "Ed25519",
+          "title": "Alg",
+          "type": "string"
+        },
+        "kid": {
+          "title": "Kid",
+          "type": "string"
+        },
+        "sig": {
+          "title": "Sig",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kid",
+        "sig"
+      ],
+      "title": "WireSignatureV2",
+      "type": "object"
+    },
+    "WireTraceV2": {
+      "additionalProperties": false,
+      "properties": {
+        "p": {
+          "pattern": "^[0-9a-f]{2}-[0-9a-f]{32}-[0-9a-f]{16}-[0-9a-f]{2}$",
+          "title": "P",
+          "type": "string"
+        },
+        "s": {
+          "anyOf": [
+            {
+              "maxLength": 512,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "S"
+        }
+      },
+      "required": [
+        "p"
+      ],
+      "title": "WireTraceV2",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "Normative SAGE wire-v2 object.\n\nShort field names are part of the v2 wire contract. Writers and readers use wire version 2.",
+  "properties": {
+    "R": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "R"
+    },
+    "a": {
+      "default": "report",
+      "title": "A",
+      "type": "string"
+    },
+    "b": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "B"
+    },
+    "c": {
+      "title": "C",
+      "type": "string"
+    },
+    "d": {
+      "anyOf": [
+        {},
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "D"
+    },
+    "g": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/WireSignatureV2"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "i": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "I"
+    },
+    "m": {
+      "anyOf": [
+        {
+          "additionalProperties": true,
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "M"
+    },
+    "p": {
+      "$ref": "#/$defs/WireProvenanceV2"
+    },
+    "r": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "R"
+    },
+    "s": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "S"
+    },
+    "v": {
+      "default": 2,
+      "title": "V",
+      "type": "integer"
+    },
+    "x": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/WireAtomV2"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "X"
+    },
+    "z": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/WireTraceV2"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "c"
+  ],
+  "title": "WirePacketV2",
+  "type": "object"
+}

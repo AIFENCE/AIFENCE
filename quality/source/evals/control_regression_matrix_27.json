@@ -1,0 +1,242 @@
+[
+  {
+    "id": "eval.artifact-contract-resolution.normal",
+    "capability": "Artifact Contract Resolution",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "normal",
+    "requirement": "Resolve the narrowest applicable artifact production contract before substantial feature, design, or implementation work begins.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.artifact-contract-resolution.ambiguous",
+    "capability": "Artifact Contract Resolution",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "ambiguous",
+    "requirement": "Resolve the narrowest applicable artifact production contract before substantial feature, design, or implementation work begins.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.artifact-contract-resolution.failure",
+    "capability": "Artifact Contract Resolution",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "failure",
+    "requirement": "Resolve the narrowest applicable artifact production contract before substantial feature, design, or implementation work begins.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.artifact-contract-completeness.normal",
+    "capability": "Artifact Contract Completeness",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "normal",
+    "requirement": "Ensure the selected artifact contract defines user jobs, required information/feature/state outcomes, truth boundaries, responsive/accessibility obligations, evidence, and acceptance profile.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.artifact-contract-completeness.ambiguous",
+    "capability": "Artifact Contract Completeness",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "ambiguous",
+    "requirement": "Ensure the selected artifact contract defines user jobs, required information/feature/state outcomes, truth boundaries, responsive/accessibility obligations, evidence, and acceptance profile.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.artifact-contract-completeness.failure",
+    "capability": "Artifact Contract Completeness",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "failure",
+    "requirement": "Ensure the selected artifact contract defines user jobs, required information/feature/state outcomes, truth boundaries, responsive/accessibility obligations, evidence, and acceptance profile.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.feature-specification-compiler.normal",
+    "capability": "Feature Specification Compiler",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "normal",
+    "requirement": "Compile every high-value feature into purpose, user job, information, actions, interaction model, states, responsive/accessibility behavior, truth semantics, dependencies, and acceptance criteria before component design.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.feature-specification-compiler.ambiguous",
+    "capability": "Feature Specification Compiler",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "ambiguous",
+    "requirement": "Compile every high-value feature into purpose, user job, information, actions, interaction model, states, responsive/accessibility behavior, truth semantics, dependencies, and acceptance criteria before component design.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.feature-specification-compiler.failure",
+    "capability": "Feature Specification Compiler",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "failure",
+    "requirement": "Compile every high-value feature into purpose, user job, information, actions, interaction model, states, responsive/accessibility behavior, truth semantics, dependencies, and acceptance criteria before component design.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.feature-information-action-model.normal",
+    "capability": "Feature Information Action Model",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "normal",
+    "requirement": "Resolve information priority plus primary, secondary, contextual, validation, recovery, and destructive actions so implementation does not invent feature behavior.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.feature-information-action-model.ambiguous",
+    "capability": "Feature Information Action Model",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "ambiguous",
+    "requirement": "Resolve information priority plus primary, secondary, contextual, validation, recovery, and destructive actions so implementation does not invent feature behavior.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.feature-information-action-model.failure",
+    "capability": "Feature Information Action Model",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "failure",
+    "requirement": "Resolve information priority plus primary, secondary, contextual, validation, recovery, and destructive actions so implementation does not invent feature behavior.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.user-job-state-data-model.normal",
+    "capability": "User Job State Data Model",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "normal",
+    "requirement": "Link each high-value feature to an explicit user job, required data/truth semantics, and applicable state model including edge and recovery states.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.user-job-state-data-model.ambiguous",
+    "capability": "User Job State Data Model",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "ambiguous",
+    "requirement": "Link each high-value feature to an explicit user job, required data/truth semantics, and applicable state model including edge and recovery states.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.user-job-state-data-model.failure",
+    "capability": "User Job State Data Model",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "failure",
+    "requirement": "Link each high-value feature to an explicit user job, required data/truth semantics, and applicable state model including edge and recovery states.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.component-design-compiler.normal",
+    "capability": "Component Design Compiler",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "normal",
+    "requirement": "Compile important components from feature requirements into task-specific anatomy, hierarchy, iconography, surfaces, actions, states, responsive behavior, and accessibility before implementation.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.component-design-compiler.ambiguous",
+    "capability": "Component Design Compiler",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "ambiguous",
+    "requirement": "Compile important components from feature requirements into task-specific anatomy, hierarchy, iconography, surfaces, actions, states, responsive behavior, and accessibility before implementation.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.component-design-compiler.failure",
+    "capability": "Component Design Compiler",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "failure",
+    "requirement": "Compile important components from feature requirements into task-specific anatomy, hierarchy, iconography, surfaces, actions, states, responsive behavior, and accessibility before implementation.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.component-variant-state-matrix.normal",
+    "capability": "Component Variant State Matrix",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "normal",
+    "requirement": "Define component variants, interaction states, responsive adaptations, and invalid combinations to prevent one-off divergence and missing states.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.component-variant-state-matrix.ambiguous",
+    "capability": "Component Variant State Matrix",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "ambiguous",
+    "requirement": "Define component variants, interaction states, responsive adaptations, and invalid combinations to prevent one-off divergence and missing states.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.component-variant-state-matrix.failure",
+    "capability": "Component Variant State Matrix",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "failure",
+    "requirement": "Define component variants, interaction states, responsive adaptations, and invalid combinations to prevent one-off divergence and missing states.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.structural-fingerprint-generation.normal",
+    "capability": "Structural Fingerprint Generation",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "normal",
+    "requirement": "Generate a structural fingerprint for substantial concepts before final implementation and record the features that make the composition meaningfully project-specific.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.structural-fingerprint-generation.ambiguous",
+    "capability": "Structural Fingerprint Generation",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "ambiguous",
+    "requirement": "Generate a structural fingerprint for substantial concepts before final implementation and record the features that make the composition meaningfully project-specific.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.structural-fingerprint-generation.failure",
+    "capability": "Structural Fingerprint Generation",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "failure",
+    "requirement": "Generate a structural fingerprint for substantial concepts before final implementation and record the features that make the composition meaningfully project-specific.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.genericity-similarity-rejection.normal",
+    "capability": "Genericity Similarity Rejection",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "normal",
+    "requirement": "Compare substantial concepts against common structural defaults and reject high template similarity or universal component grammar unless category-required structure is strongly differentiated.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.genericity-similarity-rejection.ambiguous",
+    "capability": "Genericity Similarity Rejection",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "ambiguous",
+    "requirement": "Compare substantial concepts against common structural defaults and reject high template similarity or universal component grammar unless category-required structure is strongly differentiated.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.genericity-similarity-rejection.failure",
+    "capability": "Genericity Similarity Rejection",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "failure",
+    "requirement": "Compare substantial concepts against common structural defaults and reject high template similarity or universal component grammar unless category-required structure is strongly differentiated.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.compiled-specification-handoff.normal",
+    "capability": "Compiled Specification Handoff",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "normal",
+    "requirement": "Require implementation to consume resolved artifact, feature, and component specifications without silently changing product behavior or quality targets for convenience.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.compiled-specification-handoff.ambiguous",
+    "capability": "Compiled Specification Handoff",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "ambiguous",
+    "requirement": "Require implementation to consume resolved artifact, feature, and component specifications without silently changing product behavior or quality targets for convenience.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.compiled-specification-handoff.failure",
+    "capability": "Compiled Specification Handoff",
+    "domain": "27. Artifact Contracts & Specification Compilation",
+    "case": "failure",
+    "requirement": "Require implementation to consume resolved artifact, feature, and component specifications without silently changing product behavior or quality targets for convenience.",
+    "expected": "trigger recovery and refuse a false pass"
+  }
+]

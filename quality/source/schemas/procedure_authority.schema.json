@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/procedure_authority.schema.json",
+  "title": "BizIQ Procedure Authority Record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authority_id",
+    "authority_class",
+    "verification_state"
+  ],
+  "properties": {
+    "authority_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority_class": {
+      "enum": [
+        "GENERAL_GUIDANCE",
+        "ORGANIZATION_DRAFT",
+        "VERIFIED_ORGANIZATION_PROCEDURE",
+        "EXTERNAL_AUTHORITATIVE_REQUIREMENT"
+      ]
+    },
+    "verification_state": {
+      "enum": [
+        "VERIFIED",
+        "UNVERIFIED",
+        "PARTIAL"
+      ]
+    },
+    "source_title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "issuer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_type": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "applicability_basis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "jurisdiction": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "effective_date": {
+      "type": "string",
+      "minLength": 1
+    },
+    "currentness_evidence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retrieved_or_supplied_date": {
+      "type": "string",
+      "minLength": 1
+    },
+    "applicable_sections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "interpretation_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "conflicts_or_superseded_sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "authority_class": {
+            "enum": [
+              "VERIFIED_ORGANIZATION_PROCEDURE",
+              "EXTERNAL_AUTHORITATIVE_REQUIREMENT"
+            ]
+          }
+        },
+        "required": [
+          "authority_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "verification_state": {
+            "const": "VERIFIED"
+          }
+        },
+        "required": [
+          "source_title",
+          "issuer",
+          "scope",
+          "applicability_basis",
+          "retrieved_or_supplied_date"
+        ],
+        "anyOf": [
+          {
+            "required": [
+              "version"
+            ]
+          },
+          {
+            "required": [
+              "effective_date"
+            ]
+          },
+          {
+            "required": [
+              "currentness_evidence"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

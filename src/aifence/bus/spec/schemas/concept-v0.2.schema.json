@@ -1,0 +1,68 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "canonical": {
+      "title": "Canonical",
+      "type": "string"
+    },
+    "code": {
+      "title": "Code",
+      "type": "string"
+    },
+    "codebook": {
+      "title": "Codebook",
+      "type": "string"
+    },
+    "confidence": {
+      "default": 1.0,
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "description": {
+      "default": "",
+      "title": "Description",
+      "type": "string"
+    },
+    "replacement_code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Replacement Code"
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "candidate",
+        "shadow",
+        "validated",
+        "active",
+        "cooling",
+        "deprecated",
+        "retired"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "version": {
+      "minimum": 1,
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "code",
+    "version",
+    "codebook",
+    "canonical"
+  ],
+  "title": "ProtocolConcept",
+  "type": "object"
+}

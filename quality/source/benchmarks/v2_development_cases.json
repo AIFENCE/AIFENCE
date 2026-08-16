@@ -1,0 +1,970 @@
+[
+  {
+    "id": "v2.dev.001",
+    "category": "websites",
+    "title": "Local landscaping company",
+    "prompt": "Create a production website for a residential landscaping company with only the business name and service category supplied.",
+    "artifact_contracts": [
+      "local-service-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.002",
+    "category": "websites",
+    "title": "Boutique architecture studio",
+    "prompt": "Create a premium public website for a boutique architecture studio with no supplied project claims.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.003",
+    "category": "websites",
+    "title": "Independent restaurant",
+    "prompt": "Create a production restaurant website focused on menu discovery, reservations inquiry, and mobile visitors.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.004",
+    "category": "websites",
+    "title": "B2B industrial services",
+    "prompt": "Create a production B2B industrial services website for technical buyers with a long sales cycle.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.005",
+    "category": "websites",
+    "title": "Nonprofit campaign",
+    "prompt": "Create a public nonprofit campaign website with donation-interest CTAs but no payment backend.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.006",
+    "category": "websites",
+    "title": "Creative agency",
+    "prompt": "Create a differentiated creative agency website without falling into portfolio-template conventions.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.007",
+    "category": "saas",
+    "title": "CRM pipeline",
+    "prompt": "Create a production front-end CRM pipeline workspace with accounts, opportunities, filters, search, and detail views.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.008",
+    "category": "saas",
+    "title": "Project management",
+    "prompt": "Create a production project management workspace with tasks, owners, due states, filters, and activity.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.009",
+    "category": "saas",
+    "title": "Support desk",
+    "prompt": "Create a production customer-support workspace with queues, ticket detail, assignment, status changes, and canned responses.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.010",
+    "category": "saas",
+    "title": "Developer platform",
+    "prompt": "Create a front-end developer platform console with projects, API-key placeholders, usage, logs, and settings without implying a real backend.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.011",
+    "category": "saas",
+    "title": "HR portal",
+    "prompt": "Create an employee HR portal with profile, time-off requests, documents, approvals, and manager states.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.012",
+    "category": "saas",
+    "title": "AI workflow app",
+    "prompt": "Create a front-end AI workflow application with run history, prompt/configuration controls, errors, and clearly labeled simulated execution.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.013",
+    "category": "dashboards",
+    "title": "Payments operations",
+    "prompt": "Create a production front-end payments operations dashboard with search, filters, statuses, amounts, detail, and sample data.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.014",
+    "category": "dashboards",
+    "title": "Revenue analytics",
+    "prompt": "Create a revenue analytics dashboard with period comparison, segmentation, trend analysis, and drill-down.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.015",
+    "category": "dashboards",
+    "title": "Healthcare admin",
+    "prompt": "Create a healthcare administration dashboard using sample data with queues, statuses, scheduling pressure, and privacy-conscious detail.",
+    "artifact_contracts": [
+      "dashboard",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.016",
+    "category": "dashboards",
+    "title": "Logistics control tower",
+    "prompt": "Create an operations dashboard for shipments, exceptions, ETA risk, filters, and incident drill-down.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.017",
+    "category": "dashboards",
+    "title": "Security posture",
+    "prompt": "Create a cybersecurity posture dashboard with findings, severity, ownership, remediation states, and evidence.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.018",
+    "category": "dashboards",
+    "title": "Executive KPI",
+    "prompt": "Create an executive KPI dashboard that avoids becoming a grid of decorative metric cards.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.019",
+    "category": "ecommerce",
+    "title": "Fashion PDP",
+    "prompt": "Create a premium fashion product detail page with variants, gallery, fit/care, price, availability semantics, and cart behavior.",
+    "artifact_contracts": [
+      "ecommerce-marketplace"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.020",
+    "category": "ecommerce",
+    "title": "Furniture catalog",
+    "prompt": "Create a furniture catalog with filters, sorting, product cards, comparison-friendly details, and mobile discovery.",
+    "artifact_contracts": [
+      "ecommerce-marketplace"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.021",
+    "category": "ecommerce",
+    "title": "Marketplace checkout",
+    "prompt": "Create a front-end marketplace checkout with cart, delivery/contact data, totals, validation, and simulated payment.",
+    "artifact_contracts": [
+      "ecommerce-marketplace"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.022",
+    "category": "ecommerce",
+    "title": "B2B catalog",
+    "prompt": "Create a B2B product catalog with technical attributes, quote request behavior, filtering, and no invented pricing.",
+    "artifact_contracts": [
+      "ecommerce-marketplace"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.023",
+    "category": "ecommerce",
+    "title": "Subscription commerce",
+    "prompt": "Create a subscription product selection and checkout UI with recurring-price clarity and front-end-only confirmation.",
+    "artifact_contracts": [
+      "ecommerce-marketplace"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.024",
+    "category": "ecommerce",
+    "title": "Secondhand marketplace",
+    "prompt": "Create a secondhand marketplace listing/detail experience with condition, seller metadata, saved items, and safe transaction semantics.",
+    "artifact_contracts": [
+      "ecommerce-marketplace"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.025",
+    "category": "regulated",
+    "title": "Dental clinic",
+    "prompt": "Create a production dental clinic website without inventing doctors, ratings, certifications, addresses, or treatment outcomes.",
+    "artifact_contracts": [
+      "marketing-website",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.026",
+    "category": "regulated",
+    "title": "Financial advisory",
+    "prompt": "Create a financial advisory website with educational content and consultation CTAs without fabricated performance or credentials.",
+    "artifact_contracts": [
+      "marketing-website",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.027",
+    "category": "regulated",
+    "title": "Law firm",
+    "prompt": "Create a law firm website without fabricated case outcomes, awards, attorneys, or promises of legal results.",
+    "artifact_contracts": [
+      "marketing-website",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.028",
+    "category": "regulated",
+    "title": "Insurance quote intake",
+    "prompt": "Create a front-end insurance quote-intake experience using sample inputs without implying binding coverage.",
+    "artifact_contracts": [
+      "saas-web-app",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.029",
+    "category": "regulated",
+    "title": "Telehealth intake",
+    "prompt": "Create a front-end telehealth intake flow that does not imply secure clinical transmission or diagnosis without a backend.",
+    "artifact_contracts": [
+      "saas-web-app",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.030",
+    "category": "regulated",
+    "title": "Mortgage application preview",
+    "prompt": "Create a front-end mortgage application preview with sample calculations and clear non-approval semantics.",
+    "artifact_contracts": [
+      "saas-web-app",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.031",
+    "category": "documents",
+    "title": "Investment memo",
+    "prompt": "Create an investment committee memo with executive summary, thesis, risks, evidence, decision points, and no invented sources.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.032",
+    "category": "documents",
+    "title": "Experiment report",
+    "prompt": "Create an experiment analysis report with hypothesis, method, results, interpretation, limitations, and recommendation.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.033",
+    "category": "documents",
+    "title": "Legal memo",
+    "prompt": "Create a structured legal memorandum from supplied facts and sources, keeping unknown law/facts explicit.",
+    "artifact_contracts": [
+      "document-report",
+      "regulated-public-interface"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.034",
+    "category": "documents",
+    "title": "Design report",
+    "prompt": "Create a design review report with findings, severity, evidence, implications, and prioritized recommendations.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.035",
+    "category": "documents",
+    "title": "Market trends report",
+    "prompt": "Create a market trends report that clearly separates sourced facts, inference, and recommendations.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.036",
+    "category": "documents",
+    "title": "System design doc",
+    "prompt": "Create a system design document with requirements, architecture, components, data flows, tradeoffs, risks, and acceptance criteria.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.037",
+    "category": "operations",
+    "title": "Field service board",
+    "prompt": "Create a field-service operations board with queue, assignment, status, evidence, exceptions, and mobile technician view.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.038",
+    "category": "operations",
+    "title": "Incident response",
+    "prompt": "Create an incident-response workflow with severity, ownership, timeline, evidence, escalation, recovery, and postmortem states.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.039",
+    "category": "operations",
+    "title": "Restaurant opening checklist",
+    "prompt": "Create a restaurant opening operations checklist with role ownership, blocking exceptions, evidence, and handoff.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.040",
+    "category": "operations",
+    "title": "Procurement approvals",
+    "prompt": "Create a procurement approval workflow with request details, thresholds, approvers, exceptions, audit trail, and rejection recovery.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.041",
+    "category": "operations",
+    "title": "Content publishing",
+    "prompt": "Create an editorial publishing workflow with draft/review/legal/approved/published states, owners, comments, and rollback.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.042",
+    "category": "operations",
+    "title": "Quality inspection",
+    "prompt": "Create a quality inspection workflow with sampling, findings, evidence, pass/fail, rework, escalation, and audit states.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.043",
+    "category": "edge-cases",
+    "title": "Unknown facts local site",
+    "prompt": "Create a public website when only company name and industry are known; do not ask for facts that can remain unknown.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.044",
+    "category": "edge-cases",
+    "title": "No render tooling",
+    "prompt": "Create a production visual interface in an environment where screenshot/render tooling is unavailable.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.045",
+    "category": "edge-cases",
+    "title": "Dense mobile table",
+    "prompt": "Create a dense operational data table that must remain usable on a 320px-wide viewport.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.046",
+    "category": "edge-cases",
+    "title": "Front-end-only auth",
+    "prompt": "Create front-end-only login/account screens without implying real authentication or persistence.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.047",
+    "category": "edge-cases",
+    "title": "Empty product",
+    "prompt": "Create a new SaaS account experience where there is no data yet, filters can also return no results, and permissions may block setup.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.dev.048",
+    "category": "edge-cases",
+    "title": "Genericity trap",
+    "prompt": "Create a premium product interface where the easiest implementation would be identical rounded cards for every feature; avoid that trap.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "completeness",
+      "truthfulness",
+      "usability",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "implementation_correctness",
+      "genericity_resistance"
+    ]
+  }
+]

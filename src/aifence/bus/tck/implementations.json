@@ -1,0 +1,20 @@
+{
+  "suite": "sage-tck/0.2",
+  "implementations": [
+    {
+      "id": "python",
+      "command": "python -m sage_plugin.conformance --json",
+      "required": true
+    },
+    {
+      "id": "javascript",
+      "command": "node integrations/openclaw/dist/conformance.js tck/vectors/core.json",
+      "required": true
+    },
+    {
+      "id": "go",
+      "command": "go run integrations/go/conformance.go tck/vectors/core.json",
+      "required": true
+    }
+  ]
+}

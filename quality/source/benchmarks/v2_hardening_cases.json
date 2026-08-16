@@ -1,0 +1,282 @@
+[
+  {
+    "id": "v2.hardening.001",
+    "category": "mobile",
+    "title": "Crowded SaaS toolbar",
+    "prompt": "Create a mobile SaaS workspace with search, three filters, date range, view switch, bulk action, and primary create action at 320px.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.002",
+    "category": "mobile",
+    "title": "Dense mobile table",
+    "prompt": "Create a payments table whose primary investigation task must work at 320px without page-level horizontal overflow.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.003",
+    "category": "mobile",
+    "title": "Sticky collision",
+    "prompt": "Create an app with sticky header, bottom navigation, drawer, and focused form fields without occlusion.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.004",
+    "category": "mobile",
+    "title": "Long labels RTL",
+    "prompt": "Create a mobile account workspace with long localized labels and RTL support.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.005",
+    "category": "documents",
+    "title": "Incident postmortem depth",
+    "prompt": "Create a postmortem with evidence-linked timeline, contributing factors, recovery, risks, owners, and verification.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.006",
+    "category": "documents",
+    "title": "PRD depth",
+    "prompt": "Create a PRD with user problems, scope, requirements, states, dependencies, risks, analytics, and acceptance traceability.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.007",
+    "category": "documents",
+    "title": "Investment memo depth",
+    "prompt": "Create an investment memo with thesis, evidence, alternatives, downside cases, risks, recommendation, and decision conditions.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.008",
+    "category": "documents",
+    "title": "System design craft",
+    "prompt": "Create a system design document with flows, diagrams, tradeoffs, failure modes, and acceptance criteria.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.009",
+    "category": "accessibility",
+    "title": "Keyboard approval",
+    "prompt": "Create an approval workflow whose critical path, modal, errors, and completion feedback work keyboard-only.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.010",
+    "category": "accessibility",
+    "title": "Dynamic filtering",
+    "prompt": "Create search/filter results with accessible status updates for loading, result count, no results, and errors.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.011",
+    "category": "accessibility",
+    "title": "Form recovery",
+    "prompt": "Create a mobile form with field errors, summary, focus management, and success feedback.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.012",
+    "category": "accessibility",
+    "title": "Zoom reflow",
+    "prompt": "Create a dense workspace that remains usable under narrow reflow and enlarged text.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.013",
+    "category": "completeness",
+    "title": "New account states",
+    "prompt": "Create a SaaS onboarding flow covering empty, loading, permissions, validation, partial setup, success, and retry.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.014",
+    "category": "completeness",
+    "title": "Ecommerce closure",
+    "prompt": "Create discovery\u2192PDP\u2192cart\u2192checkout with unavailable variant, invalid form, payment simulation, and confirmation.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.015",
+    "category": "completeness",
+    "title": "Operations exception",
+    "prompt": "Create a work queue with blocked evidence, escalation, approval, handoff, completion, and audit states.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.016",
+    "category": "completeness",
+    "title": "Regulated intake",
+    "prompt": "Create front-end-only regulated intake with privacy/truth boundaries, validation, errors, and non-submission confirmation.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.017",
+    "category": "feature-depth",
+    "title": "Search feature closure",
+    "prompt": "Create production search with query, filters, sorting, recent state, no results, errors, loading, keyboard behavior, and mobile transformation.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.018",
+    "category": "feature-depth",
+    "title": "Bulk actions",
+    "prompt": "Create bulk selection/actions with eligibility rules, mixed states, destructive confirmation, partial failure, and recovery.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.019",
+    "category": "feature-depth",
+    "title": "Offline workflow",
+    "prompt": "Create an operational workflow with stale/offline/queued action/conflict/retry semantics.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.hardening.020",
+    "category": "feature-depth",
+    "title": "Permissions",
+    "prompt": "Create a product feature with view/edit/admin permission differences and unavailable-state recovery.",
+    "evaluation_emphasis": [
+      "completeness",
+      "feature_depth",
+      "responsiveness",
+      "accessibility",
+      "visual_quality",
+      "genericity_resistance"
+    ]
+  }
+]

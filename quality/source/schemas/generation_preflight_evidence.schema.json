@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://biziq.local/schemas/generation_preflight_evidence.schema.json",
+  "title": "BizIQ Generation Preflight Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_id",
+    "artifact_path",
+    "provenance",
+    "javascript_present",
+    "syntax",
+    "runtime"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_path": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_sha256": {
+      "type": "string"
+    },
+    "provenance": {
+      "const": "direct"
+    },
+    "javascript_present": {
+      "type": "boolean"
+    },
+    "syntax": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "result",
+        "engine",
+        "scripts_checked",
+        "errors"
+      ],
+      "properties": {
+        "result": {
+          "enum": [
+            "PASS",
+            "FAIL"
+          ]
+        },
+        "engine": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scripts_checked": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "required",
+        "result",
+        "document_loaded",
+        "page_errors",
+        "console_errors",
+        "failed_required_resources"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "result": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NOT_REQUIRED"
+          ]
+        },
+        "document_loaded": {
+          "type": "boolean"
+        },
+        "page_errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "console_errors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "failed_required_resources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

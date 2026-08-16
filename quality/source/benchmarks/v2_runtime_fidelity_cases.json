@@ -1,0 +1,170 @@
+[
+  {
+    "id": "v2.runtime-fidelity.001.space-industry-production-website",
+    "category": "websites",
+    "title": "Space industry production website with local media",
+    "prompt": "Create a front-end-only premium production website for a space-industry company. Use distinctive local/generated visual assets where useful, maintain truthful proof boundaries, and finish desktop/mobile to production visual quality.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "genericity_resistance",
+      "truthfulness"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.002.payments-dashboard-high-fidelity-concept",
+    "category": "dashboards",
+    "title": "Payments dashboard high-fidelity concept",
+    "prompt": "Create a separate Stripe-like payments dashboard concept, front end only. Treat concept as implementation scope, not permission for lower visual fidelity; include dense transaction states, filters, detail, recovery, and polished responsive behavior.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "usability",
+      "feature_depth"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.003.local-service-asset-proof-boundary",
+    "category": "websites",
+    "title": "Local service asset and proof boundary",
+    "prompt": "Create a premium local landscaping website using generated imagery for atmosphere while clearly preventing generated visuals from being interpreted as completed work, staff, awards, testimonials, or verified service areas.",
+    "artifact_contracts": [
+      "local-service-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "truthfulness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.004.financial-regulated-dashboard",
+    "category": "regulated",
+    "title": "Financial-regulated dashboard legal routing",
+    "prompt": "Create a corporate cards and payments operations dashboard with sample data, role-aware controls, transaction review, dispute states, and explicit legal/security truth boundaries without inventing compliance claims.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "truthfulness",
+      "implementation_correctness",
+      "usability"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.005.high-fidelity-concept-mobile-closure",
+    "category": "saas",
+    "title": "High-fidelity concept mobile closure",
+    "prompt": "Create a high-fidelity SaaS workflow concept with search, filters, editable detail, save/error/retry states, and task-complete 320/390/768 behavior. Do not reduce finish because it is a concept.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "responsiveness",
+      "visual_quality",
+      "usability"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.006.low-fidelity-wireframe-boundary",
+    "category": "edge-cases",
+    "title": "Explicit low-fidelity boundary",
+    "prompt": "Create a low-fidelity dashboard wireframe focused only on information architecture and navigation. Keep truth/accessibility basics but do not spend scope on production visual finish.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "implementation_correctness",
+      "truthfulness",
+      "usability"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.007.dashboard-feature-depth-closure",
+    "category": "dashboards",
+    "title": "Dashboard feature-depth closure",
+    "prompt": "Create a production analytics dashboard where every P0/P1 feature has purpose, user job, information, actions, states, responsive transformation, accessibility, data semantics, and acceptance evidence; avoid metric-card-only depth.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "feature_depth",
+      "completeness",
+      "genericity_resistance"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.008.document-responsive-detail-closure",
+    "category": "documents",
+    "title": "Responsive decision report detail closure",
+    "prompt": "Create a production decision report with evidence tables, risk matrix, action owners, citations, long identifiers, and explicit unknowns that remains semantically intact and readable at 320/390/768 and desktop.",
+    "artifact_contracts": [
+      "document-report"
+    ],
+    "evaluation_emphasis": [
+      "responsiveness",
+      "truthfulness",
+      "visual_quality"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.009.finance-profile-plural-payments",
+    "category": "regulated",
+    "title": "Plural payments risk trigger",
+    "prompt": "Create a payments infrastructure admin portal for merchant operations with sample transaction data, permissions, disputes, billing states, and compliance-sensitive copy. Treat payments as a financial-regulated risk trigger.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "truthfulness",
+      "implementation_correctness",
+      "feature_depth"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.010.visual-finish-after-repair",
+    "category": "websites",
+    "title": "Visual finish after critic repair",
+    "prompt": "Create a premium B2B technology website, run a first-render critique, repair hierarchy/spacing/media/state issues, and preserve structural differentiation when applying the final finish pass.",
+    "artifact_contracts": [
+      "marketing-website"
+    ],
+    "evaluation_emphasis": [
+      "visual_quality",
+      "genericity_resistance",
+      "completeness"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.011.quality-measurement-floor-capable",
+    "category": "edge-cases",
+    "title": "Floor-capable quality measurement",
+    "prompt": "Create a dense front-end workflow and provide floor-capable evidence for usability, responsive task completion, accessibility, truth, and implementation correctness without claiming unsupported numerical PASS states.",
+    "artifact_contracts": [
+      "saas-web-app"
+    ],
+    "evaluation_emphasis": [
+      "usability",
+      "accessibility",
+      "implementation_correctness"
+    ]
+  },
+  {
+    "id": "v2.runtime-fidelity.012.initialization-inline-execution",
+    "category": "edge-cases",
+    "title": "Initialization with inline creation request",
+    "prompt": "Initialize BizIQ and in the same request create a production front-end-only premium dashboard concept for a financial software company. Do not stop after initialization; route and execute the creation immediately.",
+    "artifact_contracts": [
+      "dashboard"
+    ],
+    "evaluation_emphasis": [
+      "implementation_correctness",
+      "visual_quality",
+      "truthfulness"
+    ]
+  }
+]

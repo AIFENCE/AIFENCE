@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+build/
+dist/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local data / secrets
+.env
+*.db
+*.db-wal
+*.db-shm
+/data/
+/secrets/
+
+# Node (quality subsystem)
+node_modules/
+quality/dist/
+
+# OS
+.DS_Store
+Thumbs.db

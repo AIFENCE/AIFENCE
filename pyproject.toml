@@ -1,0 +1,119 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aifence"
+version = "0.1.0"
+description = "AIFENCE: one governed fence around AI agents — quality gating, security enforcement, and semantic transport in a single control plane."
+readme = "README.md"
+requires-python = ">=3.12"
+license = "AGPL-3.0-or-later"
+authors = [{ name = "NeuralBinary" }]
+maintainers = [{ name = "NeuralBinary" }, { name = "ro0ti" }]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Web Environment",
+  "Framework :: FastAPI",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Security",
+]
+
+# Reconciled union of the SAGE (bus) and AGENTDANCE (guard) runtime stacks.
+# Versions are pinned to the intersection both projects already agreed on;
+# only uvicorn moved up to satisfy SAGE's floor.
+dependencies = [
+  "fastapi>=0.139.2,<1",
+  "uvicorn[standard]>=0.52,<1",
+  "sqlalchemy>=2.0.51,<2.1",
+  "alembic>=1.18.5,<2",
+  "pydantic>=2.13.4,<3",
+  "pydantic-settings>=2.14.2,<3",
+  "cryptography>=49,<50",
+  "PyJWT>=2.13.0,<3",
+  "httpx>=0.28.1,<1",
+  "python-multipart>=0.0.32,<1",
+  "msgpack>=1.2.1,<2",
+  "prometheus-client>=0.25,<1",
+]
+
+[project.optional-dependencies]
+postgres = ["psycopg[binary]>=3.3.4,<4"]
+s3 = ["boto3>=1.43.18,<2"]
+mcp = ["mcp>=1.9,<2"]
+bench = ["tiktoken>=0.13,<1"]
+otel = [
+  "opentelemetry-api>=1.44,<2",
+  "opentelemetry-sdk>=1.44,<2",
+  "opentelemetry-exporter-otlp-proto-http>=1.44,<2",
+  "opentelemetry-instrumentation-fastapi>=0.65b0",
+  "opentelemetry-instrumentation-sqlalchemy>=0.65b0",
+]
+dev = [
+  "pytest>=9.1.1,<10",
+  "pytest-cov>=7,<8",
+  "ruff>=0.15.22,<1",
+  "mypy>=2.3,<3",
+]
+
+[project.urls]
+Homepage = "https://github.com/NeuralBinary/AIFENCE"
+Repository = "https://github.com/NeuralBinary/AIFENCE"
+Issues = "https://github.com/NeuralBinary/AIFENCE/issues"
+
+[project.scripts]
+aifence-api = "aifence.main:run"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+aifence = ["py.typed"]
+"aifence.guard" = ["*.json"]
+"aifence.bus" = ["spec/*", "spec/schemas/*.json", "tck/*.json", "tck/vectors/*.json"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["B008", "E501"]
+
+# The vendored subsystem ports (guard from AGENTDANCE, bus from SAGE) are under
+# the unified gate, but keep their upstream compact-statement style; those few
+# stylistic rules are tolerated for those paths rather than reformatting ~27k
+# LOC of proven code.
+[tool.ruff.lint.per-file-ignores]
+"src/aifence/guard/**" = ["E701", "E702", "B904"]
+"src/aifence/bus/**" = ["E701", "E702", "B904"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_ignores = true
+mypy_path = "src"
+
+# Vendored subsystem ports are not yet under the unified strict-typing gate
+# (tracked follow-up); their own upstream configs enforced strict typing.
+[[tool.mypy.overrides]]
+module = ["aifence.guard.*", "aifence.bus.*"]
+ignore_errors = true
+
+# Third-party modules without type stubs, pulled in by the vendored subsystems.
+[[tool.mypy.overrides]]
+module = ["boto3.*", "jwt.*", "msgpack.*", "mcp.*"]
+ignore_missing_imports = true
+
+[tool.coverage.run]
+source = ["aifence"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

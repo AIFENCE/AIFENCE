@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/component_spec.schema.json",
+  "title": "BizIQ Component Specification",
+  "type": "object",
+  "required": [
+    "component_id",
+    "role",
+    "source_feature_ids",
+    "content_anatomy",
+    "information_priority",
+    "states",
+    "responsive_adaptation",
+    "accessibility",
+    "acceptance_criteria"
+  ],
+  "properties": {
+    "component_id": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string"
+    },
+    "source_feature_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "content_anatomy": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "information_priority": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "typography_roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "iconography": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metadata": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "actions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      }
+    },
+    "surface_elevation": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "density": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "states": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "boolean",
+          "null"
+        ]
+      }
+    },
+    "truncation_wrapping": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "overflow": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "responsive_adaptation": {
+      "type": "string"
+    },
+    "keyboard_behavior": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "accessibility": {
+      "type": "string"
+    },
+    "motion_feedback": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "invalid_combinations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "variants": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "evidence_plan": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

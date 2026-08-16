@@ -1,0 +1,149 @@
+syntax = "proto3";
+
+package sage.v02;
+
+import "google/protobuf/struct.proto";
+
+// Optional transport binding for SAGE 0.2. Canonical SAGE digests are defined
+// over canonical MessagePack, not protobuf serialization.
+
+message Provenance {
+  repeated string source_ids = 1;
+  optional string observed_at = 2;
+  optional double confidence = 3;
+  optional string derivation = 4;
+  optional string producer = 5;
+}
+
+message Atom {
+  optional string code = 1;
+  optional uint32 code_version = 2;
+  google.protobuf.Value literal = 3;
+  bool has_literal = 4;
+  optional string path = 5;
+  optional double confidence = 6;
+  optional string epistemic_type = 7;
+}
+
+message TraceContext {
+  string traceparent = 1;
+  optional string tracestate = 2;
+}
+
+message Packet {
+  uint32 wire_version = 1; // MUST be 2.
+  string codebook = 2;
+  string act = 3;
+  optional string packet_id = 4;
+  optional string sender = 5;
+  optional string receiver = 6;
+  repeated Atom atoms = 7;
+  repeated string refs = 8;
+  optional string base_state = 9;
+  google.protobuf.Value delta = 10;
+  Provenance provenance = 11;
+  google.protobuf.Struct meta = 12;
+  google.protobuf.Struct signature = 13;
+  TraceContext trace = 14;
+}
+
+message Ref {
+  string ref = 1;
+  string media_type = 2;
+  uint64 byte_size = 3;
+  string digest = 4;
+  string tier = 5;
+  optional string expires_at = 6;
+  Provenance provenance = 7;
+}
+
+message State {
+  string state = 1;
+  uint64 revision = 2;
+  optional string parent = 3;
+  string value_digest = 4;
+  Provenance provenance = 5;
+}
+
+message DeltaOp {
+  string op = 1; // add | remove | replace
+  string path = 2;
+  google.protobuf.Value value = 3;
+}
+
+message Delta {
+  string base = 1;
+  optional string target = 2;
+  repeated DeltaOp ops = 3;
+}
+
+message Concept {
+  string code = 1;
+  uint32 version = 2;
+  string codebook = 3;
+  string canonical = 4;
+  string description = 5;
+  string status = 6;
+  optional string replacement_code = 7;
+  double confidence = 8;
+}
+
+
+message Pattern {
+  string pattern_id = 1;
+  string concept_code = 2;
+  uint32 concept_version = 3;
+  uint32 version = 4;
+  string codebook = 5;
+  string signature = 6;
+  string canonical = 7;
+  repeated google.protobuf.Struct composition = 8;
+  google.protobuf.Struct relation_structure = 9;
+  string status = 10;
+  double confidence = 11;
+  double semantic_variance = 12;
+  double utility_score = 13;
+  double ambiguity_score = 14;
+  double interoperability_score = 15;
+  uint64 use_count = 16;
+  repeated string children = 17;
+  double calibrated_reliability = 18;
+  string trust_scope = 19;
+  uint32 source_diversity = 20;
+  double dominant_source_share = 21;
+  double trust_score = 22;
+}
+
+message Capabilities {
+  repeated string protocol_versions = 1; // MUST contain sage/0.2.
+  repeated string codebooks = 2;
+  uint64 max_packet_bytes = 3;
+  bool supports_refs = 4;
+  bool supports_deltas = 5;
+  repeated string latent_spaces = 6;
+  repeated string fallback_modes = 7;
+  bool supports_patterns = 8;
+}
+
+message Capability {
+  string protocol = 1; // MUST be sage/0.2.
+  Capabilities capabilities = 2;
+  map<string, string> codebook_fingerprints = 3;
+}
+
+message Ack {
+  string message_id = 1;
+  string packet_id = 2;
+  string receiver = 3;
+  string workspace = 4;
+  string status = 5; // acked | nacked
+  string observed_at = 6;
+}
+
+message Error {
+  string code = 1;
+  string message = 2;
+  bool retryable = 3;
+  optional string packet_id = 4;
+  google.protobuf.Struct details = 5;
+}

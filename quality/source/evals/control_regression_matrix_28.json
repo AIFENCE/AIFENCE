@@ -1,0 +1,242 @@
+[
+  {
+    "id": "eval.iterative-render-critique-loop.normal",
+    "capability": "Iterative Render Critique Loop",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "normal",
+    "requirement": "After the first substantial implementation render, run adversarial critique, repair material failures, re-render affected views/states, and repeat until required gates/floors pass or evidence is genuinely unavailable.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.iterative-render-critique-loop.ambiguous",
+    "capability": "Iterative Render Critique Loop",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "ambiguous",
+    "requirement": "After the first substantial implementation render, run adversarial critique, repair material failures, re-render affected views/states, and repeat until required gates/floors pass or evidence is genuinely unavailable.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.iterative-render-critique-loop.failure",
+    "capability": "Iterative Render Critique Loop",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "failure",
+    "requirement": "After the first substantial implementation render, run adversarial critique, repair material failures, re-render affected views/states, and repeat until required gates/floors pass or evidence is genuinely unavailable.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.visual-quality-critic.normal",
+    "capability": "Visual Quality Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "normal",
+    "requirement": "Evaluate rendered hierarchy, composition, typography, media, spacing, surfaces, component finish, iconography, density, transitions, and visual defects with an adversarial rejection mindset.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.visual-quality-critic.ambiguous",
+    "capability": "Visual Quality Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "ambiguous",
+    "requirement": "Evaluate rendered hierarchy, composition, typography, media, spacing, surfaces, component finish, iconography, density, transitions, and visual defects with an adversarial rejection mindset.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.visual-quality-critic.failure",
+    "capability": "Visual Quality Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "failure",
+    "requirement": "Evaluate rendered hierarchy, composition, typography, media, spacing, surfaces, component finish, iconography, density, transitions, and visual defects with an adversarial rejection mindset.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.feature-depth-critic.normal",
+    "capability": "Feature Depth Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "normal",
+    "requirement": "Attempt to find shallow feature definitions, missing information/actions/states, dead ends, unclear recovery, weak user-job support, and implementation drift from compiled feature acceptance criteria.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.feature-depth-critic.ambiguous",
+    "capability": "Feature Depth Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "ambiguous",
+    "requirement": "Attempt to find shallow feature definitions, missing information/actions/states, dead ends, unclear recovery, weak user-job support, and implementation drift from compiled feature acceptance criteria.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.feature-depth-critic.failure",
+    "capability": "Feature Depth Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "failure",
+    "requirement": "Attempt to find shallow feature definitions, missing information/actions/states, dead ends, unclear recovery, weak user-job support, and implementation drift from compiled feature acceptance criteria.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.accessibility-responsive-critic.normal",
+    "capability": "Accessibility Responsive Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "normal",
+    "requirement": "Attempt to find accessibility, keyboard, focus, contrast, target-size, zoom/reflow, table/mobile transformation, density, and desktop-stacking failures in critical paths.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.accessibility-responsive-critic.ambiguous",
+    "capability": "Accessibility Responsive Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "ambiguous",
+    "requirement": "Attempt to find accessibility, keyboard, focus, contrast, target-size, zoom/reflow, table/mobile transformation, density, and desktop-stacking failures in critical paths.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.accessibility-responsive-critic.failure",
+    "capability": "Accessibility Responsive Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "failure",
+    "requirement": "Attempt to find accessibility, keyboard, focus, contrast, target-size, zoom/reflow, table/mobile transformation, density, and desktop-stacking failures in critical paths.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.truth-implementation-critic.normal",
+    "capability": "Truth Implementation Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "normal",
+    "requirement": "Attempt to find fabricated claims, unlabeled sample data, fake backend semantics, dead controls, broken paths/assets, runtime errors, and mismatches between promised and implemented behavior.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.truth-implementation-critic.ambiguous",
+    "capability": "Truth Implementation Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "ambiguous",
+    "requirement": "Attempt to find fabricated claims, unlabeled sample data, fake backend semantics, dead controls, broken paths/assets, runtime errors, and mismatches between promised and implemented behavior.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.truth-implementation-critic.failure",
+    "capability": "Truth Implementation Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "failure",
+    "requirement": "Attempt to find fabricated claims, unlabeled sample data, fake backend semantics, dead controls, broken paths/assets, runtime errors, and mismatches between promised and implemented behavior.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.genericity-critic.normal",
+    "capability": "Genericity Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "normal",
+    "requirement": "Attempt to disprove project specificity from the rendered artifact by identifying common template sequences, universal card grammar, interchangeable sections, and weak domain/task differentiation.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.genericity-critic.ambiguous",
+    "capability": "Genericity Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "ambiguous",
+    "requirement": "Attempt to disprove project specificity from the rendered artifact by identifying common template sequences, universal card grammar, interchangeable sections, and weak domain/task differentiation.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.genericity-critic.failure",
+    "capability": "Genericity Critic",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "failure",
+    "requirement": "Attempt to disprove project specificity from the rendered artifact by identifying common template sequences, universal card grammar, interchangeable sections, and weak domain/task differentiation.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.repair-plan-prioritization.normal",
+    "capability": "Repair Plan Prioritization",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "normal",
+    "requirement": "Consolidate critic findings into a severity- and dependency-aware repair plan that fixes truth/safety/task correctness before genericity, component craft, and decorative polish.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.repair-plan-prioritization.ambiguous",
+    "capability": "Repair Plan Prioritization",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "ambiguous",
+    "requirement": "Consolidate critic findings into a severity- and dependency-aware repair plan that fixes truth/safety/task correctness before genericity, component craft, and decorative polish.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.repair-plan-prioritization.failure",
+    "capability": "Repair Plan Prioritization",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "failure",
+    "requirement": "Consolidate critic findings into a severity- and dependency-aware repair plan that fixes truth/safety/task correctness before genericity, component craft, and decorative polish.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.category-floor-enforcement.normal",
+    "capability": "Category Floor Enforcement",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "normal",
+    "requirement": "Block production completion when any applicable artifact-specific dimension floor fails even if the aggregate score is high; never average away truth, accessibility, responsiveness, feature-depth, or implementation failures.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.category-floor-enforcement.ambiguous",
+    "capability": "Category Floor Enforcement",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "ambiguous",
+    "requirement": "Block production completion when any applicable artifact-specific dimension floor fails even if the aggregate score is high; never average away truth, accessibility, responsiveness, feature-depth, or implementation failures.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.category-floor-enforcement.failure",
+    "capability": "Category Floor Enforcement",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "failure",
+    "requirement": "Block production completion when any applicable artifact-specific dimension floor fails even if the aggregate score is high; never average away truth, accessibility, responsiveness, feature-depth, or implementation failures.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.blind-benchmark-protocol.normal",
+    "capability": "Blind Benchmark Protocol",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "normal",
+    "requirement": "Evaluate BizIQ efficacy with matched control/BizIQ conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.blind-benchmark-protocol.ambiguous",
+    "capability": "Blind Benchmark Protocol",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "ambiguous",
+    "requirement": "Evaluate BizIQ efficacy with matched control/BizIQ conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.blind-benchmark-protocol.failure",
+    "capability": "Blind Benchmark Protocol",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "failure",
+    "requirement": "Evaluate BizIQ efficacy with matched control/BizIQ conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.holdout-regression-governance.normal",
+    "capability": "Holdout Regression Governance",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "normal",
+    "requirement": "Maintain a private external holdout, rotate it after major improvements, compare category/dimension regressions, and prevent public-benchmark overfitting or single-judge optimization.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.holdout-regression-governance.ambiguous",
+    "capability": "Holdout Regression Governance",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "ambiguous",
+    "requirement": "Maintain a private external holdout, rotate it after major improvements, compare category/dimension regressions, and prevent public-benchmark overfitting or single-judge optimization.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.holdout-regression-governance.failure",
+    "capability": "Holdout Regression Governance",
+    "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
+    "case": "failure",
+    "requirement": "Maintain a private external holdout, rotate it after major improvements, compare category/dimension regressions, and prevent public-benchmark overfitting or single-judge optimization.",
+    "expected": "trigger recovery and refuse a false pass"
+  }
+]

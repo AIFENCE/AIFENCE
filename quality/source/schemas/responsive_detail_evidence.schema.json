@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BizIQ Responsive Detail Evidence",
+  "type": "object",
+  "required": [
+    "viewport",
+    "structure",
+    "critical_context_preserved",
+    "result"
+  ],
+  "properties": {
+    "viewport": {
+      "type": "integer"
+    },
+    "structure": {
+      "type": "string"
+    },
+    "critical_context_preserved": {
+      "type": "boolean"
+    },
+    "overflow_behavior": {
+      "type": "string"
+    },
+    "wrap_truncation": {
+      "type": "string"
+    },
+    "collision": {
+      "type": "boolean"
+    },
+    "keyboard_focus_visible": {
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "transformation": {
+      "type": "string"
+    },
+    "result": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "UNVERIFIED"
+      ]
+    }
+  }
+}

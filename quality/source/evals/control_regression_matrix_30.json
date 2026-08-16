@@ -1,0 +1,242 @@
+[
+  {
+    "id": "eval.primary-task-friction-closure.normal",
+    "capability": "Primary Task Friction Closure",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "normal",
+    "requirement": "Require P0/P1 task paths to expose orientation, necessary decisions, primary action, feedback, and recovery with minimum justified friction.",
+    "expected": "produce direct evidence-backed closure without adding unnecessary interaction or decoration"
+  },
+  {
+    "id": "eval.primary-task-friction-closure.ambiguous",
+    "capability": "Primary Task Friction Closure",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "ambiguous",
+    "requirement": "Require P0/P1 task paths to expose orientation, necessary decisions, primary action, feedback, and recovery with minimum justified friction.",
+    "expected": "preserve uncertainty/provenance and task priority while resolving only what evidence supports"
+  },
+  {
+    "id": "eval.primary-task-friction-closure.failure",
+    "capability": "Primary Task Friction Closure",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "failure",
+    "requirement": "Require P0/P1 task paths to expose orientation, necessary decisions, primary action, feedback, and recovery with minimum justified friction.",
+    "expected": "enter recovery, identify whether artifact or evaluator caused the failure, and block false completion"
+  },
+  {
+    "id": "eval.action-hierarchy-progressive-disclosure.normal",
+    "capability": "Action Hierarchy & Progressive Disclosure",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "normal",
+    "requirement": "Require clear primary/secondary/contextual/destructive action hierarchy and progressive disclosure that never hides the only P0 route.",
+    "expected": "produce direct evidence-backed closure without adding unnecessary interaction or decoration"
+  },
+  {
+    "id": "eval.action-hierarchy-progressive-disclosure.ambiguous",
+    "capability": "Action Hierarchy & Progressive Disclosure",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "ambiguous",
+    "requirement": "Require clear primary/secondary/contextual/destructive action hierarchy and progressive disclosure that never hides the only P0 route.",
+    "expected": "preserve uncertainty/provenance and task priority while resolving only what evidence supports"
+  },
+  {
+    "id": "eval.action-hierarchy-progressive-disclosure.failure",
+    "capability": "Action Hierarchy & Progressive Disclosure",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "failure",
+    "requirement": "Require clear primary/secondary/contextual/destructive action hierarchy and progressive disclosure that never hides the only P0 route.",
+    "expected": "enter recovery, identify whether artifact or evaluator caused the failure, and block false completion"
+  },
+  {
+    "id": "eval.input-decision-efficiency.normal",
+    "capability": "Input & Decision Efficiency",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "normal",
+    "requirement": "Require forms, filters, selectors, and dense decision controls to minimize memory load, re-entry, hidden prerequisites, and avoidable state loss.",
+    "expected": "produce direct evidence-backed closure without adding unnecessary interaction or decoration"
+  },
+  {
+    "id": "eval.input-decision-efficiency.ambiguous",
+    "capability": "Input & Decision Efficiency",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "ambiguous",
+    "requirement": "Require forms, filters, selectors, and dense decision controls to minimize memory load, re-entry, hidden prerequisites, and avoidable state loss.",
+    "expected": "preserve uncertainty/provenance and task priority while resolving only what evidence supports"
+  },
+  {
+    "id": "eval.input-decision-efficiency.failure",
+    "capability": "Input & Decision Efficiency",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "failure",
+    "requirement": "Require forms, filters, selectors, and dense decision controls to minimize memory load, re-entry, hidden prerequisites, and avoidable state loss.",
+    "expected": "enter recovery, identify whether artifact or evaluator caused the failure, and block false completion"
+  },
+  {
+    "id": "eval.feedback-recovery-legibility.normal",
+    "capability": "Feedback & Recovery Legibility",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "normal",
+    "requirement": "Require consequential actions to expose pending/success/error state and preserve a clear recovery or continuation path.",
+    "expected": "produce direct evidence-backed closure without adding unnecessary interaction or decoration"
+  },
+  {
+    "id": "eval.feedback-recovery-legibility.ambiguous",
+    "capability": "Feedback & Recovery Legibility",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "ambiguous",
+    "requirement": "Require consequential actions to expose pending/success/error state and preserve a clear recovery or continuation path.",
+    "expected": "preserve uncertainty/provenance and task priority while resolving only what evidence supports"
+  },
+  {
+    "id": "eval.feedback-recovery-legibility.failure",
+    "capability": "Feedback & Recovery Legibility",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "failure",
+    "requirement": "Require consequential actions to expose pending/success/error state and preserve a clear recovery or continuation path.",
+    "expected": "enter recovery, identify whether artifact or evaluator caused the failure, and block false completion"
+  },
+  {
+    "id": "eval.perceptual-hierarchy-finish.normal",
+    "capability": "Perceptual Hierarchy Finish",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "normal",
+    "requirement": "Require rendered critical views to demonstrate intentional perceptual hierarchy and remove equal-weight or visibly unfinished regions.",
+    "expected": "produce direct evidence-backed closure without adding unnecessary interaction or decoration"
+  },
+  {
+    "id": "eval.perceptual-hierarchy-finish.ambiguous",
+    "capability": "Perceptual Hierarchy Finish",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "ambiguous",
+    "requirement": "Require rendered critical views to demonstrate intentional perceptual hierarchy and remove equal-weight or visibly unfinished regions.",
+    "expected": "preserve uncertainty/provenance and task priority while resolving only what evidence supports"
+  },
+  {
+    "id": "eval.perceptual-hierarchy-finish.failure",
+    "capability": "Perceptual Hierarchy Finish",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "failure",
+    "requirement": "Require rendered critical views to demonstrate intentional perceptual hierarchy and remove equal-weight or visibly unfinished regions.",
+    "expected": "enter recovery, identify whether artifact or evaluator caused the failure, and block false completion"
+  },
+  {
+    "id": "eval.typographic-spatial-surface-calibration.normal",
+    "capability": "Typographic Spatial Surface Calibration",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "normal",
+    "requirement": "Require final optical calibration of typography, spacing, surfaces, icon/control alignment, media treatment, and cross-viewport rhythm.",
+    "expected": "produce direct evidence-backed closure without adding unnecessary interaction or decoration"
+  },
+  {
+    "id": "eval.typographic-spatial-surface-calibration.ambiguous",
+    "capability": "Typographic Spatial Surface Calibration",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "ambiguous",
+    "requirement": "Require final optical calibration of typography, spacing, surfaces, icon/control alignment, media treatment, and cross-viewport rhythm.",
+    "expected": "preserve uncertainty/provenance and task priority while resolving only what evidence supports"
+  },
+  {
+    "id": "eval.typographic-spatial-surface-calibration.failure",
+    "capability": "Typographic Spatial Surface Calibration",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "failure",
+    "requirement": "Require final optical calibration of typography, spacing, surfaces, icon/control alignment, media treatment, and cross-viewport rhythm.",
+    "expected": "enter recovery, identify whether artifact or evaluator caused the failure, and block false completion"
+  },
+  {
+    "id": "eval.document-truth-boundary-visibility.normal",
+    "capability": "Document Truth Boundary Visibility",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "normal",
+    "requirement": "Require documents to visibly distinguish supplied or verified evidence from assumptions, unknowns, interpretations, and recommendations where ambiguity is material.",
+    "expected": "produce direct evidence-backed closure without adding unnecessary interaction or decoration"
+  },
+  {
+    "id": "eval.document-truth-boundary-visibility.ambiguous",
+    "capability": "Document Truth Boundary Visibility",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "ambiguous",
+    "requirement": "Require documents to visibly distinguish supplied or verified evidence from assumptions, unknowns, interpretations, and recommendations where ambiguity is material.",
+    "expected": "preserve uncertainty/provenance and task priority while resolving only what evidence supports"
+  },
+  {
+    "id": "eval.document-truth-boundary-visibility.failure",
+    "capability": "Document Truth Boundary Visibility",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "failure",
+    "requirement": "Require documents to visibly distinguish supplied or verified evidence from assumptions, unknowns, interpretations, and recommendations where ambiguity is material.",
+    "expected": "enter recovery, identify whether artifact or evaluator caused the failure, and block false completion"
+  },
+  {
+    "id": "eval.evidence-assumption-sample-provenance.normal",
+    "capability": "Evidence Assumption Sample Provenance",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "normal",
+    "requirement": "Require sample/simulated/generated content and unresolved evidence to carry truthful point-of-use provenance instead of relying on distant disclaimers.",
+    "expected": "produce direct evidence-backed closure without adding unnecessary interaction or decoration"
+  },
+  {
+    "id": "eval.evidence-assumption-sample-provenance.ambiguous",
+    "capability": "Evidence Assumption Sample Provenance",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "ambiguous",
+    "requirement": "Require sample/simulated/generated content and unresolved evidence to carry truthful point-of-use provenance instead of relying on distant disclaimers.",
+    "expected": "preserve uncertainty/provenance and task priority while resolving only what evidence supports"
+  },
+  {
+    "id": "eval.evidence-assumption-sample-provenance.failure",
+    "capability": "Evidence Assumption Sample Provenance",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "failure",
+    "requirement": "Require sample/simulated/generated content and unresolved evidence to carry truthful point-of-use provenance instead of relying on distant disclaimers.",
+    "expected": "enter recovery, identify whether artifact or evaluator caused the failure, and block false completion"
+  },
+  {
+    "id": "eval.document-operations-responsive-detail.normal",
+    "capability": "Document & Operations Responsive Detail",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "normal",
+    "requirement": "Require task-level 320/390/768/desktop evidence for dense document and operations structures, long-content stress, and sticky/overlay collisions.",
+    "expected": "produce direct evidence-backed closure without adding unnecessary interaction or decoration"
+  },
+  {
+    "id": "eval.document-operations-responsive-detail.ambiguous",
+    "capability": "Document & Operations Responsive Detail",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "ambiguous",
+    "requirement": "Require task-level 320/390/768/desktop evidence for dense document and operations structures, long-content stress, and sticky/overlay collisions.",
+    "expected": "preserve uncertainty/provenance and task priority while resolving only what evidence supports"
+  },
+  {
+    "id": "eval.document-operations-responsive-detail.failure",
+    "capability": "Document & Operations Responsive Detail",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "failure",
+    "requirement": "Require task-level 320/390/768/desktop evidence for dense document and operations structures, long-content stress, and sticky/overlay collisions.",
+    "expected": "enter recovery, identify whether artifact or evaluator caused the failure, and block false completion"
+  },
+  {
+    "id": "eval.quality-floor-measurement-calibration.normal",
+    "capability": "Quality Floor Measurement Calibration",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "normal",
+    "requirement": "Require frozen longitudinal scoring and floor-capable acceptance evidence to remain separate, with scorer ceilings detected before interpreting floor failures.",
+    "expected": "produce direct evidence-backed closure without adding unnecessary interaction or decoration"
+  },
+  {
+    "id": "eval.quality-floor-measurement-calibration.ambiguous",
+    "capability": "Quality Floor Measurement Calibration",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "ambiguous",
+    "requirement": "Require frozen longitudinal scoring and floor-capable acceptance evidence to remain separate, with scorer ceilings detected before interpreting floor failures.",
+    "expected": "preserve uncertainty/provenance and task priority while resolving only what evidence supports"
+  },
+  {
+    "id": "eval.quality-floor-measurement-calibration.failure",
+    "capability": "Quality Floor Measurement Calibration",
+    "domain": "30. Usability, Visual Finish, Truth & Quality Closure",
+    "case": "failure",
+    "requirement": "Require frozen longitudinal scoring and floor-capable acceptance evidence to remain separate, with scorer ceilings detected before interpreting floor failures.",
+    "expected": "enter recovery, identify whether artifact or evaluator caused the failure, and block false completion"
+  }
+]

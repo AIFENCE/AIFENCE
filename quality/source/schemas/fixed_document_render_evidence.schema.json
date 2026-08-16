@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BizIQ Fixed Document Render and Accessibility Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_id",
+    "provenance",
+    "rendered_pages",
+    "text_geometry",
+    "reading_order",
+    "accessibility",
+    "status"
+  ],
+  "properties": {
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provenance": {
+      "const": "direct"
+    },
+    "rendered_pages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "page",
+          "width_px",
+          "height_px",
+          "clipping",
+          "overlap",
+          "readable"
+        ],
+        "properties": {
+          "page": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "width_px": {
+            "type": "integer",
+            "minimum": 100
+          },
+          "height_px": {
+            "type": "integer",
+            "minimum": 100
+          },
+          "clipping": {
+            "type": "boolean"
+          },
+          "overlap": {
+            "type": "boolean"
+          },
+          "readable": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "text_geometry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "word_count",
+        "overlap_pairs",
+        "edge_clipped_words"
+      ],
+      "properties": {
+        "word_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "overlap_pairs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "edge_clipped_words": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "reading_order": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "direct_check",
+        "logical",
+        "table_order_preserved"
+      ],
+      "properties": {
+        "direct_check": {
+          "const": true
+        },
+        "logical": {
+          "type": "boolean"
+        },
+        "table_order_preserved": {
+          "type": "boolean"
+        }
+      }
+    },
+    "accessibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "headings_or_structure",
+        "links_navigable",
+        "contrast_readable",
+        "zoom_or_reflow_checked",
+        "alt_text_or_not_applicable"
+      ],
+      "properties": {
+        "headings_or_structure": {
+          "type": "boolean"
+        },
+        "links_navigable": {
+          "type": "boolean"
+        },
+        "contrast_readable": {
+          "type": "boolean"
+        },
+        "zoom_or_reflow_checked": {
+          "type": "boolean"
+        },
+        "alt_text_or_not_applicable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "status": {
+      "const": "PASS"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"biziq://schemas/benchmark_run.schema.json",
+  "title":"BizIQ Benchmark Run State",
+  "type":"object",
+  "required":["run_id","stage","cases","conditions"],
+  "properties":{
+    "run_id":{"type":"string"},"stage":{"enum":["prepared","generated","rendered","evidence","judging","score-locked","unblinded","analyzed"]},
+    "cases":{"type":"array"},"conditions":{"type":"array","items":{"enum":["control","biziq"]}},"artifacts":{"type":"array"},"hashes":{"type":"object"},"notes":{"type":"array","items":{"type":"string"}}
+  },"additionalProperties":true
+}

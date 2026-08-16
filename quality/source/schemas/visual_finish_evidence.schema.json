@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BizIQ Visual Finish Evidence",
+  "type": "object",
+  "required": [
+    "view",
+    "defects",
+    "result"
+  ],
+  "properties": {
+    "view": {
+      "type": "string"
+    },
+    "viewport": {
+      "type": "string"
+    },
+    "defects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "dimension",
+          "severity",
+          "evidence"
+        ],
+        "properties": {
+          "dimension": {
+            "enum": [
+              "hierarchy",
+              "typography",
+              "spacing",
+              "surface",
+              "media",
+              "alignment",
+              "state"
+            ]
+          },
+          "severity": {
+            "enum": [
+              "P0",
+              "P1",
+              "P2",
+              "P3"
+            ]
+          },
+          "evidence": {
+            "type": "string"
+          },
+          "repair": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "result": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "UNVERIFIED"
+      ]
+    }
+  }
+}

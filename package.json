@@ -1,0 +1,14 @@
+{
+  "name": "aifence",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AIFENCE monorepo root — delegates Node tasks to the vendored BizIQ quality subsystem.",
+  "scripts": {
+    "quality:build": "npm --prefix quality run build",
+    "quality:test": "npm --prefix quality test",
+    "quality:setup": "npm --prefix quality install"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,249 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/kpi_definition.schema.json",
+  "title": "BizIQ KPI Definition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "metric_id",
+    "name",
+    "purpose",
+    "operational_definition",
+    "calculation_state",
+    "metric_owner",
+    "target_provenance"
+  ],
+  "properties": {
+    "metric_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operational_definition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "calculation_state": {
+      "enum": [
+        "DEFINED",
+        "UNRESOLVED"
+      ]
+    },
+    "formula": {
+      "type": "string",
+      "minLength": 1
+    },
+    "numerator": {
+      "type": "string"
+    },
+    "denominator": {
+      "type": "string"
+    },
+    "unit": {
+      "type": "string"
+    },
+    "population_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inclusions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "time_window": {
+      "type": "string"
+    },
+    "source_systems": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "source_fields_or_events": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "metric_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "data_owner": {
+      "type": "string"
+    },
+    "calculation_frequency": {
+      "type": "string",
+      "minLength": 1
+    },
+    "review_cadence": {
+      "type": "string",
+      "minLength": 1
+    },
+    "classification": {
+      "enum": [
+        "LEADING",
+        "LAGGING",
+        "BALANCING",
+        "MIXED"
+      ]
+    },
+    "segments": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "target": {
+      "type": "string",
+      "minLength": 1
+    },
+    "target_provenance": {
+      "enum": [
+        "ORGANIZATION_VERIFIED",
+        "EXTERNAL_VERIFIED",
+        "ORGANIZATION_SPECIFIC_NOT_SUPPLIED",
+        "NOT_APPLICABLE"
+      ]
+    },
+    "target_source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "alert_or_failure_condition": {
+      "type": "string"
+    },
+    "required_response": {
+      "type": "string"
+    },
+    "data_quality_risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gaming_risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "balancing_measures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "audit_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "version": {
+      "type": "string"
+    },
+    "effective_date": {
+      "type": "string"
+    },
+    "open_unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "calculation_state": {
+            "const": "DEFINED"
+          }
+        },
+        "required": [
+          "calculation_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "formula",
+          "population_scope",
+          "source_systems",
+          "calculation_frequency",
+          "review_cadence",
+          "audit_evidence",
+          "balancing_measures"
+        ],
+        "properties": {
+          "source_systems": {
+            "minItems": 1
+          },
+          "audit_evidence": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "calculation_state": {
+            "const": "UNRESOLVED"
+          }
+        },
+        "required": [
+          "calculation_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "open_unknowns"
+        ],
+        "properties": {
+          "open_unknowns": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "target"
+        ]
+      },
+      "then": {
+        "required": [
+          "target_source"
+        ],
+        "properties": {
+          "target_provenance": {
+            "enum": [
+              "ORGANIZATION_VERIFIED",
+              "EXTERNAL_VERIFIED"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

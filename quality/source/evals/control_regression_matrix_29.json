@@ -1,0 +1,242 @@
+[
+  {
+    "id": "eval.mobile-priority-recomposition.normal",
+    "capability": "Mobile Priority & Recomposition",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "normal",
+    "requirement": "Require an explicit mobile priority map and task-preserving layout recomposition rather than desktop stacking or compression.",
+    "expected": "produce compliant evidence-backed closure"
+  },
+  {
+    "id": "eval.mobile-priority-recomposition.ambiguous",
+    "capability": "Mobile Priority & Recomposition",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "ambiguous",
+    "requirement": "Require an explicit mobile priority map and task-preserving layout recomposition rather than desktop stacking or compression.",
+    "expected": "preserve priority/ambiguity without hiding requirements"
+  },
+  {
+    "id": "eval.mobile-priority-recomposition.failure",
+    "capability": "Mobile Priority & Recomposition",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "failure",
+    "requirement": "Require an explicit mobile priority map and task-preserving layout recomposition rather than desktop stacking or compression.",
+    "expected": "enter recovery and block false completion"
+  },
+  {
+    "id": "eval.dense-mobile-control-compression.normal",
+    "capability": "Dense Mobile Control Compression",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "normal",
+    "requirement": "Transform search/filter/date/view/bulk/primary-action toolbars into a narrow-screen interaction model without clipping, crowding, or hidden critical state.",
+    "expected": "produce compliant evidence-backed closure"
+  },
+  {
+    "id": "eval.dense-mobile-control-compression.ambiguous",
+    "capability": "Dense Mobile Control Compression",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "ambiguous",
+    "requirement": "Transform search/filter/date/view/bulk/primary-action toolbars into a narrow-screen interaction model without clipping, crowding, or hidden critical state.",
+    "expected": "preserve priority/ambiguity without hiding requirements"
+  },
+  {
+    "id": "eval.dense-mobile-control-compression.failure",
+    "capability": "Dense Mobile Control Compression",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "failure",
+    "requirement": "Transform search/filter/date/view/bulk/primary-action toolbars into a narrow-screen interaction model without clipping, crowding, or hidden critical state.",
+    "expected": "enter recovery and block false completion"
+  },
+  {
+    "id": "eval.responsive-data-transformation.normal",
+    "capability": "Responsive Data Transformation",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "normal",
+    "requirement": "Give tables, comparison, charts, and dense lists an explicit mobile data strategy that preserves decision context and task completion.",
+    "expected": "produce compliant evidence-backed closure"
+  },
+  {
+    "id": "eval.responsive-data-transformation.ambiguous",
+    "capability": "Responsive Data Transformation",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "ambiguous",
+    "requirement": "Give tables, comparison, charts, and dense lists an explicit mobile data strategy that preserves decision context and task completion.",
+    "expected": "preserve priority/ambiguity without hiding requirements"
+  },
+  {
+    "id": "eval.responsive-data-transformation.failure",
+    "capability": "Responsive Data Transformation",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "failure",
+    "requirement": "Give tables, comparison, charts, and dense lists an explicit mobile data strategy that preserves decision context and task completion.",
+    "expected": "enter recovery and block false completion"
+  },
+  {
+    "id": "eval.document-decision-depth.normal",
+    "capability": "Document Decision Depth",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "normal",
+    "requirement": "Evaluate substantial documents through decision/evidence depth, traceability, risks, alternatives, recommendation, and action closure rather than UI feature counts.",
+    "expected": "produce compliant evidence-backed closure"
+  },
+  {
+    "id": "eval.document-decision-depth.ambiguous",
+    "capability": "Document Decision Depth",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "ambiguous",
+    "requirement": "Evaluate substantial documents through decision/evidence depth, traceability, risks, alternatives, recommendation, and action closure rather than UI feature counts.",
+    "expected": "preserve priority/ambiguity without hiding requirements"
+  },
+  {
+    "id": "eval.document-decision-depth.failure",
+    "capability": "Document Decision Depth",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "failure",
+    "requirement": "Evaluate substantial documents through decision/evidence depth, traceability, risks, alternatives, recommendation, and action closure rather than UI feature counts.",
+    "expected": "enter recovery and block false completion"
+  },
+  {
+    "id": "eval.document-editorial-craft.normal",
+    "capability": "Document Editorial Craft",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "normal",
+    "requirement": "Use document-type-specific information architecture and editorial visual grammar with purposeful tables, diagrams, timelines, matrices, hierarchy, and page rhythm.",
+    "expected": "produce compliant evidence-backed closure"
+  },
+  {
+    "id": "eval.document-editorial-craft.ambiguous",
+    "capability": "Document Editorial Craft",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "ambiguous",
+    "requirement": "Use document-type-specific information architecture and editorial visual grammar with purposeful tables, diagrams, timelines, matrices, hierarchy, and page rhythm.",
+    "expected": "preserve priority/ambiguity without hiding requirements"
+  },
+  {
+    "id": "eval.document-editorial-craft.failure",
+    "capability": "Document Editorial Craft",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "failure",
+    "requirement": "Use document-type-specific information architecture and editorial visual grammar with purposeful tables, diagrams, timelines, matrices, hierarchy, and page rhythm.",
+    "expected": "enter recovery and block false completion"
+  },
+  {
+    "id": "eval.accessibility-evidence-matrix.normal",
+    "capability": "Accessibility Evidence Matrix",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "normal",
+    "requirement": "Require observable accessibility evidence for critical paths instead of passing from static semantics or automated inference alone.",
+    "expected": "produce compliant evidence-backed closure"
+  },
+  {
+    "id": "eval.accessibility-evidence-matrix.ambiguous",
+    "capability": "Accessibility Evidence Matrix",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "ambiguous",
+    "requirement": "Require observable accessibility evidence for critical paths instead of passing from static semantics or automated inference alone.",
+    "expected": "preserve priority/ambiguity without hiding requirements"
+  },
+  {
+    "id": "eval.accessibility-evidence-matrix.failure",
+    "capability": "Accessibility Evidence Matrix",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "failure",
+    "requirement": "Require observable accessibility evidence for critical paths instead of passing from static semantics or automated inference alone.",
+    "expected": "enter recovery and block false completion"
+  },
+  {
+    "id": "eval.keyboard-focus-dynamic-feedback.normal",
+    "capability": "Keyboard Focus & Dynamic Feedback",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "normal",
+    "requirement": "Verify keyboard completion, visible/logical focus, focus entry/return, validation association, and programmatic status/error feedback on critical paths.",
+    "expected": "produce compliant evidence-backed closure"
+  },
+  {
+    "id": "eval.keyboard-focus-dynamic-feedback.ambiguous",
+    "capability": "Keyboard Focus & Dynamic Feedback",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "ambiguous",
+    "requirement": "Verify keyboard completion, visible/logical focus, focus entry/return, validation association, and programmatic status/error feedback on critical paths.",
+    "expected": "preserve priority/ambiguity without hiding requirements"
+  },
+  {
+    "id": "eval.keyboard-focus-dynamic-feedback.failure",
+    "capability": "Keyboard Focus & Dynamic Feedback",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "failure",
+    "requirement": "Verify keyboard completion, visible/logical focus, focus entry/return, validation association, and programmatic status/error feedback on critical paths.",
+    "expected": "enter recovery and block false completion"
+  },
+  {
+    "id": "eval.completion-coverage-ledger.normal",
+    "capability": "Completion Coverage Ledger",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "normal",
+    "requirement": "Track P0/P1 user-job, path, state, responsive, accessibility, truth, dependency, and evidence closure so omissions cannot hide behind aggregate completeness.",
+    "expected": "produce compliant evidence-backed closure"
+  },
+  {
+    "id": "eval.completion-coverage-ledger.ambiguous",
+    "capability": "Completion Coverage Ledger",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "ambiguous",
+    "requirement": "Track P0/P1 user-job, path, state, responsive, accessibility, truth, dependency, and evidence closure so omissions cannot hide behind aggregate completeness.",
+    "expected": "preserve priority/ambiguity without hiding requirements"
+  },
+  {
+    "id": "eval.completion-coverage-ledger.failure",
+    "capability": "Completion Coverage Ledger",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "failure",
+    "requirement": "Track P0/P1 user-job, path, state, responsive, accessibility, truth, dependency, and evidence closure so omissions cannot hide behind aggregate completeness.",
+    "expected": "enter recovery and block false completion"
+  },
+  {
+    "id": "eval.feature-depth-closure.normal",
+    "capability": "Feature Depth Closure",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "normal",
+    "requirement": "Require production P0/P1 features to close information, action, state/recovery, responsive, accessibility, dependency, and acceptance dimensions.",
+    "expected": "produce compliant evidence-backed closure"
+  },
+  {
+    "id": "eval.feature-depth-closure.ambiguous",
+    "capability": "Feature Depth Closure",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "ambiguous",
+    "requirement": "Require production P0/P1 features to close information, action, state/recovery, responsive, accessibility, dependency, and acceptance dimensions.",
+    "expected": "preserve priority/ambiguity without hiding requirements"
+  },
+  {
+    "id": "eval.feature-depth-closure.failure",
+    "capability": "Feature Depth Closure",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "failure",
+    "requirement": "Require production P0/P1 features to close information, action, state/recovery, responsive, accessibility, dependency, and acceptance dimensions.",
+    "expected": "enter recovery and block false completion"
+  },
+  {
+    "id": "eval.cross-dimension-repair-preservation.normal",
+    "capability": "Cross-Dimension Repair Preservation",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "normal",
+    "requirement": "After targeted repairs, revalidate adjacent quality dimensions and preserve genericity resistance; a fix cannot pass by creating template sameness, truth regression, or task loss.",
+    "expected": "produce compliant evidence-backed closure"
+  },
+  {
+    "id": "eval.cross-dimension-repair-preservation.ambiguous",
+    "capability": "Cross-Dimension Repair Preservation",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "ambiguous",
+    "requirement": "After targeted repairs, revalidate adjacent quality dimensions and preserve genericity resistance; a fix cannot pass by creating template sameness, truth regression, or task loss.",
+    "expected": "preserve priority/ambiguity without hiding requirements"
+  },
+  {
+    "id": "eval.cross-dimension-repair-preservation.failure",
+    "capability": "Cross-Dimension Repair Preservation",
+    "domain": "29. Benchmark-Driven Quality Hardening",
+    "case": "failure",
+    "requirement": "After targeted repairs, revalidate adjacent quality dimensions and preserve genericity resistance; a fix cannot pass by creating template sameness, truth regression, or task loss.",
+    "expected": "enter recovery and block false completion"
+  }
+]

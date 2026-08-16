@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/operational_evidence.schema.json",
+  "title": "BizIQ Operational Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "evidence_id",
+    "evidence_class",
+    "linked_step_or_decision",
+    "required_content",
+    "responsible_recorder"
+  ],
+  "properties": {
+    "evidence_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_class": {
+      "enum": [
+        "EXECUTION",
+        "DECISION",
+        "QUALITY",
+        "EXCEPTION",
+        "HANDOFF",
+        "OUTCOME"
+      ]
+    },
+    "linked_step_or_decision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_content": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "system_of_record": {
+      "type": "string"
+    },
+    "responsible_recorder": {
+      "type": "string",
+      "minLength": 1
+    },
+    "timestamp_rule": {
+      "type": "string"
+    },
+    "reviewer": {
+      "type": "string"
+    },
+    "source_data_or_attachment": {
+      "type": "string"
+    },
+    "retention_rule": {
+      "type": "string",
+      "minLength": 1
+    },
+    "retention_provenance": {
+      "type": "string",
+      "minLength": 1
+    },
+    "access_classification": {
+      "type": "string"
+    },
+    "correction_rule": {
+      "type": "string"
+    },
+    "downstream_consumer": {
+      "type": "string"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": [
+          "retention_rule"
+        ]
+      },
+      "then": {
+        "required": [
+          "retention_provenance"
+        ]
+      }
+    }
+  ]
+}

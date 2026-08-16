@@ -1,0 +1,41 @@
+[
+  {
+    "id": "FD-001",
+    "family": "website",
+    "prompt": "Create a production-quality public marketing website for a fictional specialty contractor with proof, qualification, primary conversion, secondary evaluation, and responsive behavior.",
+    "expected_type": "Website / Landing Page"
+  },
+  {
+    "id": "FD-002",
+    "family": "mobile",
+    "prompt": "Create a production-quality native mobile appointment app with primary booking, secondary rescheduling, interruption recovery, offline/error handling, and adaptive compact/large device states.",
+    "expected_type": "Native / Mobile App"
+  },
+  {
+    "id": "FD-003",
+    "family": "brand",
+    "prompt": "Create a complete brand identity system for a fictional B2B software company including mark, type, color, composition, iconography, imagery, usage rules, and applications.",
+    "expected_type": "Brand Identity / Logo"
+  },
+  {
+    "id": "FD-004",
+    "family": "email",
+    "prompt": "Create a four-email onboarding campaign for a fictional SaaS product with audience states, sequence progression, CTAs, measurement events, fallbacks, and truth boundaries.",
+    "expected_type": "Email / Campaign"
+  },
+  {
+    "id": "FD-005",
+    "family": "cli",
+    "prompt": "Create a production-quality CLI developer tool with root help, a primary audit command, config precedence, deterministic output, exit codes, invalid-input recovery, and tests.",
+    "expected_type": "CLI / Developer Tool"
+  },
+  {
+    "id": "FD-006",
+    "family": "composite",
+    "prompt": "Create a cohesive brand identity concept plus a front-end-only responsive marketing website for a fictional bakery, with shared identity decisions and independent child QA at 320 and 390 pixels.",
+    "expected_types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ]
+  }
+]

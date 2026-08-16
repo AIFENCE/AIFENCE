@@ -1,0 +1,242 @@
+[
+  {
+    "id": "eval.icon-system-selection.normal",
+    "capability": "Icon System Selection",
+    "domain": "26. Feature & Component Craft",
+    "case": "normal",
+    "requirement": "Select one coherent professional icon system when iconography materially improves clarity, scanning, status recognition, navigation, or affordance, without forcing icons or mixing incompatible families.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.icon-system-selection.ambiguous",
+    "capability": "Icon System Selection",
+    "domain": "26. Feature & Component Craft",
+    "case": "ambiguous",
+    "requirement": "Select one coherent professional icon system when iconography materially improves clarity, scanning, status recognition, navigation, or affordance, without forcing icons or mixing incompatible families.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.icon-system-selection.failure",
+    "capability": "Icon System Selection",
+    "domain": "26. Feature & Component Craft",
+    "case": "failure",
+    "requirement": "Select one coherent professional icon system when iconography materially improves clarity, scanning, status recognition, navigation, or affordance, without forcing icons or mixing incompatible families.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.iconography-coverage-audit.normal",
+    "capability": "Iconography Coverage Audit",
+    "domain": "26. Feature & Component Craft",
+    "case": "normal",
+    "requirement": "Audit applicable navigation, utility actions, states, statuses, forms, contextual actions, and supporting UI for purposeful icon coverage and accessible labeling.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.iconography-coverage-audit.ambiguous",
+    "capability": "Iconography Coverage Audit",
+    "domain": "26. Feature & Component Craft",
+    "case": "ambiguous",
+    "requirement": "Audit applicable navigation, utility actions, states, statuses, forms, contextual actions, and supporting UI for purposeful icon coverage and accessible labeling.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.iconography-coverage-audit.failure",
+    "capability": "Iconography Coverage Audit",
+    "domain": "26. Feature & Component Craft",
+    "case": "failure",
+    "requirement": "Audit applicable navigation, utility actions, states, statuses, forms, contextual actions, and supporting UI for purposeful icon coverage and accessible labeling.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.component-anatomy-quality.normal",
+    "capability": "Component Anatomy Quality",
+    "domain": "26. Feature & Component Craft",
+    "case": "normal",
+    "requirement": "Require important reusable components to have task-specific hierarchy, anatomy, states, responsive behavior, and visual detail beyond generic border-radius-padding treatment.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.component-anatomy-quality.ambiguous",
+    "capability": "Component Anatomy Quality",
+    "domain": "26. Feature & Component Craft",
+    "case": "ambiguous",
+    "requirement": "Require important reusable components to have task-specific hierarchy, anatomy, states, responsive behavior, and visual detail beyond generic border-radius-padding treatment.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.component-anatomy-quality.failure",
+    "capability": "Component Anatomy Quality",
+    "domain": "26. Feature & Component Craft",
+    "case": "failure",
+    "requirement": "Require important reusable components to have task-specific hierarchy, anatomy, states, responsive behavior, and visual detail beyond generic border-radius-padding treatment.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.card-surface-specificity.normal",
+    "capability": "Card Surface Specificity",
+    "domain": "26. Feature & Component Craft",
+    "case": "normal",
+    "requirement": "Reject universal card grammar and major regions dominated by interchangeable rounded rectangles; require card anatomy and surface/elevation choices to reflect information and task.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.card-surface-specificity.ambiguous",
+    "capability": "Card Surface Specificity",
+    "domain": "26. Feature & Component Craft",
+    "case": "ambiguous",
+    "requirement": "Reject universal card grammar and major regions dominated by interchangeable rounded rectangles; require card anatomy and surface/elevation choices to reflect information and task.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.card-surface-specificity.failure",
+    "capability": "Card Surface Specificity",
+    "domain": "26. Feature & Component Craft",
+    "case": "failure",
+    "requirement": "Reject universal card grammar and major regions dominated by interchangeable rounded rectangles; require card anatomy and surface/elevation choices to reflect information and task.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.interaction-affordance-microdetail.normal",
+    "capability": "Interaction Affordance Microdetail",
+    "domain": "26. Feature & Component Craft",
+    "case": "normal",
+    "requirement": "Require clear pre-activation affordances, coherent state feedback, and meaningful micro-detail that improves hierarchy, recognition, scanning, or task completion.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.interaction-affordance-microdetail.ambiguous",
+    "capability": "Interaction Affordance Microdetail",
+    "domain": "26. Feature & Component Craft",
+    "case": "ambiguous",
+    "requirement": "Require clear pre-activation affordances, coherent state feedback, and meaningful micro-detail that improves hierarchy, recognition, scanning, or task completion.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.interaction-affordance-microdetail.failure",
+    "capability": "Interaction Affordance Microdetail",
+    "domain": "26. Feature & Component Craft",
+    "case": "failure",
+    "requirement": "Require clear pre-activation affordances, coherent state feedback, and meaningful micro-detail that improves hierarchy, recognition, scanning, or task completion.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.feature-depth-resolution.normal",
+    "capability": "Feature Depth Resolution",
+    "domain": "26. Feature & Component Craft",
+    "case": "normal",
+    "requirement": "Define high-value features by purpose, user job, priority, information, actions, interaction model, data/truth semantics, dependencies, and observable acceptance criteria rather than feature names alone.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.feature-depth-resolution.ambiguous",
+    "capability": "Feature Depth Resolution",
+    "domain": "26. Feature & Component Craft",
+    "case": "ambiguous",
+    "requirement": "Define high-value features by purpose, user job, priority, information, actions, interaction model, data/truth semantics, dependencies, and observable acceptance criteria rather than feature names alone.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.feature-depth-resolution.failure",
+    "capability": "Feature Depth Resolution",
+    "domain": "26. Feature & Component Craft",
+    "case": "failure",
+    "requirement": "Define high-value features by purpose, user job, priority, information, actions, interaction model, data/truth semantics, dependencies, and observable acceptance criteria rather than feature names alone.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.feature-state-completeness.normal",
+    "capability": "Feature State Completeness",
+    "domain": "26. Feature & Component Craft",
+    "case": "normal",
+    "requirement": "Resolve applicable default, loading, empty, filtered-empty/no-result, partial, error, success, disabled/unavailable, permission, offline, validation, and destructive states for important workflows.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.feature-state-completeness.ambiguous",
+    "capability": "Feature State Completeness",
+    "domain": "26. Feature & Component Craft",
+    "case": "ambiguous",
+    "requirement": "Resolve applicable default, loading, empty, filtered-empty/no-result, partial, error, success, disabled/unavailable, permission, offline, validation, and destructive states for important workflows.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.feature-state-completeness.failure",
+    "capability": "Feature State Completeness",
+    "domain": "26. Feature & Component Craft",
+    "case": "failure",
+    "requirement": "Resolve applicable default, loading, empty, filtered-empty/no-result, partial, error, success, disabled/unavailable, permission, offline, validation, and destructive states for important workflows.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.feature-to-component-mapping.normal",
+    "capability": "Feature To Component Mapping",
+    "domain": "26. Feature & Component Craft",
+    "case": "normal",
+    "requirement": "Map substantial features to the UI primitives needed to express their real workflow and prevent convenience-driven collapse into one generic component type.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.feature-to-component-mapping.ambiguous",
+    "capability": "Feature To Component Mapping",
+    "domain": "26. Feature & Component Craft",
+    "case": "ambiguous",
+    "requirement": "Map substantial features to the UI primitives needed to express their real workflow and prevent convenience-driven collapse into one generic component type.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.feature-to-component-mapping.failure",
+    "capability": "Feature To Component Mapping",
+    "domain": "26. Feature & Component Craft",
+    "case": "failure",
+    "requirement": "Map substantial features to the UI primitives needed to express their real workflow and prevent convenience-driven collapse into one generic component type.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.responsive-feature-recomposition.normal",
+    "capability": "Responsive Feature Recomposition",
+    "domain": "26. Feature & Component Craft",
+    "case": "normal",
+    "requirement": "Require substantial features to adapt priority, information density, controls, data presentation, and interaction patterns across device classes instead of merely stacking desktop UI.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.responsive-feature-recomposition.ambiguous",
+    "capability": "Responsive Feature Recomposition",
+    "domain": "26. Feature & Component Craft",
+    "case": "ambiguous",
+    "requirement": "Require substantial features to adapt priority, information density, controls, data presentation, and interaction patterns across device classes instead of merely stacking desktop UI.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.responsive-feature-recomposition.failure",
+    "capability": "Responsive Feature Recomposition",
+    "domain": "26. Feature & Component Craft",
+    "case": "failure",
+    "requirement": "Require substantial features to adapt priority, information density, controls, data presentation, and interaction patterns across device classes instead of merely stacking desktop UI.",
+    "expected": "trigger recovery and refuse a false pass"
+  },
+  {
+    "id": "eval.final-craft-evidence.normal",
+    "capability": "Final Craft Evidence",
+    "domain": "26. Feature & Component Craft",
+    "case": "normal",
+    "requirement": "Before production completion, verify feature depth and component craft from observable implementation/runtime/rendered evidence and recover from shallow, generic, or under-detailed results.",
+    "expected": "produce a compliant result and observable evidence"
+  },
+  {
+    "id": "eval.final-craft-evidence.ambiguous",
+    "capability": "Final Craft Evidence",
+    "domain": "26. Feature & Component Craft",
+    "case": "ambiguous",
+    "requirement": "Before production completion, verify feature depth and component craft from observable implementation/runtime/rendered evidence and recover from shallow, generic, or under-detailed results.",
+    "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
+  },
+  {
+    "id": "eval.final-craft-evidence.failure",
+    "capability": "Final Craft Evidence",
+    "domain": "26. Feature & Component Craft",
+    "case": "failure",
+    "requirement": "Before production completion, verify feature depth and component craft from observable implementation/runtime/rendered evidence and recover from shallow, generic, or under-detailed results.",
+    "expected": "trigger recovery and refuse a false pass"
+  }
+]

@@ -1,0 +1,33 @@
+[
+  {
+    "id": "R187-001",
+    "request": "Create an Excel staffing scenario model for a fictional field-services operator.",
+    "expected": [
+      "Spreadsheet / Financial Model"
+    ]
+  },
+  {
+    "id": "R187-002",
+    "request": "Create an Excel maintenance replacement model for a fictional transit fleet.",
+    "expected": [
+      "Spreadsheet / Financial Model"
+    ]
+  },
+  {
+    "id": "R187-003",
+    "request": "Create a brand identity, onboarding email campaign, and landing page for a fictional tutoring service.",
+    "expected": [
+      "Brand Identity / Logo",
+      "Email / Campaign",
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "R187-004",
+    "request": "Create a brand identity plus landing page for a fictional tutoring service.",
+    "expected": [
+      "Brand Identity / Logo",
+      "Website / Landing Page"
+    ]
+  }
+]

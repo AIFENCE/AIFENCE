@@ -1,0 +1,313 @@
+[
+  {
+    "id": "R188-001",
+    "prompt": "Create a print-ready assessment report for a fictional cold-storage operator.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-002",
+    "prompt": "Create a board-ready analytical report for a fictional regional utility.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-003",
+    "prompt": "Create a publication-ready evaluation report for a fictional education nonprofit.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-004",
+    "prompt": "Create an executive-ready findings report for a fictional logistics network.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-005",
+    "prompt": "Create a client-ready compliance report for a fictional food processor.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-006",
+    "prompt": "Create a print ready implementation report for a fictional transit program.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-007",
+    "prompt": "Create a board-ready decision memo for a fictional community foundation.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-008",
+    "prompt": "Create an assessment report PDF for a fictional marina inspection program.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-009",
+    "prompt": "Create an evaluation report document for a fictional laboratory quality program.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-010",
+    "prompt": "Create a print-ready operations review report for a fictional distribution center.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-011",
+    "prompt": "Create a publication-ready strategy report for a fictional arts organization.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-012",
+    "prompt": "Create an executive-ready assessment memo for a fictional facilities portfolio.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-013",
+    "prompt": "Create a client-ready analytical report for a fictional engineering consultancy.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-014",
+    "prompt": "Create a print-ready findings memo for a fictional museum collections review.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-015",
+    "prompt": "Create a board-ready compliance review report for a fictional membership association.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-016",
+    "prompt": "Create a reporting dashboard for a fictional membership organization.",
+    "expected_types": [
+      "Dashboard"
+    ]
+  },
+  {
+    "id": "R188-017",
+    "prompt": "Create documentation for report data fields used by a fictional API.",
+    "expected_types": [
+      "API"
+    ]
+  },
+  {
+    "id": "R188-018",
+    "prompt": "Create a web app for editing assessment report records and approval workflows.",
+    "expected_types": [
+      "Web App / SaaS / Portal"
+    ]
+  },
+  {
+    "id": "R188-019",
+    "prompt": "Create an email campaign summarizing quarterly report findings.",
+    "expected_types": [
+      "Email / Campaign"
+    ]
+  },
+  {
+    "id": "R188-020",
+    "prompt": "Create a website with a resources section linking to annual reports.",
+    "expected_types": [
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "R188-021",
+    "prompt": "Create a brand identity, onboarding email campaign, and public landing page for a fictional tutoring service.",
+    "expected_types": [
+      "Brand Identity / Logo",
+      "Email / Campaign",
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "R188-022",
+    "prompt": "Create a visual identity, four-email lifecycle campaign, and responsive website for a fictional marine repair company.",
+    "expected_types": [
+      "Brand Identity / Logo",
+      "Email / Campaign",
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "R188-023",
+    "prompt": "Create a brand identity plus customer-facing onboarding email campaign plus premium landing page for a fictional lab service.",
+    "expected_types": [
+      "Brand Identity / Logo",
+      "Email / Campaign",
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "R188-024",
+    "prompt": "Create an executive decision deck, internal spreadsheet scenario model, and print-ready analytical report for a fictional transit program.",
+    "expected_types": [
+      "Presentation / Deck",
+      "Spreadsheet / Financial Model",
+      "Fixed-Format Document / PDF"
+    ]
+  },
+  {
+    "id": "R188-025",
+    "prompt": "Create a public website, internal dashboard, and native mobile app for a fictional field service program.",
+    "expected_types": [
+      "Website / Landing Page",
+      "Dashboard",
+      "Native / Mobile App"
+    ]
+  },
+  {
+    "id": "R188-026",
+    "prompt": "Create a responsive landing page, customer-facing email campaign, and brand identity for a fictional continuing-education provider.",
+    "expected_types": [
+      "Website / Landing Page",
+      "Email / Campaign",
+      "Brand Identity / Logo"
+    ]
+  },
+  {
+    "id": "R188-027",
+    "prompt": "Create a brand identity, internal CLI developer tool, and public website for a fictional data catalog company.",
+    "expected_types": [
+      "Brand Identity / Logo",
+      "CLI / Developer Tool",
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "R188-028",
+    "prompt": "Create a production executive deck, interactive dashboard, and internal spreadsheet model for a fictional energy program.",
+    "expected_types": [
+      "Presentation / Deck",
+      "Dashboard",
+      "Spreadsheet / Financial Model"
+    ]
+  },
+  {
+    "id": "R188-029",
+    "prompt": "Create a premium website, customer-facing native mobile app, and internal dashboard for a fictional sports organization.",
+    "expected_types": [
+      "Website / Landing Page",
+      "Native / Mobile App",
+      "Dashboard"
+    ]
+  },
+  {
+    "id": "R188-030",
+    "prompt": "Create a public landing page, onboarding email campaign, and client-facing brand identity for a fictional consulting practice.",
+    "expected_types": [
+      "Website / Landing Page",
+      "Email / Campaign",
+      "Brand Identity / Logo"
+    ]
+  },
+  {
+    "id": "R188-031",
+    "prompt": "Create an executive presentation deck, print-ready findings report, and internal Excel scenario model for a fictional port program.",
+    "expected_types": [
+      "Presentation / Deck",
+      "Fixed-Format Document / PDF",
+      "Spreadsheet / Financial Model"
+    ]
+  },
+  {
+    "id": "R188-032",
+    "prompt": "Create a responsive website, internal admin portal, and native mobile app for a fictional volunteer network.",
+    "expected_types": [
+      "Website / Landing Page",
+      "Web App / SaaS / Portal",
+      "Native / Mobile App"
+    ]
+  },
+  {
+    "id": "R188-033",
+    "prompt": "Create a brand identity, customer-facing invitation email campaign, and responsive public landing page for a fictional workshop series.",
+    "expected_types": [
+      "Brand Identity / Logo",
+      "Email / Campaign",
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "R188-034",
+    "prompt": "Create a board-ready analytical report, executive decision deck, and internal dashboard for a fictional membership program.",
+    "expected_types": [
+      "Fixed-Format Document / PDF",
+      "Presentation / Deck",
+      "Dashboard"
+    ]
+  },
+  {
+    "id": "R188-035",
+    "prompt": "Create a visual identity system, public marketing site, customer-facing lifecycle email campaign, and internal dashboard for a fictional home-services network.",
+    "expected_types": [
+      "Brand Identity / Logo",
+      "Website / Landing Page",
+      "Email / Campaign",
+      "Dashboard"
+    ]
+  },
+  {
+    "id": "R188-036",
+    "prompt": "Create a website with a paragraph discussing quarterly reporting metrics and campaign performance.",
+    "expected_types": [
+      "Website / Landing Page"
+    ]
+  },
+  {
+    "id": "R188-037",
+    "prompt": "Create documentation describing slide reference fields, worksheet reference fields, and page URLs.",
+    "expected_types": [
+      "Documentation / Repository Architecture"
+    ]
+  },
+  {
+    "id": "R188-038",
+    "prompt": "Create brand strategy and positioning for a fictional specialty manufacturer.",
+    "expected_types": [
+      "Brand Strategy"
+    ]
+  },
+  {
+    "id": "R188-039",
+    "prompt": "Create a CLI tool that reads a dashboard export and website URL from configuration.",
+    "expected_types": [
+      "CLI / Developer Tool"
+    ]
+  },
+  {
+    "id": "R188-040",
+    "prompt": "Create a fixed-format architecture report about several fictional digital products without building those products.",
+    "expected_types": [
+      "Fixed-Format Document / PDF"
+    ]
+  }
+]

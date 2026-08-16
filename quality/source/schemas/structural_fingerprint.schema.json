@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/structural_fingerprint.schema.json",
+  "title": "BizIQ Structural Fingerprint",
+  "type": "object",
+  "required": [
+    "artifact_family",
+    "shell",
+    "opening",
+    "sequence",
+    "motifs",
+    "container_ratio",
+    "alignment_bias",
+    "cta_positions",
+    "mobile_transforms"
+  ],
+  "properties": {
+    "artifact_family": {
+      "type": "string"
+    },
+    "shell": {
+      "type": "string"
+    },
+    "opening": {
+      "type": "string"
+    },
+    "sequence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "motifs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "container_ratio": {
+      "type": "string"
+    },
+    "alignment_bias": {
+      "type": "string"
+    },
+    "cta_positions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "media_roles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "density_transitions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "table_list_usage": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "proof_grammar": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "state_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mobile_transforms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "interaction_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "distinctive_domain_elements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "additionalProperties": false
+}

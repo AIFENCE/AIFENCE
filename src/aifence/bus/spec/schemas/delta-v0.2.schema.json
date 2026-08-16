@@ -1,0 +1,70 @@
+{
+  "$defs": {
+    "ProtocolDeltaOp": {
+      "additionalProperties": false,
+      "properties": {
+        "op": {
+          "enum": [
+            "add",
+            "remove",
+            "replace"
+          ],
+          "title": "Op",
+          "type": "string"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {},
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "required": [
+        "op",
+        "path"
+      ],
+      "title": "ProtocolDeltaOp",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "base": {
+      "title": "Base",
+      "type": "string"
+    },
+    "ops": {
+      "items": {
+        "$ref": "#/$defs/ProtocolDeltaOp"
+      },
+      "title": "Ops",
+      "type": "array"
+    },
+    "target": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Target"
+    }
+  },
+  "required": [
+    "base",
+    "ops"
+  ],
+  "title": "ProtocolDelta",
+  "type": "object"
+}

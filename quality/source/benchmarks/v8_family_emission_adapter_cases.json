@@ -1,0 +1,14 @@
+[
+  {"id":"FEA-001","family":"brand","failure":"brand system forced into action/state/outcome workflow vocabulary","expected":"family-native identity/type/color/composition/imagery/application/misuse evidence PASS"},
+  {"id":"FEA-002","family":"presentation","failure":"deck forced into interactive state machine","expected":"storyline/evidence/implication/decision/takeaway evidence PASS"},
+  {"id":"FEA-003","family":"spreadsheet","failure":"artifact-tool shared/inline strings not extracted","expected":"namespace-safe OOXML text extraction PASS"},
+  {"id":"FEA-004","family":"email","failure":"ordinary sequence transition wording treated as global scaffold","expected":"context-sensitive sequence evidence PASS"},
+  {"id":"FEA-005","family":"cli","failure":"CLI evaluated with website workflow semantics","expected":"command/help/config/I-O/exit/recovery evidence PASS"},
+  {"id":"FEA-006","family":"fixed-document","failure":"document implication language treated as workflow scaffold","expected":"issue/evidence/finding/implication/provenance evidence PASS"},
+  {"id":"FEA-007","family":"website","failure":"generic placeholder evidence dominates","expected":"FAIL"},
+  {"id":"FEA-008","family":"naturalization","failure":"P0/QA/compiler vocabulary on production surface","expected":"FAIL"},
+  {"id":"FEA-009","family":"composite-routing","failure":"executive decision deck plus spreadsheet scenario model collapses to model only","expected":"Presentation / Deck + Spreadsheet / Financial Model"},
+  {"id":"FEA-010","family":"composite","failure":"project-level evidence ignores child-specific surfaces","expected":"child marker reconciliation required"},
+  {"id":"FEA-011","family":"spreadsheet","failure":"string-valued worksheet cells treated as no surface text","expected":"PASS"},
+  {"id":"FEA-012","family":"compatibility","failure":"Core 1.8.3 naturalization/executable gates regress","expected":"prior revision tests remain PASS"}
+]

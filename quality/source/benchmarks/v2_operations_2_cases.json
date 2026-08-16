@@ -1,0 +1,322 @@
+[
+  {
+    "id": "v2.operations-2.001",
+    "category": "field-service",
+    "title": "HVAC no-cooling diagnostic handoff",
+    "prompt": "Create a controlled draft SOP for an HVAC field technician receiving a residential no-cooling call. Do not invent manufacturer diagnostics, refrigerant thresholds, licensing permissions, pricing limits, or local code. Compile dispatch inputs, arrival/site safety checks, diagnostic decision points at a safe general level, evidence, customer communication, approval/escalation boundaries, recovery, handoff, and definition of done.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.002",
+    "category": "field-service",
+    "title": "Landscape enhancement change-order workflow",
+    "prompt": "Create an operational procedure for a landscaping crew lead who discovers customer-requested scope expansion during an enhancement job. Include decision rights, estimate/change-order approval boundary placeholders, crew/customer communication, evidence, schedule/material impact, stop/escalate conditions, handoff, and completion evidence without inventing dollar limits.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.003",
+    "category": "field-service",
+    "title": "Plumbing inaccessible shutoff exception",
+    "prompt": "Create a controlled draft field-service SOP for a plumbing technician who cannot access the expected shutoff. Keep technical execution at a safe general level; define stop conditions, property/customer communication, supervisor escalation, evidence, authorization boundaries, containment, rescheduling/handoff, and definition of done.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.004",
+    "category": "software",
+    "title": "Production deployment runbook",
+    "prompt": "Create a production-deployment runbook for a SaaS engineering team with readiness criteria, test evidence, change approval, feature flag/migration decision points, observability, rollback criteria, incident escalation, post-deploy validation, records, and definition of done. Do not invent organization-specific approval roles or SLO thresholds; use explicit placeholders where unknown.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.005",
+    "category": "software",
+    "title": "Privileged access request workflow",
+    "prompt": "Create an auditable privileged-access workflow for a software company. Include requester/approver separation, justification, scope/time bounds, identity verification, approval evidence, provisioning, validation, exception handling, revocation/review, handoff, and KPI definitions. Do not invent retention periods or access-policy thresholds.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.006",
+    "category": "software",
+    "title": "Customer data deletion operations",
+    "prompt": "Create an operations procedure for a SaaS customer-data deletion request. Distinguish general workflow from legal/contractual requirements that require verification, include identity/authorization checks, system dependencies, backups/derived-data unknowns, approvals, execution evidence, exception handling, customer communication, and closure.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.007",
+    "category": "finance",
+    "title": "Month-end close control procedure",
+    "prompt": "Create a month-end close procedure for a small company. Include close trigger, prerequisites, reconciliation ownership, preparer/reviewer separation where material, journal-entry approval boundaries, exception handling, evidence, handoff, definition of done, and reproducible KPIs. Do not invent materiality thresholds or retention periods.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.008",
+    "category": "finance",
+    "title": "Vendor onboarding and payment control",
+    "prompt": "Create a vendor onboarding-to-first-payment control procedure with decision rights, segregation of duties, bank-detail verification, approval boundaries, evidence, exceptions, duplicate/fraud risk checks, handoff, and KPI governance. Do not invent spending limits or banking verification methods as authoritative policy.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.009",
+    "category": "finance",
+    "title": "Collections dispute escalation",
+    "prompt": "Create an accounts-receivable collections/dispute procedure that distinguishes routine contact from disputed balance resolution, approval-required adjustments, evidence, customer communication, escalation, recovery, closure, and metrics. Do not invent legal collection requirements or write-off limits.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.010",
+    "category": "regulated",
+    "title": "Clinical intake routing draft",
+    "prompt": "Create a controlled draft patient/client intake routing procedure for a healthcare service. Do not provide clinical diagnosis or invent medical/legal requirements. Define identity/intake information handling, urgent-risk escalation to qualified clinical staff, privacy-sensitive evidence, incomplete-information paths, handoff acceptance, and authority classification.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.011",
+    "category": "regulated",
+    "title": "Food safety deviation workflow",
+    "prompt": "Create a high-level controlled deviation/hold/escalation workflow for a food operation when a required safety check fails. Do not invent regulatory temperatures, hold times, or disposal rules. Separate verified external requirements from organization procedures, define stop/containment, evidence, competent-authority review, disposition approval, records, and restart criteria.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.012",
+    "category": "regulated",
+    "title": "Electrical scope boundary procedure",
+    "prompt": "Create a controlled draft procedure for a home-service coordinator assigning electrical work. Do not invent licensing law or technical electrical steps. Define job classification, credential/scope verification requirement, assignment authority, stop/escalate path, customer communication, evidence, and handoff.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.013",
+    "category": "operations",
+    "title": "Warehouse damaged-goods exception",
+    "prompt": "Create a warehouse damaged-goods exception procedure with detection, containment, inventory/system record, ownership, disposition approval boundary, customer/order impact, evidence, recovery, handoff, and metrics. Do not invent financial write-off thresholds.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.014",
+    "category": "operations",
+    "title": "Restaurant opening readiness",
+    "prompt": "Create an opening-readiness procedure for a restaurant manager. Cover staffing, systems, facility/food-safety readiness at a non-regulatory general level, exception/escalation, customer-impacting outages, evidence, handoff, and definition of done. Any exact health-code requirement must remain source-dependent.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.015",
+    "category": "operations",
+    "title": "Hotel room out-of-service workflow",
+    "prompt": "Create an operations workflow for marking a hotel room out of service, coordinating maintenance/housekeeping/front desk, guest-impact handling, authority boundaries, evidence, return-to-service checks, handoff, and KPIs without inventing compensation limits.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.016",
+    "category": "professional",
+    "title": "Client deliverable quality release",
+    "prompt": "Create a professional-services deliverable release SOP with scope/acceptance criteria, reviewer/approver, source verification, version control, confidentiality checks, exception handling, client communication, evidence, and definition of done.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.017",
+    "category": "government",
+    "title": "Public records request routing draft",
+    "prompt": "Create a general operations draft for receiving and routing a public-records request. Do not invent jurisdictional deadlines, exemptions, fees, or legal advice. Separate administrative intake from legal/records authority, define evidence, ownership, escalation, communication placeholders, and closure.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.018",
+    "category": "cyber",
+    "title": "Security alert triage workflow",
+    "prompt": "Create a controlled security-alert triage workflow with severity determination placeholders, evidence preservation, analyst decision rights, containment approval boundaries, escalation, handoff, recovery, and metrics. Do not invent incident thresholds or grant unauthorized response authority.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.019",
+    "category": "quality",
+    "title": "Nonconformance and CAPA handoff",
+    "prompt": "Create a nonconformance-to-corrective-action workflow that defines detection, containment, record, disposition/approval, root-cause decision, corrective action, verification of effectiveness, closure evidence, escalation, and metric definitions without inventing regulated requirements.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  },
+  {
+    "id": "v2.operations-2.020",
+    "category": "management",
+    "title": "KPI operating review system",
+    "prompt": "Create an operating review procedure that converts a list of KPIs into governed metrics with formulas or explicit unknowns, owners, source systems, target provenance, review cadence, variance triage, action owners, balancing metrics, handoff, and closure. Never fabricate targets.",
+    "artifact_contracts": [
+      "operations-workflow"
+    ],
+    "evaluation_emphasis": [
+      "operational_depth",
+      "authority_accuracy",
+      "decision_rights",
+      "evidence",
+      "kpi_governance"
+    ]
+  }
+]

@@ -1,0 +1,623 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "biziq://schemas/operational_procedure.schema.json",
+  "title": "BizIQ Operational Procedure",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "procedure_id",
+    "name",
+    "purpose",
+    "procedure_version",
+    "approval_state",
+    "procedure_owner",
+    "authority_class",
+    "authority_sources",
+    "authority_map",
+    "role_accountability",
+    "responsible_role",
+    "scope",
+    "exclusions",
+    "trigger",
+    "entry_conditions",
+    "required_inputs",
+    "steps",
+    "decision_rights",
+    "exceptions",
+    "stop_escalate",
+    "evidence_requirements",
+    "definition_of_done",
+    "handoffs",
+    "kpis",
+    "validation_plan",
+    "unknowns"
+  ],
+  "properties": {
+    "procedure_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "procedure_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_state": {
+      "enum": [
+        "DRAFT",
+        "IN_REVIEW",
+        "APPROVED",
+        "EFFECTIVE",
+        "SUSPENDED",
+        "SUPERSEDED",
+        "ARCHIVED"
+      ]
+    },
+    "procedure_owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approver": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approval_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "effective_date": {
+      "type": "string",
+      "minLength": 1
+    },
+    "last_verified_date": {
+      "type": "string"
+    },
+    "next_review_trigger": {
+      "type": "string"
+    },
+    "supersedes": {
+      "type": "string"
+    },
+    "superseded_by": {
+      "type": "string"
+    },
+    "change_reason": {
+      "type": "string"
+    },
+    "authority_class": {
+      "enum": [
+        "GENERAL_GUIDANCE",
+        "ORGANIZATION_DRAFT",
+        "VERIFIED_ORGANIZATION_PROCEDURE",
+        "EXTERNAL_AUTHORITATIVE_REQUIREMENT",
+        "MIXED"
+      ]
+    },
+    "authority_sources": {
+      "type": "array",
+      "items": {
+        "$ref": "biziq://schemas/procedure_authority.schema.json"
+      }
+    },
+    "authority_map": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "section_or_step_ids",
+          "authority_class",
+          "authority_source_ids"
+        ],
+        "properties": {
+          "section_or_step_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "authority_class": {
+            "enum": [
+              "GENERAL_GUIDANCE",
+              "ORGANIZATION_DRAFT",
+              "VERIFIED_ORGANIZATION_PROCEDURE",
+              "EXTERNAL_AUTHORITATIVE_REQUIREMENT"
+            ]
+          },
+          "authority_source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "authority_class": {
+                  "enum": [
+                    "VERIFIED_ORGANIZATION_PROCEDURE",
+                    "EXTERNAL_AUTHORITATIVE_REQUIREMENT"
+                  ]
+                }
+              },
+              "required": [
+                "authority_class"
+              ]
+            },
+            "then": {
+              "properties": {
+                "authority_source_ids": {
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "role_accountability": {
+      "$ref": "biziq://schemas/role_accountability.schema.json"
+    },
+    "responsible_role": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "trigger": {
+      "type": "string",
+      "minLength": 1
+    },
+    "entry_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "required_inputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tools_systems_equipment": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "prerequisites": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "step_id",
+          "materiality",
+          "actor",
+          "action"
+        ],
+        "properties": {
+          "step_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "materiality": {
+            "enum": [
+              "MATERIAL",
+              "SUPPORTING"
+            ]
+          },
+          "actor": {
+            "type": "string",
+            "minLength": 1
+          },
+          "action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input": {
+            "type": "string"
+          },
+          "method_system": {
+            "type": "string"
+          },
+          "check": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "evidence_not_required_reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "failure_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "boundary": {
+            "type": "string"
+          },
+          "authority_class": {
+            "enum": [
+              "GENERAL_GUIDANCE",
+              "ORGANIZATION_DRAFT",
+              "VERIFIED_ORGANIZATION_PROCEDURE",
+              "EXTERNAL_AUTHORITATIVE_REQUIREMENT"
+            ]
+          },
+          "authority_source_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "materiality": {
+                  "const": "MATERIAL"
+                }
+              },
+              "required": [
+                "materiality"
+              ]
+            },
+            "then": {
+              "required": [
+                "check",
+                "failure_path"
+              ],
+              "anyOf": [
+                {
+                  "properties": {
+                    "evidence_ids": {
+                      "minItems": 1
+                    }
+                  },
+                  "required": [
+                    "evidence_ids"
+                  ]
+                },
+                {
+                  "required": [
+                    "evidence_not_required_reason"
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "decision_rights": {
+      "type": "array",
+      "items": {
+        "$ref": "biziq://schemas/decision_rights.schema.json"
+      }
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "exception_id",
+          "detection_signal",
+          "containment",
+          "owner",
+          "escalation_path",
+          "recovery_action",
+          "closure_evidence_ids"
+        ],
+        "properties": {
+          "exception_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "detection_signal": {
+            "type": "string",
+            "minLength": 1
+          },
+          "containment": {
+            "type": "string",
+            "minLength": 1
+          },
+          "owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "escalation_path": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "recovery_action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "rollback": {
+            "type": "string"
+          },
+          "deferred_follow_up": {
+            "type": "string"
+          },
+          "closure_evidence_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "stop_escalate": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence_requirements": {
+      "type": "array",
+      "items": {
+        "$ref": "biziq://schemas/operational_evidence.schema.json"
+      }
+    },
+    "definition_of_done": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "criterion",
+          "evidence_ids"
+        ],
+        "properties": {
+          "criterion": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evidence_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "handoffs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "handoff_id",
+          "work_state",
+          "receiving_owner",
+          "next_action",
+          "acceptance_criteria",
+          "evidence_ids"
+        ],
+        "properties": {
+          "handoff_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "work_state": {
+            "type": "string",
+            "minLength": 1
+          },
+          "receiving_owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "next_action": {
+            "type": "string",
+            "minLength": 1
+          },
+          "acceptance_criteria": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "evidence_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "deadline_or_commitment": {
+            "type": "string"
+          },
+          "open_risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "kpis": {
+      "type": "array",
+      "items": {
+        "$ref": "biziq://schemas/kpi_definition.schema.json"
+      }
+    },
+    "validation_plan": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "unknowns": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "extensions": {
+      "type": "object"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "authority_class": {
+            "enum": [
+              "VERIFIED_ORGANIZATION_PROCEDURE",
+              "EXTERNAL_AUTHORITATIVE_REQUIREMENT"
+            ]
+          }
+        },
+        "required": [
+          "authority_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "authority_sources": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "authority_class": {
+            "const": "MIXED"
+          }
+        },
+        "required": [
+          "authority_class"
+        ]
+      },
+      "then": {
+        "properties": {
+          "authority_map": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "approval_state": {
+            "enum": [
+              "APPROVED",
+              "EFFECTIVE"
+            ]
+          }
+        },
+        "required": [
+          "approval_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "approver",
+          "approval_evidence"
+        ],
+        "properties": {
+          "approval_evidence": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "approval_state": {
+            "const": "EFFECTIVE"
+          }
+        },
+        "required": [
+          "approval_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "effective_date"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "approval_state": {
+            "const": "SUPERSEDED"
+          }
+        },
+        "required": [
+          "approval_state"
+        ]
+      },
+      "then": {
+        "required": [
+          "superseded_by"
+        ]
+      }
+    }
+  ]
+}
