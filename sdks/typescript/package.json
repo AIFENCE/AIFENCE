@@ -27,12 +27,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agentdance/agentdance.git",
+    "url": "git+https://github.com/AIFENCE/AIFENCE.git",
     "directory": "sdks/typescript"
   },
-  "homepage": "https://github.com/agentdance/agentdance#readme",
+  "homepage": "https://github.com/AIFENCE/AIFENCE#readme",
   "bugs": {
-    "url": "https://github.com/agentdance/agentdance/issues"
+    "url": "https://github.com/AIFENCE/AIFENCE/issues"
   },
   "keywords": [
     "ai-agents",

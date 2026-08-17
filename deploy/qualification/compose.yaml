@@ -102,8 +102,8 @@ services:
     environment: &runtime
       AGENTDANCE_ENVIRONMENT: staging
       AGENTDANCE_PUBLIC_BASE_URL: https://agentdance:8080
-      AGENTDANCE_SOURCE_CODE_URL: https://github.com/agentdance/agentdance/tree/v1.0.0-rc.5
-      AGENTDANCE_COMMERCIAL_LICENSE_URL: https://github.com/agentdance/agentdance/blob/main/COMMERCIAL-LICENSE.md
+      AGENTDANCE_SOURCE_CODE_URL: https://github.com/AIFENCE/AIFENCE/tree/v1.0.0-rc.5
+      AGENTDANCE_COMMERCIAL_LICENSE_URL: https://github.com/AIFENCE/AIFENCE/blob/main/COMMERCIAL-LICENSE.md
       AGENTDANCE_DATABASE_URL: postgresql+psycopg://agentdance_app:qualification-only@postgres:5432/agentdance
       AGENTDANCE_RUNTIME_ROLE: control-plane
       AGENTDANCE_AUTO_CREATE_SCHEMA: "false"

@@ -149,6 +149,11 @@ def create_app(settings: CoreSettings | None = None) -> FastAPI:
             "ready": True,
             "version": __version__,
             "subsystems": [name for name, _ in subsystems],
+            "region": settings.region or None,
+            "region_role": settings.region_role,
+            # A standby region is healthy but must not be sent write traffic;
+            # load balancers key on this rather than on readiness alone.
+            "accepts_writes": settings.region_role == "active",
         }
 
     @app.get("/metrics", include_in_schema=False)
@@ -164,12 +169,24 @@ def create_app(settings: CoreSettings | None = None) -> FastAPI:
     app.state.subsystems = registered
 
     # --- the fence flow: the three tiers as one logical pipeline ---
+    from .bus.transport import build_transport
     from .flow import FlowBreakers
     from .flow import router as fence_router
 
     app.state.flow_breakers = FlowBreakers.from_settings(settings)
+    # Optional broker fan-out for committed handoffs; "none" by default.
+    app.state.bus_transport = build_transport(
+        settings.bus_transport,
+        url=settings.bus_transport_url,
+        topic=settings.bus_transport_topic,
+    )
     ctx.add_lifespan_hook(_noop, _closer(app.state.flow_breakers))
+    ctx.add_lifespan_hook(_noop, _closer(app.state.bus_transport))
     app.include_router(fence_router)
+
+    from .console import router as console_router
+
+    app.include_router(console_router)
     _install_tier_handler(app)
 
     # Build the whole schema once, now that every subsystem has registered its

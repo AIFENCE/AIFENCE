@@ -48,8 +48,8 @@ class Settings:
     bind_host: str = "0.0.0.0"
     bind_port: int = 8080
     public_base_url: str = "http://localhost:8080"
-    source_code_url: str = "https://github.com/agentdance/agentdance"
-    commercial_license_url: str = "https://github.com/agentdance/agentdance/blob/main/COMMERCIAL-LICENSE.md"
+    source_code_url: str = "https://github.com/AIFENCE/AIFENCE"
+    commercial_license_url: str = "https://github.com/AIFENCE/AIFENCE/blob/main/COMMERCIAL-LICENSE.md"
     database_url: str = "sqlite+pysqlite:///./agentdance.db"
     db_pool_size: int = 20
     db_max_overflow: int = 20
@@ -184,8 +184,8 @@ class Settings:
             bind_host=os.getenv("AGENTDANCE_BIND_HOST", "0.0.0.0"),
             bind_port=_int("AGENTDANCE_BIND_PORT", 8080),
             public_base_url=os.getenv("AGENTDANCE_PUBLIC_BASE_URL", "http://localhost:8080"),
-            source_code_url=os.getenv("AGENTDANCE_SOURCE_CODE_URL", "https://github.com/agentdance/agentdance"),
-            commercial_license_url=os.getenv("AGENTDANCE_COMMERCIAL_LICENSE_URL", "https://github.com/agentdance/agentdance/blob/main/COMMERCIAL-LICENSE.md"),
+            source_code_url=os.getenv("AGENTDANCE_SOURCE_CODE_URL", "https://github.com/AIFENCE/AIFENCE"),
+            commercial_license_url=os.getenv("AGENTDANCE_COMMERCIAL_LICENSE_URL", "https://github.com/AIFENCE/AIFENCE/blob/main/COMMERCIAL-LICENSE.md"),
             database_url=_secret_value(
                 "AGENTDANCE_DATABASE_URL", "AGENTDANCE_DATABASE_URL_FILE",
                 "sqlite+pysqlite:///./agentdance.db"

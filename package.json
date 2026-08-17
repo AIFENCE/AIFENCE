@@ -2,11 +2,15 @@
   "name": "aifence",
   "version": "0.1.0",
   "private": true,
-  "description": "AIFENCE monorepo root — delegates Node tasks to the vendored BizIQ quality subsystem.",
+  "description": "AIFENCE monorepo \u2014 unified control plane, quality-control pack, SDKs and documentation wiki.",
   "scripts": {
     "quality:build": "npm --prefix quality run build",
     "quality:test": "npm --prefix quality test",
-    "quality:setup": "npm --prefix quality install"
+    "quality:setup": "npm --prefix quality install",
+    "docs:build": "node tooling/build-wiki.mjs",
+    "docs:check": "node tooling/build-wiki.mjs && node tooling/check-wiki-links.mjs",
+    "docs:api": "python tooling/generate-api-docs.py",
+    "docs:serve": "node tooling/build-wiki.mjs && npx --yes http-server site -p 4173 -c-1"
   },
   "engines": {
     "node": ">=20"

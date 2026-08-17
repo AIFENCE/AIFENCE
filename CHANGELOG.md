@@ -91,6 +91,27 @@ governed flow across three tiers — quality, enforcement, and semantic transpor
   the receipt's `degraded_tiers`, and a bus outage reports
   `authorized_not_delivered` rather than claiming a handoff that never happened.
 
+### Scale and operations
+- **Pluggable bus transports** (`aifence.bus.transport`): optional fan-out of
+  committed handoffs to Redis Streams, Kafka or RabbitMQ behind the `redis`,
+  `kafka` and `rabbitmq` extras, with an in-memory transport for tests and `none`
+  as the default. Publication happens after the durable commit and carries only
+  message identity and routing metadata — never semantic content — so a broker
+  outage is reported in the receipt's `fanout` field instead of failing the
+  request or faking a delivery. An unknown backend fails at startup rather than
+  silently disabling fan-out.
+- **Operator console** at `/v1/console/` (HTML) and `/v1/console/status` (JSON):
+  live handoff counts by status, pending approvals, circuit-breaker states,
+  subsystem, transport and quality-registry status. Server-rendered with no
+  inline script so it satisfies the strict CSP, and authenticated with the same
+  API-key identity as the rest of the fence (`decisions:read`).
+- **Multi-region topology**: `AIFENCE_REGION` / `AIFENCE_REGION_ROLE` describe an
+  active/standby pair. A standby refuses durable worker roles at startup, the
+  Helm chart does not render workers or the migration job outside the active
+  region, and `/health/ready` publishes `accepts_writes` so a global load
+  balancer can route writes to exactly one region. Failover is documented in
+  [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+
 ### Known follow-ups
 - Fourteen named modules remain outside strict `mypy` (see the override in
   `pyproject.toml`); their errors come from untyped SQLAlchemy/boto3/MCP surfaces

@@ -4,6 +4,9 @@
 gating, security enforcement, and semantic transport — into a single control
 plane with one identity model, one audit chain, and one telemetry pipeline.
 
+📖 **[Documentation wiki](https://aifence.github.io/AIFENCE/)** — architecture,
+per-tier reference, API, configuration, deployment and glossary.
+
 | Tier | Package | Responsibility |
 | --- | --- | --- |
 | **Quality** | `aifence.quality` | Gate AI-generated artifacts/work against production quality controls. *How good the output is.* |
@@ -45,6 +48,8 @@ src/aifence/
   quality/      quality-gate bridge (router at /v1/quality)
   flow.py       the fence flow (/v1/fence): quality → guard → bus
   security.py   shared API-key identity for the composed routers
+  resilience.py per-tier latency budgets and circuit breakers
+  console.py    operator dashboard (/v1/console)
 quality/        quality-control source pack + Node builder
 sdks/           Python, TypeScript and Go clients + framework hooks
 deploy/helm/    production Helm chart (control plane + worker roles)
@@ -60,6 +65,9 @@ runs end to end.** The whole test suite is green and the tree is always runnable
 - **Guard** (`aifence.guard`) — enforcement plane mounted at `/guard`, sharing the core engine + `Base`.
 - **Bus** (`aifence.bus`) — semantic transport mounted at `/bus`, on the shared database.
 - **Fence flow** (`aifence.flow`) — `/v1/fence`, wiring the three tiers into one governed pipeline.
+- **Fence resilience** — per-tier latency budgets and circuit breakers; fail-closed by default.
+- **Operator console** (`/v1/console`) — live handoff, approval, breaker and subsystem status.
+- **Multi-region** — active/standby topology with startup, chart and load-balancer guardrails.
 - **Unified shell** — one `pyproject`, `Makefile`, Alembic history, Docker/compose, CI, OpenAPI, and license.
 
 ### The fence flow in action
@@ -101,10 +109,26 @@ make test
 
 Configuration uses the `AIFENCE_` environment prefix (a small set of legacy
 variable names is also honored for backward compatibility). See
-[`docs/CONFIGURATION.md`](docs/CONFIGURATION.md) and
-[`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+[`docs/configuration.md`](docs/configuration.md) and
+[`docs/architecture.md`](docs/architecture.md).
+
+### Documentation
+
+The wiki is generated from `docs/*.md` — edit the Markdown, never `site/`:
+
+```bash
+npm run docs:check     # build + verify every internal link
+npm run docs:serve     # preview at http://127.0.0.1:4173
+npm run docs:api       # regenerate the API reference from OpenAPI
+```
+
+Pushing to `main` publishes it to GitHub Pages.
 
 ## License
 
 AIFENCE is dual-licensed under **AGPL-3.0-or-later** or a separate
 **commercial license**. See [LICENSING.md](LICENSING.md).
+
+## Security
+
+Report vulnerabilities privately — see [SECURITY.md](SECURITY.md).

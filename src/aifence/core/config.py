@@ -20,6 +20,9 @@ from urllib.parse import urlparse
 from .env import env_bool, env_csv, env_float, env_int, env_secret, env_str
 
 VALID_ENVIRONMENTS = {"development", "test", "staging", "production"}
+#: Roles that write durably and must run in exactly one region at a time.
+_DURABLE_WORKER_ROLES = {"dispatcher", "lifecycle", "anchor"}
+
 VALID_RUNTIME_ROLES = {
     "control-plane",
     "dispatcher",
@@ -43,9 +46,9 @@ class CoreSettings:
     bind_host: str = "0.0.0.0"
     bind_port: int = 8080
     public_base_url: str = "http://localhost:8080"
-    source_code_url: str = "https://github.com/NeuralBinary/AIFENCE"
+    source_code_url: str = "https://github.com/AIFENCE/AIFENCE"
     commercial_license_url: str = (
-        "https://github.com/NeuralBinary/AIFENCE/blob/main/COMMERCIAL-LICENSE.md"
+        "https://github.com/AIFENCE/AIFENCE/blob/main/COMMERCIAL-LICENSE.md"
     )
     docs_enabled: bool = True
     allowed_origins: tuple[str, ...] = ()
@@ -73,6 +76,18 @@ class CoreSettings:
     #: Tiers permitted to fail open, as CSV. Only "quality" and "bus" are honored.
     flow_fail_open_tiers: tuple[str, ...] = ()
 
+    # Multi-region topology. A standby region serves reads and stays ready to be
+    # promoted, but must not run durable workers against a replica database.
+    region: str = ""
+    #: "active" or "standby". Standby suppresses durable worker roles.
+    region_role: str = "active"
+
+    # Optional broker fan-out for committed handoffs. The durable bus remains the
+    # source of truth; a transport is an accelerator, never the delivery guarantee.
+    bus_transport: str = "none"
+    bus_transport_url: str = ""
+    bus_transport_topic: str = "aifence.handoffs"
+
     extra: dict[str, Any] = field(default_factory=dict)
 
     @classmethod
@@ -96,12 +111,12 @@ class CoreSettings:
                 legacy=("AGENTDANCE_PUBLIC_BASE_URL",),
             ),
             source_code_url=env_str(
-                "AIFENCE_SOURCE_CODE_URL", "https://github.com/NeuralBinary/AIFENCE",
+                "AIFENCE_SOURCE_CODE_URL", "https://github.com/AIFENCE/AIFENCE",
                 legacy=("AGENTDANCE_SOURCE_CODE_URL",),
             ),
             commercial_license_url=env_str(
                 "AIFENCE_COMMERCIAL_LICENSE_URL",
-                "https://github.com/NeuralBinary/AIFENCE/blob/main/COMMERCIAL-LICENSE.md",
+                "https://github.com/AIFENCE/AIFENCE/blob/main/COMMERCIAL-LICENSE.md",
                 legacy=("AGENTDANCE_COMMERCIAL_LICENSE_URL",),
             ),
             docs_enabled=env_bool(
@@ -141,6 +156,11 @@ class CoreSettings:
             flow_failure_threshold=env_int("AIFENCE_FLOW_FAILURE_THRESHOLD", 5),
             flow_recovery_seconds=env_float("AIFENCE_FLOW_RECOVERY_SECONDS", 30.0),
             flow_fail_open_tiers=env_csv("AIFENCE_FLOW_FAIL_OPEN_TIERS"),
+            region=env_str("AIFENCE_REGION", ""),
+            region_role=env_str("AIFENCE_REGION_ROLE", "active").lower(),
+            bus_transport=env_str("AIFENCE_BUS_TRANSPORT", "none").lower(),
+            bus_transport_url=env_secret("AIFENCE_BUS_TRANSPORT_URL"),
+            bus_transport_topic=env_str("AIFENCE_BUS_TRANSPORT_TOPIC", "aifence.handoffs"),
         )
         settings.validate()
         return settings
@@ -178,6 +198,22 @@ class CoreSettings:
             raise ValueError("AIFENCE_FLOW_FAILURE_THRESHOLD must be at least 1")
         if self.flow_recovery_seconds < 0:
             raise ValueError("AIFENCE_FLOW_RECOVERY_SECONDS cannot be negative")
+        if self.region_role not in {"active", "standby"}:
+            raise ValueError("AIFENCE_REGION_ROLE must be 'active' or 'standby'")
+        if self.region_role == "standby" and self.runtime_role in _DURABLE_WORKER_ROLES:
+            # A standby region points at a read replica; running a durable worker
+            # there would either fail on write or split-brain the active region.
+            raise ValueError(
+                f"a standby region cannot run the '{self.runtime_role}' worker role"
+            )
+        if self.environment == "production" and self.region_role == "standby" and self.auto_create_schema:
+            raise ValueError("a standby region must not auto-create schema")
+        if self.bus_transport not in {"none", "null", "memory", "redis", "kafka", "rabbitmq"}:
+            raise ValueError(
+                "AIFENCE_BUS_TRANSPORT must be none, memory, redis, kafka or rabbitmq"
+            )
+        if self.bus_transport in {"redis", "kafka", "rabbitmq"} and not self.bus_transport_url:
+            raise ValueError(f"the {self.bus_transport} transport requires AIFENCE_BUS_TRANSPORT_URL")
         unknown = set(self.flow_fail_open_tiers) - {"quality", "bus"}
         if unknown:
             # Naming "guard" here is a configuration error, not a silent no-op:

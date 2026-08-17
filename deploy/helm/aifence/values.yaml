@@ -83,10 +83,17 @@ serviceAccount:
   annotations: {}
   name: ""
 
+# Multi-region topology. Exactly one region may be "active": it owns the
+# writable database and runs the durable workers. A "standby" region serves
+# reads from a replica, stays warm, and refuses durable worker roles.
+region:
+  name: ""
+  role: active
+
 environment:
   publicBaseUrl: ""
-  sourceCodeUrl: "https://github.com/aifence/aifence"
-  commercialLicenseUrl: "https://github.com/aifence/aifence/blob/main/COMMERCIAL-LICENSE.md"
+  sourceCodeUrl: "https://github.com/AIFENCE/AIFENCE"
+  commercialLicenseUrl: "https://github.com/AIFENCE/AIFENCE/blob/main/COMMERCIAL-LICENSE.md"
   signingKeyId: aifence-signing-v1
   apiKeyPepperId: pepper-v1
   allowedOrigins: []

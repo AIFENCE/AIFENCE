@@ -150,6 +150,7 @@ def _run_bus(req: FenceRequest, request: Request) -> dict[str, Any]:
     from .bus.bus import SemanticBus
     from .bus.compiler import compile_content
     from .bus.config import get_settings as bus_settings
+    from .bus.transport import HandoffEvent, publish_safely
 
     session_factory = request.app.state.session_factory
     units = compile_content(req.artifact)
@@ -166,6 +167,21 @@ def _run_bus(req: FenceRequest, request: Request) -> dict[str, Any]:
         message_id = message.id
         wire_bytes = message.wire_bytes
         strategy = message.strategy
+        workspace = message.workspace
+    # Fan out only after the durable commit, so a broker outage can never
+    # invent a delivery that was not persisted.
+    fanout = publish_safely(
+        request.app.state.bus_transport,
+        HandoffEvent(
+            message_id=message_id,
+            receiver=req.receiver,
+            sender="aifence-fence",
+            workspace=workspace,
+            correlation_id=getattr(request.state, "request_id", None),
+            wire_bytes=wire_bytes,
+            strategy=strategy,
+        ),
+    )
     return {
         "tier": "bus",
         "receiver": req.receiver,
@@ -176,6 +192,7 @@ def _run_bus(req: FenceRequest, request: Request) -> dict[str, Any]:
         "raw_bytes": raw_bytes,
         "wire_bytes": wire_bytes,
         "content_ref": f"aifence:sha256:{digest}",
+        "fanout": fanout,
     }
 
 

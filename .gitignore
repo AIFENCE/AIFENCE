@@ -27,3 +27,6 @@ quality/dist/
 # OS
 .DS_Store
 Thumbs.db
+
+# Generated documentation wiki (build with: npm run docs:build)
+/site/

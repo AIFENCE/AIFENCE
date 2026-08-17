@@ -59,6 +59,10 @@ spec:
               value: production
             - name: AIFENCE_RUNTIME_ROLE
               value: control-plane
+            - name: AIFENCE_REGION
+              value: {{ .Values.region.name | quote }}
+            - name: AIFENCE_REGION_ROLE
+              value: {{ .Values.region.role | quote }}
             - name: AIFENCE_PUBLIC_BASE_URL
               value: {{ required "environment.publicBaseUrl is required" .Values.environment.publicBaseUrl | quote }}
             - name: AIFENCE_GUARD_SOURCE_CODE_URL

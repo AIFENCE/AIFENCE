@@ -1,6 +1,8 @@
 # SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
-{{- if .Values.migrationJob.enabled }}
+# Durable writers run only in the active region: a standby points at a read
+# replica, so rendering these there would fail on write or split-brain.
+{{- if and .Values.migrationJob.enabled (eq .Values.region.role "active") }}
 apiVersion: batch/v1
 kind: Job
 metadata:
