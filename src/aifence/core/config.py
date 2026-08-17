@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 from typing import Any
 from urllib.parse import urlparse
 
-from .env import env_bool, env_csv, env_int, env_secret, env_str
+from .env import env_bool, env_csv, env_float, env_int, env_secret, env_str
 
 VALID_ENVIRONMENTS = {"development", "test", "staging", "production"}
 VALID_RUNTIME_ROLES = {
@@ -62,6 +62,16 @@ class CoreSettings:
     otel_service_name: str = "aifence"
     otel_exporter_otlp_endpoint: str = ""
     metrics_public: bool = False
+
+    # Fence flow resilience. Guard is fail-closed and cannot be opened: an
+    # unavailable enforcement tier must never become an open door.
+    flow_quality_timeout_seconds: float = 5.0
+    flow_guard_timeout_seconds: float = 5.0
+    flow_bus_timeout_seconds: float = 10.0
+    flow_failure_threshold: int = 5
+    flow_recovery_seconds: float = 30.0
+    #: Tiers permitted to fail open, as CSV. Only "quality" and "bus" are honored.
+    flow_fail_open_tiers: tuple[str, ...] = ()
 
     extra: dict[str, Any] = field(default_factory=dict)
 
@@ -125,6 +135,12 @@ class CoreSettings:
                 legacy=("AGENTDANCE_OTEL_EXPORTER_OTLP_ENDPOINT",),
             ),
             metrics_public=env_bool("AIFENCE_METRICS_PUBLIC", False, legacy=("SAGE_METRICS_PUBLIC",)),
+            flow_quality_timeout_seconds=env_float("AIFENCE_FLOW_QUALITY_TIMEOUT_SECONDS", 5.0),
+            flow_guard_timeout_seconds=env_float("AIFENCE_FLOW_GUARD_TIMEOUT_SECONDS", 5.0),
+            flow_bus_timeout_seconds=env_float("AIFENCE_FLOW_BUS_TIMEOUT_SECONDS", 10.0),
+            flow_failure_threshold=env_int("AIFENCE_FLOW_FAILURE_THRESHOLD", 5),
+            flow_recovery_seconds=env_float("AIFENCE_FLOW_RECOVERY_SECONDS", 30.0),
+            flow_fail_open_tiers=env_csv("AIFENCE_FLOW_FAIL_OPEN_TIERS"),
         )
         settings.validate()
         return settings
@@ -151,3 +167,22 @@ class CoreSettings:
             parsed = urlparse(value)
             if parsed.scheme not in {"http", "https"} or not parsed.netloc:
                 raise ValueError(f"{label} must be an absolute HTTP(S) URL")
+        for timeout in (
+            self.flow_quality_timeout_seconds,
+            self.flow_guard_timeout_seconds,
+            self.flow_bus_timeout_seconds,
+        ):
+            if timeout <= 0:
+                raise ValueError("fence flow timeouts must be positive")
+        if self.flow_failure_threshold < 1:
+            raise ValueError("AIFENCE_FLOW_FAILURE_THRESHOLD must be at least 1")
+        if self.flow_recovery_seconds < 0:
+            raise ValueError("AIFENCE_FLOW_RECOVERY_SECONDS cannot be negative")
+        unknown = set(self.flow_fail_open_tiers) - {"quality", "bus"}
+        if unknown:
+            # Naming "guard" here is a configuration error, not a silent no-op:
+            # the enforcement tier must never be allowed to fail open.
+            raise ValueError(
+                "AIFENCE_FLOW_FAIL_OPEN_TIERS may only contain 'quality' or 'bus'; "
+                f"rejected: {sorted(unknown)}"
+            )

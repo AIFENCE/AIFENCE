@@ -5,7 +5,7 @@ from __future__ import annotations
 import hashlib
 import secrets
 from datetime import UTC, datetime, timedelta
-from typing import Any
+from typing import Any, cast
 
 import jwt
 from sqlalchemy import select
@@ -73,8 +73,8 @@ def issue_capability(
         raise AuthorizationError("decision is too old for capability issuance")
 
     tool, operation, resource, arguments = bound_action(decision)
-    policy_ttl = int(decision.constraints.get("capability_ttl_seconds", 60))
-    policy_max_uses = int(decision.constraints.get("max_capability_uses", 1))
+    policy_ttl = int(cast(int, decision.constraints.get("capability_ttl_seconds", 60)))
+    policy_max_uses = int(cast(int, decision.constraints.get("max_capability_uses", 1)))
     effective_max_uses = policy_max_uses if requested_max_uses is None else min(requested_max_uses, policy_max_uses)
     remaining_seconds = max(0, int((decision_deadline - now).total_seconds()))
     effective_ttl = min(lifetime_seconds, policy_ttl, remaining_seconds)

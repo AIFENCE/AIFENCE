@@ -2,8 +2,10 @@
 """Quality-tier HTTP surface: inspect quality controls and run the quality gate."""
 from __future__ import annotations
 
+from typing import Any
+
 from fastapi import APIRouter, Query
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from ..security import IdentityDep
 from .controls import load_controls, registry_summary
@@ -15,9 +17,21 @@ router = APIRouter(prefix="/v1/quality", tags=["quality"])
 
 
 class EvaluateRequest(BaseModel):
+    # "schema" shadows a BaseModel attribute, so it is aliased on the wire.
+    model_config = ConfigDict(populate_by_name=True)
+
     artifact: str = Field(..., description="The AI-generated artifact to gate.")
-    content_type: str = Field("text/plain", description="MIME type; enables markup-specific checks.")
+    content_type: str = Field("text/plain", description="MIME type; enables markup- and JSON-specific checks.")
     min_score: int = Field(70, ge=0, le=100, description="Minimum score to accept.")
+    schema_: dict[str, Any] | None = Field(
+        default=None,
+        alias="schema",
+        description="Optional JSON Schema the artifact must conform to.",
+    )
+    sources: list[str] | None = Field(
+        default=None,
+        description="Optional source material; numeric claims absent from it are reported as unsupported.",
+    )
 
 
 class ControlSummary(BaseModel):
@@ -57,5 +71,10 @@ def controls(
 @router.post("/evaluate", summary="Run the quality gate over an artifact")
 def evaluate(request: EvaluateRequest, identity: IdentityDep) -> dict[str, object]:
     gate = QualityGate(min_score=request.min_score)
-    decision = gate.evaluate(request.artifact, request.content_type)
+    decision = gate.evaluate(
+        request.artifact,
+        request.content_type,
+        schema=request.schema_,
+        sources=request.sources,
+    )
     return decision.to_dict()

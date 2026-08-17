@@ -8,7 +8,7 @@ import json
 import math
 from typing import Any, Literal, cast
 
-import msgpack  # type: ignore[import-untyped]
+import msgpack
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 SAGE_PROTOCOL = "sage/0.2"

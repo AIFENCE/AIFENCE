@@ -31,6 +31,31 @@ this reference focused on the current names.
 Secrets can be provided indirectly: for any secret-backed variable, setting
 `<NAME>_FILE` to a path reads the trimmed file contents.
 
+## Fence flow resilience
+
+Each tier of the flow runs under its own latency budget and circuit breaker.
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `AIFENCE_FLOW_QUALITY_TIMEOUT_SECONDS` | `5.0` | Latency budget for the quality gate. |
+| `AIFENCE_FLOW_GUARD_TIMEOUT_SECONDS` | `5.0` | Latency budget for enforcement. |
+| `AIFENCE_FLOW_BUS_TIMEOUT_SECONDS` | `10.0` | Latency budget for the durable handoff. |
+| `AIFENCE_FLOW_FAILURE_THRESHOLD` | `5` | Consecutive failures before a tier's breaker trips open. |
+| `AIFENCE_FLOW_RECOVERY_SECONDS` | `30.0` | How long a tripped breaker waits before probing the tier again. |
+| `AIFENCE_FLOW_FAIL_OPEN_TIERS` | *(empty)* | Tiers permitted to fail open (CSV). Only `quality` and `bus` are accepted. |
+
+**Every tier is fail-closed by default**: a tier that cannot produce a verdict
+within its budget causes the request to be refused with `503 tier_unavailable`.
+Listing a tier in `AIFENCE_FLOW_FAIL_OPEN_TIERS` makes it advisory instead — the
+flow continues, and the receipt names the tier in `degraded_tiers` so a
+degraded run is never mistaken for a clean one.
+
+`guard` **cannot** be made fail-open; naming it is rejected at startup rather
+than silently ignored, because an unavailable enforcement tier must never become
+an open door. When the bus tier fails open the receipt reports
+`authorized_not_delivered` rather than `handed_off`, so a handoff is never
+claimed that did not happen.
+
 ## Subsystem settings
 
 Each subsystem contributes its own configuration block:

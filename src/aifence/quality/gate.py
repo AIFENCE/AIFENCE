@@ -13,9 +13,11 @@ or ``reject`` (hard-fail on a mandatory control).
 """
 from __future__ import annotations
 
+import json
 import re
+from collections.abc import Sequence
 from dataclasses import dataclass, field
-from typing import Literal
+from typing import Any, Literal
 
 from .controls import controls_by_capability
 
@@ -32,6 +34,82 @@ _EMPTY_LINK_PATTERN = re.compile(
 )
 _EMPTY_MD_LINK_PATTERN = re.compile(r"\]\(\s*\)")
 _HEADING_OR_TAG = re.compile(r"(^#{1,6}\s)|(<h[1-6][\s>])|(<section|<article|<main)", re.IGNORECASE | re.MULTILINE)
+#: Numbers that read as factual claims: money, percentages, and multi-digit
+#: figures. Small bare integers are excluded — they are usually list indices,
+#: version fragments, or ordinary prose rather than sourced claims.
+_CLAIM_NUMBER = re.compile(r"(?<![\w.])(?:\$\s?)?\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+|\b\d{2,}\b")
+
+
+def _normalize_number(value: str) -> str:
+    return value.replace(",", "").replace("$", "").strip()
+
+
+def _ungrounded_numbers(text: str, sources: Sequence[str]) -> list[str]:
+    """Numeric claims in ``text`` that appear nowhere in ``sources``.
+
+    A deliberately conservative groundedness signal: it proves nothing about
+    prose accuracy, but an invented figure is the most common and most costly
+    fabrication in generated business artifacts, and it is checkable.
+    """
+    haystack = " ".join(sources)
+    normalized_haystack = _normalize_number(haystack)
+    unsupported: list[str] = []
+    for match in _CLAIM_NUMBER.finditer(text):
+        raw = match.group(0)
+        value = _normalize_number(raw)
+        if not value:
+            continue
+        if value in normalized_haystack or raw in haystack:
+            continue
+        if value not in unsupported:
+            unsupported.append(value)
+    return unsupported
+
+
+def _schema_violations(document: Any, schema: dict[str, Any]) -> list[str]:
+    """Validate against JSON Schema, degrading to a structural subset.
+
+    Full validation is used when ``jsonschema`` is installed (it ships with the
+    quality pack's validators). Otherwise the required-property and type subset
+    is enforced, so a missing contract field is still caught rather than the
+    check silently passing.
+    """
+    try:
+        import jsonschema
+    except ImportError:
+        return _structural_violations(document, schema)
+    validator = jsonschema.Draft202012Validator(schema)
+    return [
+        f"{'/'.join(str(p) for p in error.path) or '<root>'}: {error.message}"
+        for error in sorted(validator.iter_errors(document), key=lambda e: list(e.path))
+    ]
+
+
+_JSON_TYPES: dict[str, type | tuple[type, ...]] = {
+    "object": dict, "array": list, "string": str,
+    "integer": int, "number": (int, float), "boolean": bool,
+}
+
+
+def _structural_violations(document: Any, schema: dict[str, Any]) -> list[str]:
+    violations: list[str] = []
+    expected = schema.get("type")
+    if isinstance(expected, str) and expected in _JSON_TYPES:
+        if not isinstance(document, _JSON_TYPES[expected]) or (
+            expected in {"integer", "number"} and isinstance(document, bool)
+        ):
+            return [f"<root>: expected {expected}"]
+    if isinstance(document, dict):
+        for key in schema.get("required", []):
+            if key not in document:
+                violations.append(f"{key}: required property is missing")
+        for key, subschema in (schema.get("properties") or {}).items():
+            if key in document and isinstance(subschema, dict):
+                violations.extend(
+                    f"{key}/{v}" if not v.startswith("<root>") else f"{key}: {v.split(': ', 1)[-1]}"
+                    for v in _structural_violations(document[key], subschema)
+                )
+    return violations
 
 
 @dataclass(frozen=True)
@@ -80,11 +158,25 @@ class QualityGate:
     def __init__(self, min_score: int = 70) -> None:
         self.min_score = min_score
 
-    def evaluate(self, artifact: str, content_type: str = "text/plain") -> QualityDecision:
+    def evaluate(
+        self,
+        artifact: str,
+        content_type: str = "text/plain",
+        *,
+        schema: dict[str, Any] | None = None,
+        sources: Sequence[str] | None = None,
+    ) -> QualityDecision:
+        """Score an artifact.
+
+        ``schema`` enables JSON Schema conformance checking for structured
+        output; ``sources`` enables grounding — numeric claims that appear
+        nowhere in the supplied source material are reported as unsupported.
+        """
         checks: list[QualityCheck] = []
         text = artifact or ""
         stripped = text.strip()
         is_markup = content_type in {"text/html", "text/markdown"} or "html" in content_type
+        is_json = "json" in content_type
 
         # 1) Completeness — mandatory: an empty artifact fails hard.
         checks.append(
@@ -144,6 +236,61 @@ class QualityGate:
                     status="pass" if has_structure else "warn",
                     weight=10,
                     detail="structural landmarks present" if has_structure else "no headings/landmarks found",
+                )
+            )
+
+        # 6) Structured output must actually parse — mandatory for JSON artifacts.
+        parsed: Any = None
+        if is_json:
+            try:
+                parsed = json.loads(stripped) if stripped else None
+                json_error = None
+            except json.JSONDecodeError as exc:
+                json_error = f"line {exc.lineno} column {exc.colno}: {exc.msg}"
+            checks.append(
+                self._check(
+                    "json_validity",
+                    "controls.capability.artifact-format-constraints",
+                    status="fail" if json_error else "pass",
+                    weight=35,
+                    mandatory=True,
+                    detail=f"invalid JSON ({json_error})" if json_error else "valid JSON",
+                )
+            )
+
+        # 7) Schema conformance, when the caller supplies a contract.
+        if schema is not None and parsed is not None:
+            violations = _schema_violations(parsed, schema)
+            checks.append(
+                self._check(
+                    "schema_conformance",
+                    "controls.capability.artifact-contract-completeness",
+                    status="fail" if violations else "pass",
+                    weight=25,
+                    mandatory=True,
+                    detail="; ".join(violations[:5]) if violations else "conforms to the supplied schema",
+                )
+            )
+
+        # 8) Grounding — numeric claims must be traceable to the source material.
+        if sources:
+            unsupported = _ungrounded_numbers(text, sources)
+            # One stray figure is a warning; a cluster of unsourced numbers is
+            # fabrication, and weighted scoring alone would let it through.
+            fabricated = len(unsupported) > 2
+            checks.append(
+                self._check(
+                    "grounding",
+                    "controls.capability.truth-boundaries",
+                    status="fail" if fabricated else "warn" if unsupported else "pass",
+                    weight=20,
+                    mandatory=fabricated,
+                    detail=(
+                        f"{len(unsupported)} numeric claim(s) absent from sources: "
+                        + ", ".join(unsupported[:5])
+                        if unsupported
+                        else "all numeric claims appear in the sources"
+                    ),
                 )
             )
 

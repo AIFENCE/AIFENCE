@@ -43,6 +43,19 @@ governed flow across three tiers — quality, enforcement, and semantic transpor
   outside its sub-app renders as the correct status instead of a 500.
 
 ### Added
+- **Content-derived data classes.** `guard/content_classes.py` inspects the actual
+  payload for card numbers (Luhn-checked), national IDs, cloud/API credentials,
+  private keys, health terms and contact details, and feeds the observed classes
+  into the existing enforcement rules. Previously `data_classes` were purely
+  caller-declared, so an agent that under-declared escaped the exfiltration rule
+  entirely; undeclared sensitive content now also triggers a `redact_or_transform`
+  baseline rule. Only class names and counts are reported — never the matched values.
+- **Structured-output and grounding checks in the quality gate.** JSON artifacts
+  must parse; an optional JSON Schema is enforced (full validation with the
+  `quality` extra, a required-property/type subset without it); and when `sources`
+  are supplied, numeric claims absent from them are reported — a cluster of
+  unsourced figures fails the gate outright. Both are exposed on
+  `POST /v1/quality/evaluate` and the fence flow.
 - Initial Alembic revision covering the whole merged schema (66 tables), with a
   test asserting the migrations match the declared models and a single head.
 - Python, TypeScript and Go SDKs plus the production Helm chart, baseline policy
@@ -67,10 +80,18 @@ governed flow across three tiers — quality, enforcement, and semantic transpor
 - `ruff` and strict `mypy` both pass over the tree (117 source files, no issues).
 - All subsystems share one `ruff` configuration.
 
+### Resilience
+- **Per-tier latency budgets and circuit breakers** (`aifence.resilience`). Each
+  tier of the flow runs under its own timeout; repeated failures trip a breaker
+  that short-circuits the tier for a recovery window instead of spending the
+  budget on every request. Every tier is **fail-closed by default** — a tier that
+  cannot answer produces `503 tier_unavailable`. `quality` and `bus` can be made
+  advisory with `AIFENCE_FLOW_FAIL_OPEN_TIERS`; `guard` cannot, and naming it is
+  rejected at startup rather than silently ignored. Degraded runs are named in
+  the receipt's `degraded_tiers`, and a bus outage reports
+  `authorized_not_delivered` rather than claiming a handoff that never happened.
+
 ### Known follow-ups
-- The guard/bus subsystems still carry a documented `mypy` `ignore_errors`
-  override; their own upstream configs enforced strict typing.
-- The fixed-window rate-limit test can flake on a wall-clock minute boundary
-  (passes on retry).
-- No initial Alembic revision is committed yet: the merged schema is currently
-  built by `auto_create_schema`. Generate one before a production deploy.
+- Fourteen named modules remain outside strict `mypy` (see the override in
+  `pyproject.toml`); their errors come from untyped SQLAlchemy/boto3/MCP surfaces
+  rather than defects. The other 87 subsystem modules are checked strictly.

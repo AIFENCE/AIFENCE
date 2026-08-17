@@ -16,17 +16,52 @@ from __future__ import annotations
 
 import functools
 import hashlib
+from dataclasses import dataclass
 from typing import Any
 
 from fastapi import APIRouter, Request
 from pydantic import BaseModel, Field
 
+from .core.config import CoreSettings
+from .resilience import BreakerPolicy, CircuitBreaker, TierOutcome
 from .security import IdentityDep
 
 router = APIRouter(prefix="/v1/fence", tags=["fence"])
 
 #: Guard outcomes that permit the flow to continue to the bus handoff.
 _GUARD_PROCEED = {"allow", "allow_with_limits"}
+
+
+@dataclass
+class FlowBreakers:
+    """One circuit breaker per tier, built from application settings."""
+
+    quality: CircuitBreaker
+    guard: CircuitBreaker
+    bus: CircuitBreaker
+
+    @classmethod
+    def from_settings(cls, settings: CoreSettings) -> FlowBreakers:
+        fail_open = set(settings.flow_fail_open_tiers)
+
+        def policy(tier: str, timeout: float) -> BreakerPolicy:
+            return BreakerPolicy(
+                timeout_seconds=timeout,
+                failure_threshold=settings.flow_failure_threshold,
+                recovery_seconds=settings.flow_recovery_seconds,
+                # Guard is never openable; settings validation rejects it too.
+                paradigm="fail_open" if tier in fail_open and tier != "guard" else "fail_closed",
+            )
+
+        return cls(
+            quality=CircuitBreaker("quality", policy("quality", settings.flow_quality_timeout_seconds)),
+            guard=CircuitBreaker("guard", policy("guard", settings.flow_guard_timeout_seconds)),
+            bus=CircuitBreaker("bus", policy("bus", settings.flow_bus_timeout_seconds)),
+        )
+
+    def close(self) -> None:
+        for breaker in (self.quality, self.guard, self.bus):
+            breaker.close()
 
 
 class ActionModel(BaseModel):
@@ -56,6 +91,10 @@ class FenceRequest(BaseModel):
     principal: PrincipalModel = Field(default_factory=PrincipalModel)
     risk_score: int = Field(10, ge=0, le=100)
     min_quality_score: int = Field(70, ge=0, le=100)
+    sources: list[str] | None = Field(
+        default=None,
+        description="Optional source material; numeric claims absent from it are flagged as unsupported.",
+    )
 
 
 @functools.lru_cache(maxsize=1)
@@ -68,7 +107,9 @@ def _policy_engine() -> Any:
 def _run_quality(req: FenceRequest) -> dict[str, Any]:
     from .quality.gate import QualityGate
 
-    decision = QualityGate(min_score=req.min_quality_score).evaluate(req.artifact, req.content_type)
+    decision = QualityGate(min_score=req.min_quality_score).evaluate(
+        req.artifact, req.content_type, sources=req.sources
+    )
     return {"tier": "quality", **decision.to_dict()}
 
 
@@ -138,41 +179,62 @@ def _run_bus(req: FenceRequest, request: Request) -> dict[str, Any]:
     }
 
 
+def _degraded_stage(tier: str, outcome: TierOutcome[Any]) -> dict[str, Any]:
+    """Record a tier that was skipped or failed while the flow continued."""
+    return {
+        "tier": tier,
+        "degraded": True,
+        "reason": outcome.reason,
+        "breaker_state": outcome.state,
+        "detail": f"{tier} tier failed open by policy",
+    }
+
+
 @router.post("/submit", summary="Run an artifact through the full quality→guard→bus fence")
 def submit(req: FenceRequest, request: Request, identity: IdentityDep) -> dict[str, Any]:
     # Submitting to the fence performs a policy decision and a durable handoff,
     # so it requires the same credential guard requires for a direct decision.
     identity.require("decisions:write")
     request_id = getattr(request.state, "request_id", None)
+    breakers: FlowBreakers = request.app.state.flow_breakers
     stages: dict[str, Any] = {}
+    degraded: list[str] = []
 
-    quality = _run_quality(req)
-    stages["quality"] = quality
-    if not quality["passed"]:
+    def receipt(final_outcome: str, *, allowed: bool) -> dict[str, Any]:
         return {
             "request_id": request_id,
             "tenant_id": identity.tenant_id,
-            "allowed": False,
-            "final_outcome": "blocked_by_quality",
+            "allowed": allowed,
+            "final_outcome": final_outcome,
+            "degraded_tiers": degraded,
             "stages": stages,
         }
 
-    guard = _run_guard(req)
-    stages["guard"] = guard
-    if guard["outcome"] not in _GUARD_PROCEED:
-        return {
-            "request_id": request_id,
-            "tenant_id": identity.tenant_id,
-            "allowed": False,
-            "final_outcome": "blocked_by_guard",
-            "stages": stages,
-        }
+    # Each tier runs under its own latency budget and breaker. A fail-closed tier
+    # that cannot answer raises TierUnavailable, which surfaces as 503 rather
+    # than letting the request through unchecked.
+    quality_result = breakers.quality.call(lambda: _run_quality(req))
+    if quality_result.ok and quality_result.value is not None:
+        stages["quality"] = quality_result.value
+        if not quality_result.value["passed"]:
+            return receipt("blocked_by_quality", allowed=False)
+    else:
+        stages["quality"] = _degraded_stage("quality", quality_result)
+        degraded.append("quality")
 
-    stages["bus"] = _run_bus(req, request)
-    return {
-        "request_id": request_id,
-        "tenant_id": identity.tenant_id,
-        "allowed": True,
-        "final_outcome": "handed_off",
-        "stages": stages,
-    }
+    guard_result = breakers.guard.call(lambda: _run_guard(req))
+    # Guard is always fail-closed, so reaching here means it answered.
+    guard_stage = guard_result.value or {}
+    stages["guard"] = guard_stage
+    if guard_stage.get("outcome") not in _GUARD_PROCEED:
+        return receipt("blocked_by_guard", allowed=False)
+
+    bus_result = breakers.bus.call(lambda: _run_bus(req, request))
+    if bus_result.ok and bus_result.value is not None:
+        stages["bus"] = bus_result.value
+        return receipt("handed_off", allowed=True)
+    stages["bus"] = _degraded_stage("bus", bus_result)
+    degraded.append("bus")
+    # The action was authorized but not delivered; say so rather than implying
+    # a handoff that never happened.
+    return receipt("authorized_not_delivered", allowed=True)

@@ -244,7 +244,7 @@ class VaultTransitSigningKey:
         return self._public_pem
 
 
-def build_signing_provider(settings) -> SigningProvider:
+def build_signing_provider(settings: Any) -> SigningProvider:
     if settings.signing_backend == "local":
         return SigningKey.load(
             settings.signing_private_key_file, settings.signing_public_key_file, settings.signing_key_id

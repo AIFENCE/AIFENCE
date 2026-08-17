@@ -30,7 +30,7 @@ def configure_telemetry(app: object, engine: Engine, settings: Settings) -> None
     provider.add_span_processor(BatchSpanProcessor(exporter))
     trace.set_tracer_provider(provider)
     FastAPIInstrumentor.instrument_app(
-        app,  # type: ignore[arg-type]
+        app,
         excluded_urls="/health/live,/health/ready,/internal/health/ready,/internal/metrics",
     )
     SQLAlchemyInstrumentor().instrument(engine=engine)

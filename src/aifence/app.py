@@ -15,9 +15,10 @@ from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import AsyncExitStack, asynccontextmanager
 from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
+from fastapi.responses import JSONResponse
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from starlette.routing import Mount
 
@@ -43,6 +44,37 @@ def _guarded(shutdown: Callable[[], Awaitable[None]]) -> Callable[[], Awaitable[
             _logger.exception("subsystem shutdown hook failed")
 
     return run
+
+
+async def _noop() -> None:
+    return None
+
+
+def _closer(resource: Any) -> Callable[[], Awaitable[None]]:
+    async def close() -> None:
+        resource.close()
+
+    return close
+
+
+def _install_tier_handler(app: FastAPI) -> None:
+    """Render a fail-closed tier outage as 503 rather than a 500."""
+    from .resilience import TierUnavailable
+
+    @app.exception_handler(TierUnavailable)
+    async def _tier_unavailable(request: Request, exc: TierUnavailable) -> JSONResponse:
+        return JSONResponse(
+            status_code=503,
+            headers={"Retry-After": "5"},
+            content={
+                "error": {
+                    "code": "tier_unavailable",
+                    "message": str(exc),
+                    "details": {"tier": exc.tier, "reason": exc.reason},
+                    "request_id": getattr(request.state, "request_id", None),
+                }
+            },
+        )
 
 
 def create_app(settings: CoreSettings | None = None) -> FastAPI:
@@ -132,9 +164,13 @@ def create_app(settings: CoreSettings | None = None) -> FastAPI:
     app.state.subsystems = registered
 
     # --- the fence flow: the three tiers as one logical pipeline ---
+    from .flow import FlowBreakers
     from .flow import router as fence_router
 
+    app.state.flow_breakers = FlowBreakers.from_settings(settings)
+    ctx.add_lifespan_hook(_noop, _closer(app.state.flow_breakers))
     app.include_router(fence_router)
+    _install_tier_handler(app)
 
     # Build the whole schema once, now that every subsystem has registered its
     # models against the one shared Base. Done eagerly (not only in the lifespan)

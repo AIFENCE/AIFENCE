@@ -7,6 +7,7 @@ import re
 from collections.abc import Iterable
 from urllib.parse import urlparse
 
+from .content_classes import classify_all
 from .models import Agent
 from .schemas import DecisionRequest, Finding
 
@@ -209,8 +210,41 @@ def run_detectors(request: DecisionRequest, registered_agent: Agent | None) -> l
             )
         )
 
+    # Data classes are caller-declared, so classify the payload itself: an agent
+    # that under-declares must not thereby escape the exfiltration rules.
+    observed_counts = classify_all(
+        [request.security_context.content or "", *_flatten_strings(request.action.arguments)]
+    )
+    observed = set(observed_counts)
+    undeclared = (observed & _SENSITIVE_CLASSES) - set(request.security_context.data_classes)
+    if undeclared:
+        findings.append(
+            _finding(
+                "content-classifier",
+                "data.undeclared_sensitive",
+                "high",
+                0.9,
+                "Content contains sensitive data classes the caller did not declare",
+                # Counts only: the matched values are the sensitive data.
+                data_classes=sorted(undeclared),
+                observed_counts={k: observed_counts[k] for k in sorted(undeclared)},
+            )
+        )
+    if observed & {"credential", "secret"}:
+        findings.append(
+            _finding(
+                "content-classifier",
+                "data.secret_exposure",
+                "critical",
+                0.93,
+                "Credential or private key material was detected in the request content",
+                data_classes=sorted(observed & {"credential", "secret"}),
+            )
+        )
+
     destination = request.security_context.network_destination
-    sensitive = set(request.security_context.data_classes).intersection(_SENSITIVE_CLASSES)
+    declared = set(request.security_context.data_classes)
+    sensitive = (declared | observed) & _SENSITIVE_CLASSES
     if destination and sensitive and not _is_private_destination(destination):
         findings.append(
             _finding(

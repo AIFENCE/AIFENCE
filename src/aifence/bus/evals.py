@@ -7,7 +7,7 @@ import gzip
 import json
 from typing import Any
 
-import msgpack  # type: ignore[import-untyped]
+import msgpack
 from sqlalchemy.orm import Session
 
 from .codec import SageCodec

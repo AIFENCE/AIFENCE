@@ -42,6 +42,9 @@ postgres = ["psycopg[binary]>=3.3.4,<4"]
 s3 = ["boto3>=1.43.18,<2"]
 mcp = ["mcp>=1.9,<2"]
 bench = ["tiktoken>=0.13,<1"]
+# Full JSON Schema validation in the quality gate; without it the gate falls
+# back to a required-property and type subset rather than skipping the check.
+quality = ["jsonschema>=4.26,<5"]
 otel = [
   "opentelemetry-api>=1.44,<2",
   "opentelemetry-sdk>=1.44,<2",
@@ -100,16 +103,40 @@ strict = true
 warn_unused_ignores = true
 mypy_path = "src"
 
-# Vendored subsystem ports are not yet under the unified strict-typing gate
-# (tracked follow-up); their own upstream configs enforced strict typing.
+# Strict typing applies to the whole package. These specific modules are the
+# exception: their remaining errors come from untyped third-party surfaces, not
+# from defects — SQLAlchemy Core/declarative constructs mypy cannot narrow
+# (Result.rowcount, Base column attributes, dialect-specific Insert), the boto3
+# client (typed as object), and the MCP SDK's untyped decorators. Silencing them
+# in place would mean hundreds of casts through security-critical code for no
+# behavioural gain. Everything else — 87 of the 101 subsystem modules — is
+# checked strictly, so new code is covered. Shrink this list, never grow it.
 [[tool.mypy.overrides]]
-module = ["aifence.guard.*", "aifence.bus.*"]
+module = [
+  "aifence.guard.advanced",
+  "aifence.guard.api",
+  "aifence.guard.service",
+  "aifence.guard.lifecycle",
+  "aifence.guard.dispatcher",
+  "aifence.guard.anchor_dispatcher",
+  "aifence.guard.application",
+  "aifence.guard.middleware",
+  "aifence.guard.key_management",
+  "aifence.guard.artifact_store",
+  "aifence.guard.tenant_crypto",
+  "aifence.guard.network",
+  "aifence.guard.audit",
+  "aifence.bus.mcp_server",
+]
 ignore_errors = true
 
 # Third-party modules without type stubs, or that ship only as optional extras
 # (opentelemetry is imported lazily inside core.telemetry).
 [[tool.mypy.overrides]]
-module = ["boto3.*", "botocore.*", "jwt.*", "msgpack.*", "mcp.*", "opentelemetry.*"]
+module = [
+  "boto3.*", "botocore.*", "jwt.*", "msgpack.*", "mcp.*", "opentelemetry.*",
+  "jsonschema.*", "tiktoken.*", "google.*", "azure.*", "hvac.*",
+]
 ignore_missing_imports = true
 
 [tool.coverage.run]

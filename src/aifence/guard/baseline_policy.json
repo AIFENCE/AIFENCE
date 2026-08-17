@@ -375,6 +375,26 @@
           "open_incident": true
         }
       }
+    },
+    {
+      "id": "undeclared-sensitive-content",
+      "priority": 8600,
+      "description": "Content carries sensitive data classes the caller did not declare; redact before the action proceeds.",
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "data.undeclared_sensitive"
+        ]
+      },
+      "effect": {
+        "outcome": "redact_or_transform",
+        "reasons": [
+          "Sensitive data was observed in content that the caller did not declare"
+        ],
+        "constraints": {
+          "redact_secrets": true
+        }
+      }
     }
   ]
 }

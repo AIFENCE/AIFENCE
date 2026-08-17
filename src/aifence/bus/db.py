@@ -9,9 +9,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
 # Share the one merged declarative Base so bus tables live in the same schema
-# and metadata as every other AIFENCE subsystem. (Was a standalone Base in SAGE.)
+# and metadata as every other AIFENCE subsystem.
 from ..core.db import Base
 from .config import get_settings
+
+# Re-exported: bus modules import Base from here, as they did before the merge.
+__all__ = ["Base", "SessionLocal", "engine", "get_db", "init_db"]
 
 settings = get_settings()
 is_sqlite = settings.database_url.startswith("sqlite")

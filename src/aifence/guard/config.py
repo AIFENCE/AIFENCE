@@ -510,7 +510,7 @@ class Settings:
             return
 
         if self.environment == "production" and self.runtime_role == "dispatcher":
-            failures: list[str] = []
+            failures = []
             if not self.internal_cidrs:
                 failures.append("AGENTDANCE_INTERNAL_CIDRS is required")
             if not self.database_url.startswith("postgresql+psycopg://"):
@@ -545,7 +545,7 @@ class Settings:
             return
 
         if self.environment == "production":
-            failures: list[str] = []
+            failures = []
             if not self.internal_cidrs:
                 failures.append("AGENTDANCE_INTERNAL_CIDRS is required")
             if not self.database_url.startswith("postgresql+psycopg://"):

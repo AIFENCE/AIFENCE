@@ -137,14 +137,16 @@ def load_baseline_policy(path: str | Path | None = None) -> dict[str, Any]:
         configured = Path(path)
         if not configured.is_file():
             raise PolicyError(f"configured policy file does not exist: {configured}")
-        document = json.loads(configured.read_text())
+        document: dict[str, Any] = json.loads(configured.read_text())
         validate_policy_document(document)
         return document
     package_file = Path(__file__).with_name("baseline_policy.json")
     if package_file.is_file():
-        return json.loads(package_file.read_text())
+        packaged: dict[str, Any] = json.loads(package_file.read_text())
+        return packaged
     repository_file = Path(__file__).parents[2] / "policies" / "baseline.json"
-    return json.loads(repository_file.read_text())
+    fallback: dict[str, Any] = json.loads(repository_file.read_text())
+    return fallback
 
 
 def validate_policy_document(document: dict[str, Any]) -> None:

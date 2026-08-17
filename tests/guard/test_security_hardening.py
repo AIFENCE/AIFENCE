@@ -278,12 +278,24 @@ def test_broker_registration_rejects_header_and_path_injection(client) -> None:
     assert traversal.status_code in {409, 422}
 
 
-def test_database_rate_limit_enforces_across_requests(tmp_path) -> None:
+def test_database_rate_limit_enforces_across_requests(tmp_path, monkeypatch) -> None:
     from fastapi.testclient import TestClient
 
+    from aifence.guard import middleware as guard_middleware
     from aifence.guard.application import create_app
     from aifence.guard.config import Settings
     from aifence.guard.crypto import SigningKey
+
+    # The limiter buckets by wall-clock minute (``time.time() // 60``). Freeze
+    # the clock so the three requests cannot straddle a window boundary and
+    # silently reset the counter mid-test. Scoped to this module's ``time``
+    # binding rather than the global clock, which the limiter alone reads.
+    class _FrozenClock:
+        @staticmethod
+        def time() -> float:
+            return 1_700_000_000.0
+
+    monkeypatch.setattr(guard_middleware, "time", _FrozenClock)
 
     database = tmp_path / "rate-limit.db"
     settings = Settings(
