@@ -4,7 +4,7 @@
 ``POST /v1/fence/submit`` runs a single request through the whole fence in
 order, in-process:
 
-1. **Quality** — the BizIQ-backed quality gate scores the artifact.
+1. **Quality** — the quality-control gate scores the artifact.
 2. **Guard**   — the enforcement policy engine decides the action's outcome.
 3. **Bus**     — the semantic runtime compiles the vetted payload for handoff.
 
@@ -97,18 +97,42 @@ def _run_guard(req: FenceRequest) -> dict[str, Any]:
     }
 
 
-def _run_bus(req: FenceRequest) -> dict[str, Any]:
-    from .bus.compiler import compile_content
+def _run_bus(req: FenceRequest, request: Request) -> dict[str, Any]:
+    """Durably enqueue the vetted artifact as a real, claimable handoff.
 
+    Uses the composed application's shared session factory so the handoff is
+    persisted to the one merged database and a receiver can later poll/claim it —
+    a genuine cross-agent delivery, not just an in-memory computation.
+    """
+    from .bus.bus import SemanticBus
+    from .bus.compiler import compile_content
+    from .bus.config import get_settings as bus_settings
+
+    session_factory = request.app.state.session_factory
     units = compile_content(req.artifact)
     raw_bytes = len(req.artifact.encode("utf-8"))
     digest = hashlib.sha256(req.artifact.encode("utf-8")).hexdigest()
+    with session_factory() as db:
+        message = SemanticBus(db, bus_settings()).handoff(
+            receiver=req.receiver,
+            content=req.artifact,
+            sender="aifence-fence",
+            correlation_id=getattr(request.state, "request_id", None),
+        )
+        db.commit()
+        message_id = message.id
+        wire_bytes = message.wire_bytes
+        strategy = message.strategy
     return {
         "tier": "bus",
         "receiver": req.receiver,
+        "message_id": message_id,
+        "delivered": True,
+        "strategy": strategy,
         "semantic_units": len(units),
         "raw_bytes": raw_bytes,
-        "content_ref": f"sage:sha256:{digest}",
+        "wire_bytes": wire_bytes,
+        "content_ref": f"aifence:sha256:{digest}",
     }
 
 
@@ -137,7 +161,7 @@ def submit(req: FenceRequest, request: Request) -> dict[str, Any]:
             "stages": stages,
         }
 
-    stages["bus"] = _run_bus(req)
+    stages["bus"] = _run_bus(req, request)
     return {
         "request_id": request_id,
         "allowed": True,

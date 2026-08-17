@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
 """Canonical error hierarchy and the structured error-envelope handlers.
 
-Promoted from AGENTDANCE's ``errors.py`` so every subsystem raises the same
-exception types and every response shares one envelope shape::
+A single exception hierarchy so every subsystem raises the same types and every
+response shares one envelope shape::
 
     {"error": {"code", "message", "details", "request_id"}}
 

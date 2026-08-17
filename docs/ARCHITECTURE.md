@@ -12,7 +12,7 @@ application** with a shared foundation and pluggable subsystems.
                         │ register()        │ register()            │ register()
                  ┌──────▼──────┐      ┌──────▼──────┐         ┌──────▼──────┐
                  │  quality    │      │   guard     │         │    bus      │
-                 │ (BizIQ gate)│─────▶│ enforcement │────────▶│  transport  │
+                 │  (gate)     │─────▶│ enforcement │────────▶│  transport  │
                  └─────────────┘      └─────────────┘         └─────────────┘
                         └──────────── aifence.core ────────────┘
                  config · db (one Base/engine) · errors · middleware · metrics · telemetry
@@ -46,10 +46,10 @@ history (`alembic/`) therefore builds the entire schema, and one connection pool
 serves every tier. PostgreSQL row-level-security context uses the `aifence`
 `set_config` namespace.
 
-## Data flow (target end state)
+## Data flow
 
 1. **Quality gate** (`aifence.quality`) scores the requested artifact/work
-   against BizIQ controls and emits a quality decision.
+   against the quality-control registry and emits a quality decision.
 2. **Guard** (`aifence.guard`) treats that decision as one detector input,
    compiles the mandatory + tenant policy into an enforcement plan, and issues
    an exact-action capability (allow / constrain / transform / approve / deny /

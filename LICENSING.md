@@ -1,9 +1,7 @@
 # AIFENCE Licensing
 
-AIFENCE is the unified successor to three projects that each shipped under an
-AGPL + commercial dual license: **SAGE** (`aifence.bus`), **AGENTDANCE**
-(`aifence.guard`), and **BizIQ** (`aifence.quality`). The merged project keeps
-that structure.
+AIFENCE is dual-licensed: use it under the AGPL, or under a separate commercial
+license.
 
 ## Dual license
 
@@ -19,12 +17,7 @@ that structure.
 | Path | License |
 | --- | --- |
 | `src/aifence/**` (server & control plane) | AGPL-3.0-or-later OR commercial |
-| `quality/**` (BizIQ source pack & builder) | AGPL-3.0-or-later OR commercial |
+| `quality/**` (quality-control source pack & builder) | AGPL-3.0-or-later OR commercial |
 | Generated SDKs / OpenAPI contract (when added) | Apache-2.0 |
 
-## Provenance
-
-AIFENCE incorporates code from the merged repositories. Tagged releases of the
-predecessor projects retain their original licenses as recorded in their
-respective changelogs; the dual-license terms here apply to the AIFENCE source
-line and its releases. See [NOTICE](NOTICE) for attribution.
+Contributions require acceptance of the project's contributor terms.

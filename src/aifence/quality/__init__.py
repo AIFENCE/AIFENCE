@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""AIFENCE quality subsystem — production quality gate (bridge to BizIQ).
+"""AIFENCE quality subsystem — production quality gate for AI output.
 
-The canonical BizIQ pack (standards, controls, schemas) is vendored under the
-repository's top-level ``quality/`` directory and keeps its own Node builder.
-This Python package is the *bridge*: it reads BizIQ's control registry and runs
-a deterministic quality gate over AI-generated artifacts, exposing the result to
+The canonical quality-control pack (standards, controls, schemas) lives under the
+repository's top-level ``quality/`` directory with its own Node builder. This
+Python package is the *bridge*: it reads the control registry and runs a
+deterministic quality gate over AI-generated artifacts, exposing the result to
 the composed fence so the quality tier can gate the flow before enforcement.
 
 Unlike guard and bus (mounted as sub-applications), the quality bridge is native

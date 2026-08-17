@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Loader for the canonical BizIQ control registry.
+"""Loader for the canonical quality-control registry.
 
-The registry (``quality/source/control_registry.csv``) is BizIQ's authoritative
+The registry (``quality/source/control_registry.csv``) is the authoritative
 catalog of production-quality controls. The gate reads it to know which
 capabilities exist and at what priority, and to attribute each concrete check
 back to a canonical control id.
@@ -29,7 +29,7 @@ class QualityControl:
 
 
 def registry_path() -> Path:
-    """Resolve the vendored BizIQ control registry.
+    """Resolve the vendored quality-control registry.
 
     Honors ``AIFENCE_QUALITY_REGISTRY`` (legacy: the vendored default), then
     searches upward from this file for the ``quality/source`` pack.

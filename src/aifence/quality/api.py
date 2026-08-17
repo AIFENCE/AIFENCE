@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Quality-tier HTTP surface: inspect BizIQ controls and run the quality gate."""
+"""Quality-tier HTTP surface: inspect quality controls and run the quality gate."""
 from __future__ import annotations
 
 from fastapi import APIRouter, Query
@@ -30,7 +30,7 @@ def registry() -> dict[str, object]:
     return registry_summary()
 
 
-@router.get("/controls", response_model=list[ControlSummary], summary="List BizIQ quality controls")
+@router.get("/controls", response_model=list[ControlSummary], summary="List quality controls")
 def controls(
     priority: str | None = Query(None, description="Filter by priority, e.g. P0."),
     limit: int = Query(100, ge=1, le=1000),

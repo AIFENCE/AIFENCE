@@ -3,9 +3,9 @@
 
 These helpers are deliberately tiny and dependency-free so ``core``, ``bus``,
 ``guard``, and ``quality`` can all parse ``AIFENCE_*`` variables the same way.
-Each reader also accepts an ordered list of legacy variable names, which is how
-the merge preserves back-compat with the original ``SAGE_*`` and
-``AGENTDANCE_*`` deployments (see ``docs/CONFIGURATION.md``).
+Each reader also accepts an ordered list of legacy variable names, which
+preserves backward compatibility for pre-existing deployments (see
+``docs/CONFIGURATION.md``).
 """
 from __future__ import annotations
 
@@ -20,9 +20,9 @@ def apply_legacy_prefix(new_prefix: str, legacy_prefix: str) -> None:
 
     For every ``{new_prefix}NAME`` variable set in the environment, populate the
     corresponding ``{legacy_prefix}NAME`` (without overwriting an explicit legacy
-    value). This lets a subsystem migrate to the unified ``AIFENCE_GUARD_`` /
-    ``AIFENCE_BUS_`` prefixes without rewriting every ``os.getenv`` call, while
-    existing ``AGENTDANCE_*`` / ``SAGE_*`` deployments keep working unchanged.
+    value). This lets a subsystem accept the unified ``AIFENCE_GUARD_`` /
+    ``AIFENCE_BUS_`` prefixes without rewriting every ``os.getenv`` call, while a
+    subsystem's own legacy variable names keep working unchanged.
     """
     for key, value in list(os.environ.items()):
         if key.startswith(new_prefix):

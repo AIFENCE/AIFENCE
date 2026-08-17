@@ -1,12 +1,11 @@
 AIFENCE
 Copyright (c) NeuralBinary and contributors.
 
-This product unifies and incorporates source from three predecessor projects,
-each originally dual-licensed under AGPL-3.0 and a commercial license:
+AIFENCE is one governed control plane composed of three tiers:
 
-  - SAGE       -> aifence.bus      (semantic communication runtime)
-  - AGENTDANCE -> aifence.guard    (security control & enforcement plane)
-  - BizIQ      -> aifence.quality  (production quality control pack)
+  - aifence.bus      — semantic communication runtime
+  - aifence.guard    — security control & enforcement plane
+  - aifence.quality  — production quality-control gate
 
 Credits: @NeuralBinary, @ro0ti.
 

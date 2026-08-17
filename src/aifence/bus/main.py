@@ -310,7 +310,7 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
 
 app = FastAPI(
-    title="SAGE",
+    title="AIFENCE Bus",
     version=__version__,
     description="Secure vendor-neutral semantic communication runtime for AI agents.",
     docs_url="/docs" if settings.docs_enabled else None,

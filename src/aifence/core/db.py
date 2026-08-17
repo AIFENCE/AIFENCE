@@ -3,8 +3,8 @@
 
 Every subsystem persists through this single ``Base`` (one metadata, one
 Alembic history) and builds its engine/session with these factories, so the
-merged application has exactly one connection pool and one schema. Generalized
-from AGENTDANCE's ``db.py``; the RLS config namespace is now ``aifence``.
+merged application has exactly one connection pool and one schema. The
+PostgreSQL row-level-security config namespace is ``aifence``.
 """
 from __future__ import annotations
 

@@ -43,11 +43,6 @@ def create_app(settings: CoreSettings | None = None) -> FastAPI:
 
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-        if settings.auto_create_schema:
-            # One metadata for every subsystem's models: they import
-            # aifence.core.db.Base, so a single create_all builds the whole
-            # schema once each is registered.
-            Base.metadata.create_all(engine)
         started: list[SubsystemContext] = []
         try:
             for startup, _shutdown in ctx.lifespan_hooks:
@@ -122,6 +117,12 @@ def create_app(settings: CoreSettings | None = None) -> FastAPI:
     from .flow import router as fence_router
 
     app.include_router(fence_router)
+
+    # Build the whole schema once, now that every subsystem has registered its
+    # models against the one shared Base. Done eagerly (not only in the lifespan)
+    # so the composed app is immediately usable end to end.
+    if settings.auto_create_schema:
+        Base.metadata.create_all(engine)
 
     _install_openapi(app, settings)
     configure_telemetry(app, engine, settings)

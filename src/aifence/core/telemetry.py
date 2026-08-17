@@ -3,7 +3,7 @@
 
 A no-op unless ``AIFENCE_OTEL_EXPORTER_OTLP_ENDPOINT`` is set. The heavy
 OpenTelemetry imports are deferred into the function body so the ``otel`` extra
-stays optional. Generalized from AGENTDANCE's ``telemetry.py``.
+stays optional.
 """
 from __future__ import annotations
 

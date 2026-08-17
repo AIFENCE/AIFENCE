@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""AIFENCE guard subsystem — security control & enforcement plane (from AGENTDANCE).
+"""AIFENCE guard subsystem — security control & enforcement plane.
 
 Guard mounts into the composed AIFENCE application as a sub-application under
 ``/guard``, reusing the shared core engine and declarative ``Base`` so it

@@ -7,9 +7,9 @@ itself needs — environment, database, HTTP surface, telemetry. Each subsystem
 than inflating this object; that split is what keeps one merged codebase
 maintainable instead of collapsing ~150 guard-specific knobs into "core".
 
-Environment variables use the ``AIFENCE_`` prefix. The original ``SAGE_`` and
-``AGENTDANCE_`` names are accepted as legacy fallbacks so existing deployments
-migrate without an immediate config rewrite.
+Environment variables use the ``AIFENCE_`` prefix. A small set of legacy
+variable names is also accepted as a fallback so pre-existing deployments can
+migrate without an immediate configuration rewrite.
 """
 from __future__ import annotations
 

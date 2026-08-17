@@ -5,9 +5,9 @@
 
 AIFENCE unifies three tiers into a single control plane:
 
-* ``aifence.bus``     — semantic communication runtime (formerly SAGE).
-* ``aifence.guard``   — security control & enforcement plane (formerly AGENTDANCE).
-* ``aifence.quality`` — production quality gate for AI output (bridge to BizIQ).
+* ``aifence.bus``     — semantic communication runtime for cross-agent transport.
+* ``aifence.guard``   — security control & enforcement plane for agent actions.
+* ``aifence.quality`` — production quality gate for AI-generated output.
 
 The tiers compose into one logical flow: a request is quality-gated, then
 policy/capability-enforced, then carried as minimal semantic state — under one

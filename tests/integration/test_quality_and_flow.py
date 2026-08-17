@@ -58,18 +58,36 @@ def test_quality_evaluate_endpoint(client: TestClient) -> None:
 
 # --- the fence flow: three tiers as one ---
 
-def test_fence_full_passthrough(client: TestClient) -> None:
+def test_fence_full_passthrough_delivers_claimable_handoff(client: TestClient) -> None:
     r = client.post(
         "/v1/fence/submit",
-        json={"artifact": GOOD, "content_type": "text/markdown", "action": {"operation": "read"}, "risk_score": 10},
+        json={
+            "artifact": GOOD,
+            "content_type": "text/markdown",
+            "receiver": "analytics-agent",
+            "action": {"operation": "read"},
+            "risk_score": 10,
+        },
     )
     body = r.json()
     assert body["allowed"] is True
     assert body["final_outcome"] == "handed_off"
     assert body["stages"]["quality"]["passed"] is True
     assert body["stages"]["guard"]["outcome"] == "allow"
-    assert body["stages"]["bus"]["semantic_units"] >= 1
-    assert body["stages"]["bus"]["content_ref"].startswith("sage:sha256:")
+    bus = body["stages"]["bus"]
+    assert bus["delivered"] is True
+    assert bus["message_id"].startswith("M")
+    assert bus["content_ref"].startswith("aifence:sha256:")
+
+    # End-to-end proof: the receiver can durably claim the delivered handoff.
+    from aifence.bus.bus import SemanticBus
+    from aifence.bus.config import get_settings
+
+    app = client.app
+    with app.state.session_factory() as db:
+        claimed = SemanticBus(db, get_settings()).pull(receiver="analytics-agent", claim=True)
+        db.commit()
+    assert [m.id for m in claimed] == [bus["message_id"]]
 
 
 def test_fence_blocked_at_quality(client: TestClient) -> None:

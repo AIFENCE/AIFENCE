@@ -3,9 +3,9 @@
 
 A deterministic, dependency-free gate that runs concrete, checkable quality
 controls over an AI-generated artifact and attributes each check back to a
-canonical BizIQ capability. This is the fast in-process gate that fronts the
-fence; deep, family-native evaluation is delegated to the BizIQ runtime under
-``quality/`` and is out of scope for this bridge.
+canonical control capability. This is the fast in-process gate that fronts the
+fence; deep, family-native evaluation is delegated to the quality-control
+runtime under ``quality/`` and is out of scope for this bridge.
 
 The gate returns one of three outcomes, mirroring how the fence treats it
 downstream: ``accept`` (pass to guard), ``revise`` (soft-fail, quality too low),

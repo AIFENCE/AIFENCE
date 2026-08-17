@@ -163,7 +163,7 @@ def create_app(
     redoc_url = "/redoc" if settings.docs_enabled else None
     openapi_url = "/openapi.json" if settings.docs_enabled else None
     app = FastAPI(
-        title="AGENTDANCE",
+        title="AIFENCE Guard",
         summary="Security control and enforcement plane for AI agents",
         version=__version__,
         docs_url=docs_url,

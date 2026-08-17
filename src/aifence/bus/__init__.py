@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""AIFENCE bus subsystem — semantic communication runtime (from SAGE).
+"""AIFENCE bus subsystem — semantic communication runtime.
 
 The bus mounts into the composed AIFENCE application as a sub-application under
 ``/bus``. It shares the merged declarative ``Base`` (so its tables join the one
@@ -24,9 +24,9 @@ if TYPE_CHECKING:
 def register(app: FastAPI, ctx: SubsystemContext) -> None:
     """Mount the semantic bus under ``/bus`` on the composed app.
 
-    SAGE reads its database URL from ``SAGE_DATABASE_URL`` at import time, so we
-    pin it to the shared core database *before* importing the bus app, and let
-    the shared core lifespan own schema creation.
+    The bus reads its database URL from the environment at import time, so we pin
+    it to the shared core database *before* importing the bus app, and let the
+    composed app own schema creation.
     """
     os.environ["SAGE_DATABASE_URL"] = ctx.settings.database_url
     os.environ.setdefault("SAGE_AUTO_CREATE_SCHEMA", "false")
