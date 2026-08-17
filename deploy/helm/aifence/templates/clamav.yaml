@@ -1,0 +1,101 @@
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+{{- if .Values.clamav.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aifence.fullname" . }}-clamav
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: malware-scanner
+spec:
+  clusterIP: None
+  ports:
+    - name: clamd
+      port: {{ .Values.clamav.servicePort }}
+      targetPort: clamd
+  selector:
+    {{- include "aifence.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: malware-scanner
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "aifence.fullname" . }}-clamav
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: malware-scanner
+spec:
+  serviceName: {{ include "aifence.fullname" . }}-clamav
+  replicas: {{ .Values.clamav.replicas }}
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: malware-scanner
+  template:
+    metadata:
+      labels:
+        {{- include "aifence.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: malware-scanner
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: clamav
+          image: {{ include "aifence.clamavImage" . | quote }}
+          command: ["/init-unprivileged"]
+          imagePullPolicy: {{ .Values.clamav.image.pullPolicy }}
+          ports:
+            - name: clamd
+              containerPort: {{ .Values.clamav.servicePort }}
+          readinessProbe:
+            tcpSocket:
+              port: clamd
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 10
+          livenessProbe:
+            exec:
+              command: ["/usr/local/bin/clamdcheck.sh"]
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 5
+          resources:
+            {{- toYaml .Values.clamav.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: signatures
+              mountPath: /var/lib/clamav
+      {{- if not .Values.clamav.persistence.enabled }}
+      volumes:
+        - name: signatures
+          emptyDir: {}
+      {{- end }}
+  {{- if .Values.clamav.persistence.enabled }}
+  volumeClaimTemplates:
+    - metadata:
+        name: signatures
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        {{- if .Values.clamav.persistence.storageClassName }}
+        storageClassName: {{ .Values.clamav.persistence.storageClassName | quote }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.clamav.persistence.size }}
+  {{- end }}
+{{- end }}

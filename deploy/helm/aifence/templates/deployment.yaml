@@ -1,0 +1,330 @@
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aifence.fullname" . }}
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: control-plane
+  template:
+    metadata:
+      labels:
+        {{- include "aifence.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: control-plane
+        {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      annotations:
+        checksum/runtime-secret-name: {{ .Values.runtimeSecretName | sha256sum }}
+        checksum/tls-secret-name: {{ .Values.tlsSecretName | sha256sum }}
+        checksum/runtime-config: {{ toJson (dict "environment" .Values.environment "rotation" .Values.rotation "mtls" .Values.mtls "clamav" .Values.clamav) | sha256sum }}
+        aifence.io/rollout-nonce: {{ .Values.rolloutNonce | quote }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "aifence.serviceAccountName" . }}
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 45
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: aifence
+          image: {{ include "aifence.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["serve", "--workers", "1"]
+          ports:
+            - name: https
+              containerPort: 8080
+              protocol: TCP
+          env:
+            - name: AIFENCE_ENVIRONMENT
+              value: production
+            - name: AIFENCE_RUNTIME_ROLE
+              value: control-plane
+            - name: AIFENCE_PUBLIC_BASE_URL
+              value: {{ required "environment.publicBaseUrl is required" .Values.environment.publicBaseUrl | quote }}
+            - name: AIFENCE_GUARD_SOURCE_CODE_URL
+              value: {{ required "environment.sourceCodeUrl is required" .Values.environment.sourceCodeUrl | quote }}
+            - name: AIFENCE_GUARD_COMMERCIAL_LICENSE_URL
+              value: {{ .Values.environment.commercialLicenseUrl | quote }}
+            - name: AIFENCE_DATABASE_URL_FILE
+              value: /run/aifence/runtime/database-url
+            - name: AIFENCE_GUARD_API_KEY_PEPPER_FILE
+              value: /run/aifence/runtime/api-key-pepper
+            - name: AIFENCE_GUARD_API_KEY_PEPPER_ID
+              value: {{ .Values.environment.apiKeyPepperId | quote }}
+            {{- if .Values.rotation.apiKeyPepperringFileEnabled }}
+            - name: AIFENCE_GUARD_API_KEY_PEPPERRING_JSON_FILE
+              value: /run/aifence/runtime/api-key-pepperring.json
+            {{- end }}
+            - name: AIFENCE_GUARD_SIGNING_BACKEND
+              value: {{ .Values.environment.signingBackend | quote }}
+            - name: AIFENCE_GUARD_SIGNING_KEY_ID
+              value: {{ .Values.environment.signingKeyId | quote }}
+            - name: AIFENCE_GUARD_SIGNING_VAULT_ADDRESS
+              value: {{ required "environment.signingVaultAddress is required" .Values.environment.signingVaultAddress | quote }}
+            - name: AIFENCE_GUARD_SIGNING_VAULT_TOKEN_FILE
+              value: /run/aifence/runtime/signing-vault-token
+            - name: AIFENCE_GUARD_SIGNING_VAULT_MOUNT
+              value: {{ .Values.environment.signingVaultMount | quote }}
+            - name: AIFENCE_GUARD_SIGNING_VAULT_KEY_NAME
+              value: {{ .Values.environment.signingVaultKeyName | quote }}
+            - name: AIFENCE_GUARD_TLS_CERT_FILE
+              value: /run/aifence/tls/tls.crt
+            - name: AIFENCE_GUARD_TLS_KEY_FILE
+              value: /run/aifence/tls/tls.key
+            - name: AIFENCE_GUARD_REQUIRE_MTLS
+              value: {{ .Values.mtls.enabled | quote }}
+            {{- if .Values.mtls.enabled }}
+            - name: AIFENCE_GUARD_TLS_CLIENT_CA_FILE
+              value: /run/aifence/client-ca/{{ .Values.mtls.clientCAKey }}
+            {{- end }}
+            - name: AIFENCE_AUTO_CREATE_SCHEMA
+              value: "false"
+            - name: AIFENCE_DOCS_ENABLED
+              value: "false"
+            - name: AIFENCE_GUARD_CLAMAV_REQUIRED
+              value: "true"
+            - name: AIFENCE_GUARD_CLAMAV_HOST
+              value: {{ printf "%s-clamav" (include "aifence.fullname" .) | quote }}
+            - name: AIFENCE_GUARD_CLAMAV_PORT
+              value: {{ .Values.clamav.servicePort | quote }}
+            - name: AIFENCE_ALLOWED_ORIGINS
+              value: {{ join "," .Values.environment.allowedOrigins | quote }}
+            - name: AIFENCE_GUARD_PROVIDER_ALLOWED_HOSTS
+              value: {{ join "," .Values.environment.providerAllowedHosts | quote }}
+            - name: AIFENCE_GUARD_TOOL_ALLOWED_HOSTS
+              value: {{ join "," .Values.environment.toolAllowedHosts | quote }}
+            - name: AIFENCE_GUARD_TRUSTED_PROXY_CIDRS
+              value: {{ join "," .Values.environment.trustedProxyCidrs | quote }}
+            - name: AIFENCE_GUARD_INTERNAL_CIDRS
+              value: {{ join "," (required "environment.internalCidrs is required" .Values.environment.internalCidrs) | quote }}
+            - name: AIFENCE_GUARD_RATE_LIMIT_PER_MINUTE
+              value: {{ .Values.environment.rateLimitPerMinute | quote }}
+            - name: AIFENCE_GUARD_AUDIT_RETENTION_DAYS
+              value: {{ .Values.environment.auditRetentionDays | quote }}
+            - name: AIFENCE_GUARD_ARTIFACT_RETENTION_DAYS
+              value: {{ .Values.environment.artifactRetentionDays | quote }}
+            - name: AIFENCE_GUARD_ARTIFACT_STORE_PATH
+              value: {{ .Values.environment.artifactStorePath | quote }}
+            - name: AIFENCE_GUARD_ARTIFACT_STORE_BACKEND
+              value: {{ .Values.environment.artifactStoreBackend | quote }}
+            - name: AIFENCE_GUARD_ARTIFACT_S3_ENDPOINT
+              value: {{ required "environment.artifactS3Endpoint is required" .Values.environment.artifactS3Endpoint | quote }}
+            - name: AIFENCE_GUARD_ARTIFACT_S3_BUCKET
+              value: {{ required "environment.artifactS3Bucket is required" .Values.environment.artifactS3Bucket | quote }}
+            - name: AIFENCE_GUARD_ARTIFACT_S3_REGION
+              value: {{ .Values.environment.artifactS3Region | quote }}
+            - name: AIFENCE_GUARD_ARTIFACT_S3_PREFIX
+              value: {{ .Values.environment.artifactS3Prefix | quote }}
+            - name: AIFENCE_GUARD_ARTIFACT_S3_KMS_KEY_ID
+              value: {{ required "environment.artifactS3KmsKeyId is required" .Values.environment.artifactS3KmsKeyId | quote }}
+            - name: AIFENCE_GUARD_ARTIFACT_S3_OBJECT_LOCK_DAYS
+              value: {{ .Values.environment.artifactS3ObjectLockDays | quote }}
+            - name: AIFENCE_GUARD_ARTIFACT_S3_DELETE_ENABLED
+              value: "false"
+            {{- if .Values.environment.artifactS3UseStaticCredentials }}
+            - name: AIFENCE_GUARD_ARTIFACT_S3_ACCESS_KEY_FILE
+              value: /run/aifence/runtime/artifact-s3-access-key
+            - name: AIFENCE_GUARD_ARTIFACT_S3_SECRET_KEY_FILE
+              value: /run/aifence/runtime/artifact-s3-secret-key
+            {{- end }}
+            - name: AIFENCE_GUARD_AUDIT_CHECKPOINT_INTERVAL
+              value: {{ .Values.environment.auditCheckpointInterval | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_BACKEND
+              value: {{ .Values.environment.auditAnchorBackend | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_WEBHOOK_URL
+              value: {{ required "environment.auditAnchorWebhookUrl is required" .Values.environment.auditAnchorWebhookUrl | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_WEBHOOK_VERIFY_URL
+              value: {{ required "environment.auditAnchorWebhookVerifyUrl is required" .Values.environment.auditAnchorWebhookVerifyUrl | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_WEBHOOK_PUBLIC_KEY_FILE
+              value: {{ .Values.environment.auditAnchorWebhookPublicKeyFile | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_WEBHOOK_KEY_IDS
+              value: {{ join "," .Values.environment.auditAnchorWebhookKeyIds | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_REQUIRED_QUORUM
+              value: {{ .Values.environment.auditAnchorRequiredQuorum | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_DESTINATIONS
+              value: {{ join "," .Values.environment.auditAnchorDestinations | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_WEBHOOK_TOKEN_FILE
+              value: /run/aifence/runtime/audit-anchor-webhook-token
+            - name: AIFENCE_GUARD_MAX_BROKER_RESPONSE_BYTES
+              value: {{ .Values.environment.maxBrokerResponseBytes | quote }}
+            - name: AIFENCE_GUARD_MAX_PAGE_SIZE
+              value: {{ .Values.environment.maxPageSize | quote }}
+            - name: AIFENCE_GUARD_EXECUTION_LEASE_SECONDS
+              value: {{ .Values.environment.executionLeaseSeconds | quote }}
+            - name: AIFENCE_GUARD_DISPATCH_MODE
+              value: {{ .Values.environment.dispatchMode | quote }}
+            - name: AIFENCE_GUARD_DISPATCH_WAIT_SECONDS
+              value: {{ .Values.environment.dispatchWaitSeconds | quote }}
+            - name: AIFENCE_GUARD_POLICY_ROLLOUT_SECRET_FILE
+              value: {{ .Values.environment.policyRolloutSecretFile | quote }}
+            - name: AIFENCE_GUARD_WORKLOAD_AUTH_ENABLED
+              value: {{ .Values.environment.workloadAuthEnabled | quote }}
+            - name: AIFENCE_GUARD_WORKLOAD_TRUST_DOMAINS
+              value: {{ join "," .Values.environment.workloadTrustDomains | quote }}
+            - name: AIFENCE_GUARD_KMS_BACKEND
+              value: {{ .Values.environment.kmsBackend | quote }}
+            - name: AIFENCE_GUARD_KMS_KEY_ID
+              value: {{ .Values.environment.kmsKeyId | quote }}
+            - name: AIFENCE_GUARD_TENANT_KEY_BACKEND
+              value: {{ .Values.environment.tenantKeyBackend | quote }}
+            - name: AIFENCE_GUARD_TENANT_KMS_KEY_TEMPLATE
+              value: {{ required "environment.tenantKmsKeyTemplate is required" .Values.environment.tenantKmsKeyTemplate | quote }}
+            - name: AIFENCE_GUARD_TENANT_KEY_DESTROY_ENABLED
+              value: {{ .Values.environment.tenantKeyDestroyEnabled | quote }}
+            {{- if eq .Values.environment.kmsBackend "vault" }}
+            - name: AIFENCE_GUARD_VAULT_ADDRESS
+              value: {{ required "environment.vaultAddress is required for Vault KMS" .Values.environment.vaultAddress | quote }}
+            - name: AIFENCE_GUARD_VAULT_TOKEN_FILE
+              value: /run/aifence/runtime/vault-token
+            - name: AIFENCE_GUARD_VAULT_TRANSIT_MOUNT
+              value: {{ .Values.environment.vaultTransitMount | quote }}
+            {{- end }}
+            - name: AIFENCE_GUARD_OPERATOR_CONSOLE_ENABLED
+              value: {{ .Values.environment.operatorConsoleEnabled | quote }}
+            - name: AIFENCE_GUARD_OPERATOR_TENANT_HEADER
+              value: {{ .Values.environment.operatorTenantHeader | quote }}
+            - name: AIFENCE_GUARD_OPERATOR_IDENTITY_HEADER
+              value: {{ .Values.environment.operatorIdentityHeader | quote }}
+            - name: AIFENCE_GUARD_OPERATOR_GROUPS_HEADER
+              value: {{ .Values.environment.operatorGroupsHeader | quote }}
+            - name: AIFENCE_GUARD_OPERATOR_ALLOWED_GROUPS
+              value: {{ join "," .Values.environment.operatorAllowedGroups | quote }}
+            - name: AIFENCE_GUARD_DNS_RESOLUTION_TIMEOUT_SECONDS
+              value: {{ .Values.environment.dnsResolutionTimeoutSeconds | quote }}
+            - name: AIFENCE_GUARD_EGRESS_PROXY_URL
+              value: {{ required "environment.egressProxyUrl is required" .Values.environment.egressProxyUrl | quote }}
+            - name: AIFENCE_OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.environment.otlpEndpoint | quote }}
+            - name: AIFENCE_LOG_LEVEL
+              value: {{ .Values.environment.logLevel | quote }}
+          volumeMounts:
+            - name: runtime-secret
+              mountPath: /run/aifence/runtime
+              readOnly: true
+            - name: tls
+              mountPath: /run/aifence/tls
+              readOnly: true
+            {{- if .Values.mtls.enabled }}
+            - name: client-ca
+              mountPath: /run/aifence/client-ca
+              readOnly: true
+            {{- end }}
+            - name: tmp
+              mountPath: /tmp
+          readinessProbe:
+            {{- if .Values.mtls.enabled }}
+            tcpSocket:
+              port: https
+            {{- else }}
+            httpGet:
+              scheme: HTTPS
+              path: /health/ready
+              port: https
+            {{- end }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            {{- if .Values.mtls.enabled }}
+            tcpSocket:
+              port: https
+            {{- else }}
+            httpGet:
+              scheme: HTTPS
+              path: /health/live
+              port: https
+            {{- end }}
+            initialDelaySeconds: 20
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          startupProbe:
+            {{- if .Values.mtls.enabled }}
+            tcpSocket:
+              port: https
+            {{- else }}
+            httpGet:
+              scheme: HTTPS
+              path: /health/live
+              port: https
+            {{- end }}
+            periodSeconds: 5
+            failureThreshold: 30
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        - name: runtime-secret
+          secret:
+            secretName: {{ required "runtimeSecretName is required" .Values.runtimeSecretName }}
+            defaultMode: 0400
+        - name: tls
+          secret:
+            secretName: {{ required "tlsSecretName is required" .Values.tlsSecretName }}
+            defaultMode: 0400
+        {{- if .Values.mtls.enabled }}
+        - name: client-ca
+          secret:
+            secretName: {{ required "mtls.clientCASecretName is required when mTLS is enabled" .Values.mtls.clientCASecretName }}
+            defaultMode: 0400
+        {{- end }}
+        - name: tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 64Mi
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              {{- include "aifence.selectorLabels" . | nindent 14 }}
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              {{- include "aifence.selectorLabels" . | nindent 14 }}
+      {{- end }}

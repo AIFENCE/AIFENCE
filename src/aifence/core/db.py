@@ -19,11 +19,19 @@ RLS_NAMESPACE = "aifence"
 
 
 class EngineConfig(Protocol):
-    """The minimal settings surface :func:`create_database_engine` needs."""
+    """The minimal settings surface :func:`create_database_engine` needs.
 
-    database_url: str
-    db_pool_size: int
-    db_max_overflow: int
+    Declared as read-only properties so frozen settings dataclasses satisfy it.
+    """
+
+    @property
+    def database_url(self) -> str: ...
+
+    @property
+    def db_pool_size(self) -> int: ...
+
+    @property
+    def db_max_overflow(self) -> int: ...
 
 
 class Base(DeclarativeBase):

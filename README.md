@@ -44,7 +44,10 @@ src/aifence/
   guard/        enforcement plane subsystem (sub-app at /guard)
   quality/      quality-gate bridge (router at /v1/quality)
   flow.py       the fence flow (/v1/fence): quality → guard → bus
+  security.py   shared API-key identity for the composed routers
 quality/        quality-control source pack + Node builder
+sdks/           Python, TypeScript and Go clients + framework hooks
+deploy/helm/    production Helm chart (control plane + worker roles)
 alembic/        one merged migration history
 ```
 

@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools==83.0.0", "wheel==0.47.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentdance-client"
+version = "1.0.0rc5"
+description = "Official Python client for AGENTDANCE"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [{name = "AGENTDANCE contributors"}]
+dependencies = ["httpx==0.28.1"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["agentdance_client*"]

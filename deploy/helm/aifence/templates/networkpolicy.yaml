@@ -1,0 +1,224 @@
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+{{- if .Values.networkPolicy.enabled }}
+{{- $databaseConfigured := or (gt (len .Values.networkPolicy.database.cidrs) 0) (gt (len .Values.networkPolicy.database.namespaceSelector) 0) (gt (len .Values.networkPolicy.database.podSelector) 0) }}
+{{- if eq (len .Values.networkPolicy.egressProxy.cidrs) 0 }}
+{{- fail "networkPolicy.egressProxy.cidrs must contain the controlled egress proxy CIDR" }}
+{{- end }}
+{{- if not $databaseConfigured }}
+{{- fail "networkPolicy.database must configure at least one CIDR, namespaceSelector, or podSelector" }}
+{{- end }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "aifence.fullname" . }}
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: control-plane
+  policyTypes: ["Ingress", "Egress"]
+  ingress:
+    - from:
+        - namespaceSelector:
+            {{- toYaml .Values.networkPolicy.ingress.namespaceSelector | nindent 12 }}
+          {{- with .Values.networkPolicy.ingress.podSelector }}
+          podSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- range .Values.networkPolicy.ingress.cidrs }}
+        - ipBlock:
+            cidr: {{ . | quote }}
+        {{- end }}
+      ports:
+        - protocol: TCP
+          port: 8080
+  egress:
+    {{- include "aifence.dnsEgress" . | nindent 4 }}
+    - to:
+        - podSelector:
+            matchLabels:
+              {{- include "aifence.selectorLabels" . | nindent 14 }}
+              app.kubernetes.io/component: malware-scanner
+      ports:
+        - protocol: TCP
+          port: {{ .Values.clamav.servicePort }}
+    {{- include "aifence.databaseEgress" . | nindent 4 }}
+    {{- range .Values.networkPolicy.egressProxy.cidrs }}
+    - to:
+        - ipBlock:
+            cidr: {{ . | quote }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.networkPolicy.egressProxy.port }}
+    {{- end }}
+    {{- range .Values.networkPolicy.otlpEgressCIDRs }}
+    - to:
+        - ipBlock:
+            cidr: {{ . | quote }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.networkPolicy.otlpPort }}
+    {{- end }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "aifence.fullname" . }}-worker
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: dispatcher
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: dispatcher
+  policyTypes: ["Ingress", "Egress"]
+  ingress: []
+  egress:
+    {{- include "aifence.dnsEgress" . | nindent 4 }}
+    {{- include "aifence.databaseEgress" . | nindent 4 }}
+    {{- range .Values.networkPolicy.egressProxy.cidrs }}
+    - to:
+        - ipBlock:
+            cidr: {{ . | quote }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.networkPolicy.egressProxy.port }}
+    {{- end }}
+    {{- range .Values.networkPolicy.otlpEgressCIDRs }}
+    - to:
+        - ipBlock:
+            cidr: {{ . | quote }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.networkPolicy.otlpPort }}
+    {{- end }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "aifence.fullname" . }}-lifecycle
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: lifecycle
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: lifecycle
+  policyTypes: ["Ingress", "Egress"]
+  ingress: []
+  egress:
+    {{- include "aifence.dnsEgress" . | nindent 4 }}
+    {{- include "aifence.databaseEgress" . | nindent 4 }}
+    {{- range .Values.networkPolicy.egressProxy.cidrs }}
+    - to:
+        - ipBlock:
+            cidr: {{ . | quote }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.networkPolicy.egressProxy.port }}
+    {{- end }}
+    {{- range .Values.networkPolicy.otlpEgressCIDRs }}
+    - to:
+        - ipBlock:
+            cidr: {{ . | quote }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.networkPolicy.otlpPort }}
+    {{- end }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "aifence.fullname" . }}-anchor
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: audit-anchor
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: audit-anchor
+  policyTypes: ["Ingress", "Egress"]
+  ingress: []
+  egress:
+    {{- include "aifence.dnsEgress" . | nindent 4 }}
+    {{- include "aifence.databaseEgress" . | nindent 4 }}
+    {{- range .Values.networkPolicy.egressProxy.cidrs }}
+    - to:
+        - ipBlock:
+            cidr: {{ . | quote }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.networkPolicy.egressProxy.port }}
+    {{- end }}
+    {{- range .Values.networkPolicy.otlpEgressCIDRs }}
+    - to:
+        - ipBlock:
+            cidr: {{ . | quote }}
+      ports:
+        - protocol: TCP
+          port: {{ $.Values.networkPolicy.otlpPort }}
+    {{- end }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "aifence.fullname" . }}-migration
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "-10"
+    helm.sh/hook-delete-policy: before-hook-creation
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migration
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: migration
+  policyTypes: ["Ingress", "Egress"]
+  ingress: []
+  egress:
+    {{- include "aifence.dnsEgress" . | nindent 4 }}
+    {{- include "aifence.databaseEgress" . | nindent 4 }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "aifence.fullname" . }}-clamav
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: malware-scanner
+spec:
+  podSelector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: malware-scanner
+  policyTypes: ["Ingress", "Egress"]
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              {{- include "aifence.selectorLabels" . | nindent 14 }}
+              app.kubernetes.io/component: control-plane
+      ports:
+        - protocol: TCP
+          port: {{ .Values.clamav.servicePort }}
+  egress:
+    {{- include "aifence.dnsEgress" . | nindent 4 }}
+    {{- range .Values.networkPolicy.clamavUpdateCIDRs }}
+    - to:
+        - ipBlock:
+            cidr: {{ . | quote }}
+      ports:
+        - protocol: TCP
+          port: 80
+        - protocol: TCP
+          port: 443
+    {{- end }}
+{{- end }}

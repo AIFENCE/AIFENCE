@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "aifence.fullname" . }}
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: https
+      port: {{ .Values.service.port }}
+      targetPort: https
+      protocol: TCP
+  selector:
+    {{- include "aifence.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: control-plane

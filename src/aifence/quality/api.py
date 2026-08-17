@@ -5,9 +5,12 @@ from __future__ import annotations
 from fastapi import APIRouter, Query
 from pydantic import BaseModel, Field
 
+from ..security import IdentityDep
 from .controls import load_controls, registry_summary
 from .gate import QualityGate
 
+# Authenticated at the router level: the quality tier is part of the fence, not
+# a public surface, so every endpoint requires the same identity guard enforces.
 router = APIRouter(prefix="/v1/quality", tags=["quality"])
 
 
@@ -26,12 +29,13 @@ class ControlSummary(BaseModel):
 
 
 @router.get("/registry", summary="Quality control registry summary")
-def registry() -> dict[str, object]:
+def registry(identity: IdentityDep) -> dict[str, object]:
     return registry_summary()
 
 
 @router.get("/controls", response_model=list[ControlSummary], summary="List quality controls")
 def controls(
+    identity: IdentityDep,
     priority: str | None = Query(None, description="Filter by priority, e.g. P0."),
     limit: int = Query(100, ge=1, le=1000),
 ) -> list[ControlSummary]:
@@ -51,7 +55,7 @@ def controls(
 
 
 @router.post("/evaluate", summary="Run the quality gate over an artifact")
-def evaluate(request: EvaluateRequest) -> dict[str, object]:
+def evaluate(request: EvaluateRequest, identity: IdentityDep) -> dict[str, object]:
     gate = QualityGate(min_score=request.min_score)
     decision = gate.evaluate(request.artifact, request.content_type)
     return decision.to_dict()

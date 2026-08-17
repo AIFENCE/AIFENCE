@@ -13,9 +13,19 @@ from sqlalchemy import Engine
 
 
 class TelemetryConfig(Protocol):
-    otel_exporter_otlp_endpoint: str
-    otel_service_name: str
-    environment: str
+    """Settings surface needed to configure tracing.
+
+    Declared as read-only properties so frozen settings dataclasses satisfy it.
+    """
+
+    @property
+    def otel_exporter_otlp_endpoint(self) -> str: ...
+
+    @property
+    def otel_service_name(self) -> str: ...
+
+    @property
+    def environment(self) -> str: ...
 
 
 def configure_telemetry(app: object, engine: Engine, settings: TelemetryConfig) -> None:
@@ -45,7 +55,7 @@ def configure_telemetry(app: object, engine: Engine, settings: TelemetryConfig) 
     provider.add_span_processor(BatchSpanProcessor(exporter))
     trace.set_tracer_provider(provider)
     FastAPIInstrumentor.instrument_app(
-        app,  # type: ignore[arg-type]
+        app,
         excluded_urls="/health/live,/health/ready,/metrics",
     )
     SQLAlchemyInstrumentor().instrument(engine=engine)

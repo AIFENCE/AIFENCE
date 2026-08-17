@@ -21,6 +21,8 @@ from typing import Any
 from fastapi import APIRouter, Request
 from pydantic import BaseModel, Field
 
+from .security import IdentityDep
+
 router = APIRouter(prefix="/v1/fence", tags=["fence"])
 
 #: Guard outcomes that permit the flow to continue to the bus handoff.
@@ -137,7 +139,10 @@ def _run_bus(req: FenceRequest, request: Request) -> dict[str, Any]:
 
 
 @router.post("/submit", summary="Run an artifact through the full quality→guard→bus fence")
-def submit(req: FenceRequest, request: Request) -> dict[str, Any]:
+def submit(req: FenceRequest, request: Request, identity: IdentityDep) -> dict[str, Any]:
+    # Submitting to the fence performs a policy decision and a durable handoff,
+    # so it requires the same credential guard requires for a direct decision.
+    identity.require("decisions:write")
     request_id = getattr(request.state, "request_id", None)
     stages: dict[str, Any] = {}
 
@@ -146,6 +151,7 @@ def submit(req: FenceRequest, request: Request) -> dict[str, Any]:
     if not quality["passed"]:
         return {
             "request_id": request_id,
+            "tenant_id": identity.tenant_id,
             "allowed": False,
             "final_outcome": "blocked_by_quality",
             "stages": stages,
@@ -156,6 +162,7 @@ def submit(req: FenceRequest, request: Request) -> dict[str, Any]:
     if guard["outcome"] not in _GUARD_PROCEED:
         return {
             "request_id": request_id,
+            "tenant_id": identity.tenant_id,
             "allowed": False,
             "final_outcome": "blocked_by_guard",
             "stages": stages,
@@ -164,6 +171,7 @@ def submit(req: FenceRequest, request: Request) -> dict[str, Any]:
     stages["bus"] = _run_bus(req, request)
     return {
         "request_id": request_id,
+        "tenant_id": identity.tenant_id,
         "allowed": True,
         "final_outcome": "handed_off",
         "stages": stages,

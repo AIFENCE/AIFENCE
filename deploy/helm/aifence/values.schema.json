@@ -1,0 +1,809 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "replicaCount",
+    "image",
+    "runtimeSecretName",
+    "tlsSecretName",
+    "environment",
+    "clamav",
+    "networkPolicy",
+    "migrationJob",
+    "lifecycleWorker",
+    "anchorWorker"
+  ],
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "minimum": 3
+    },
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "tag",
+        "digest",
+        "requireDigest",
+        "pullPolicy"
+      ],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tag": {
+          "type": "string",
+          "minLength": 1
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^$|^sha256:[a-f0-9]{64}$"
+        },
+        "pullPolicy": {
+          "enum": [
+            "Always",
+            "IfNotPresent",
+            "Never"
+          ]
+        },
+        "requireDigest": {
+          "type": "boolean",
+          "const": true
+        }
+      }
+    },
+    "imagePullSecrets": {
+      "type": "array"
+    },
+    "nameOverride": {
+      "type": "string"
+    },
+    "fullnameOverride": {
+      "type": "string"
+    },
+    "runtimeSecretName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tlsSecretName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "serviceAccount": {
+      "type": "object"
+    },
+    "environment": {
+      "type": "object",
+      "required": [
+        "publicBaseUrl",
+        "artifactStorePath",
+        "auditCheckpointInterval",
+        "maxBrokerResponseBytes",
+        "maxPageSize",
+        "executionLeaseSeconds",
+        "egressProxyUrl",
+        "dnsResolutionTimeoutSeconds",
+        "artifactStoreBackend",
+        "artifactS3Endpoint",
+        "artifactS3Bucket",
+        "artifactS3Region",
+        "artifactS3Prefix",
+        "auditAnchorBackend",
+        "auditAnchorWebhookUrl",
+        "dispatchMode",
+        "dispatchWaitSeconds",
+        "workloadAuthEnabled",
+        "workloadTrustDomains",
+        "kmsBackend",
+        "kmsKeyId",
+        "operatorConsoleEnabled",
+        "internalCidrs",
+        "artifactS3KmsKeyId",
+        "artifactS3ObjectLockDays",
+        "artifactS3UseStaticCredentials",
+        "auditAnchorWebhookVerifyUrl",
+        "auditAnchorWebhookPublicKeyFile",
+        "auditAnchorWebhookKeyIds",
+        "policyRolloutSecretFile",
+        "signingBackend",
+        "signingVaultAddress",
+        "signingVaultMount",
+        "signingVaultKeyName",
+        "operatorTenantHeader",
+        "operatorIdentityHeader",
+        "operatorGroupsHeader",
+        "operatorAllowedGroups",
+        "tenantKeyBackend",
+        "tenantKmsKeyTemplate",
+        "tenantKeyDestroyEnabled",
+        "auditAnchorRequiredQuorum",
+        "auditAnchorDestinations",
+        "sourceCodeUrl"
+      ],
+      "properties": {
+        "publicBaseUrl": {
+          "type": "string",
+          "pattern": "^$|^https://",
+          "minLength": 1
+        },
+        "rateLimitPerMinute": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "auditRetentionDays": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "artifactRetentionDays": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "allowedOrigins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "providerAllowedHosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "toolAllowedHosts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "trustedProxyCidrs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "artifactStorePath": {
+          "type": "string",
+          "pattern": "^/"
+        },
+        "auditCheckpointInterval": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "maxBrokerResponseBytes": {
+          "type": "integer",
+          "minimum": 1024
+        },
+        "maxPageSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5000
+        },
+        "executionLeaseSeconds": {
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 3600
+        },
+        "egressProxyUrl": {
+          "type": "string",
+          "pattern": "^$|^https?://",
+          "minLength": 1
+        },
+        "dnsResolutionTimeoutSeconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "artifactStoreBackend": {
+          "enum": [
+            "s3"
+          ]
+        },
+        "artifactS3Endpoint": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifactS3Bucket": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifactS3Region": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifactS3Prefix": {
+          "type": "string"
+        },
+        "auditAnchorBackend": {
+          "enum": [
+            "webhook"
+          ]
+        },
+        "auditAnchorWebhookUrl": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dispatchMode": {
+          "enum": [
+            "async",
+            "hybrid"
+          ]
+        },
+        "dispatchWaitSeconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "workloadAuthEnabled": {
+          "const": true
+        },
+        "workloadTrustDomains": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "kmsBackend": {
+          "enum": [
+            "aws",
+            "gcp",
+            "azure",
+            "vault"
+          ]
+        },
+        "kmsKeyId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vaultAddress": {
+          "type": "string",
+          "minLength": 1
+        },
+        "vaultTransitMount": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operatorConsoleEnabled": {
+          "type": "boolean"
+        },
+        "internalCidrs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "artifactS3KmsKeyId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "artifactS3ObjectLockDays": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "artifactS3UseStaticCredentials": {
+          "type": "boolean"
+        },
+        "auditAnchorWebhookVerifyUrl": {
+          "type": "string",
+          "pattern": "^https://",
+          "minLength": 1
+        },
+        "auditAnchorWebhookPublicKeyFile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "policyRolloutSecretFile": {
+          "type": "string",
+          "minLength": 1
+        },
+        "signingBackend": {
+          "enum": [
+            "vault"
+          ]
+        },
+        "signingVaultAddress": {
+          "type": "string",
+          "pattern": "^https://",
+          "minLength": 1
+        },
+        "signingVaultMount": {
+          "type": "string",
+          "minLength": 1
+        },
+        "signingVaultKeyName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operatorTenantHeader": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operatorIdentityHeader": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operatorGroupsHeader": {
+          "type": "string",
+          "minLength": 1
+        },
+        "operatorAllowedGroups": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "auditAnchorWebhookKeyIds": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "tenantKeyBackend": {
+          "type": "string",
+          "enum": [
+            "aws",
+            "gcp",
+            "azure",
+            "vault"
+          ]
+        },
+        "tenantKmsKeyTemplate": {
+          "type": "string",
+          "minLength": 12,
+          "pattern": "\\{tenant_id\\}"
+        },
+        "tenantKeyDestroyEnabled": {
+          "type": "boolean"
+        },
+        "auditAnchorRequiredQuorum": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "auditAnchorDestinations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "sourceCodeUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "commercialLicenseUrl": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kmsBackend": {
+                "const": "vault"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "vaultAddress",
+              "vaultTransitMount"
+            ]
+          }
+        }
+      ]
+    },
+    "rotation": {
+      "type": "object"
+    },
+    "mtls": {
+      "type": "object",
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "const": true
+        },
+        "clientCASecretName": {
+          "type": "string"
+        },
+        "clientCAKey": {
+          "type": "string"
+        }
+      }
+    },
+    "service": {
+      "type": "object"
+    },
+    "ingress": {
+      "type": "object"
+    },
+    "resources": {
+      "type": "object"
+    },
+    "autoscaling": {
+      "type": "object"
+    },
+    "podDisruptionBudget": {
+      "type": "object"
+    },
+    "nodeSelector": {
+      "type": "object"
+    },
+    "tolerations": {
+      "type": "array"
+    },
+    "affinity": {
+      "type": "object"
+    },
+    "topologySpreadConstraints": {
+      "type": "boolean"
+    },
+    "clamav": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "image",
+        "replicas",
+        "servicePort"
+      ],
+      "properties": {
+        "enabled": {
+          "const": true
+        },
+        "replicas": {
+          "type": "integer",
+          "minimum": 2
+        },
+        "servicePort": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "image": {
+          "type": "object",
+          "required": [
+            "repository",
+            "tag",
+            "digest",
+            "pullPolicy"
+          ],
+          "properties": {
+            "repository": {
+              "type": "string",
+              "minLength": 1
+            },
+            "tag": {
+              "type": "string",
+              "minLength": 1
+            },
+            "digest": {
+              "type": "string",
+              "pattern": "^sha256:[a-f0-9]{64}$"
+            },
+            "pullPolicy": {
+              "enum": [
+                "Always",
+                "IfNotPresent",
+                "Never"
+              ]
+            }
+          }
+        },
+        "persistence": {
+          "type": "object"
+        },
+        "resources": {
+          "type": "object"
+        }
+      }
+    },
+    "networkPolicy": {
+      "type": "object",
+      "required": [
+        "enabled",
+        "database",
+        "egressProxy"
+      ],
+      "properties": {
+        "enabled": {
+          "const": true
+        },
+        "ingress": {
+          "type": "object"
+        },
+        "dns": {
+          "type": "object"
+        },
+        "database": {
+          "type": "object",
+          "required": [
+            "namespaceSelector",
+            "podSelector",
+            "cidrs",
+            "port"
+          ],
+          "properties": {
+            "namespaceSelector": {
+              "type": "object"
+            },
+            "podSelector": {
+              "type": "object"
+            },
+            "cidrs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "port": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535
+            }
+          }
+        },
+        "otlpEgressCIDRs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "otlpPort": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "clamavUpdateCIDRs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "egressProxy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "cidrs",
+            "port"
+          ],
+          "properties": {
+            "cidrs": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "port": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535
+            }
+          }
+        }
+      }
+    },
+    "migrationJob": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "databaseSecretName",
+        "backoffLimit"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "databaseSecretName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "backoffLimit": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        }
+      }
+    },
+    "rolloutNonce": {
+      "type": "string"
+    },
+    "podAnnotations": {
+      "type": "object"
+    },
+    "podLabels": {
+      "type": "object"
+    },
+    "worker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "replicas",
+        "batchSize",
+        "pollMilliseconds",
+        "maxAttempts",
+        "retryBaseSeconds",
+        "resources",
+        "runtimeSecretName",
+        "concurrency",
+        "leaseRenewalSeconds",
+        "serviceAccount"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "replicas": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "batchSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "pollMilliseconds": {
+          "type": "integer",
+          "minimum": 50
+        },
+        "maxAttempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "retryBaseSeconds": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "resources": {
+          "type": "object"
+        },
+        "runtimeSecretName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "concurrency": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 256
+        },
+        "leaseRenewalSeconds": {
+          "type": "integer",
+          "minimum": 5
+        },
+        "serviceAccount": {
+          "type": "object"
+        }
+      }
+    },
+    "lifecycleWorker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "replicas",
+        "runtimeSecretName",
+        "batchSize",
+        "pollMilliseconds",
+        "maxAttempts",
+        "leaseSeconds",
+        "serviceAccount",
+        "resources"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "replicas": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "runtimeSecretName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "batchSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "pollMilliseconds": {
+          "type": "integer",
+          "minimum": 50
+        },
+        "maxAttempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "leaseSeconds": {
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 7200
+        },
+        "serviceAccount": {
+          "type": "object"
+        },
+        "resources": {
+          "type": "object"
+        }
+      }
+    },
+    "anchorWorker": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "replicas",
+        "runtimeSecretName",
+        "batchSize",
+        "pollMilliseconds",
+        "maxAttempts",
+        "leaseSeconds",
+        "serviceAccount",
+        "resources"
+      ],
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "replicas": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "runtimeSecretName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "batchSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1000
+        },
+        "pollMilliseconds": {
+          "type": "integer",
+          "minimum": 50
+        },
+        "maxAttempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "leaseSeconds": {
+          "type": "integer",
+          "minimum": 30,
+          "maximum": 3600
+        },
+        "serviceAccount": {
+          "type": "object"
+        },
+        "resources": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

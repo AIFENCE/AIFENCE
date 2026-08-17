@@ -2,8 +2,18 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
+from ..core.errors import AIFenceError
 
-class AgentDanceError(Exception):
+
+class AgentDanceError(AIFenceError):
+    """Guard's error base, rooted in the shared hierarchy.
+
+    Inheriting from ``AIFenceError`` means a guard exception raised outside the
+    guard sub-application (e.g. by the shared authentication dependency serving
+    the fence flow) is still rendered as the standard error envelope with the
+    correct status code, instead of falling through as a 500.
+    """
+
     code = "agentdance_error"
     status_code = 400
 

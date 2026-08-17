@@ -1,0 +1,255 @@
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+replicaCount: 3
+
+worker:
+  enabled: true
+  replicas: 3
+  runtimeSecretName: aifence-dispatcher-runtime
+  batchSize: 8
+  concurrency: 8
+  leaseRenewalSeconds: 30
+  pollMilliseconds: 250
+  maxAttempts: 5
+  retryBaseSeconds: 2
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "2"
+      memory: 2Gi
+
+lifecycleWorker:
+  enabled: true
+  replicas: 2
+  runtimeSecretName: aifence-lifecycle-runtime
+  batchSize: 4
+  pollMilliseconds: 1000
+  maxAttempts: 5
+  leaseSeconds: 600
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "2"
+      memory: 2Gi
+
+anchorWorker:
+  enabled: true
+  replicas: 2
+  runtimeSecretName: aifence-anchor-runtime
+  batchSize: 16
+  pollMilliseconds: 500
+  maxAttempts: 8
+  leaseSeconds: 180
+  serviceAccount:
+    create: true
+    annotations: {}
+    name: ""
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+
+image:
+  repository: ghcr.io/aifence/aifence
+  tag: "1.0.0-rc.5"
+  digest: ""
+  requireDigest: true
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+runtimeSecretName: aifence-runtime
+tlsSecretName: aifence-tls
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+environment:
+  publicBaseUrl: ""
+  sourceCodeUrl: "https://github.com/aifence/aifence"
+  commercialLicenseUrl: "https://github.com/aifence/aifence/blob/main/COMMERCIAL-LICENSE.md"
+  signingKeyId: aifence-signing-v1
+  apiKeyPepperId: pepper-v1
+  allowedOrigins: []
+  providerAllowedHosts:
+    - api.openai.com
+    - api.anthropic.com
+    - generativelanguage.googleapis.com
+  toolAllowedHosts: []
+  trustedProxyCidrs: []
+  internalCidrs: []
+  rateLimitPerMinute: 600
+  auditRetentionDays: 2555
+  artifactRetentionDays: 30
+  artifactStorePath: /var/lib/aifence/artifacts
+  artifactStoreBackend: s3
+  artifactS3Endpoint: ""
+  artifactS3Bucket: ""
+  artifactS3Region: us-east-1
+  artifactS3Prefix: aifence
+  artifactS3KmsKeyId: ""
+  artifactS3ObjectLockDays: 30
+  artifactS3UseStaticCredentials: false
+  auditCheckpointInterval: 1000
+  auditAnchorBackend: webhook
+  auditAnchorWebhookUrl: ""
+  auditAnchorWebhookVerifyUrl: ""
+  auditAnchorWebhookPublicKeyFile: /run/aifence/runtime/audit-anchor-public.pem
+  auditAnchorWebhookKeyIds: []
+  auditAnchorRequiredQuorum: 1
+  auditAnchorDestinations: []
+  maxBrokerResponseBytes: 4194304
+  maxPageSize: 500
+  executionLeaseSeconds: 120
+  dispatchMode: async
+  dispatchWaitSeconds: 3
+  workloadAuthEnabled: true
+  workloadTrustDomains: []
+  policyRolloutSecretFile: /run/aifence/runtime/policy-rollout-secret
+  kmsBackend: vault
+  kmsKeyId: aifence
+  tenantKeyBackend: vault
+  tenantKmsKeyTemplate: tenant-{tenant_id}
+  tenantKeyDestroyEnabled: true
+  vaultAddress: ""
+  vaultTransitMount: transit
+  signingBackend: vault
+  signingVaultAddress: ""
+  signingVaultMount: transit
+  signingVaultKeyName: aifence-signing
+  operatorConsoleEnabled: false
+  operatorTenantHeader: X-Agentdance-Tenant-ID
+  operatorIdentityHeader: X-Auth-Request-Email
+  operatorGroupsHeader: X-Auth-Request-Groups
+  operatorAllowedGroups:
+    - aifence-operators
+  dnsResolutionTimeoutSeconds: 3
+  egressProxyUrl: ""
+  otlpEndpoint: ""
+  logLevel: INFO
+
+rotation:
+  apiKeyPepperringFileEnabled: false
+
+mtls:
+  enabled: true
+  clientCASecretName: ""
+  clientCAKey: ca.crt
+
+service:
+  type: ClusterIP
+  port: 443
+  annotations: {}
+
+ingress:
+  enabled: false
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS
+    nginx.ingress.kubernetes.io/proxy-body-size: 12m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "65"
+  hosts: []
+  tls: []
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: "2"
+    memory: 2Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 20
+  targetCPUUtilizationPercentage: 65
+  targetMemoryUtilizationPercentage: 75
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: true
+
+clamav:
+  enabled: true
+  image:
+    repository: clamav/clamav
+    tag: 1.4.5-debian
+    digest: "sha256:0542880c8abebb7430be5366657aec561f03693ed7be4e64a45fd2ee60b08d02"
+    pullPolicy: IfNotPresent
+  replicas: 2
+  servicePort: 3310
+  persistence:
+    enabled: true
+    storageClassName: ""
+    size: 5Gi
+  resources:
+    requests:
+      cpu: 500m
+      memory: 1Gi
+    limits:
+      cpu: "2"
+      memory: 3Gi
+
+networkPolicy:
+  enabled: true
+  ingress:
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: ingress-nginx
+    podSelector: {}
+    cidrs: []
+  dns:
+    namespaceSelector:
+      matchLabels:
+        kubernetes.io/metadata.name: kube-system
+    podSelector:
+      matchLabels:
+        k8s-app: kube-dns
+  database:
+    namespaceSelector: {}
+    podSelector: {}
+    cidrs: []
+    port: 5432
+  egressProxy:
+    cidrs: []
+    port: 8443
+  otlpEgressCIDRs: []
+  otlpPort: 4318
+  clamavUpdateCIDRs:
+    - 0.0.0.0/0
+    - ::/0
+
+migrationJob:
+  enabled: true
+  databaseSecretName: aifence-migration-database
+  backoffLimit: 4
+
+rolloutNonce: ""
+
+podAnnotations: {}
+podLabels: {}

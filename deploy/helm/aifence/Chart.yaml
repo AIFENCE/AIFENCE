@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+apiVersion: v2
+name: aifence
+description: Production deployment of the AIFENCE AI agent security control and enforcement plane
+type: application
+version: 1.0.0-rc.5
+appVersion: "1.0.0rc5"
+kubeVersion: ">=1.30.0-0"

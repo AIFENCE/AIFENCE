@@ -1,0 +1,67 @@
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+{{- if .Values.migrationJob.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "aifence.fullname" . }}-migrate-{{ .Release.Revision }}
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migration
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: {{ .Values.migrationJob.backoffLimit }}
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      labels:
+        {{- include "aifence.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: migration
+      annotations:
+        aifence.io/rollout-nonce: {{ .Values.rolloutNonce | quote }}
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: migrate
+          image: {{ include "aifence.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["migrate"]
+          env:
+            - name: AIFENCE_ENVIRONMENT
+              value: staging
+            - name: AIFENCE_DATABASE_URL_FILE
+              value: /run/aifence/migration/database-url
+            - name: AIFENCE_AUTO_CREATE_SCHEMA
+              value: "false"
+          volumeMounts:
+            - name: migration-database-secret
+              mountPath: /run/aifence/migration
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        - name: migration-database-secret
+          secret:
+            secretName: {{ required "migrationJob.databaseSecretName is required when migrations are enabled" .Values.migrationJob.databaseSecretName }}
+            defaultMode: 0400
+        - name: tmp
+          emptyDir:
+            medium: Memory
+            sizeLimit: 32Mi
+{{- end }}

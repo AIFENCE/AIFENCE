@@ -1,0 +1,46 @@
+AIFENCE {{ .Chart.AppVersion }} is installed as separate control-plane and dispatcher workloads.
+
+Control-plane secret {{ .Values.runtimeSecretName }} must contain:
+  database-url
+  api-key-pepper
+  policy-rollout-secret
+  signing-vault-token
+  audit-anchor-webhook-token
+  audit-anchor-public.pem
+
+Configure environment.auditAnchorWebhookKeyIds with the exact remote receipt key IDs.
+{{- if eq .Values.environment.kmsBackend "vault" }}
+  vault-token
+{{- end }}
+{{- if .Values.environment.artifactS3UseStaticCredentials }}
+  artifact-s3-access-key
+  artifact-s3-secret-key
+{{- end }}
+
+Dispatcher secret {{ .Values.worker.runtimeSecretName }} must contain only:
+  database-url
+  kms-vault-token
+  signing-vault-token
+
+Do not copy the control-plane API-key pepper, audit-anchor credential, or object-storage
+credential into the dispatcher secret. Prefer workload identity over static object-storage
+credentials. Both Vault tokens should be narrowly scoped to their required keys.
+
+The secret {{ .Values.tlsSecretName }} must contain tls.crt and tls.key. When mTLS is
+enabled, {{ .Values.mtls.clientCASecretName }} must contain {{ .Values.mtls.clientCAKey }}.
+Database URLs must use certificate-verified TLS and distinct non-superuser roles.
+
+Bootstrap the first tenant exactly once:
+  kubectl exec -n {{ .Release.Namespace }} deploy/{{ include "aifence.fullname" . }} -- \
+    aifence bootstrap --tenant-name "$ORGANIZATION_NAME"
+
+Production values must configure:
+  environment.egressProxyUrl and networkPolicy.egressProxy.cidrs
+  environment.trustedProxyCidrs, environment.internalCidrs, and workloadTrustDomains
+  non-exportable signing and envelope-encryption keys
+  an immutable S3-compatible artifact bucket and independent signed audit anchor
+
+Artifact ciphertext belongs in a versioned bucket with Object Lock, retention,
+tenant-scoped IAM, backup/replication, SSE-KMS encryption context, and separate
+read/write/delete roles. Internal diagnostics and the operator console must remain
+behind authenticated trusted proxies.

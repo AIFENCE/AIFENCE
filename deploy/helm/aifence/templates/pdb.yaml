@@ -1,0 +1,48 @@
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+{{- if .Values.podDisruptionBudget.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "aifence.fullname" . }}
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: control-plane
+{{- end }}
+{{- if .Values.lifecycleWorker.enabled }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "aifence.fullname" . }}-lifecycle
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: lifecycle
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: lifecycle
+{{- end }}
+{{- if .Values.anchorWorker.enabled }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "aifence.fullname" . }}-anchor
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: audit-anchor
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: audit-anchor
+{{- end }}

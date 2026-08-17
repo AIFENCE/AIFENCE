@@ -1,0 +1,129 @@
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+{{- if .Values.worker.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aifence.fullname" . }}-worker
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: dispatcher
+spec:
+  replicas: {{ .Values.worker.replicas }}
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: dispatcher
+  template:
+    metadata:
+      labels:
+        {{- include "aifence.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: dispatcher
+      annotations:
+        checksum/dispatcher-secret-name: {{ .Values.worker.runtimeSecretName | sha256sum }}
+        aifence.io/rollout-nonce: {{ .Values.rolloutNonce | quote }}
+    spec:
+      serviceAccountName: {{ include "aifence.workerServiceAccountName" . }}
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 120
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: dispatcher
+          image: {{ include "aifence.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["worker"]
+          env:
+            - {name: AIFENCE_ENVIRONMENT, value: production}
+            - {name: AIFENCE_RUNTIME_ROLE, value: dispatcher}
+            - {name: AIFENCE_DATABASE_URL_FILE, value: /run/aifence/dispatcher/database-url}
+            - {name: AIFENCE_AUTO_CREATE_SCHEMA, value: "false"}
+            - {name: AIFENCE_DOCS_ENABLED, value: "false"}
+            - {name: AIFENCE_GUARD_DISPATCH_MODE, value: async}
+            - name: AIFENCE_GUARD_INTERNAL_CIDRS
+              value: {{ join "," (required "environment.internalCidrs is required" .Values.environment.internalCidrs) | quote }}
+            - name: AIFENCE_GUARD_WORKER_BATCH_SIZE
+              value: {{ .Values.worker.batchSize | quote }}
+            - name: AIFENCE_GUARD_WORKER_CONCURRENCY
+              value: {{ .Values.worker.concurrency | quote }}
+            - name: AIFENCE_GUARD_WORKER_LEASE_RENEWAL_SECONDS
+              value: {{ .Values.worker.leaseRenewalSeconds | quote }}
+            - name: AIFENCE_GUARD_WORKER_POLL_MILLISECONDS
+              value: {{ .Values.worker.pollMilliseconds | quote }}
+            - name: AIFENCE_GUARD_WORKER_MAX_ATTEMPTS
+              value: {{ .Values.worker.maxAttempts | quote }}
+            - name: AIFENCE_GUARD_WORKER_RETRY_BASE_SECONDS
+              value: {{ .Values.worker.retryBaseSeconds | quote }}
+            - name: AIFENCE_GUARD_EXECUTION_LEASE_SECONDS
+              value: {{ .Values.environment.executionLeaseSeconds | quote }}
+            - name: AIFENCE_GUARD_PROVIDER_ALLOWED_HOSTS
+              value: {{ join "," .Values.environment.providerAllowedHosts | quote }}
+            - name: AIFENCE_GUARD_TOOL_ALLOWED_HOSTS
+              value: {{ join "," .Values.environment.toolAllowedHosts | quote }}
+            - name: AIFENCE_GUARD_EGRESS_PROXY_URL
+              value: {{ required "environment.egressProxyUrl is required" .Values.environment.egressProxyUrl | quote }}
+            - name: AIFENCE_GUARD_DNS_RESOLUTION_TIMEOUT_SECONDS
+              value: {{ .Values.environment.dnsResolutionTimeoutSeconds | quote }}
+            - name: AIFENCE_GUARD_MAX_BROKER_RESPONSE_BYTES
+              value: {{ .Values.environment.maxBrokerResponseBytes | quote }}
+            - name: AIFENCE_GUARD_KMS_BACKEND
+              value: {{ .Values.environment.kmsBackend | quote }}
+            - name: AIFENCE_GUARD_KMS_KEY_ID
+              value: {{ .Values.environment.kmsKeyId | quote }}
+            - name: AIFENCE_GUARD_VAULT_ADDRESS
+              value: {{ required "environment.vaultAddress is required" .Values.environment.vaultAddress | quote }}
+            - {name: AIFENCE_GUARD_VAULT_TOKEN_FILE, value: /run/aifence/dispatcher/kms-vault-token}
+            - name: AIFENCE_GUARD_VAULT_TRANSIT_MOUNT
+              value: {{ .Values.environment.vaultTransitMount | quote }}
+            - name: AIFENCE_GUARD_SIGNING_BACKEND
+              value: {{ .Values.environment.signingBackend | quote }}
+            - name: AIFENCE_GUARD_SIGNING_KEY_ID
+              value: {{ .Values.environment.signingKeyId | quote }}
+            - name: AIFENCE_GUARD_SIGNING_VAULT_ADDRESS
+              value: {{ required "environment.signingVaultAddress is required" .Values.environment.signingVaultAddress | quote }}
+            - {name: AIFENCE_GUARD_SIGNING_VAULT_TOKEN_FILE, value: /run/aifence/dispatcher/signing-vault-token}
+            - name: AIFENCE_GUARD_SIGNING_VAULT_MOUNT
+              value: {{ .Values.environment.signingVaultMount | quote }}
+            - name: AIFENCE_GUARD_SIGNING_VAULT_KEY_NAME
+              value: {{ .Values.environment.signingVaultKeyName | quote }}
+            - name: AIFENCE_OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.environment.otlpEndpoint | quote }}
+          volumeMounts:
+            - {name: dispatcher-secret, mountPath: /run/aifence/dispatcher, readOnly: true}
+            - {name: tmp, mountPath: /tmp}
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: ["ALL"]}
+      volumes:
+        - name: dispatcher-secret
+          secret:
+            secretName: {{ required "worker.runtimeSecretName is required" .Values.worker.runtimeSecretName }}
+            defaultMode: 0400
+        - name: tmp
+          emptyDir: {medium: Memory, sizeLimit: 64Mi}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

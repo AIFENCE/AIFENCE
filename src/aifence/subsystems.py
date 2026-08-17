@@ -73,7 +73,7 @@ def discover_subsystems() -> list[tuple[str, Subsystem]]:
         except ImportError:
             continue
         if hasattr(module, "register"):
-            found.append((name, module))  # type: ignore[arg-type]
+            found.append((name, module))
         else:
             _logger.warning("subsystem %s has no register() hook; skipping", name)
     return found

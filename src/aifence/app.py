@@ -11,13 +11,15 @@ from __future__ import annotations
 
 import json
 import logging
-from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
+from collections.abc import AsyncIterator, Awaitable, Callable
+from contextlib import AsyncExitStack, asynccontextmanager
+from typing import Any
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from starlette.middleware.trustedhost import TrustedHostMiddleware
+from starlette.routing import Mount
 
 from . import __version__
 from .core.config import CoreSettings
@@ -31,6 +33,18 @@ from .subsystems import SubsystemContext, discover_subsystems
 _logger = logging.getLogger(__name__)
 
 
+def _guarded(shutdown: Callable[[], Awaitable[None]]) -> Callable[[], Awaitable[None]]:
+    """Wrap a shutdown hook so one failure cannot abort the remaining teardown."""
+
+    async def run() -> None:
+        try:
+            await shutdown()
+        except Exception:  # pragma: no cover - defensive shutdown
+            _logger.exception("subsystem shutdown hook failed")
+
+    return run
+
+
 def create_app(settings: CoreSettings | None = None) -> FastAPI:
     settings = settings or CoreSettings.from_env()
     logging.basicConfig(level=getattr(logging, settings.log_level, logging.INFO))
@@ -42,19 +56,23 @@ def create_app(settings: CoreSettings | None = None) -> FastAPI:
     subsystems = discover_subsystems()
 
     @asynccontextmanager
-    async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-        started: list[SubsystemContext] = []
-        try:
-            for startup, _shutdown in ctx.lifespan_hooks:
+    async def lifespan(application: FastAPI) -> AsyncIterator[None]:
+        async with AsyncExitStack() as stack:
+            # Starlette does NOT run a mounted sub-application's lifespan, so a
+            # subsystem mounted as a sub-app would never start or clean up its
+            # own resources (HTTP clients, durable workers, object-store and KMS
+            # clients). Bridge each mounted lifespan into the composed one so the
+            # whole fence starts and shuts down as a single unit.
+            for route in application.routes:
+                sub = getattr(route, "app", None)
+                lifespan_context = getattr(getattr(sub, "router", None), "lifespan_context", None)
+                if isinstance(route, Mount) and lifespan_context is not None:
+                    await stack.enter_async_context(lifespan_context(sub))
+                    _logger.debug("bridged lifespan for sub-application at %s", route.path)
+            for startup, shutdown in ctx.lifespan_hooks:
                 await startup()
-                started.append(ctx)
+                stack.push_async_callback(_guarded(shutdown))
             yield
-        finally:
-            for _startup, shutdown in reversed(ctx.lifespan_hooks):
-                try:
-                    await shutdown()
-                except Exception:  # pragma: no cover - defensive shutdown
-                    _logger.exception("subsystem shutdown hook failed")
 
     app = FastAPI(
         title="AIFENCE",
@@ -130,9 +148,7 @@ def create_app(settings: CoreSettings | None = None) -> FastAPI:
 
 
 def _install_openapi(app: FastAPI, settings: CoreSettings) -> None:
-    from starlette.routing import Mount
-
-    def _merge_mounted(schema: dict[str, object]) -> None:
+    def _merge_mounted(schema: dict[str, Any]) -> None:
         """Fold each mounted sub-app's OpenAPI into the one composed document.
 
         Guard and bus are mounted sub-applications; without this, their paths
@@ -141,16 +157,17 @@ def _install_openapi(app: FastAPI, settings: CoreSettings) -> None:
         their mount, and component schemas are namespaced by mount to avoid
         collisions between subsystems.
         """
-        paths = schema.setdefault("paths", {})
-        components = schema.setdefault("components", {}).setdefault("schemas", {})  # type: ignore[union-attr]
+        paths: dict[str, Any] = schema.setdefault("paths", {})
+        components: dict[str, Any] = schema.setdefault("components", {}).setdefault("schemas", {})
         for route in app.routes:
             sub = getattr(route, "app", None)
-            if not isinstance(route, Mount) or not hasattr(sub, "openapi"):
+            openapi = getattr(sub, "openapi", None)
+            if not isinstance(route, Mount) or openapi is None:
                 continue
             mount = route.path.rstrip("/")
             prefix = mount.lstrip("/").replace("/", "_").capitalize()
             try:
-                sub_schema = sub.openapi()  # type: ignore[union-attr]
+                sub_schema = openapi()
             except Exception:  # pragma: no cover - a sub-app without OpenAPI
                 continue
             for sub_path, item in sub_schema.get("paths", {}).items():
@@ -160,7 +177,7 @@ def _install_openapi(app: FastAPI, settings: CoreSettings) -> None:
                 fixed = json.loads(json.dumps(definition).replace("#/components/schemas/", f"#/components/schemas/{prefix}_"))
                 components[f"{prefix}_{name}"] = fixed
 
-    def custom_openapi() -> dict[str, object]:
+    def custom_openapi() -> dict[str, Any]:
         if app.openapi_schema:
             return app.openapi_schema
         schema = get_openapi(

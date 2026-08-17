@@ -106,9 +106,10 @@ mypy_path = "src"
 module = ["aifence.guard.*", "aifence.bus.*"]
 ignore_errors = true
 
-# Third-party modules without type stubs, pulled in by the vendored subsystems.
+# Third-party modules without type stubs, or that ship only as optional extras
+# (opentelemetry is imported lazily inside core.telemetry).
 [[tool.mypy.overrides]]
-module = ["boto3.*", "jwt.*", "msgpack.*", "mcp.*"]
+module = ["boto3.*", "botocore.*", "jwt.*", "msgpack.*", "mcp.*", "opentelemetry.*"]
 ignore_missing_imports = true
 
 [tool.coverage.run]

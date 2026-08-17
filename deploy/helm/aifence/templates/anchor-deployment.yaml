@@ -1,0 +1,111 @@
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
+# SPDX-License-Identifier: AGPL-3.0-only
+{{- if .Values.anchorWorker.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "aifence.fullname" . }}-anchor
+  labels:
+    {{- include "aifence.labels" . | nindent 4 }}
+    app.kubernetes.io/component: audit-anchor
+spec:
+  replicas: {{ .Values.anchorWorker.replicas }}
+  revisionHistoryLimit: 5
+  strategy:
+    type: RollingUpdate
+    rollingUpdate: {maxUnavailable: 0, maxSurge: 1}
+  selector:
+    matchLabels:
+      {{- include "aifence.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: audit-anchor
+  template:
+    metadata:
+      labels:
+        {{- include "aifence.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: audit-anchor
+      annotations:
+        checksum/anchor-secret-name: {{ .Values.anchorWorker.runtimeSecretName | sha256sum }}
+        aifence.io/rollout-nonce: {{ .Values.rolloutNonce | quote }}
+    spec:
+      serviceAccountName: {{ include "aifence.anchorServiceAccountName" . }}
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 120
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: anchor
+          image: {{ include "aifence.image" . | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args: ["anchor-worker"]
+          env:
+            - {name: AIFENCE_ENVIRONMENT, value: production}
+            - {name: AIFENCE_RUNTIME_ROLE, value: anchor}
+            - {name: AIFENCE_DATABASE_URL_FILE, value: /run/aifence/anchor/database-url}
+            - {name: AIFENCE_AUTO_CREATE_SCHEMA, value: "false"}
+            - {name: AIFENCE_DOCS_ENABLED, value: "false"}
+            - name: AIFENCE_GUARD_INTERNAL_CIDRS
+              value: {{ join "," (required "environment.internalCidrs is required" .Values.environment.internalCidrs) | quote }}
+            - name: AIFENCE_GUARD_ANCHOR_BATCH_SIZE
+              value: {{ .Values.anchorWorker.batchSize | quote }}
+            - name: AIFENCE_GUARD_ANCHOR_POLL_MILLISECONDS
+              value: {{ .Values.anchorWorker.pollMilliseconds | quote }}
+            - name: AIFENCE_GUARD_ANCHOR_MAX_ATTEMPTS
+              value: {{ .Values.anchorWorker.maxAttempts | quote }}
+            - name: AIFENCE_GUARD_ANCHOR_LEASE_SECONDS
+              value: {{ .Values.anchorWorker.leaseSeconds | quote }}
+            - {name: AIFENCE_GUARD_AUDIT_ANCHOR_BACKEND, value: webhook}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_DESTINATIONS
+              value: {{ join "," (required "environment.auditAnchorDestinations is required" .Values.environment.auditAnchorDestinations) | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_REQUIRED_QUORUM
+              value: {{ .Values.environment.auditAnchorRequiredQuorum | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_WEBHOOK_URL
+              value: {{ required "environment.auditAnchorWebhookUrl is required" .Values.environment.auditAnchorWebhookUrl | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_WEBHOOK_VERIFY_URL
+              value: {{ required "environment.auditAnchorWebhookVerifyUrl is required" .Values.environment.auditAnchorWebhookVerifyUrl | quote }}
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_WEBHOOK_PUBLIC_KEY_FILE
+              value: /run/aifence/anchor/audit-anchor-public.pem
+            - name: AIFENCE_GUARD_AUDIT_ANCHOR_WEBHOOK_KEY_IDS
+              value: {{ join "," (required "environment.auditAnchorWebhookKeyIds is required" .Values.environment.auditAnchorWebhookKeyIds) | quote }}
+            - {name: AIFENCE_GUARD_AUDIT_ANCHOR_WEBHOOK_TOKEN_FILE, value: /run/aifence/anchor/audit-anchor-token}
+            - name: AIFENCE_GUARD_SIGNING_BACKEND
+              value: {{ .Values.environment.signingBackend | quote }}
+            - name: AIFENCE_GUARD_SIGNING_KEY_ID
+              value: {{ .Values.environment.signingKeyId | quote }}
+            - name: AIFENCE_GUARD_SIGNING_VAULT_ADDRESS
+              value: {{ required "environment.signingVaultAddress is required" .Values.environment.signingVaultAddress | quote }}
+            - {name: AIFENCE_GUARD_SIGNING_VAULT_TOKEN_FILE, value: /run/aifence/anchor/signing-vault-token}
+            - name: AIFENCE_GUARD_SIGNING_VAULT_MOUNT
+              value: {{ .Values.environment.signingVaultMount | quote }}
+            - name: AIFENCE_GUARD_SIGNING_VAULT_KEY_NAME
+              value: {{ .Values.environment.signingVaultKeyName | quote }}
+            - name: AIFENCE_GUARD_EGRESS_PROXY_URL
+              value: {{ required "environment.egressProxyUrl is required" .Values.environment.egressProxyUrl | quote }}
+            - name: AIFENCE_GUARD_EXTRA_JSON_FILE
+              value: /run/aifence/anchor/anchor-destinations.json
+            - name: AIFENCE_OTEL_EXPORTER_OTLP_ENDPOINT
+              value: {{ .Values.environment.otlpEndpoint | quote }}
+          volumeMounts:
+            - {name: runtime, mountPath: /run/aifence/anchor, readOnly: true}
+            - {name: tmp, mountPath: /tmp}
+          resources:
+            {{- toYaml .Values.anchorWorker.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: ["ALL"]}
+      volumes:
+        - name: runtime
+          secret:
+            secretName: {{ required "anchorWorker.runtimeSecretName is required" .Values.anchorWorker.runtimeSecretName }}
+            defaultMode: 0400
+        - name: tmp
+          emptyDir: {medium: Memory, sizeLimit: 64Mi}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

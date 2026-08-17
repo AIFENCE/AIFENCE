@@ -2,18 +2,9 @@
 """Phase 3: the bus subsystem composes into the AIFENCE app and shares core."""
 from __future__ import annotations
 
-import pytest
 from fastapi.testclient import TestClient
 
-from aifence.app import create_app
-from aifence.core.config import CoreSettings
 from aifence.core.db import Base
-
-
-@pytest.fixture()
-def client(tmp_path) -> TestClient:
-    settings = CoreSettings(database_url=f"sqlite+pysqlite:///{tmp_path/'aifence.db'}")
-    return TestClient(create_app(settings))
 
 
 def test_bus_registered_as_subsystem(client: TestClient) -> None:

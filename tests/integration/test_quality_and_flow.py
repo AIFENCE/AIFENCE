@@ -2,23 +2,14 @@
 """Phase 4: quality gate + the end-to-end fence flow (quality -> guard -> bus)."""
 from __future__ import annotations
 
-import pytest
 from fastapi.testclient import TestClient
 
-from aifence.app import create_app
-from aifence.core.config import CoreSettings
 from aifence.quality.gate import QualityGate
 
 GOOD = (
     "# Quarterly Report\n\nRevenue grew 12% to $4.2M across all regions, driven by "
     "strong enterprise demand and improved retention across the customer base."
 )
-
-
-@pytest.fixture()
-def client(tmp_path) -> TestClient:
-    settings = CoreSettings(database_url=f"sqlite+pysqlite:///{tmp_path/'aifence.db'}")
-    return TestClient(create_app(settings))
 
 
 # --- gate unit behaviour ---
