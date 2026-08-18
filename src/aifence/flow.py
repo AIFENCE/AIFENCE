@@ -113,7 +113,17 @@ def _run_quality(req: FenceRequest) -> dict[str, Any]:
     return {"tier": "quality", **decision.to_dict()}
 
 
-def _run_guard(req: FenceRequest) -> dict[str, Any]:
+def _run_guard(
+    req: FenceRequest, quality: dict[str, Any] | None, window: Any, identity_key: str
+) -> dict[str, Any]:
+    """Evaluate the action, including signals drawn from the agent's history.
+
+    The cross-tier findings are appended to whatever the per-request detectors
+    produced, so the policy engine treats a trajectory signal exactly like any
+    other finding.
+    """
+    from .behavior import behavioral_findings
+
     engine = _policy_engine()
     input_document = {
         "action": {
@@ -129,7 +139,12 @@ def _run_guard(req: FenceRequest) -> dict[str, Any]:
         },
         "principal": {"type": req.principal.type, "id": req.principal.id},
     }
-    result = engine.evaluate(input_document, [], req.risk_score)
+    findings = (
+        behavioral_findings(operation=req.action.operation, quality=quality, window=window)
+        if quality is not None
+        else []
+    )
+    result = engine.evaluate(input_document, findings, req.risk_score)
     return {
         "tier": "guard",
         "outcome": result.outcome,
@@ -137,6 +152,7 @@ def _run_guard(req: FenceRequest) -> dict[str, Any]:
         "constraints": result.constraints,
         "policy_version": result.policy_version,
         "matched_rule": result.matched_rule,
+        "signals": sorted({f.category for f in findings}),
     }
 
 
@@ -239,12 +255,35 @@ def submit(req: FenceRequest, request: Request, identity: IdentityDep) -> dict[s
         stages["quality"] = _degraded_stage("quality", quality_result)
         degraded.append("quality")
 
-    guard_result = breakers.guard.call(lambda: _run_guard(req))
+    # One window per agent identity: cross-tier signals are properties of a
+    # trajectory, so they need the agent's recent turns, not just this request.
+    agent_key = f"{identity.tenant_id}:{identity.bound_agent_id or identity.key_id}"
+    window = request.app.state.agent_windows.get(agent_key)
+    quality_result_value = quality_result.value if quality_result.ok else None
+
+    guard_result = breakers.guard.call(
+        lambda: _run_guard(req, quality_result_value, window, agent_key)
+    )
     # Guard is always fail-closed, so reaching here means it answered.
     guard_stage = guard_result.value or {}
     stages["guard"] = guard_stage
     if guard_stage.get("outcome") not in _GUARD_PROCEED:
         return receipt("blocked_by_guard", allowed=False)
+
+    # Record the turn only once it has been authorised, so a refused action does
+    # not shape the window that judges the next one.
+    from .behavior import untrusted_source
+
+    window.record(
+        operation=req.action.operation,
+        target=req.action.target,
+        destination=req.security.network_destination,
+        quality=quality_result_value or {},
+        observed=set(),
+        ingested_untrusted=untrusted_source(
+            req.action.operation, req.action.target, bool(req.artifact)
+        ),
+    )
 
     bus_result = breakers.bus.call(lambda: _run_bus(req, request))
     if bus_result.ok and bus_result.value is not None:

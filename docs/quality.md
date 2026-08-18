@@ -31,8 +31,8 @@ aifence.quality.gate                  the in-process gate
 ```
 
 Deep, family-native evaluation remains the job of the quality runtime under
-`quality/`; the bridge deliberately implements the fast subset that can gate a
-request synchronously.
+`quality/`; the bridge implements the subset that can gate a request
+synchronously.
 
 ## Checks
 
@@ -69,8 +69,8 @@ unresolved placeholder is disqualifying regardless of how good the rest is.
 When a JSON Schema is supplied, structured output is validated against it. With
 the `quality` extra installed, full JSON Schema validation applies, including
 constraints such as `minimum`. Without it, the gate falls back to a
-required-property and type subset — deliberately, so a missing contract field is
-still caught rather than the check silently passing.
+required-property and type subset, so a missing contract field is still caught
+rather than the check passing silently.
 
 ## Grounding
 

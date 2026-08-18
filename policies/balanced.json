@@ -1,0 +1,509 @@
+{
+  "spec_version": "agentdance.policy.v1",
+  "version": "baseline-2026.08.03+balanced",
+  "default": {
+    "outcome": "require_approval",
+    "reasons": [
+      "Unknown actions require explicit authorization"
+    ],
+    "constraints": {}
+  },
+  "rules": [
+    {
+      "id": "integrity-control-evasion",
+      "priority": 10000,
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "integrity.control_evasion",
+          "integrity.audit_tampering"
+        ]
+      },
+      "effect": {
+        "outcome": "quarantine_and_terminate",
+        "reasons": [
+          "Attempted security-control evasion or audit tampering"
+        ],
+        "constraints": {
+          "terminate_descendants": true,
+          "revoke_capabilities": true
+        }
+      }
+    },
+    {
+      "id": "confirmed-malware",
+      "priority": 9900,
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "malware.confirmed"
+        ]
+      },
+      "effect": {
+        "outcome": "quarantine_and_terminate",
+        "reasons": [
+          "Malware was detected in an agent-controlled artifact"
+        ],
+        "constraints": {
+          "quarantine_artifact": true,
+          "terminate_descendants": true
+        }
+      }
+    },
+    {
+      "id": "scanner-unavailable-high-impact",
+      "priority": 9800,
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "malware.scanner_unavailable"
+        ],
+        "external_effect": true
+      },
+      "effect": {
+        "outcome": "deny",
+        "reasons": [
+          "Required malware scanning is unavailable for an external-effect action"
+        ],
+        "constraints": {
+          "retry_after_dependency_recovery": true
+        }
+      }
+    },
+    {
+      "id": "secret-exfiltration",
+      "priority": 9700,
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "data.secret_exposure",
+          "data.exfiltration"
+        ]
+      },
+      "effect": {
+        "outcome": "deny",
+        "reasons": [
+          "Sensitive information would leave its authorized boundary"
+        ],
+        "constraints": {
+          "redact_secrets": true,
+          "revoke_exposed_credentials": true
+        }
+      }
+    },
+    {
+      "id": "unauthorized-tool",
+      "priority": 9600,
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "authorization.tool_not_allowed",
+          "authorization.scope_violation",
+          "authorization.agent_unregistered",
+          "authorization.agent_disabled"
+        ]
+      },
+      "effect": {
+        "outcome": "deny",
+        "reasons": [
+          "The requested tool, target, or scope is not authorized for this agent"
+        ],
+        "constraints": {
+          "issue_capability": false
+        }
+      }
+    },
+    {
+      "id": "material-deception",
+      "priority": 9500,
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "deception.material_misrepresentation"
+        ],
+        "min_risk": 65
+      },
+      "effect": {
+        "outcome": "quarantine_and_terminate",
+        "reasons": [
+          "Material deception was detected in a consequential workflow"
+        ],
+        "constraints": {
+          "terminate_descendants": true,
+          "open_incident": true
+        }
+      }
+    },
+    {
+      "id": "prompt-injection-with-external-effect",
+      "priority": 9400,
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "prompt_injection.detected"
+        ],
+        "external_effect": true
+      },
+      "effect": {
+        "outcome": "deny",
+        "reasons": [
+          "Untrusted instructions attempted to influence an external-effect action"
+        ],
+        "constraints": {
+          "isolate_untrusted_content": true
+        }
+      }
+    },
+    {
+      "id": "production-destructive-action",
+      "priority": 9000,
+      "mandatory": true,
+      "match": {
+        "environment": [
+          "production"
+        ],
+        "destructive": true
+      },
+      "effect": {
+        "outcome": "require_approval",
+        "reasons": [
+          "Destructive production actions require an independent approval"
+        ],
+        "constraints": {
+          "approval_ttl_seconds": 900,
+          "dual_control": true,
+          "max_capability_uses": 1
+        }
+      }
+    },
+    {
+      "id": "financial-action",
+      "priority": 8900,
+      "mandatory": true,
+      "match": {
+        "amount_gte": 0.01
+      },
+      "effect": {
+        "outcome": "require_approval",
+        "reasons": [
+          "Money movement requires explicit approval"
+        ],
+        "constraints": {
+          "approval_ttl_seconds": 600,
+          "max_capability_uses": 1,
+          "bind_amount": true
+        }
+      }
+    },
+    {
+      "id": "security-administration",
+      "priority": 8800,
+      "mandatory": true,
+      "match": {
+        "action_types": [
+          "security.*",
+          "identity.*",
+          "credential.*",
+          "policy.*"
+        ]
+      },
+      "effect": {
+        "outcome": "require_approval",
+        "reasons": [
+          "Security, identity, credential, and policy changes require approval"
+        ],
+        "constraints": {
+          "approval_ttl_seconds": 600,
+          "max_capability_uses": 1
+        }
+      }
+    },
+    {
+      "id": "model-provider-request",
+      "priority": 7500,
+      "mandatory": false,
+      "match": {
+        "action_types": [
+          "model.request"
+        ],
+        "operations": [
+          "invoke"
+        ],
+        "max_risk": 34,
+        "destructive": false
+      },
+      "effect": {
+        "outcome": "allow_with_limits",
+        "reasons": [
+          "Registered model-provider request passed mandatory security controls"
+        ],
+        "constraints": {
+          "buffered_response_required": true,
+          "redact_secrets": true
+        }
+      }
+    },
+    {
+      "id": "external-communication",
+      "priority": 7000,
+      "mandatory": false,
+      "match": {
+        "action_types": [
+          "communication.*"
+        ],
+        "external_effect": true,
+        "max_risk": 49
+      },
+      "effect": {
+        "outcome": "allow_with_limits",
+        "reasons": [
+          "External communication is allowed with bounded recipients and volume"
+        ],
+        "constraints": {
+          "max_recipients": 10,
+          "max_messages": 10,
+          "redact_secrets": true
+        }
+      }
+    },
+    {
+      "id": "read-only-low-risk",
+      "priority": 6000,
+      "mandatory": false,
+      "match": {
+        "operations": [
+          "read",
+          "get",
+          "list",
+          "search",
+          "inspect"
+        ],
+        "max_risk": 34,
+        "destructive": false
+      },
+      "effect": {
+        "outcome": "allow",
+        "reasons": [
+          "Read-only action is within the registered agent scope"
+        ],
+        "constraints": {
+          "max_records": 1000
+        }
+      }
+    },
+    {
+      "id": "nonproduction-reversible-write",
+      "priority": 5000,
+      "mandatory": false,
+      "match": {
+        "environment": [
+          "development",
+          "test",
+          "staging"
+        ],
+        "destructive": false,
+        "reversible": true,
+        "max_risk": 44
+      },
+      "effect": {
+        "outcome": "allow_with_limits",
+        "reasons": [
+          "Reversible non-production action is within policy limits"
+        ],
+        "constraints": {
+          "max_capability_uses": 1,
+          "capability_ttl_seconds": 60
+        }
+      }
+    },
+    {
+      "id": "dangerous-command",
+      "priority": 9350,
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "execution.dangerous_command"
+        ]
+      },
+      "effect": {
+        "outcome": "quarantine_and_terminate",
+        "reasons": [
+          "A destructive or malware-associated command was detected"
+        ],
+        "constraints": {
+          "terminate_descendants": true,
+          "revoke_capabilities": true
+        }
+      }
+    },
+    {
+      "id": "agent-integrity-drift",
+      "priority": 9300,
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "integrity.instruction_drift",
+          "integrity.version_drift"
+        ]
+      },
+      "effect": {
+        "outcome": "deny",
+        "reasons": [
+          "The running agent does not match its registered integrity state"
+        ],
+        "constraints": {
+          "require_reregistration": true
+        }
+      }
+    },
+    {
+      "id": "evaluation-tampering",
+      "priority": 9250,
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "cheat.evaluation_tampering",
+          "cheat.fabricated_completion"
+        ]
+      },
+      "effect": {
+        "outcome": "deny",
+        "reasons": [
+          "The agent attempted to manipulate evaluation or fabricate completion evidence"
+        ],
+        "constraints": {
+          "open_incident": true
+        }
+      }
+    },
+    {
+      "id": "undeclared-sensitive-content",
+      "priority": 8600,
+      "description": "Content carries sensitive data classes the caller did not declare; redact before the action proceeds.",
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "data.undeclared_sensitive"
+        ]
+      },
+      "effect": {
+        "outcome": "redact_or_transform",
+        "reasons": [
+          "Sensitive data was observed in content that the caller did not declare"
+        ],
+        "constraints": {
+          "redact_secrets": true
+        }
+      }
+    },
+    {
+      "id": "behavioral-drift",
+      "priority": 8500,
+      "description": "The agent's behaviour is degrading across turns in a way no single turn reveals; hold for review.",
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "integrity.behavioral_drift"
+        ]
+      },
+      "effect": {
+        "outcome": "require_approval",
+        "reasons": [
+          "Agent behaviour has drifted across the run"
+        ],
+        "constraints": {
+          "approval_ttl_seconds": 3600
+        }
+      }
+    },
+    {
+      "id": "untrusted-content-influence",
+      "priority": 9450,
+      "description": "The agent changed state after ingesting attacker-controllable external content; hold it for review.",
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "integrity.untrusted_influence"
+        ]
+      },
+      "effect": {
+        "outcome": "require_approval",
+        "reasons": [
+          "A state change followed ingestion of untrusted external content"
+        ],
+        "constraints": {
+          "isolate_untrusted_content": true,
+          "approval_ttl_seconds": 3600
+        }
+      }
+    },
+    {
+      "id": "balanced-in-scope-reversible-write",
+      "priority": 300,
+      "description": "Reversible, non-destructive, in-scope writes at low risk. Any detector finding raises risk above the bound and withdraws the allowance.",
+      "match": {
+        "operations": [
+          "write",
+          "update"
+        ],
+        "destructive": false,
+        "reversible": true,
+        "max_risk": 29
+      },
+      "effect": {
+        "outcome": "allow_with_limits",
+        "reasons": [
+          "Low-risk reversible write within the approved scope"
+        ],
+        "constraints": {
+          "read_only": false,
+          "capability_ttl_seconds": 300
+        }
+      }
+    },
+    {
+      "id": "balanced-low-risk-send",
+      "priority": 300,
+      "description": "Outbound sends carrying nothing sensitive. Exfiltration and secret-exposure findings push risk far above this bound.",
+      "match": {
+        "operations": [
+          "send"
+        ],
+        "destructive": false,
+        "max_risk": 19
+      },
+      "effect": {
+        "outcome": "allow_with_limits",
+        "reasons": [
+          "Low-risk send with no sensitive data class observed"
+        ],
+        "constraints": {
+          "capability_ttl_seconds": 300,
+          "max_response_bytes": 1048576
+        }
+      }
+    },
+    {
+      "id": "balanced-scoped-maintenance-delete",
+      "priority": 300,
+      "description": "Destructive maintenance the agent is explicitly registered for, within its approved scope. Escalation beyond it raises risk and is withdrawn.",
+      "match": {
+        "operations": [
+          "delete"
+        ],
+        "destructive": true,
+        "max_risk": 39
+      },
+      "effect": {
+        "outcome": "allow_with_limits",
+        "reasons": [
+          "Scoped destructive maintenance by a registered tool"
+        ],
+        "constraints": {
+          "capability_ttl_seconds": 120,
+          "max_capability_uses": 1
+        }
+      }
+    }
+  ]
+}

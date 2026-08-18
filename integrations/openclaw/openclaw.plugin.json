@@ -1,0 +1,48 @@
+{
+  "id": "sage",
+  "name": "SAGE Semantic Bus",
+  "description": "Vendor-neutral semantic handoffs, refs, deltas, and automatic cross-agent context injection.",
+  "version": "0.2.7",
+  "activation": {
+    "onStartup": true
+  },
+  "contracts": {
+    "tools": [
+      "sage_handoff",
+      "sage_poll",
+      "sage_ack"
+    ]
+  },
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "url": {
+        "type": "string"
+      },
+      "agentId": {
+        "type": "string"
+      },
+      "workspace": {
+        "type": "string"
+      },
+      "apiKey": {
+        "type": "string"
+      },
+      "autoInject": {
+        "type": "boolean"
+      },
+      "maxInjectTokens": {
+        "type": "integer",
+        "minimum": 64,
+        "default": 1200
+      },
+      "contextBudgetFraction": {
+        "type": "number",
+        "minimum": 0.01,
+        "maximum": 1,
+        "default": 0.2
+      }
+    }
+  }
+}

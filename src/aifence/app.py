@@ -169,11 +169,14 @@ def create_app(settings: CoreSettings | None = None) -> FastAPI:
     app.state.subsystems = registered
 
     # --- the fence flow: the three tiers as one logical pipeline ---
+    from .behavior import AgentWindows
     from .bus.transport import build_transport
     from .flow import FlowBreakers
     from .flow import router as fence_router
 
     app.state.flow_breakers = FlowBreakers.from_settings(settings)
+    # Per-agent history the cross-tier detector reasons over.
+    app.state.agent_windows = AgentWindows()
     # Optional broker fan-out for committed handoffs; "none" by default.
     app.state.bus_transport = build_transport(
         settings.bus_transport,

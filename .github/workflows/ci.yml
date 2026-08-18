@@ -24,6 +24,11 @@ jobs:
         run: mypy src
       - name: Test
         run: pytest
+      - name: Adversarial evaluation
+        # Regression gate on the measured result: benign work must never be
+        # hard-refused, and detection must not fall below the recorded baseline.
+        run: |
+          aifence-redteam --behavioral --max-false-positive-rate 0 --min-detection-rate 100
 
   quality:
     name: Quality subsystem (BizIQ build + validate)

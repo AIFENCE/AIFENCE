@@ -7,9 +7,12 @@ infobox:
   Endpoints: 165
 ---
 
-This page is generated from the live OpenAPI document by `npm run docs:api`, so
-it cannot drift from the code. The authoritative contract is `/openapi.json`
-when documentation is enabled.
+This page is generated from the live OpenAPI document by
+`python tooling/generate-api-docs.py`, so it cannot drift from the code.
+The authoritative contract is `/openapi.json` when documentation is enabled.
+
+Authentication for each surface is described in the
+[security model](security.md#one-identity-model).
 
 ## Fence flow
 

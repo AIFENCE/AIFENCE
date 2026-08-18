@@ -112,6 +112,37 @@ governed flow across three tiers — quality, enforcement, and semantic transpor
   balancer can route writes to exactly one region. Failover is documented in
   [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
+### Assurance
+- **Adversarial evaluation harness** (`aifence.redteam`, `aifence-redteam`). Detection
+  is now measured rather than asserted, on **multi-turn agent traces** rather than
+  single requests, because a compromised agent reveals itself over a sequence:
+  scope creeps, claims contradict earlier ones, output decays. Benign traces are
+  mandatory — a detector that refuses everything scores 100% detection — and every
+  undetected attack is named in the report rather than averaged away.
+- Metrics separate what is easy to conflate: **specific detection** (a detector
+  fired) from raw detection (the default hold caught it), and hard **refusal**
+  from **hold for approval**.
+- **Cross-tier behavioural analysis** emitting `integrity.behavioral_drift` from signals
+  no single tier can see — persistent ungrounded assertion where no individual turn
+  crosses the threshold, and sustained intent escalation. It closes a measured
+  bypass with no new false positive and no added approval friction.
+- CI gates on the result, and a test asserts the corpus still contains something the
+  *baseline* misses: a corpus the implementation passes completely proves only that
+  it is too easy.
+
+### Measured (18 traces: 11 attack, 7 benign)
+| | baseline | with behavioural analysis |
+| --- | ---: | ---: |
+| Detection rate | 90.9% | 100.0% |
+| Specific detection | 81.8% | 90.9% |
+| False-positive rate | 0.0% | 0.0% |
+| Hold rate | 71.4% | 71.4% |
+
+Two honest caveats, both recorded in [`docs/evaluation.md`](docs/evaluation.md):
+the **71% hold rate** means most production writes need a human under the shipped
+baseline policy, and `prompt-injection-clean-payload-01` remains stopped only by
+the default hold — the perception limit of pattern matching.
+
 ### Known follow-ups
 - Fourteen named modules remain outside strict `mypy` (see the override in
   `pyproject.toml`); their errors come from untyped SQLAlchemy/boto3/MCP surfaces

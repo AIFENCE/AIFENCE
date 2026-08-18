@@ -1,0 +1,158 @@
+{
+  "version": "sage/0.2",
+  "invariants": [
+    {
+      "id": "delivery.no_ack_no_knowledge",
+      "statement": "Receiver knowledge cannot increase before acknowledgement.",
+      "checks": [
+        "tests/test_universal_bus.py::test_handoff_is_not_learned_until_ack"
+      ]
+    },
+    {
+      "id": "wire.canonical_identity",
+      "statement": "Canonical MessagePack bytes and SHA-256 identity are deterministic across conforming runtimes.",
+      "checks": [
+        "scripts/conformance_matrix.py",
+        "scripts/differential_fuzz.py"
+      ]
+    },
+    {
+      "id": "refs.authorization",
+      "statement": "An unauthorized reference cannot be resolved, selectively disclosed outside policy, or delegated.",
+      "checks": [
+        "tests/test_v02_semantic_fabric.py::test_content_addressed_refs_selective_grants_and_zero_copy_forward",
+        "tests/test_api.py::test_agent_cannot_delegate_unowned_reference_or_negotiate_other_codebook"
+      ]
+    },
+    {
+      "id": "semantic.fail_open",
+      "statement": "Uncertain or failed semantic optimization preserves richer literals or references.",
+      "checks": [
+        "tests/test_semantic_loss.py::test_unknown_literal_is_preserved_not_silently_mapped",
+        "tests/test_v02_semantic_fabric.py::test_semantic_firewall_preserves_critical_unknowns_and_epistemic_type"
+      ]
+    },
+    {
+      "id": "delivery.idempotent",
+      "statement": "A repeated mutating request with the same identity and payload produces one logical write.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_http_write_idempotency_replays_same_response",
+        "tests/test_v02_hardening_scale.py::test_ordering_idempotency_and_backpressure_are_deterministic"
+      ]
+    },
+    {
+      "id": "optional.failure_isolation",
+      "statement": "Failure of an optimization subsystem cannot corrupt or block core lossless delivery.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_optional_learning_and_cache_failures_preserve_delivery"
+      ]
+    },
+    {
+      "id": "state.deterministic",
+      "statement": "Applying a generated state delta reconstructs the exact target state.",
+      "checks": [
+        "tests/test_v02_properties.py::test_state_diff_patch_round_trip_for_random_nested_objects"
+      ]
+    },
+    {
+      "id": "state.checkpoint_branch_safe",
+      "statement": "Checkpoint reconstruction stays on the target state's ancestry chain.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_checkpoint_lookup_never_crosses_state_branches"
+      ]
+    },
+    {
+      "id": "patterns.holdout",
+      "statement": "Learned patterns require distinct holdout validation traffic before activation.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_holdout_activation_requires_distinct_validation_traffic"
+      ]
+    },
+    {
+      "id": "patterns.trust_scope",
+      "statement": "Vocabulary promotion requires trusted source diversity appropriate to its scope.",
+      "checks": [
+        "tests/test_v02_qualification.py::test_pattern_trust_scope_requires_broader_source_diversity"
+      ]
+    },
+    {
+      "id": "patterns.drift",
+      "statement": "Measured receiver fidelity drift demotes an active pattern to safe fallback state.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_reliability_drift_cools_active_pattern"
+      ]
+    },
+    {
+      "id": "infoflow.monotonic",
+      "statement": "Derived information inherits the union of upstream sensitivity labels.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_information_flow_labels_union_without_downgrade"
+      ]
+    },
+    {
+      "id": "queue.ordered_stream",
+      "statement": "Messages sharing an ordering key receive unique contiguous monotonic sequence numbers.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_ordering_idempotency_and_backpressure_are_deterministic"
+      ]
+    },
+    {
+      "id": "queue.recoverable",
+      "statement": "Unacknowledged claimed messages become deliverable after their claim lease expires.",
+      "checks": [
+        "tests/test_universal_bus.py::test_stale_claim_is_recoverable",
+        "scripts/chaos_suite.py"
+      ]
+    },
+    {
+      "id": "quotas.fail_closed",
+      "statement": "Quota exhaustion and unavailable or throttled backpressure reject new work explicitly.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_agent_quota_failure_does_not_consume_workspace_quota",
+        "tests/test_v02_hardening_scale.py::test_throttled_backpressure_rejects_new_work"
+      ]
+    },
+    {
+      "id": "codebook.signed_release",
+      "statement": "Codebook releases are immutable, Merkle-addressed, deterministic, and cryptographically verifiable.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_merkle_and_signed_codebook_release_are_verifiable"
+      ]
+    },
+    {
+      "id": "receiver.identity_pinned",
+      "statement": "Reliability is scoped to provider, model build, runtime build, and configuration identity.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_model_identity_changes_when_runtime_configuration_changes"
+      ]
+    },
+    {
+      "id": "economics.total_cost",
+      "statement": "Economics includes model, infrastructure, retrieval, and retry cost and reports task utility per transmitted bit.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_economics_includes_infrastructure_cost_and_utility_per_bit"
+      ]
+    },
+    {
+      "id": "queue.partition_claim",
+      "statement": "Partition-scoped consumers claim only messages assigned to the requested deterministic shard.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_partition_filtered_claim_only_returns_requested_shard"
+      ]
+    },
+    {
+      "id": "state.gc_reachability",
+      "statement": "State cleanup removes only expired states that are unreachable from live checkpoints, receiver state, delivery, and retained audit roots.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_reachability_gc_removes_only_old_unreachable_state"
+      ]
+    },
+    {
+      "id": "codebook.merkle_partition_width",
+      "statement": "Merkle codebook synchronization respects the partition width encoded by the compared manifests.",
+      "checks": [
+        "tests/test_v02_hardening_scale.py::test_merkle_diff_respects_nondefault_partition_width"
+      ]
+    }
+  ]
+}

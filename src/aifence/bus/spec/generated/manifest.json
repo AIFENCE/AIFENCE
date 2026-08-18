@@ -1,0 +1,11 @@
+{
+  "artifacts": {
+    "spec/generated/WIRE-FIELDS.md": "e266dc6d32336a81621e143525eca2f8007400728dd7f1cc2170e2be609c04be",
+    "spec/generated/wire-v2.go": "9cb4524b0b16d8ca3ee83b639d01ff0f80776137ee3ba72cb75cda0719b0cf72",
+    "spec/generated/wire-v2.ts": "d156a010b0f5766e8af0eb27e80cd3a154fa89a0ddced59fa45d823e7eb83528",
+    "spec/sage-v0.2.proto": "200053a2c689f7c6c45893d11b38505ed1085d915b16ed770a96858a01a16386",
+    "src/sage_plugin/spec/sage-v0.2.proto": "200053a2c689f7c6c45893d11b38505ed1085d915b16ed770a96858a01a16386"
+  },
+  "protocol": "sage/0.2",
+  "wire": 2
+}

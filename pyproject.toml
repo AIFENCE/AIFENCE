@@ -70,6 +70,7 @@ Issues = "https://github.com/AIFENCE/AIFENCE/issues"
 
 [project.scripts]
 aifence-api = "aifence.main:run"
+aifence-redteam = "aifence.redteam.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -77,7 +78,7 @@ where = ["src"]
 [tool.setuptools.package-data]
 aifence = ["py.typed"]
 "aifence.guard" = ["*.json"]
-"aifence.bus" = ["spec/*", "spec/schemas/*.json", "tck/*.json", "tck/vectors/*.json"]
+"aifence.bus" = ["spec/*", "spec/schemas/*.json", "spec/generated/*", "tck/*", "tck/vectors/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

@@ -1,0 +1,230 @@
+{
+  "suite": "sage-tck/0.2",
+  "protocol": "sage/0.2",
+  "wire_version": 2,
+  "valid": [
+    {
+      "name": "minimal-report",
+      "wire": {
+        "v": 2,
+        "c": "global",
+        "a": "report",
+        "p": {}
+      },
+      "canonical_json": "{\"a\":\"report\",\"c\":\"global\",\"p\":{},\"v\":2}",
+      "canonical_msgpack_hex": "84a161a67265706f7274a163a6676c6f62616ca17080a17602",
+      "canonical_sha256": "sha256:338efafe6e4e6d661c5acec0437f4d82f97cf34b724e6bb3f3b2a620d0cb9c9d"
+    },
+    {
+      "name": "literal-null-with-provenance",
+      "wire": {
+        "v": 2,
+        "c": "core",
+        "a": "handoff",
+        "i": "P0001",
+        "s": "agent-a",
+        "r": "agent-b",
+        "x": [
+          {
+            "l": null,
+            "h": 1,
+            "p": "$.value"
+          }
+        ],
+        "p": {
+          "s": [
+            "source:1"
+          ],
+          "t": 1785499200,
+          "q": 0.9,
+          "d": "extract",
+          "p": "agent-a"
+        },
+        "m": {
+          "revision": 2
+        }
+      },
+      "canonical_json": "{\"a\":\"handoff\",\"c\":\"core\",\"i\":\"P0001\",\"m\":{\"revision\":2},\"p\":{\"d\":\"extract\",\"p\":\"agent-a\",\"q\":0.9,\"s\":[\"source:1\"],\"t\":1785499200},\"r\":\"agent-b\",\"s\":\"agent-a\",\"v\":2,\"x\":[{\"h\":1,\"l\":null,\"p\":\"$.value\"}]}",
+      "canonical_msgpack_hex": "89a161a768616e646f6666a163a4636f7265a169a55030303031a16d81a87265766973696f6e02a17085a164a765787472616374a170a76167656e742d61a171cb3feccccccccccccda17391a8736f757263653a31a174ce6a6c8e40a172a76167656e742d62a173a76167656e742d61a17602a1789183a16801a16cc0a170a7242e76616c7565",
+      "canonical_sha256": "sha256:cfab12fe69872c3f2fb9a755cc4526823dded331a8850801c54d8ac4d75853c6"
+    },
+    {
+      "name": "ref-and-delta",
+      "wire": {
+        "v": 2,
+        "c": "software.deploy",
+        "a": "update",
+        "R": [
+          "Rabc"
+        ],
+        "b": "S1",
+        "d": [
+          {
+            "op": "replace",
+            "path": "/failed",
+            "value": 1
+          }
+        ],
+        "p": {}
+      },
+      "canonical_json": "{\"R\":[\"Rabc\"],\"a\":\"update\",\"b\":\"S1\",\"c\":\"software.deploy\",\"d\":[{\"op\":\"replace\",\"path\":\"/failed\",\"value\":1}],\"p\":{},\"v\":2}",
+      "canonical_msgpack_hex": "87a15291a452616263a161a6757064617465a162a25331a163af736f6674776172652e6465706c6f79a1649183a26f70a77265706c616365a470617468a72f6661696c6564a576616c756501a17080a17602",
+      "canonical_sha256": "sha256:a82e2dc778f1c0aefdefe6a5b36adc402386278894ebc103e1a2ca84f920a9ad"
+    },
+    {
+      "name": "pattern-atom-bindings",
+      "wire": {
+        "v": 2,
+        "c": "global",
+        "a": "report",
+        "x": [
+          {
+            "c": "C00000001",
+            "v": 1,
+            "l": [
+              11,
+              200.25
+            ],
+            "h": 1,
+            "p": "$.attempt"
+          }
+        ],
+        "p": {}
+      },
+      "canonical_json": "{\"a\":\"report\",\"c\":\"global\",\"p\":{},\"v\":2,\"x\":[{\"c\":\"C00000001\",\"h\":1,\"l\":[11,200.25],\"p\":\"$.attempt\",\"v\":1}]}",
+      "canonical_msgpack_hex": "85a161a67265706f7274a163a6676c6f62616ca17080a17602a1789185a163a9433030303030303031a16801a16c920bcb4069080000000000a170a9242e617474656d7074a17601",
+      "canonical_sha256": "sha256:ca78633d4d6744333f109967ea492a30af1e4a41cbabb89e1ec5581c6f10f096"
+    },
+    {
+      "name": "epistemic-signed-syntax",
+      "wire": {
+        "v": 2,
+        "c": "core",
+        "a": "decision",
+        "x": [
+          {
+            "c": "C0000000A",
+            "v": 1,
+            "p": "$.permission",
+            "q": 0.99,
+            "e": "constraint"
+          }
+        ],
+        "p": {},
+        "g": {
+          "alg": "Ed25519",
+          "kid": "fixture",
+          "sig": "AA"
+        }
+      },
+      "canonical_json": "{\"a\":\"decision\",\"c\":\"core\",\"g\":{\"alg\":\"Ed25519\",\"kid\":\"fixture\",\"sig\":\"AA\"},\"p\":{},\"v\":2,\"x\":[{\"c\":\"C0000000A\",\"e\":\"constraint\",\"p\":\"$.permission\",\"q\":0.99,\"v\":1}]}",
+      "canonical_msgpack_hex": "86a161a86465636973696f6ea163a4636f7265a16783a3616c67a745643235353139a36b6964a766697874757265a3736967a24141a17080a17602a1789185a163a9433030303030303041a165aa636f6e73747261696e74a170ac242e7065726d697373696f6ea171cb3fefae147ae147aea17601",
+      "canonical_sha256": "sha256:7479d7eb4d9eacecff7459518b69d601d703713a8b8f462491405c18d588f11d"
+    },
+    {
+      "name": "trace-context",
+      "wire": {
+        "v": 2,
+        "c": "global",
+        "a": "handoff",
+        "s": "agent-a",
+        "r": "agent-b",
+        "p": {},
+        "z": {
+          "p": "00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01",
+          "s": "vendor=value"
+        }
+      },
+      "canonical_json": "{\"a\":\"handoff\",\"c\":\"global\",\"p\":{},\"r\":\"agent-b\",\"s\":\"agent-a\",\"v\":2,\"z\":{\"p\":\"00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01\",\"s\":\"vendor=value\"}}",
+      "canonical_msgpack_hex": "87a161a768616e646f6666a163a6676c6f62616ca17080a172a76167656e742d62a173a76167656e742d61a17602a17a82a170d93730302d34626639326633353737623334646136613363653932396430653065343733362d303066303637616130626139303262372d3031a173ac76656e646f723d76616c7565",
+      "canonical_sha256": "sha256:bca0672c695202152ad18dac0bb02e735a32ab6746610b70ad5ef7bd0fc811ca"
+    }
+  ],
+  "invalid": [
+    {
+      "name": "wrong-wire-version",
+      "wire": {
+        "v": 1,
+        "c": "global",
+        "a": "report",
+        "p": {}
+      }
+    },
+    {
+      "name": "unknown-top-level-key",
+      "wire": {
+        "v": 2,
+        "c": "global",
+        "a": "report",
+        "p": {},
+        "unknown": 1
+      }
+    },
+    {
+      "name": "invalid-confidence",
+      "wire": {
+        "v": 2,
+        "c": "global",
+        "a": "report",
+        "p": {
+          "q": 1.5
+        }
+      }
+    },
+    {
+      "name": "invalid-atom-extra",
+      "wire": {
+        "v": 2,
+        "c": "global",
+        "a": "report",
+        "x": [
+          {
+            "c": "C1",
+            "wat": 1
+          }
+        ],
+        "p": {}
+      }
+    },
+    {
+      "name": "invalid-epistemic-type-wire-shape",
+      "wire": {
+        "v": 2,
+        "c": "global",
+        "a": "report",
+        "x": [
+          {
+            "e": 123
+          }
+        ],
+        "p": {}
+      }
+    },
+    {
+      "name": "invalid-signature-algorithm",
+      "wire": {
+        "v": 2,
+        "c": "global",
+        "a": "report",
+        "p": {},
+        "g": {
+          "alg": "RSA",
+          "kid": "x",
+          "sig": "AA"
+        }
+      }
+    },
+    {
+      "name": "invalid-traceparent",
+      "wire": {
+        "v": 2,
+        "c": "global",
+        "a": "report",
+        "p": {},
+        "z": {
+          "p": "bad"
+        }
+      }
+    }
+  ]
+}

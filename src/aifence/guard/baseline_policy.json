@@ -395,6 +395,47 @@
           "redact_secrets": true
         }
       }
+    },
+    {
+      "id": "behavioral-drift",
+      "priority": 8500,
+      "description": "The agent's behaviour is degrading across turns in a way no single turn reveals; hold for review.",
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "integrity.behavioral_drift"
+        ]
+      },
+      "effect": {
+        "outcome": "require_approval",
+        "reasons": [
+          "Agent behaviour has drifted across the run"
+        ],
+        "constraints": {
+          "approval_ttl_seconds": 3600
+        }
+      }
+    },
+    {
+      "id": "untrusted-content-influence",
+      "priority": 9450,
+      "description": "The agent changed state after ingesting attacker-controllable external content; hold it for review.",
+      "mandatory": true,
+      "match": {
+        "detector_categories": [
+          "integrity.untrusted_influence"
+        ]
+      },
+      "effect": {
+        "outcome": "require_approval",
+        "reasons": [
+          "A state change followed ingestion of untrusted external content"
+        ],
+        "constraints": {
+          "isolate_untrusted_content": true,
+          "approval_ttl_seconds": 3600
+        }
+      }
     }
   ]
 }

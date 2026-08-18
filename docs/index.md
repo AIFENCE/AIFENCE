@@ -17,10 +17,8 @@ the output good enough*, *is the action permitted*, and *how does the result
 travel* — and it answers them as one governed pipeline rather than three
 disconnected tools.
 
-The system unifies three previously separate projects into a single codebase:
-a production quality-control pack, a security enforcement plane, and a semantic
-communication runtime. They share one identity model, one database and schema,
-one audit chain, and one telemetry pipeline.
+The three tiers run as one application, sharing a single identity model,
+database and schema, audit chain, and telemetry pipeline.
 
 ## The three tiers
 
@@ -77,3 +75,10 @@ aifence-api
 Then read [Getting started](getting-started.md), or jump to
 [Configuration](configuration.md), [Deployment](deployment.md), or the
 [API reference](api.md).
+
+## How well does it work?
+
+Detection is measured, not asserted. The
+[adversarial evaluation](evaluation.md) reports detection and false-positive
+rates on multi-turn agent traces, names every attack that gets through, and is
+enforced as a CI regression gate.

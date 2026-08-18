@@ -17,9 +17,7 @@ Maintained clients live under
 | TypeScript | `sdks/typescript` | `@agentdance/client` |
 | Go | `sdks/go` | `agentdance` |
 
-The client *package* identifiers are retained from before the merge so existing
-integrations keep compiling. Only documentation and deployment surfaces use the
-AIFENCE name.
+Package identifiers are held stable so existing integrations keep compiling.
 
 ## Base URL: point at the guard mount
 

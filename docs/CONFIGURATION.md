@@ -86,6 +86,19 @@ A standby region refuses durable worker roles at startup, and `/health/ready`
 reports `accepts_writes: false` so a load balancer routes writes correctly.
 See [Deployment](deployment.md#multi-region-topology).
 
+## Policy profile
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `AIFENCE_GUARD_POLICY_FILE` | *(built-in baseline)* | Path to the policy document to enforce. |
+
+Two profiles ship in `policies/`. **strict** is the built-in baseline: maximum
+security, but it holds most production writes for human approval. **balanced**
+adds risk-bounded allowances for in-scope reversible writes, low-risk sends and
+scoped maintenance deletes — measured to cut approval friction by 80% without
+giving up any detection a detector actually made. See
+[Adversarial evaluation](evaluation.md#policy-profiles) for the numbers.
+
 ## Secrets
 
 For any secret-backed variable, setting `<NAME>_FILE` to a path reads the

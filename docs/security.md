@@ -53,7 +53,7 @@ The practical effect: an agent that under-declares no longer escapes the rules.
 | `health` | Clinical terminology | Keyword set, reported not enforced. |
 | `personal_data` | Email, phone | Informational; not in the sensitive set. |
 
-Precision is deliberately favoured over recall because observed classes feed
+Precision is favoured over recall because observed classes feed
 rules whose baseline outcome is `deny`. A Luhn-invalid number, an SSN in the
 `000`/`666`/`9xx` ranges, and a long token in ordinary prose all produce nothing.
 

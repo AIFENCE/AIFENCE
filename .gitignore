@@ -30,3 +30,8 @@ Thumbs.db
 
 # Generated documentation wiki (build with: npm run docs:build)
 /site/
+
+# Local test-run scratch output
+verify*.txt
+final*.txt
+full_suite*.txt

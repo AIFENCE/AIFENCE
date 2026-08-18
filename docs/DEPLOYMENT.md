@@ -11,8 +11,8 @@ infobox:
 ## Database migrations
 
 Production must run with `AIFENCE_AUTO_CREATE_SCHEMA=false`; Alembic is then the
-only thing that creates tables. One migration history builds the whole merged
-schema, because every tier declares models against the same `Base`:
+only thing that creates tables. One migration history builds the entire schema,
+because every tier declares its models against the same `Base`:
 
 ```bash
 alembic upgrade head

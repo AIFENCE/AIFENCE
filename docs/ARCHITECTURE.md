@@ -1,6 +1,6 @@
 ---
 title: Architecture
-summary: How three previously separate systems compose into one application.
+summary: How the three tiers compose into a single application.
 infobox:
   Factory: aifence.app.create_app()
   Seam: register(app, ctx)
@@ -27,17 +27,17 @@ foundation and then invites each installed subsystem to mount itself.
                    metrics · telemetry · env helpers
 ```
 
-## Why a shared core rather than a merged monolith
+## Why a shared core rather than a single monolith
 
-The three source projects overlapped heavily on infrastructure — FastAPI,
-SQLAlchemy, Alembic, pydantic, cryptography, Prometheus — but their *domain*
-configuration and models are large and genuinely distinct. The guard tier alone
-carries roughly 150 settings for signing, KMS, artifact storage and workers.
+The tiers share their infrastructure — FastAPI, SQLAlchemy, Alembic, pydantic,
+cryptography, Prometheus — but their domain configuration and models are large
+and distinct. The guard tier alone carries roughly 150 settings covering
+signing, key management, artifact storage and worker behaviour.
 
-`aifence.core` therefore promotes only the cross-cutting infrastructure that all
-three genuinely share, while each subsystem keeps its own settings, models and
-routers. That split is what makes one codebase maintainable instead of
-collapsing every knob into a single god-object.
+`aifence.core` therefore owns only the cross-cutting infrastructure every tier
+uses, while each subsystem keeps its own settings, models and routers. That
+separation keeps the codebase maintainable instead of collapsing every option
+into a single object.
 
 ## The composition seam
 
@@ -45,7 +45,7 @@ collapsing every knob into a single god-object.
 installed subsystems in flow order (quality → guard → bus). `create_app` never
 imports a subsystem directly, which means:
 
-- subsystems can be added or ported one at a time without touching the factory;
+- subsystems can be added or replaced without changing the factory;
 - the application runs with any subset installed;
 - each subsystem mounts its own router, wires workers into the shared lifespan,
   and reads its own configuration.
@@ -68,7 +68,7 @@ and object-store clients would never start or be cleaned up. `create_app`
 enters every mounted lifespan through an `AsyncExitStack`, so the whole fence
 starts and shuts down as one unit.
 
-**OpenAPI must be merged.** Sub-app paths would otherwise live only in
+**OpenAPI must be combined.** Sub-app paths would otherwise live only in
 `/guard/openapi.json` and `/bus/openapi.json`. The factory folds them into the
 single root document, re-basing paths under their mount and namespacing
 component schemas to avoid collisions.

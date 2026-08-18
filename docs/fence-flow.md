@@ -8,9 +8,9 @@ infobox:
   Order: quality → guard → bus
 ---
 
-The **fence flow** is what makes AIFENCE a merged system rather than three
-co-located services. One authenticated request runs through all three tiers
-in process, and returns a single receipt describing what each tier decided.
+The **fence flow** is what makes AIFENCE one system rather than three services
+sharing a host. A single authenticated request runs through all three tiers in
+process and returns one receipt describing what each tier decided.
 
 ```text
 POST /v1/fence/submit
@@ -39,8 +39,7 @@ reaches transport.
 | `authorized_not_delivered` | `true` | Permitted, but transport was degraded. |
 
 `authorized_not_delivered` exists so the receipt never claims a handoff that did
-not happen. It is a deliberately uncomfortable outcome: the action was
-authorized and the caller must decide whether to retry.
+not happen. The action was authorized, and the caller decides whether to retry.
 
 ## The receipt
 
