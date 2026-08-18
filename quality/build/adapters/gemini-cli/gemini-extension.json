@@ -1,0 +1,15 @@
+{
+  "name": "biziq",
+  "version": "2.0.0",
+  "description": "BizIQ production runtime and skill",
+  "mcpServers": {
+    "biziq": {
+      "command": "biziq",
+      "args": [
+        "mcp",
+        "--stdio"
+      ]
+    }
+  },
+  "contextFileName": "GEMINI.md"
+}

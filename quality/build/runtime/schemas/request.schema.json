@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://biziq.local/runtime/request.schema.json",
+  "title": "BizIQ Runtime Request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "request"
+  ],
+  "properties": {
+    "request": {
+      "type": "string",
+      "minLength": 1
+    },
+    "creationType": {
+      "type": "string"
+    },
+    "industry": {
+      "type": "string"
+    },
+    "deliveryMode": {
+      "enum": [
+        "Production",
+        "Prototype",
+        "MVP",
+        "Mockup",
+        "Wireframe",
+        "Demo",
+        "Concept"
+      ]
+    },
+    "substantial": {
+      "type": "boolean"
+    },
+    "riskHints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "visualFidelity": {
+      "enum": [
+        "High-Fidelity",
+        "Exploratory",
+        "Low-Fidelity",
+        "Not-Applicable"
+      ]
+    },
+    "subindustry": {
+      "type": "string"
+    },
+    "jurisdiction": {
+      "type": "string"
+    },
+    "exposures": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    }
+  }
+}

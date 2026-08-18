@@ -2,12 +2,13 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
+from fastapi import FastAPI
 from sqlalchemy import Engine
 
 from .config import Settings
 
 
-def configure_telemetry(app: object, engine: Engine, settings: Settings) -> None:
+def configure_telemetry(app: FastAPI, engine: Engine, settings: Settings) -> None:
     if not settings.otel_exporter_otlp_endpoint:
         return
     from opentelemetry import trace

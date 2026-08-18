@@ -1,0 +1,15 @@
+{
+  "runtime_version": "2.0.0",
+  "core_revision": "1.8.8",
+  "pack_version": "4.0.0",
+  "source_tree_sha256": "8b297c269d88d6113dcbe034790304d50abaf45488cbf7c921a46dc16f68a68d",
+  "build_sha256": "d3c12fb2531467301585c62220cdda364c1f772d9e598a8ac99dfa79fa027bd0",
+  "build_hash_scope": "generated tree excluding BUILD_LOCK.json, BUILD_PROVENANCE.json, runtime/RUNTIME_LOCK.json",
+  "compatibility": {
+    "runtime_core_policy": "exact-generated-core",
+    "core_revision": "1.8.8"
+  },
+  "node": ">=20",
+  "python": "source/requirements.txt + CI matrix",
+  "archives": []
+}

@@ -14,10 +14,14 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - name: Install
+        # Every optional extra is installed: type checking is only meaningful
+        # against the real third-party signatures, not the fallbacks used when a
+        # package is absent.
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev,postgres,mcp,otel,s3,bench]"
+          pip install -e ".[dev,postgres,mcp,otel,s3,bench,quality,redis,kafka,rabbitmq]"
       - name: Lint
         run: ruff check src tests
       - name: Type-check
@@ -25,13 +29,12 @@ jobs:
       - name: Test
         run: pytest
       - name: Adversarial evaluation
-        # Regression gate on the measured result: benign work must never be
-        # hard-refused, and detection must not fall below the recorded baseline.
-        run: |
-          aifence-redteam --behavioral --max-false-positive-rate 0 --min-detection-rate 100
+        # Regression gate on the measured result: legitimate work must never be
+        # refused, and detection must not fall below the recorded baseline.
+        run: aifence-redteam --behavioral --max-false-positive-rate 0 --min-detection-rate 100
 
   quality:
-    name: Quality subsystem (BizIQ build + validate)
+    name: Quality control pack
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -41,9 +44,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Build & validate BizIQ pack
+          cache: pip
+      - name: Install validator dependencies
+        # The pack has no npm dependencies; its validators are Python.
+        run: pip install -r quality/source/requirements.txt
+      - name: Build and validate
         working-directory: quality
         run: |
-          npm ci
           npm run build
           npm test

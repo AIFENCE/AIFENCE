@@ -7,6 +7,7 @@ on:
       - "docs/**"
       - "tooling/build-wiki.mjs"
       - "tooling/wiki.css"
+      - "tooling/check-wiki-links.mjs"
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
@@ -22,14 +23,20 @@ permissions:
 
 jobs:
   build:
-    name: Build wiki
+    name: Build documentation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Build the documentation wiki
+      - name: Configure Pages
+        # Required before uploading a Pages artifact; also enables Pages on the
+        # repository when it has not been turned on manually.
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Build the documentation site
         run: node tooling/build-wiki.mjs
       - name: Check for broken internal links
         run: node tooling/check-wiki-links.mjs

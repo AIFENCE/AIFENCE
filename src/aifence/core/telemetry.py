@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from typing import Protocol
 
+from fastapi import FastAPI
 from sqlalchemy import Engine
 
 
@@ -28,7 +29,7 @@ class TelemetryConfig(Protocol):
     def environment(self) -> str: ...
 
 
-def configure_telemetry(app: object, engine: Engine, settings: TelemetryConfig) -> None:
+def configure_telemetry(app: FastAPI, engine: Engine, settings: TelemetryConfig) -> None:
     if not settings.otel_exporter_otlp_endpoint:
         return
     from opentelemetry import trace

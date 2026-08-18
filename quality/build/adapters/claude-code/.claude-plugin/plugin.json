@@ -1,0 +1,10 @@
+{
+  "name": "biziq",
+  "description": "BizIQ production-quality routing, MCP tools, validation, and Agent Skill.",
+  "version": "2.0.0",
+  "author": {
+    "name": "NeuralBinary"
+  },
+  "skills": "skills/",
+  "mcpServers": ".mcp.json"
+}

@@ -1,0 +1,27 @@
+{
+  "name": "biziq-runtime",
+  "version": "2.0.0",
+  "private": false,
+  "type": "module",
+  "description": "Portable BizIQ Runtime generated from canonical BizIQ source.",
+  "bin": {
+    "biziq": "./src/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node scripts/run-tests.js",
+    "doctor": "node src/cli.js doctor",
+    "status": "node src/cli.js status",
+    "mcp:stdio": "node src/mcp-stdio.js",
+    "mcp:http": "node src/mcp-http.js",
+    "ui": "node src/ui-server.js",
+    "verify": "node scripts/verify-runtime.js && node src/cli.js verify && node scripts/run-tests.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.0.0",
+    "@modelcontextprotocol/node": "2.0.0-beta.5",
+    "zod": "4.4.3"
+  }
+}

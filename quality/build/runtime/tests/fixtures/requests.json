@@ -1,0 +1,18 @@
+[
+  {
+    "request": "Create a website for JG Landscaping",
+    "expectType": "Website / Landing Page"
+  },
+  {
+    "request": "Create a SaaS scheduling portal",
+    "expectType": "Web App / SaaS / Portal"
+  },
+  {
+    "request": "Write a rollback runbook for a SaaS deployment",
+    "expectType": "Org / Jobs / SOPs"
+  },
+  {
+    "request": "Build an ecommerce catalog with cart",
+    "expectType": "Marketplace / E-Commerce"
+  }
+]
