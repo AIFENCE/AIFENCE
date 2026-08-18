@@ -4,7 +4,7 @@
 gating, security enforcement, and semantic transport — into a single control
 plane with one identity model, one audit chain, and one telemetry pipeline.
 
-📖 **[Documentation wiki](https://aifence.github.io/AIFENCE/)** — architecture,
+📖 **[Documentation wiki](https://aifence.github.io)** — architecture,
 per-tier reference, API, configuration, deployment and glossary.
 
 | Tier | Package | Responsibility |
@@ -122,7 +122,10 @@ npm run docs:serve     # preview at http://127.0.0.1:4173
 npm run docs:api       # regenerate the API reference from OpenAPI
 ```
 
-Pushing to `main` publishes it to GitHub Pages.
+Pushing a documentation change to `main` publishes the built site to
+<https://aifence.github.io>. GitHub serves that bare root only from a repository
+named `AIFENCE.github.io`, so the workflow builds here and pushes the result
+there; `.github/workflows/pages.yml` documents the one-time setup.
 
 ## License
 

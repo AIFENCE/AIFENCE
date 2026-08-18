@@ -1,5 +1,18 @@
 name: Documentation
 
+# The documentation is served from https://aifence.github.io, which GitHub only
+# serves from a repository named exactly AIFENCE.github.io. This repository holds
+# the source, so the built site is published into that dedicated site repository.
+#
+# One-time setup:
+#   1. Create the public repository AIFENCE/AIFENCE.github.io. It must hold
+#      nothing but the generated site — publishing replaces its contents.
+#   2. Create a fine-grained personal access token scoped to that repository with
+#      Contents: read and write.
+#   3. Add it to this repository as the secret PAGES_DEPLOY_TOKEN.
+#   4. In the site repository, set Settings -> Pages -> Source to
+#      "Deploy from a branch", branch main, folder / (root).
+
 on:
   push:
     branches: [main]
@@ -11,46 +24,53 @@ on:
       - ".github/workflows/pages.yml"
   workflow_dispatch:
 
-# Allow one concurrent deployment; a newer commit supersedes a queued one.
+# A newer commit supersedes a queued one; never publish two builds at once.
 concurrency:
   group: pages
   cancel-in-progress: true
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
+
+env:
+  SITE_REPOSITORY: AIFENCE/AIFENCE.github.io
 
 jobs:
-  build:
-    name: Build documentation
+  publish:
+    name: Build and publish documentation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Configure Pages
-        # Required before uploading a Pages artifact; also enables Pages on the
-        # repository when it has not been turned on manually.
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
+
       - name: Build the documentation site
         run: node tooling/build-wiki.mjs
-      - name: Check for broken internal links
-        run: node tooling/check-wiki-links.mjs
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
 
-  deploy:
-    name: Deploy to GitHub Pages
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Check for broken internal links
+        # A 404 in published documentation is worse than a failed build, so a
+        # broken link stops the publish rather than shipping.
+        run: node tooling/check-wiki-links.mjs
+
+      - name: Publish to the site repository
+        env:
+          DEPLOY_TOKEN: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -z "${DEPLOY_TOKEN:-}" ]; then
+            echo "PAGES_DEPLOY_TOKEN is not set; see the setup notes in this workflow." >&2
+            exit 1
+          fi
+          cd site
+          git init -q -b main
+          git config user.name "aifence-docs"
+          git config user.email "docs@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Publish documentation from ${GITHUB_SHA:0:7}"
+          # The site repository mirrors generated output, so its history is
+          # replaced rather than appended to.
+          git push -q --force \
+            "https://x-access-token:${DEPLOY_TOKEN}@github.com/${SITE_REPOSITORY}.git" \
+            main
+          echo "Published to https://aifence.github.io"
