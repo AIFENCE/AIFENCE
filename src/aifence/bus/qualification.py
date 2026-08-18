@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -23,7 +23,7 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from .bus import SemanticBus
 from .codebook import Codebook
-from .codec import SageCodec
+from .codec import AifenceCodec
 from .config import Settings
 from .db import Base
 from .db_models import BusMessage, LearnedPattern, PatternCandidate, PatternSourceEvidence
@@ -66,7 +66,7 @@ def percentiles(values: list[float]) -> dict[str, float]:
 def profile_encode(db: Session, settings: Settings, content: Any, iterations: int = 100) -> dict[str, Any]:
     if iterations < 1:
         raise ValueError("iterations must be >= 1")
-    codec = SageCodec(db, settings)
+    codec = AifenceCodec(db, settings)
     durations: list[float] = []
     query_counts: list[int] = []
     engine = db.get_bind()
@@ -441,7 +441,7 @@ def concurrent_bus_configured(settings: Settings, workers: int = 8, messages_per
     }
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="SAGE v0.2 qualification runner")
+    parser = argparse.ArgumentParser(description="AIFENCE v0.2 qualification runner")
     parser.add_argument("--concurrency", action="store_true")
     parser.add_argument("--configured-concurrency", action="store_true")
     parser.add_argument("--workers", type=int, default=8)

@@ -1,7 +1,7 @@
 {
   "mcpServers": {
-    "biziq": {
-      "command": "biziq",
+    "aifence": {
+      "command": "aifence",
       "args": [
         "mcp",
         "--stdio"

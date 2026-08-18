@@ -109,23 +109,23 @@ make test
 
 Configuration uses the `AIFENCE_` environment prefix (a small set of legacy
 variable names is also honored for backward compatibility). See
-[`docs/configuration.md`](docs/configuration.md) and
-[`docs/architecture.md`](docs/architecture.md).
+[Configuration](https://aifence.github.io/configuration.html) and
+[Architecture](https://aifence.github.io/architecture.html).
 
 ### Documentation
 
-The wiki is generated from `docs/*.md` — edit the Markdown, never `site/`:
+The documentation lives in its own repository,
+[AIFENCE/AIFENCE.github.io](https://github.com/AIFENCE/AIFENCE.github.io), and
+publishes itself to <https://aifence.github.io>. Edit the pages there.
+
+One page is generated from this repository: the API reference is built from the
+composed application's OpenAPI document so it cannot drift from the code. After
+adding or renaming an endpoint, regenerate it into a checkout of the
+documentation repository:
 
 ```bash
-npm run docs:check     # build + verify every internal link
-npm run docs:serve     # preview at http://127.0.0.1:4173
-npm run docs:api       # regenerate the API reference from OpenAPI
+AIFENCE_DOCS_REPO=/path/to/AIFENCE.github.io npm run docs:api
 ```
-
-Pushing a documentation change to `main` publishes the built site to
-<https://aifence.github.io>. GitHub serves that bare root only from a repository
-named `AIFENCE.github.io`, so the workflow builds here and pushes the result
-there; `.github/workflows/pages.yml` documents the one-time setup.
 
 ## License
 

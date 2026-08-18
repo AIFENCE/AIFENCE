@@ -12,12 +12,12 @@ Last-Updated: 2026-08-10
 
 This file is the **only document that should be loaded by default**.
 
-Use it as the authoritative BizIQ orchestration, precedence, lazy-loading, production-intent, and routing specification. Do **not** preload the repository.
+Use it as the authoritative AIFENCE orchestration, precedence, lazy-loading, production-intent, and routing specification. Do **not** preload the repository.
 
 # Initialization Protocol
 <!-- id: readme.initialization-protocol -->
 
-When BizIQ is first attached, uploaded, mounted, or opened:
+When AIFENCE is first attached, uploaded, mounted, or opened:
 
 1. Read `README.md` first.
 2. If `PROJECT.md` exists, read it immediately after this file; otherwise use the user's current request as the project specification.
@@ -29,11 +29,11 @@ When BizIQ is first attached, uploaded, mounted, or opened:
 8. Load only the smallest relevant sections.
 9. Validate substantial work before delivery.
 
-BizIQ remains active for the current project until the user explicitly replaces, disables, or changes it.
+AIFENCE remains active for the current project until the user explicitly replaces, disables, or changes it.
 
 # Stable 2.0 Qualification Status
 
-**Core 1.8.8 is APPROVED and frozen as the BizIQ Stable 2.0 architecture.** Sealed Holdout 9 passed all 10/10 predeclared engineering gates: 40/40 exact routing, 40/40 pairwise wins versus control, 92.910/100 mean quality, 40/40 family acceptance, 100% preflight/compact containment, zero catastrophic failures, a positive paired-improvement confidence interval, and +1.85% eager-context regression within budget. See `ARCHITECTURE_FREEZE_STATUS.md` and `BENCHMARK_FINDINGS_1_8_8.md`. Holdout 9 and all prior holdouts are now regression data only.
+**Core 1.8.8 is APPROVED and frozen as the AIFENCE Stable 2.0 architecture.** Sealed Holdout 9 passed all 10/10 predeclared engineering gates: 40/40 exact routing, 40/40 pairwise wins versus control, 92.910/100 mean quality, 40/40 family acceptance, 100% preflight/compact containment, zero catastrophic failures, a positive paired-improvement confidence interval, and +1.85% eager-context regression within budget. See `ARCHITECTURE_FREEZE_STATUS.md` and `BENCHMARK_FINDINGS_1_8_8.md`. Holdout 9 and all prior holdouts are now regression data only.
 
 # Revision 1.8.8 Deliverable Phrase Normalization & Modifier-Tolerant Composite Parsing
 <!-- id: readme.revision-1-8-8 -->
@@ -72,7 +72,7 @@ Revision 1.8.5 targets only the repeated Stable-2.0 Holdout-5 failures while pre
 Revision 1.8.4 targets only the Stable-2.0 Holdout-4 validator/routing defects while preserving Core 1.8.3 finished-surface naturalization and universal executable preflight:
 
 1. **Emission substance is family-native.** Websites/apps, dashboards, mobile, brand systems, campaigns, CLI tools, decks, spreadsheets, fixed documents, creative work, and composites validate the semantics native to that artifact family rather than a universal workflow state machine.
-2. **Naturalization remains global and fail-closed.** Production-facing internal BizIQ/compiler/QA vocabulary remains forbidden regardless of family.
+2. **Naturalization remains global and fail-closed.** Production-facing internal AIFENCE/compiler/QA vocabulary remains forbidden regardless of family.
 3. **XLSX extraction is namespace-safe.** Shared strings, inline strings, string-valued worksheet cells, formulas/labels, and supported OOXML namespace representations are directly recoverable from generated workbooks.
 4. **Scaffold detection is context-sensitive.** Generic placeholders remain invalid, but ordinary phrases are not globally rejected when they are legitimate within a family and surrounded by concrete family-specific material.
 5. **Deck + model composites resolve exactly.** Executive/decision deck language coordinated with spreadsheet/model deliverables compiles both child artifacts instead of allowing the model keyword to dominate.
@@ -95,7 +95,7 @@ Revision 1.8.3 targets only the repeated Stable-2.0 Holdout-3 failure classes an
 Revision 1.8.2 targets only the repeated Stable-2.0 Holdout-2 failure cluster: artifacts that satisfy the shape of a quality contract while remaining generic, shallow, or visibly written in internal compiler/QA language.
 
 1. **Internal requirements compile into user-domain material.** P0/P1 jobs must materialize into concrete content, data, states, actions, proof needs, recovery, and outcomes that are specific to the artifact's domain.
-2. **Production-facing language is naturalized.** Internal terms such as `P0`, `decision depth closure`, `truth boundary`, `feature depth`, `quality gate`, `artifact contract`, `evidence plan`, and equivalent BizIQ/QA vocabulary are implementation metadata and MUST NOT appear in user-facing output unless the user explicitly requests process documentation.
+2. **Production-facing language is naturalized.** Internal terms such as `P0`, `decision depth closure`, `truth boundary`, `feature depth`, `quality gate`, `artifact contract`, `evidence plan`, and equivalent AIFENCE/QA vocabulary are implementation metadata and MUST NOT appear in user-facing output unless the user explicitly requests process documentation.
 3. **Specificity is testable.** Required material must include industry/workflow-specific markers that could not be transplanted unchanged into a materially different domain without becoming inaccurate or nonsensical.
 4. **Brand/email/non-web/CLI materialize real rules and decisions.** Brand category inventories become operational rules/applications; campaign stages become domain-specific lifecycle content; decks/models/documents become concrete reading/decision surfaces; CLI requirements become ergonomic task vocabulary, output, errors, and recovery.
 5. Use `MATERIALIZATION_CLOSURE.md`, `schemas/materialization_evidence.schema.json`, and `tools/validate_materialization_evidence.py`. These gates are fail-closed and add no BQ IDs.
@@ -187,7 +187,7 @@ Use `EVIDENCE_ADAPTER.md`, `schemas/interaction_closure_manifest.schema.json`, a
 # Control Plane Resolution
 <!-- id: readme.control-plane-resolution -->
 
-BizIQ uses a lazily loaded normative control plane.
+AIFENCE uses a lazily loaded normative control plane.
 
 The current logical control plane contains:
 
@@ -730,7 +730,7 @@ Project artifacts should contain project-specific decisions, not copied standard
 A project instruction may remain small:
 
 ```text
-Use README.md as the main BizIQ load point.
+Use README.md as the main AIFENCE load point.
 Resolve the current request.
 Load only exact required sections.
 Default to Production unless explicitly overridden.
@@ -810,7 +810,7 @@ Existing stable IDs remain compatible. Domain 26 uses BQ-1001–BQ-1050, Domain 
 # Pack Integrity Validation
 <!-- id: readme.pack-integrity-validation -->
 
-When BizIQ is modified, run:
+When AIFENCE is modified, run:
 
 ```text
 python tools/validate_pack.py
@@ -853,4 +853,4 @@ Use `CONTROL_INDEX.md` for exact routing. High-value production work commonly ac
 
 **Start here. Route elsewhere only as needed.**
 
-BizIQ is a decision source, not the output itself.
+AIFENCE is a decision source, not the output itself.

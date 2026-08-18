@@ -27,14 +27,14 @@ pairs=defaultdict(dict)
 for r in revealed:pairs[r["case_id"]][r["condition"]]=r
 pr=[]
 for cid,p in sorted(pairs.items()):
-    if "control" not in p or "biziq" not in p:continue
-    c,b=p["control"],p["biziq"];row={"case_id":cid,"control_overall":c["overall_100"],"biziq_overall":b["overall_100"],"delta":round(b["overall_100"]-c["overall_100"],3)}
+    if "control" not in p or "aifence" not in p:continue
+    c,b=p["control"],p["aifence"];row={"case_id":cid,"control_overall":c["overall_100"],"aifence_quality_overall":b["overall_100"],"delta":round(b["overall_100"]-c["overall_100"],3)}
     for d in D:row[d+"_delta"]=round(b[d]-c[d],3)
     pr.append(row)
 if pr:
     with (out/"paired_deltas.csv").open("w",encoding="utf-8",newline="") as f:
         w=csv.DictWriter(f,fieldnames=list(pr[0]));w.writeheader();w.writerows(pr)
     ds=[x["delta"] for x in pr]
-    summary={"pairs":len(pr),"median_delta":round(statistics.median(ds),3),"mean_delta":round(statistics.mean(ds),3),"biziq_wins":sum(x>0 for x in ds),"control_wins":sum(x<0 for x in ds),"ties":sum(x==0 for x in ds)}
+    summary={"pairs":len(pr),"median_delta":round(statistics.median(ds),3),"mean_delta":round(statistics.mean(ds),3),"aifence_quality_wins":sum(x>0 for x in ds),"control_wins":sum(x<0 for x in ds),"ties":sum(x==0 for x in ds)}
     (out/"summary.json").write_text(json.dumps(summary,indent=2)+"\n",encoding="utf-8")
     print(json.dumps(summary,indent=2))

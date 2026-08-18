@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -25,14 +25,14 @@ from .db import set_tenant_context
 from .evaluation import SecurityEvaluationRunner
 from .maintenance import run_tenant_maintenance
 from .policy import PolicyEngine, load_baseline_policy
-from .service import AgentDanceService
+from .service import AifenceService
 
 FULL_ADMIN_SCOPES = sorted(KNOWN_SCOPES)
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="agentdance")
+    parser = argparse.ArgumentParser(prog="aifence")
     sub = parser.add_subparsers(dest="command", required=True)
-    serve = sub.add_parser("serve", help="run the AGENTDANCE API")
+    serve = sub.add_parser("serve", help="run the AIFENCE API")
     serve.add_argument("--workers", type=int, default=1)
     keygen = sub.add_parser("keygen", help="generate signing and encryption material")
     keygen.add_argument("--directory", type=Path, required=True)
@@ -97,7 +97,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> None:
     args = build_parser().parse_args()
     logging.basicConfig(
-        level=os.getenv("AGENTDANCE_LOG_LEVEL", "INFO"),
+        level=os.getenv("AIFENCE_GUARD_LOG_LEVEL", "INFO"),
         format="%(asctime)s %(levelname)s %(name)s %(message)s",
     )
     if args.command == "keygen":
@@ -133,7 +133,7 @@ def main() -> None:
         return
     if args.command == "migrate":
         settings = Settings.from_env()
-        config = Config(os.getenv("AGENTDANCE_ALEMBIC_INI", str(Path.cwd() / "alembic.ini")))
+        config = Config(os.getenv("AIFENCE_GUARD_ALEMBIC_INI", str(Path.cwd() / "alembic.ini")))
         config.set_main_option("sqlalchemy.url", settings.database_url)
         command.upgrade(config, args.revision)
         return
@@ -165,7 +165,7 @@ def main() -> None:
     if args.command == "serve":
         ssl_cert_reqs = ssl.CERT_REQUIRED if settings.require_mtls else ssl.CERT_NONE
         uvicorn.run(
-            "agentdance.main:app",
+            "aifence.main:app",
             host=settings.bind_host,
             port=settings.bind_port,
             workers=args.workers,
@@ -181,7 +181,7 @@ def main() -> None:
         return
 
     app = create_app(settings)
-    service: AgentDanceService = app.state.service
+    service: AifenceService = app.state.service
     factory = app.state.session_factory
     if args.command in {"worker", "lifecycle-worker", "anchor-worker"}:
         target = {

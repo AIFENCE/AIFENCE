@@ -56,7 +56,7 @@ Separate three concepts:
 ```text
 SOURCE REQUIREMENT — what the authoritative source actually requires
 ORGANIZATION CONTROL — how the organization implements the requirement
-BIZIQ RECOMMENDATION — a proposed operating design or best practice
+AIFENCE RECOMMENDATION — a proposed operating design or best practice
 ```
 
 Never merge them into one unlabeled procedure step.
@@ -78,7 +78,7 @@ Re-verify authority when:
 
 For regulated, licensed, clinical, electrical, hazardous-energy, life-safety, aviation, financial-control, legal, security-sensitive, or similarly consequential work:
 
-- generic BizIQ steps may frame workflow, evidence, decisions, and escalation;
+- generic AIFENCE steps may frame workflow, evidence, decisions, and escalation;
 - they MUST NOT replace required professional judgment, licensed scope, official technical procedure, safety manual, manufacturer instructions, or legally binding controls;
 - exact hazardous/technical execution steps require appropriate authoritative input;
 - if the authoritative source is missing, produce a controlled draft with explicit verification tasks rather than inventing instructions.

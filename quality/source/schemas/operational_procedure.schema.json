@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/operational_procedure.schema.json",
-  "title": "BizIQ Operational Procedure",
+  "$id": "aifence://schemas/operational_procedure.schema.json",
+  "title": "AIFENCE Operational Procedure",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -106,7 +106,7 @@
     "authority_sources": {
       "type": "array",
       "items": {
-        "$ref": "biziq://schemas/procedure_authority.schema.json"
+        "$ref": "aifence://schemas/procedure_authority.schema.json"
       }
     },
     "authority_map": {
@@ -171,7 +171,7 @@
       }
     },
     "role_accountability": {
-      "$ref": "biziq://schemas/role_accountability.schema.json"
+      "$ref": "aifence://schemas/role_accountability.schema.json"
     },
     "responsible_role": {
       "type": "string",
@@ -332,7 +332,7 @@
     "decision_rights": {
       "type": "array",
       "items": {
-        "$ref": "biziq://schemas/decision_rights.schema.json"
+        "$ref": "aifence://schemas/decision_rights.schema.json"
       }
     },
     "exceptions": {
@@ -405,7 +405,7 @@
     "evidence_requirements": {
       "type": "array",
       "items": {
-        "$ref": "biziq://schemas/operational_evidence.schema.json"
+        "$ref": "aifence://schemas/operational_evidence.schema.json"
       }
     },
     "definition_of_done": {
@@ -495,7 +495,7 @@
     "kpis": {
       "type": "array",
       "items": {
-        "$ref": "biziq://schemas/kpi_definition.schema.json"
+        "$ref": "aifence://schemas/kpi_definition.schema.json"
       }
     },
     "validation_plan": {

@@ -14,12 +14,12 @@ from datetime import UTC, datetime
 from pathlib import Path, PurePosixPath
 
 VERSION = "0.2.7"
-SOURCE_NAME = f"sage-plugin-v{VERSION}.zip"
-WHEEL_NAME = f"sage_agent_protocol-{VERSION}-py3-none-any.whl"
-HERMES_NAME = f"sage-hermes-plugin-v{VERSION}.zip"
-OPENCLAW_NAME = f"sage-agent-openclaw-sage-{VERSION}.tgz"
-VERIFICATION_NAME = f"SAGE-v{VERSION}-VERIFICATION.md"
-CHECKSUM_NAME = f"SAGE-v{VERSION}-SHA256SUMS.txt"
+SOURCE_NAME = f"aifence-plugin-v{VERSION}.zip"
+WHEEL_NAME = f"aifence_bus_agent_protocol-{VERSION}-py3-none-any.whl"
+HERMES_NAME = f"aifence-hermes-plugin-v{VERSION}.zip"
+OPENCLAW_NAME = f"aifence-agent-openclaw-aifence-{VERSION}.tgz"
+VERIFICATION_NAME = f"AIFENCE-v{VERSION}-VERIFICATION.md"
+CHECKSUM_NAME = f"AIFENCE-v{VERSION}-SHA256SUMS.txt"
 DEFAULT_SOURCE_DATE_EPOCH = 1_785_456_000  # 2026-07-31 00:00:00 UTC
 
 EXCLUDED_PARTS = {
@@ -33,7 +33,7 @@ EXCLUDED_PARTS = {
     "build",
     "node_modules",
 }
-EXCLUDED_NAMES = {".coverage", ".env", "sage.db", "ci-migration.db"}
+EXCLUDED_NAMES = {".coverage", ".env", "aifence.db", "ci-migration.db"}
 
 
 def _epoch() -> int:
@@ -80,7 +80,7 @@ def _write_zip_file(
 
 def build_source(root: Path, output: Path, epoch: int) -> Path:
     destination = output / SOURCE_NAME
-    prefix = f"sage-plugin-v{VERSION}"
+    prefix = f"aifence-plugin-v{VERSION}"
     files = sorted(path for path in root.rglob("*") if _include(path, root, output))
     with zipfile.ZipFile(destination, "w") as archive:
         for path in files:
@@ -92,7 +92,7 @@ def build_source(root: Path, output: Path, epoch: int) -> Path:
 def build_wheel(root: Path, output: Path, epoch: int) -> Path:
     env = os.environ.copy()
     env["SOURCE_DATE_EPOCH"] = str(epoch)
-    with tempfile.TemporaryDirectory(prefix="sage-wheel-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="aifence-wheel-") as temporary:
         temp = Path(temporary)
         result = subprocess.run(
             [
@@ -127,14 +127,14 @@ def build_wheel(root: Path, output: Path, epoch: int) -> Path:
 def build_hermes(root: Path, output: Path, epoch: int) -> Path:
     destination = output / HERMES_NAME
     source_root = root / "integrations" / "hermes"
-    prefix = f"sage-hermes-plugin-v{VERSION}"
+    prefix = f"aifence-hermes-plugin-v{VERSION}"
     required = [
         source_root / "README.md",
         source_root / "LICENSE",
         source_root / "install.sh",
         source_root / "install.ps1",
-        source_root / "sage" / "__init__.py",
-        source_root / "sage" / "plugin.yaml",
+        source_root / "aifence" / "__init__.py",
+        source_root / "aifence" / "plugin.yaml",
     ]
     missing = [str(path) for path in required if not path.is_file()]
     if missing:
@@ -153,7 +153,7 @@ def build_openclaw(root: Path, output: Path, epoch: int) -> Path:
     npm = shutil.which("npm")
     if npm is None:
         raise RuntimeError("npm is required to build the OpenClaw release package")
-    with tempfile.TemporaryDirectory(prefix="sage-npm-cache-") as npm_cache:
+    with tempfile.TemporaryDirectory(prefix="aifence-npm-cache-") as npm_cache:
         env["npm_config_cache"] = npm_cache
         env["npm_config_audit"] = "false"
         env["npm_config_fund"] = "false"
@@ -197,7 +197,7 @@ def write_supporting_assets(root: Path, output: Path, artifacts: list[Path]) -> 
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Build every SAGE GitHub release asset")
+    parser = argparse.ArgumentParser(description="Build every AIFENCE GitHub release asset")
     parser.add_argument("--output", type=Path, default=Path("dist"))
     parser.add_argument("--skip-wheel", action="store_true")
     parser.add_argument("--skip-openclaw", action="store_true")

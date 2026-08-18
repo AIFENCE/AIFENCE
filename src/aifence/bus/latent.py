@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -21,7 +21,7 @@ def pack_latent(vector: Sequence[float], space: str) -> LatentPacket:
     quantized = [max(-127, min(127, round(v / scale))) for v in values]
     raw = struct.pack(f"{len(quantized)}b", *quantized)
     return LatentPacket(
-        v="sage-latent/0.2",
+        v="aifence-latent/0.2",
         space=space,
         dims=len(values),
         scale=scale,
@@ -31,7 +31,7 @@ def pack_latent(vector: Sequence[float], space: str) -> LatentPacket:
 
 
 def unpack_latent(packet: LatentPacket) -> list[float]:
-    if packet.v != "sage-latent/0.2":
+    if packet.v != "aifence-latent/0.2":
         raise ValueError(f"unsupported latent protocol: {packet.v}")
     raw = base64.b64decode(packet.data_b64, validate=True)
     if hashlib.sha256(raw).hexdigest()[:24] != packet.checksum:

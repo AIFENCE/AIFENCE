@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ def test_tenant_policy_cannot_weaken_mandatory_control() -> None:
         evidence="secret detected",
     )
     tenant_policy = {
-        "spec_version": "agentdance.policy.v1",
+        "spec_version": "aifence.policy.v1",
         "version": "tenant-1",
         "default": {"outcome": "allow", "reasons": ["allow"], "constraints": {}},
         "rules": [],
@@ -85,7 +85,7 @@ def test_tenant_default_allow_cannot_weaken_baseline_default() -> None:
         "amount_usd": None,
     }
     tenant_policy = {
-        "spec_version": "agentdance.policy.v1",
+        "spec_version": "aifence.policy.v1",
         "version": "tenant-default-allow",
         "default": {"outcome": "allow", "reasons": ["tenant allow"], "constraints": {}},
         "rules": [],
@@ -100,7 +100,7 @@ def test_tenant_default_allow_cannot_weaken_baseline_default() -> None:
 
 def test_tenant_policy_can_tighten_baseline_allow() -> None:
     tenant_policy = {
-        "spec_version": "agentdance.policy.v1",
+        "spec_version": "aifence.policy.v1",
         "version": "tenant-deny-reads",
         "default": {"outcome": "allow", "reasons": ["tenant default"], "constraints": {}},
         "rules": [
@@ -126,7 +126,7 @@ def test_tenant_policy_can_tighten_baseline_allow() -> None:
 
 def test_matching_constraints_merge_by_security_semantics() -> None:
     baseline = {
-        "spec_version": "agentdance.policy.v1",
+        "spec_version": "aifence.policy.v1",
         "version": "constraint-composition",
         "default": {"outcome": "deny", "reasons": ["default"], "constraints": {}},
         "rules": [
@@ -175,7 +175,7 @@ def test_unknown_match_predicate_is_rejected() -> None:
     from aifence.guard.errors import PolicyError
 
     policy = {
-        "spec_version": "agentdance.policy.v1",
+        "spec_version": "aifence.policy.v1",
         "version": "invalid",
         "default": {"outcome": "deny", "reasons": ["default"], "constraints": {}},
         "rules": [

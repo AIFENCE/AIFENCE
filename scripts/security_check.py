@@ -71,18 +71,18 @@ def main() -> None:
         label = str(compose_path.relative_to(ROOT))
         if re.search(r"^\s*POSTGRES_PASSWORD:\s*(?!\$\{)[^\s]+", compose, re.MULTILINE):
             failures.append(f"{label}: embedded PostgreSQL password")
-        if 'SAGE_AUTH_REQUIRED: "false"' in compose:
+        if 'AIFENCE_BUS_AUTH_REQUIRED: "false"' in compose:
             failures.append(f"{label}: production auth disabled")
 
 
     dockerfile = (ROOT / "Dockerfile").read_text(encoding="utf-8")
     if re.search(r"^USER\s+root\s*$", dockerfile, re.MULTILINE):
         failures.append("Dockerfile: final runtime user is root")
-    if "USER sage" not in dockerfile:
+    if "USER aifence" not in dockerfile:
         failures.append("Dockerfile: non-root runtime user missing")
 
     plugin = json.loads((ROOT / "plugin.json").read_text(encoding="utf-8"))
-    if plugin.get("repository") != "https://github.com/NeuralBinary/SAGE":
+    if plugin.get("repository") != "https://github.com/NeuralBinary/AIFENCE":
         failures.append("plugin.json: repository identity mismatch")
 
     if failures:

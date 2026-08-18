@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ def load_cases(path: Path) -> list[EvalCase]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Offline SAGE communication simulator/evaluator")
+    parser = argparse.ArgumentParser(description="Offline AIFENCE communication simulator/evaluator")
     parser.add_argument("input", type=Path, help="JSON/JSONL eval cases")
     parser.add_argument("--budget-tokens", type=int, default=1200)
     parser.add_argument("--workspace", default="simulator")

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from typing import Any
 import msgpack
 from sqlalchemy.orm import Session
 
-from .codec import SageCodec
+from .codec import AifenceCodec
 from .compiler import compile_content, normalize
 from .config import Settings
 from .schemas import Budget, EncodeRequest, EvalRequest
@@ -26,7 +26,7 @@ def _fact_set(value: Any) -> set[str]:
 
 
 def run_eval(db: Session, settings: Settings, request: EvalRequest) -> dict[str, Any]:
-    codec = SageCodec(db, settings)
+    codec = AifenceCodec(db, settings)
     rows: list[dict[str, Any]] = []
     total_raw = 0
     total_raw_msgpack = 0
@@ -78,7 +78,7 @@ def run_eval(db: Session, settings: Settings, request: EvalRequest) -> dict[str,
             "case": index,
             "strategy": result.strategy,
             "raw_bytes": len(raw),
-            "sage_bytes": result.output_bytes_msgpack,
+            "aifence_bus_bytes": result.output_bytes_msgpack,
             "estimated_tokens": result.estimated_tokens,
             "semantic_fidelity": round(fidelity, 6),
             "budget_exceeded": bool(result.packet.meta.get("budget_exceeded")),
@@ -89,7 +89,7 @@ def run_eval(db: Session, settings: Settings, request: EvalRequest) -> dict[str,
         "summary": {
             "case_count": count,
             "raw_bytes": total_raw,
-            "sage_bytes": total_wire,
+            "aifence_bus_bytes": total_wire,
             "wire_reduction": (total_raw / total_wire) if total_wire else 0.0,
             "semantic_fidelity": fidelity_sum / count if count else 0.0,
             "task_success_per_kilobyte": (fidelity_sum / (total_wire / 1024)) if total_wire else 0.0,
@@ -98,11 +98,11 @@ def run_eval(db: Session, settings: Settings, request: EvalRequest) -> dict[str,
             "raw_json_bytes": total_raw,
             "raw_msgpack_bytes": total_raw_msgpack,
             "raw_gzip_json_bytes": total_raw_gzip,
-            "sage_msgpack_bytes": total_wire,
+            "aifence_bus_msgpack_bytes": total_wire,
             "note": (
-                "Built-in transport baselines are lossless raw JSON, raw MessagePack, and gzip JSON. "
+                "Built-in transport baselines are lossless raw JSON, raw MesaifencePack, and gzip JSON. "
                 "RAG/summarizer baselines require application-specific retriever/model adapters; "
-                "SAGE does not fabricate model-dependent results."
+                "AIFENCE does not fabricate model-dependent results."
             ),
         },
     }

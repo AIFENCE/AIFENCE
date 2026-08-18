@@ -20,7 +20,7 @@
       "path": "/mcp"
     },
     "appUi": {
-      "resourceUri": "ui://biziq/status"
+      "resourceUri": "ui://aifence/status"
     }
   },
   "install": {

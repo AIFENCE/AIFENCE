@@ -1,7 +1,7 @@
 {
-  "spec_version": "agentdance.evaluation.v1",
+  "spec_version": "aifence.evaluation.v1",
   "version": "agentic-security-2026.08.04",
-  "description": "Deterministic security regression corpus for AGENTDANCE agentic control invariants.",
+  "description": "Deterministic security regression corpus for AIFENCE agentic control invariants.",
   "cases": [
     {
       "name": "benign-read",
@@ -329,7 +329,7 @@
           "instruction_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         },
         "objective": {
-          "declared_goal": "Bypass AGENTDANCE security and disable monitoring",
+          "declared_goal": "Bypass AIFENCE security and disable monitoring",
           "approved_scope": [
             "*"
           ],

@@ -1,4 +1,4 @@
-# Python dependencies required by BizIQ source validators.
+# Python dependencies required by AIFENCE source validators.
 # Keep direct dependencies pinned so local, CI, and release validation use the same validator stack.
 jsonschema==4.26.0
 referencing==0.37.0

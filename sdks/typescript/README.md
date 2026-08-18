@@ -12,9 +12,9 @@ npm run build
 ## Usage
 
 ```ts
-import {AgentDanceClient} from "@agentdance/client";
+import {AifenceClient} from "@aifence/client";
 
-const client = new AgentDanceClient(
+const client = new AifenceClient(
   "https://aifence.example.com/guard",
   process.env.AIFENCE_API_KEY!,
 );

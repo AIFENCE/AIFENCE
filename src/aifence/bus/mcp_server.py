@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -7,16 +7,16 @@ from typing import Any, Literal, cast
 
 from .a2a_adapter import pack_data_part, unpack_data_part
 from .bus import SemanticBus
-from .codec import SageCodec
+from .codec import AifenceCodec
 from .compiler import compile_content
 from .config import get_settings
 from .conformance import run_tck, run_wire_fuzz
 from .db import SessionLocal, init_db
-from .economics import run_sage_economics_benchmark
+from .economics import run_aifence_economics_benchmark
 from .evals import run_eval
 from .knowledge import KnowledgeStore
 from .patterns import PatternStore
-from .protocol_spec import SAGE_PROTOCOL, SAGE_WIRE_VERSION
+from .protocol_spec import AIFENCE_PROTOCOL, AIFENCE_WIRE_VERSION
 from .references import ReferenceStore
 from .schemas import (
     Budget,
@@ -35,14 +35,14 @@ def build_server() -> Any:
     try:
         from mcp.server.fastmcp import FastMCP
     except ImportError as exc:  # pragma: no cover
-        raise RuntimeError("Install SAGE with the 'mcp' extra: pip install '.[mcp]'") from exc
+        raise RuntimeError("Install AIFENCE with the 'mcp' extra: pip install '.[mcp]'") from exc
 
     mcp = FastMCP(
-        "SAGE",
+        "AIFENCE",
         instructions=(
-            "Use sage_send/sage_receive as the default communication transport. "
-            "SAGE automatically applies receiver-aware deltas, refs, budgets, semantic codes, "
-            "provenance and caching. Resolve refs only when required. Use sage_explain to inspect "
+            "Use aifence_bus_send/aifence_bus_receive as the default communication transport. "
+            "AIFENCE automatically applies receiver-aware deltas, refs, budgets, semantic codes, "
+            "provenance and caching. Resolve refs only when required. Use aifence_bus_explain to inspect "
             "why information was compressed or referenced."
         ),
         stateless_http=True,
@@ -53,7 +53,7 @@ def build_server() -> Any:
     settings = get_settings()
 
     @mcp.tool()
-    def sage_send(
+    def aifence_bus_send(
         content: Any,
         receiver: str,
         sender: str | None = None,
@@ -63,9 +63,9 @@ def build_server() -> Any:
         run_id: str | None = None,
         source_ids: list[str] | None = None,
     ) -> dict[str, Any]:
-        """Send through SAGE's receiver-aware, budget-constrained semantic transport."""
+        """Send through AIFENCE's receiver-aware, budget-constrained semantic transport."""
         with SessionLocal() as db:
-            codec = SageCodec(db, settings)
+            codec = AifenceCodec(db, settings)
             result = codec.encode(
                 EncodeRequest(
                     content=content,
@@ -88,15 +88,15 @@ def build_server() -> Any:
             }
 
     @mcp.tool()
-    def sage_receive(
+    def aifence_bus_receive(
         wire: dict[str, Any],
         receiver: str,
         workspace: str = "default",
         resolve_refs: bool = False,
     ) -> dict[str, Any]:
-        """Receive a compact SAGE wire packet and acknowledge receiver knowledge."""
+        """Receive a compact AIFENCE wire packet and acknowledge receiver knowledge."""
         with SessionLocal() as db:
-            codec = SageCodec(db, settings)
+            codec = AifenceCodec(db, settings)
             packet = codec.expand(wire)
             return codec.decode(
                 packet,
@@ -107,14 +107,14 @@ def build_server() -> Any:
             ).model_dump()
 
     @mcp.tool()
-    def sage_explain(packet_id: str) -> dict[str, Any]:
-        """Explain why SAGE selected refs, deltas, semantic codes, cache or fallback behavior."""
+    def aifence_bus_explain(packet_id: str) -> dict[str, Any]:
+        """Explain why AIFENCE selected refs, deltas, semantic codes, cache or fallback behavior."""
         from sqlalchemy import select
 
-        from .db_models import MessageAudit
+        from .db_models import MesaifenceAudit
 
         with SessionLocal() as db:
-            item = db.scalar(select(MessageAudit).where(MessageAudit.packet_id == packet_id))
+            item = db.scalar(select(MesaifenceAudit).where(MesaifenceAudit.packet_id == packet_id))
             if item is None:
                 raise ValueError(f"unknown packet: {packet_id}")
             return {
@@ -130,7 +130,7 @@ def build_server() -> Any:
             }
 
     @mcp.tool()
-    def sage_handoff(
+    def aifence_bus_handoff(
         content: Any,
         receiver: str,
         sender: str | None = None,
@@ -165,14 +165,14 @@ def build_server() -> Any:
             }
 
     @mcp.tool()
-    def sage_poll(
+    def aifence_bus_poll(
         receiver: str,
         workspace: str = "default",
         limit: int = 20,
         claim: bool = True,
         budget_tokens: int | None = None,
     ) -> list[dict[str, Any]]:
-        """Pull pending SAGE handoffs for this agent identity."""
+        """Pull pending AIFENCE handoffs for this agent identity."""
         with SessionLocal() as db:
             items = SemanticBus(db, settings).pull(
                 receiver=receiver, workspace=workspace, limit=limit, claim=claim, budget_tokens=budget_tokens
@@ -192,8 +192,8 @@ def build_server() -> Any:
             ]
 
     @mcp.tool()
-    def sage_ack(message_id: str, receiver: str, workspace: str = "default") -> dict[str, Any]:
-        """Acknowledge a pulled SAGE handoff and update receiver knowledge."""
+    def aifence_bus_ack(message_id: str, receiver: str, workspace: str = "default") -> dict[str, Any]:
+        """Acknowledge a pulled AIFENCE handoff and update receiver knowledge."""
         with SessionLocal() as db:
             item = SemanticBus(db, settings).ack(
                 message_id, receiver=receiver, workspace=workspace
@@ -202,17 +202,17 @@ def build_server() -> Any:
             return {"message_id": item.id, "status": item.status}
 
     @mcp.tool()
-    def sage_a2a_pack(wire: dict[str, Any]) -> dict[str, Any]:
-        """Wrap a SAGE packet as an A2A 1.0 DataPart."""
+    def aifence_bus_a2a_pack(wire: dict[str, Any]) -> dict[str, Any]:
+        """Wrap a AIFENCE packet as an A2A 1.0 DataPart."""
         return pack_data_part(wire)
 
     @mcp.tool()
-    def sage_a2a_unpack(part: dict[str, Any]) -> dict[str, Any]:
-        """Extract a SAGE packet from an A2A 1.0 DataPart."""
+    def aifence_bus_a2a_unpack(part: dict[str, Any]) -> dict[str, Any]:
+        """Extract a AIFENCE packet from an A2A 1.0 DataPart."""
         return {"wire": unpack_data_part(part)}
 
     @mcp.tool()
-    def sage_encode(
+    def aifence_bus_encode(
         content: Any,
         sender: str | None = None,
         receiver: str | None = None,
@@ -221,9 +221,9 @@ def build_server() -> Any:
         auto_learn: bool = True,
         include_metrics: bool = False,
     ) -> dict[str, Any]:
-        """Encode information into SAGE. Prefer sage_send for automatic receiver-aware transport."""
+        """Encode information into AIFENCE. Prefer aifence_bus_send for automatic receiver-aware transport."""
         with SessionLocal() as db:
-            codec = SageCodec(db, settings)
+            codec = AifenceCodec(db, settings)
             result = codec.encode(
                 EncodeRequest(
                     content=content,
@@ -239,15 +239,15 @@ def build_server() -> Any:
             return {"packet_id": result.packet.id, "wire": codec.compact(result.packet)}
 
     @mcp.tool()
-    def sage_decode(packet: dict[str, Any], resolve_refs: bool = False) -> dict[str, Any]:
-        """Decode a canonical SAGE 0.2 wire packet."""
+    def aifence_bus_decode(packet: dict[str, Any], resolve_refs: bool = False) -> dict[str, Any]:
+        """Decode a canonical AIFENCE 0.2 wire packet."""
         with SessionLocal() as db:
-            codec = SageCodec(db, settings)
+            codec = AifenceCodec(db, settings)
             parsed = codec.expand(packet)
             return codec.decode(parsed, resolve_refs, receiver=parsed.receiver).model_dump()
 
     @mcp.tool()
-    def sage_store(
+    def aifence_bus_store(
         value: Any,
         workspace: str = "default",
         owner: str | None = None,
@@ -274,7 +274,7 @@ def build_server() -> Any:
             return {"ref": item.id, "byte_size": item.byte_size, "tier": grant.tier, "encrypted": item.ciphertext is not None, "expires_at": grant.expires_at.isoformat() if grant.expires_at else None}
 
     @mcp.tool()
-    def sage_resolve(ref: str, actor: str | None = None, workspace: str = "default", fields: list[str] | None = None) -> dict[str, Any]:
+    def aifence_bus_resolve(ref: str, actor: str | None = None, workspace: str = "default", fields: list[str] | None = None) -> dict[str, Any]:
         """Resolve authorized fields from a content-addressed ref only when needed."""
         with SessionLocal() as db:
             store = ReferenceStore(db, settings)
@@ -285,7 +285,7 @@ def build_server() -> Any:
             return {"ref": item.id, "media_type": item.media_type, "byte_size": item.byte_size, "tier": grant.tier, "value": store.resolve(ref, actor=actor, workspace=workspace, fields=fields)}
 
     @mcp.tool()
-    def sage_memory_policy(
+    def aifence_bus_memory_policy(
         ref: str,
         actor: str | None = None,
         workspace: str = "default",
@@ -308,7 +308,7 @@ def build_server() -> Any:
             return {"ref": item.id, "tier": grant.tier, "invalidated": grant.invalidated_at is not None}
 
     @mcp.tool()
-    def sage_register(
+    def aifence_bus_register(
         canonical: str,
         description: str = "",
         codebook: str | None = None,
@@ -331,7 +331,7 @@ def build_server() -> Any:
             }
 
     @mcp.tool()
-    def sage_deprecate(code: str, replacement_code: str | None = None) -> dict[str, Any]:
+    def aifence_bus_deprecate(code: str, replacement_code: str | None = None) -> dict[str, Any]:
         """Deprecate a semantic code and optionally redirect it to a replacement code."""
         from .codebook import Codebook
 
@@ -341,7 +341,7 @@ def build_server() -> Any:
             return {"code": code, "status": item.status, "version": item.version, "replacement": replacement_code}
 
     @mcp.tool()
-    def sage_state(value: Any, workspace: str = "default", created_by: str | None = None) -> dict[str, Any]:
+    def aifence_bus_state(value: Any, workspace: str = "default", created_by: str | None = None) -> dict[str, Any]:
         """Create/deduplicate immutable content-addressed shared state."""
         with SessionLocal() as db:
             item = StateStore(db).create(value, workspace=workspace, created_by=created_by)
@@ -349,7 +349,7 @@ def build_server() -> Any:
             return {"state": item.id, "revision": item.revision, "value": item.payload}
 
     @mcp.tool()
-    def sage_get_state(state: str, workspace: str = "default") -> dict[str, Any]:
+    def aifence_bus_get_state(state: str, workspace: str = "default") -> dict[str, Any]:
         """Resolve shared state by content-addressed ID."""
         with SessionLocal() as db:
             item = StateStore(db).get(state, workspace=workspace)
@@ -358,7 +358,7 @@ def build_server() -> Any:
             return {"state": item.id, "revision": item.revision, "parent": item.parent_id, "value": item.payload}
 
     @mcp.tool()
-    def sage_delta(base: str, value: Any, mode: str = "target", workspace: str = "default") -> dict[str, Any]:
+    def aifence_bus_delta(base: str, value: Any, mode: str = "target", workspace: str = "default") -> dict[str, Any]:
         """Create immutable target state plus lossless JSON Patch delta from a known base."""
         req = StatePatchRequest(
             base=base,
@@ -372,18 +372,18 @@ def build_server() -> Any:
             return {"state": item.id, "revision": item.revision, "delta": delta, "value": item.payload}
 
     @mcp.tool()
-    def sage_replay(run_id: str) -> dict[str, Any]:
+    def aifence_bus_replay(run_id: str) -> dict[str, Any]:
         """Replay the exact packet history and decisions for a multi-agent run."""
         from sqlalchemy import select
 
-        from .db_models import MessageAudit
+        from .db_models import MesaifenceAudit
 
         with SessionLocal() as db:
-            items = list(db.scalars(select(MessageAudit).where(MessageAudit.run_id == run_id).order_by(MessageAudit.created_at, MessageAudit.id)))
+            items = list(db.scalars(select(MesaifenceAudit).where(MesaifenceAudit.run_id == run_id).order_by(MesaifenceAudit.created_at, MesaifenceAudit.id)))
             return {"run_id": run_id, "packets": [{"packet_id": x.packet_id, "packet": x.packet, "strategy": x.strategy, "decisions": x.decisions} for x in items]}
 
     @mcp.tool()
-    def sage_negotiate(
+    def aifence_bus_negotiate(
         receiver: str,
         known_codes: list[str] | None = None,
         codebook: str | None = None,
@@ -416,7 +416,7 @@ def build_server() -> Any:
             missing_patterns = [pattern_store.response(p) for p in pattern_store.list(cb_name, status="active")] if supports_patterns else []
             db.commit()
             return {
-                "protocol": "sage/0.2",
+                "protocol": "aifence/0.2",
                 "codebook": cb_name,
                 "codebook_chain": cb.namespace_chain(cb_name),
                 "embedding_space": cb.embedding_space,
@@ -427,14 +427,14 @@ def build_server() -> Any:
             }
 
     @mcp.tool()
-    def sage_patterns(codebook: str | None = None, status: str | None = None) -> list[dict[str, Any]]:
+    def aifence_bus_patterns(codebook: str | None = None, status: str | None = None) -> list[dict[str, Any]]:
         """List learned higher-order patterns and their lifecycle/effectiveness metrics."""
         with SessionLocal() as db:
             store = PatternStore(db, settings)
             return [store.response(item) for item in store.list(codebook or settings.codebook, status=status)]
 
     @mcp.tool()
-    def sage_pattern_candidates(codebook: str | None = None) -> list[dict[str, Any]]:
+    def aifence_bus_pattern_candidates(codebook: str | None = None) -> list[dict[str, Any]]:
         """List recurring pattern candidates that have not yet reached shadow status."""
         with SessionLocal() as db:
             items = PatternStore(db, settings).candidates(codebook or settings.codebook)
@@ -452,7 +452,7 @@ def build_server() -> Any:
             ]
 
     @mcp.tool()
-    def sage_observe_patterns(content: Any, codebook: str | None = None, source_ids: list[str] | None = None, source_trust: float = 0.5, trust_scope: str = "session") -> list[dict[str, Any]]:
+    def aifence_bus_observe_patterns(content: Any, codebook: str | None = None, source_ids: list[str] | None = None, source_trust: float = 0.5, trust_scope: str = "session") -> list[dict[str, Any]]:
         """Mine a payload for recurring higher-order semantic patterns without sending it."""
         with SessionLocal() as db:
             store = PatternStore(db, settings)
@@ -467,7 +467,7 @@ def build_server() -> Any:
             return [store.response(item) for item in items]
 
     @mcp.tool()
-    def sage_set_pattern_status(pattern_id: str, status: str) -> dict[str, Any]:
+    def aifence_bus_set_pattern_status(pattern_id: str, status: str) -> dict[str, Any]:
         """Manually change a learned pattern lifecycle state for operations/testing."""
         with SessionLocal() as db:
             store = PatternStore(db, settings)
@@ -476,7 +476,7 @@ def build_server() -> Any:
             return store.response(item)
 
     @mcp.tool()
-    def sage_eval(cases: list[dict[str, Any]], budget_tokens: int = 1200) -> dict[str, Any]:
+    def aifence_bus_eval(cases: list[dict[str, Any]], budget_tokens: int = 1200) -> dict[str, Any]:
         """Run offline semantic-fidelity and communication-efficiency evaluation."""
         parsed = EvalRequest(cases=[EvalCase.model_validate(c) for c in cases], budget_tokens=budget_tokens)
         with SessionLocal() as db:
@@ -484,45 +484,45 @@ def build_server() -> Any:
 
 
     @mcp.tool()
-    def sage_protocol_info() -> dict[str, Any]:
-        """Return the frozen SAGE protocol/wire version exposed by this adapter."""
-        return {"protocol": SAGE_PROTOCOL, "wire_version": SAGE_WIRE_VERSION, "adapter": "mcp"}
+    def aifence_bus_protocol_info() -> dict[str, Any]:
+        """Return the frozen AIFENCE protocol/wire version exposed by this adapter."""
+        return {"protocol": AIFENCE_PROTOCOL, "wire_version": AIFENCE_WIRE_VERSION, "adapter": "mcp"}
 
     @mcp.tool()
-    def sage_tck() -> dict[str, Any]:
-        """Run the installed SAGE 0.2 conformance vectors."""
+    def aifence_bus_tck() -> dict[str, Any]:
+        """Run the installed AIFENCE 0.2 conformance vectors."""
         return run_tck().as_dict()
 
     @mcp.tool()
-    def sage_benchmark_economics(request: dict[str, Any]) -> dict[str, Any]:
+    def aifence_bus_benchmark_economics(request: dict[str, Any]) -> dict[str, Any]:
         """Benchmark model-token/cost economics; exact counting requires a configured exact tokenizer."""
         parsed = EconomicsBenchmarkRequest.model_validate(request)
         with SessionLocal() as db:
-            return run_sage_economics_benchmark(db, settings, parsed)
+            return run_aifence_economics_benchmark(db, settings, parsed)
 
     @mcp.tool()
-    def sage_pack_latent(vector: list[float], space: str) -> dict[str, Any]:
+    def aifence_bus_pack_latent(vector: list[float], space: str) -> dict[str, Any]:
         """Quantize/package a custom model-provided latent vector."""
         from .latent import pack_latent
         return pack_latent(vector, space).model_dump()
 
     @mcp.tool()
-    def sage_unpack_latent(packet: dict[str, Any]) -> dict[str, Any]:
-        """Validate/reconstruct a SAGE latent packet for a compatible custom model worker."""
+    def aifence_bus_unpack_latent(packet: dict[str, Any]) -> dict[str, Any]:
+        """Validate/reconstruct a AIFENCE latent packet for a compatible custom model worker."""
         from .latent import unpack_latent
         from .schemas import LatentPacket
         parsed = LatentPacket.model_validate(packet)
         return {"space": parsed.space, "vector": unpack_latent(parsed)}
 
     @mcp.tool()
-    def sage_inspect(packet_id: str) -> dict[str, Any]:
-        """Inspect SAGE compression waterfall, semantic loss, refs, and learned patterns."""
+    def aifence_bus_inspect(packet_id: str) -> dict[str, Any]:
+        """Inspect AIFENCE compression waterfall, semantic loss, refs, and learned patterns."""
         from .inspector import Inspector
         with SessionLocal() as db:
             return Inspector(db).packet(packet_id)
 
     @mcp.tool()
-    def sage_pattern_counterfactual(pattern_id: str, full_success: float, compressed_success: float, semantic_fidelity: float, receiver: str = "*", model: str = "*", task_family: str = "*", workspace: str = "default") -> dict[str, Any]:
+    def aifence_bus_pattern_counterfactual(pattern_id: str, full_success: float, compressed_success: float, semantic_fidelity: float, receiver: str = "*", model: str = "*", task_family: str = "*", workspace: str = "default") -> dict[str, Any]:
         """Record paired full-vs-compressed behavior for shadow pattern validation."""
         with SessionLocal() as db:
             store = PatternStore(db, settings)
@@ -531,7 +531,7 @@ def build_server() -> Any:
             return store.response(item)
 
     @mcp.tool()
-    def sage_forward_refs(receiver: str, refs: list[str], sender: str | None = None, workspace: str = "default") -> dict[str, Any]:
+    def aifence_bus_forward_refs(receiver: str, refs: list[str], sender: str | None = None, workspace: str = "default") -> dict[str, Any]:
         """Zero-copy handoff of existing content-addressed references."""
         with SessionLocal() as db:
             item = SemanticBus(db, settings).forward_refs(receiver=receiver, refs=refs, sender=sender, workspace=workspace)
@@ -539,7 +539,7 @@ def build_server() -> Any:
             return {"message_id": item.id, "packet_id": item.packet_id, "wire": item.wire, "strategy": item.strategy}
 
     @mcp.tool()
-    def sage_fact(subject: str, predicate: str, object: Any, epistemic_type: str = "fact", source: str | None = None, confidence: float = 1.0, workspace: str = "default", depends_on: list[str] | None = None) -> dict[str, Any]:
+    def aifence_bus_fact(subject: str, predicate: str, object: Any, epistemic_type: str = "fact", source: str | None = None, confidence: float = 1.0, workspace: str = "default", depends_on: list[str] | None = None) -> dict[str, Any]:
         """Store an epistemically typed fact with contradiction and dependency tracking."""
         from .facts import FactStore
         with SessionLocal() as db:
@@ -549,7 +549,7 @@ def build_server() -> Any:
             return store.response(item)
 
     @mcp.tool()
-    def sage_fact_invalidate(fact_id: str, reason: str = "source_changed") -> dict[str, Any]:
+    def aifence_bus_fact_invalidate(fact_id: str, reason: str = "source_changed") -> dict[str, Any]:
         """Causally invalidate a fact and every fact derived from it."""
         from .facts import FactStore
         with SessionLocal() as db:
@@ -558,7 +558,7 @@ def build_server() -> Any:
             return {"invalidated": ids}
 
     @mcp.tool()
-    def sage_contradiction_resolve(contradiction_id: str, winner_fact_id: str, note: str = "") -> dict[str, Any]:
+    def aifence_bus_contradiction_resolve(contradiction_id: str, winner_fact_id: str, note: str = "") -> dict[str, Any]:
         """Resolve an explicit semantic contradiction and invalidate loser dependencies."""
         from .facts import FactStore
         with SessionLocal() as db:
@@ -567,8 +567,8 @@ def build_server() -> Any:
             return {"contradiction_id": item.id, "status": item.status, "resolution": item.resolution}
 
     @mcp.tool()
-    def sage_subscribe(agent: str, concepts: list[str], workspace: str = "default") -> dict[str, Any]:
-        """Subscribe an agent to semantic concepts on the SAGE bus."""
+    def aifence_bus_subscribe(agent: str, concepts: list[str], workspace: str = "default") -> dict[str, Any]:
+        """Subscribe an agent to semantic concepts on the AIFENCE bus."""
         from .routing import SemanticPubSub
         with SessionLocal() as db:
             item = SemanticPubSub(db, settings).subscribe(workspace=workspace, agent=agent, concepts=concepts)
@@ -576,7 +576,7 @@ def build_server() -> Any:
             return {"subscription_id": item.id}
 
     @mcp.tool()
-    def sage_publish(content: Any, sender: str | None = None, workspace: str = "default", confidence: float = 1.0) -> dict[str, Any]:
+    def aifence_bus_publish(content: Any, sender: str | None = None, workspace: str = "default", confidence: float = 1.0) -> dict[str, Any]:
         """Publish semantic content only to interested subscribers."""
         from .routing import SemanticPubSub
         with SessionLocal() as db:
@@ -585,7 +585,7 @@ def build_server() -> Any:
             return {"recipients": recipients}
 
     @mcp.tool()
-    def sage_register_agent(agent: str, capabilities: list[str], authority: list[str] | None = None, workspace: str = "default", cost_score: float = 1.0, latency_ms: float = 0.0, available: bool = True, concepts: list[str] | None = None) -> dict[str, Any]:
+    def aifence_bus_register_agent(agent: str, capabilities: list[str], authority: list[str] | None = None, workspace: str = "default", cost_score: float = 1.0, latency_ms: float = 0.0, available: bool = True, concepts: list[str] | None = None) -> dict[str, Any]:
         """Register an agent for capability/knowledge-aware semantic routing."""
         from .routing import SemanticRouter
         with SessionLocal() as db:
@@ -594,7 +594,7 @@ def build_server() -> Any:
             return {"agent": item.agent, "capabilities": item.capabilities, "authority": item.authority, "available": item.available}
 
     @mcp.tool()
-    def sage_route(content: Any, capability: str | None = None, authority: str | None = None, workspace: str = "default", sender: str | None = None) -> dict[str, Any]:
+    def aifence_bus_route(content: Any, capability: str | None = None, authority: str | None = None, workspace: str = "default", sender: str | None = None) -> dict[str, Any]:
         """Choose the cheapest qualified agent while preferring existing relevant knowledge."""
         from .routing import SemanticRouter
         with SessionLocal() as db:
@@ -602,7 +602,7 @@ def build_server() -> Any:
             return {"agent": winner.agent, "score": score}
 
     @mcp.tool()
-    def sage_pattern_gc(codebook: str | None = None) -> dict[str, int]:
+    def aifence_bus_pattern_gc(codebook: str | None = None) -> dict[str, int]:
         """Cool and retire learned patterns that no longer justify their vocabulary cost."""
         with SessionLocal() as db:
             result = PatternStore(db, settings).garbage_collect(codebook)
@@ -610,7 +610,7 @@ def build_server() -> Any:
             return result
 
     @mcp.tool()
-    def sage_pattern_promote_namespace(pattern_id: str, target_codebook: str) -> dict[str, Any]:
+    def aifence_bus_pattern_promote_namespace(pattern_id: str, target_codebook: str) -> dict[str, Any]:
         """Promote a high-utility local pattern into a parent semantic namespace."""
         with SessionLocal() as db:
             store = PatternStore(db, settings)
@@ -619,8 +619,8 @@ def build_server() -> Any:
             return store.response(item)
 
     @mcp.tool()
-    def sage_federation_register_peer(name: str, base_url: str, public_key_b64: str, allowed_namespaces: list[str], workspace: str = "default") -> dict[str, Any]:
-        """Register a signed federated SAGE peer and its allowed semantic namespaces."""
+    def aifence_bus_federation_register_peer(name: str, base_url: str, public_key_b64: str, allowed_namespaces: list[str], workspace: str = "default") -> dict[str, Any]:
+        """Register a signed federated AIFENCE peer and its allowed semantic namespaces."""
         from .federation import FederationStore
         with SessionLocal() as db:
             item = FederationStore(db, settings).register_peer(workspace=workspace, name=name, base_url=base_url, public_key_b64=public_key_b64, allowed_namespaces=allowed_namespaces)
@@ -628,14 +628,14 @@ def build_server() -> Any:
             return {"peer_id": item.id, "name": item.name, "allowed_namespaces": item.allowed_namespaces}
 
     @mcp.tool()
-    def sage_federation_export(namespace: str, source: str = "local") -> dict[str, Any]:
+    def aifence_bus_federation_export(namespace: str, source: str = "local") -> dict[str, Any]:
         """Export selected concepts/patterns as a namespace-scoped signed federation bundle."""
         from .federation import FederationStore
         with SessionLocal() as db:
             return FederationStore(db, settings).export_bundle(namespace, source=source)
 
     @mcp.tool()
-    def sage_federation_import(bundle: dict[str, Any], workspace: str = "default") -> dict[str, int]:
+    def aifence_bus_federation_import(bundle: dict[str, Any], workspace: str = "default") -> dict[str, int]:
         """Import a signed, namespace-authorized federation bundle for local revalidation."""
         from .federation import FederationStore
         with SessionLocal() as db:
@@ -644,7 +644,7 @@ def build_server() -> Any:
             return result
 
     @mcp.tool()
-    def sage_conform(fuzz_iterations: int = 0) -> dict[str, Any]:
+    def aifence_bus_conform(fuzz_iterations: int = 0) -> dict[str, Any]:
         """Run the installed TCK plus optional deterministic malformed-wire checks."""
         tck = run_tck()
         fuzz = run_wire_fuzz(fuzz_iterations) if fuzz_iterations else None
@@ -656,7 +656,7 @@ def build_server() -> Any:
 def run() -> None:
     settings = get_settings()
     if settings.auth_required:
-        raise RuntimeError("sage-mcp direct mode has no HTTP auth wrapper; run sage-api and use /mcp instead")
+        raise RuntimeError("aifence-mcp direct mode has no HTTP auth wrapper; run aifence-api and use /mcp instead")
     init_db()
     build_server().run(transport="streamable-http")
 

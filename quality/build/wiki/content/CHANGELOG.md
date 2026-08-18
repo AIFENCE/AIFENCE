@@ -1,7 +1,7 @@
 # Stable 2.0 Architecture Freeze — Core 1.8.8
 
 - Sealed Holdout 9 passed all 10/10 predeclared Stable 2.0 engineering gates.
-- Core 1.8.8 is frozen as the BizIQ Stable 2.0 control-plane architecture.
+- Core 1.8.8 is frozen as the AIFENCE Stable 2.0 control-plane architecture.
 - Qualification achieved 40/40 exact routing, 40/40 pairwise wins, 92.910/100 mean engineering quality, 40/40 family acceptance, 100% preflight/containment, zero catastrophic failures, and +1.85% eager-context regression versus Core 1.8.7.
 - Holdouts 1-9 are now regression/validation data only; future architecture changes require new repeated failure evidence or a new sealed benchmark.
 - Runtime packaging is promoted to 2.0.0 without changing the qualified Core 1.8.8 control-plane behavior.
@@ -33,7 +33,7 @@
 
 # Revision 1.8.3 — Emission Naturalization & Universal Executable Preflight
 
-- Added post-generation finished-surface scanning so internal BizIQ/compiler/QA terminology cannot leak into accepted production artifacts.
+- Added post-generation finished-surface scanning so internal AIFENCE/compiler/QA terminology cannot leak into accepted production artifacts.
 - Added direct emitted-substance verification tying domain terms, decisions, actions, states, outcomes, evidence boundaries, and surface markers to the actual artifact corpus.
 - Added universal syntax/grammar preflight for browser JavaScript, Node/CLI JavaScript, Python, and shell artifacts, plus fail-closed direct runtime evidence for executable interfaces/tools.
 - Added Runtime emission/executable acceptance contracts, stable-section retrieval, schemas, validators, and permanent Core 1.8.3 regressions.
@@ -43,7 +43,7 @@
 # Revision 1.8.2 — Domain Materialization & Artifact Naturalization
 
 - Added fail-closed domain materialization evidence for web/mobile/brand/email/CLI/presentation/spreadsheet/fixed-document/creative/composite output.
-- Prohibited internal BizIQ/compiler/QA vocabulary from normal production-facing surfaces unless process documentation is explicitly requested.
+- Prohibited internal AIFENCE/compiler/QA vocabulary from normal production-facing surfaces unless process documentation is explicitly requested.
 - Required concrete domain-specific P0/P1 content/data/states/actions/proof/recovery/outcomes rather than generic closure-shaped placeholders.
 - Strengthened brand rules, campaign lifecycle material, non-web reading/decision surfaces, and CLI output/error/help ergonomics.
 - Added materialization schema, executable validator, ten-case regression corpus, Runtime routing/retrieval, and Stable-2.0 Holdout-3 qualification boundary.
@@ -76,7 +76,7 @@
 - Added workflow-specific Level-5 depth requirements for payments and analytics.
 - Runtime plans now emit `denseProductQualityClosure` plus exact stable-section retrieval and evidence requirements.
 - Added three permanent fresh-generation regression cases derived from the Core 1.7.3 no-repair benchmark.
-- Fresh six-pair no-repair replication: BizIQ mean 93.519 vs control 83.000, 6/6 pairwise wins, and 6/6 BizIQ strict >=9.0-every-dimension passes.
+- Fresh six-pair no-repair replication: AIFENCE mean 93.519 vs control 83.000, 6/6 pairwise wins, and 6/6 AIFENCE strict >=9.0-every-dimension passes.
 - Core revision is 1.7.4; control IDs/count remain 31 domains / 260 capabilities / 1,300 controls.
 
 
@@ -111,11 +111,11 @@
 
 ## 1.0.4 — Source-driven wiki / GitHub Pages
 
-- Added a production wiki-style documentation site generated from canonical BizIQ Markdown and repository docs.
+- Added a production wiki-style documentation site generated from canonical AIFENCE Markdown and repository docs.
 - Added searchable source indexing, curated navigation, responsive/mobile documentation UX, page outlines, source links, copyable commands, and theme support.
 - Added `npm run test:wiki` and `npm run wiki:serve`.
 - Added GitHub Pages deployment from `build/wiki/` with build-drift enforcement.
-- Added deterministic `BizIQ-Wiki-<runtime>.zip` release output.
+- Added deterministic `AIFENCE-Wiki-<runtime>.zip` release output.
 - Core remains Revision 1.6 with the same 31 domains / 260 capabilities / 1,300 controls.
 
 ## 1.0.3 — Windows process-launch portability
@@ -125,9 +125,9 @@
 - Added generated `scripts/run-tests.js`, which enumerates `tests/*.test.js` itself and launches Node with an argument array and `shell:false`.
 - Removed dependency on shell wildcard expansion from generated Runtime `test` and `verify` scripts.
 - Added `npm run test:windows-spawn` regression coverage.
-- BizIQ Core remains Revision 1.6 with 31 domains / 260 capabilities / 1,300 controls.
+- AIFENCE Core remains Revision 1.6 with 31 domains / 260 capabilities / 1,300 controls.
 
-# BizIQ Repository / Runtime Changelog
+# AIFENCE Repository / Runtime Changelog
 
 ## 1.0.2 — 2026-08-09
 
@@ -135,8 +135,8 @@
 - Canonicalized textual source hashing so LF and CRLF produce identical source/Core/build identity.
 - Canonicalized textual bytes in deterministic release archives.
 - Runtime Core integrity verification now uses the same canonical text hashing rule.
-- Added explicit LF rules for canonical BizIQ text formats and a dedicated portability regression.
-- Preserved BizIQ Core 1.6 controls, IDs, schemas, Operations 2.0 behavior, and generated integration behavior.
+- Added explicit LF rules for canonical AIFENCE text formats and a dedicated portability regression.
+- Preserved AIFENCE Core 1.6 controls, IDs, schemas, Operations 2.0 behavior, and generated integration behavior.
 
 ## 1.0.1 — 2026-08-09
 
@@ -144,9 +144,9 @@
 - Added `npm run setup:python` and `npm run check:python`.
 - Added shared Python environment resolution/preflight for build and test entry points.
 - Updated CI and release workflows to install/cache the same Python requirements before validation.
-- Preserved all BizIQ Core 1.6 control semantics, IDs, Operations 2.0 behavior, Runtime features, and adapter generation.
+- Preserved all AIFENCE Core 1.6 control semantics, IDs, Operations 2.0 behavior, Runtime features, and adapter generation.
 - Removed a duplicate generated-manifest property in the builder.
 
 ## 1.0.0 — 2026-08-09
 
-- Initial source-driven BizIQ repository and Runtime build system.
+- Initial source-driven AIFENCE repository and Runtime build system.

@@ -71,7 +71,7 @@ function uniq(a){return [...new Set(a)];}
 function present(c,key){return c.contextGraph?.artifactExposure?.[key]?.state==='present';}
 function absent(c,key){return c.contextGraph?.artifactExposure?.[key]?.state==='absent';}
 
-export class BizIQRouter {
+export class AifenceRouter {
  constructor(core=new CoreProvider()){this.core=core; this.readme=this.core.read('README.md'); this.index=this.core.read('CONTROL_INDEX.md');}
  creationRoutes(){return tableAfterHeading(this.readme,'# Creation-Type Router');}
  validationRoutes(){return tableAfterHeading(this.readme,'# Creation Validation Matrix');}
@@ -98,7 +98,7 @@ export class BizIQRouter {
    if(['Website / Landing Page','SEO/GEO/AEO Content','Marketplace / E-Commerce'].includes(type))names.push('Search/Discovery');
    if(type==='Org / Jobs / SOPs')names.push('Operational System');
    if(['Documentation / Repository Architecture','Fixed-Format Document / PDF','Presentation / Deck'].includes(type))names.push('Document / Report');
-   if(/\b(biziq|control plane|pack revision|control registry)\b/i.test(request))names.push('Pack Maintenance');
+   if(/\b(aifence|control plane|pack revision|control registry)\b/i.test(request))names.push('Pack Maintenance');
    return names;
  }
  capabilityPlan(c,domains,types){
@@ -266,7 +266,7 @@ export class BizIQRouter {
      schema:'schemas/materialization_evidence.schema.json',validator:'tools/validate_materialization_evidence.py',
      prohibitedProductionVocabulary:['P0','P1','decision depth closure','truth boundary','feature depth','quality gate','genericity','artifact contract','evidence plan','acceptance ledger','QA gate'],
      minimumConcreteRecords:{website:5,mobile:5,brand:6,email:4,cli:4,presentation:4,spreadsheet:4,'fixed-document':4,'marketing-creative':4}[materializationMap[node.type]],
-     failClosed:true,policy:'Materialize internal requirements into domain-specific user-facing content/data/states/actions/proof needs. Production copy must use user/business vocabulary and must not expose internal BizIQ/compiler/QA labels.'
+     failClosed:true,policy:'Materialize internal requirements into domain-specific user-facing content/data/states/actions/proof needs. Production copy must use user/business vocabulary and must not expose internal AIFENCE/compiler/QA labels.'
    }));
    const compositeMaterializationClosure=(c.artifactGraph.kind==='composite'&&c.qualityClosureIntent)?[{
      artifactId:'project-composite',artifactType:'Composite',familyProfile:'composite',required:true,schema:'schemas/materialization_evidence.schema.json',validator:'tools/validate_materialization_evidence.py',childArtifactIds:artifactNodes.map(x=>x.id),failClosed:true,policy:'Each child must independently materialize domain-specific jobs/content/states while shared vocabulary remains natural and consistent across the project.'
@@ -347,7 +347,7 @@ export class BizIQRouter {
      activationBundles:uniqueBundles,activeDomains:domains,activeModules:modules,activeCapabilities:cp.active,deferredCapabilities:cp.deferred,phases:cp.phases,retrievalBudget,
      retrievalActions:specializedActions,evidencePlan,generationPreflight,interactionClosure,genericityClosure,denseProductQualityClosure,artifactFamilyQualityClosure,familyDepthClosure,compositeDepthClosure,materializationClosure,compositeMaterializationClosure,emissionAcceptance,universalExecutablePreflight,artifactFamilyAcceptance,decisionDepthClosure,qa:uniq(qa.filter(Boolean)),unresolved,
      executionRules:[
-       'README.md is authoritative; do not preload the entire BizIQ core.',
+       'README.md is authoritative; do not preload the entire AIFENCE core.',
        'Use phases[].retrievalActions and activeCapabilities as the primary execution interface; activeModules is compatibility/debug metadata.',
        c.artifactGraph.kind==='composite'?'Compile and validate each artifact node independently while sharing only explicit project context.':null,
        c.productionIntent?'Production intent is active; do not silently downgrade to MVP/prototype/mockup.':`Explicit ${c.deliveryMode} implementation mode is active; preserve truth and safety requirements.`,
@@ -360,7 +360,7 @@ export class BizIQRouter {
        denseProductQualityClosure.length?'High-fidelity dense-product first-pass quality is fail-closed: visual finish, exhaustive P0/P1 completeness, direct accessibility critical-path evidence, and Level-5 feature depth must each PASS independently before acceptance; payments/analytics use workflow-specific depth loops.':null,
        artifactFamilyQualityClosure.length?'Core 1.8 artifact-family closure is fail-closed for mobile, presentations, spreadsheets/models, fixed documents, brand, email/creative, and CLI output: use direct family-specific evidence and family-adjusted release thresholds; retain the universal 9.0 rubric for cross-family benchmark comparability.':null,
        (familyDepthClosure.length||compositeDepthClosure.length)?'Core 1.8.1 family-depth closure is fail-closed for public websites, mobile workflows, brand systems, email sequences, CLI product surfaces, and responsive composites; evidence must prove depth/completeness rather than decorative breadth, and responsive composite children must pass direct 320/390 containment.':null,
-       (materializationClosure.length||compositeMaterializationClosure.length)?'Core 1.8.2 materialization is fail-closed: compile domain-specific content/data/states/actions/proof needs into natural user-facing language, prohibit internal BizIQ/compiler/QA vocabulary from production surfaces, and reject generic records that could transplant unchanged into an unrelated industry.':null,
+       (materializationClosure.length||compositeMaterializationClosure.length)?'Core 1.8.2 materialization is fail-closed: compile domain-specific content/data/states/actions/proof needs into natural user-facing language, prohibit internal AIFENCE/compiler/QA vocabulary from production surfaces, and reject generic records that could transplant unchanged into an unrelated industry.':null,
        emissionAcceptance.length?'Core 1.8.4 emission acceptance is fail-closed: preserve the Core 1.8.3 finished-surface naturalization scan, then validate concrete substance through the artifact family’s native semantics; spreadsheet surfaces use namespace-safe OOXML extraction and scaffold detection is context-sensitive.':null,
        emissionAcceptance.some(x=>x.familyProfile==='fixed-document')?'Core 1.8.6 fixed-document acceptance is render-aware and fail-closed: rendered pages must have zero material collisions/clipping with direct reading-order/table-order/accessibility evidence; Core 1.8.5 fixed-document depth remains fail-closed: material reports require at least three distinct findings/conclusions, three implications/actions, four evidence points, two provenance markers, and two reader-facing takeaways; topic coverage alone is insufficient.':null,
        emissionAcceptance.some(x=>x.familyProfile==='composite')?'Core 1.8.5 composite continuity is fail-closed: child artifacts must share explicit assumptions/identifiers, provenance boundaries, visible handoffs, and child acceptance references rather than merely being bundled together.':null,

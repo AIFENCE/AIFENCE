@@ -1,9 +1,9 @@
 {
-  "suite": "sage-tck/0.2",
+  "suite": "aifence-tck/0.2",
   "implementations": [
     {
       "id": "python",
-      "command": "python -m sage_plugin.conformance --json",
+      "command": "python -m aifence.bus.conformance --json",
       "required": true
     },
     {

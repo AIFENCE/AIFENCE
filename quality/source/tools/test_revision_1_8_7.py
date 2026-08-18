@@ -15,7 +15,7 @@ const c=classifyRequest('Create a brand identity, onboarding email campaign, and
 p=run(['node','--input-type=module','-e',js],cwd=ROOT.parent)
 if p.returncode: print(p.stdout+p.stderr);raise SystemExit('FAIL: 1.8.7 routing')
 val=ROOT/'tools'/'validate_presentation_slide_fit_evidence.py'
-with tempfile.TemporaryDirectory(prefix='biziq-187-') as td:
+with tempfile.TemporaryDirectory(prefix='aifence-187-') as td:
  td=Path(td);good={'artifact_id':'deck','provenance':'direct','slides':[{'slide':1,'title_fits':True,'title_subtitle_overlap':False,'body_visual_overlap':False,'edge_clipping':False,'readable':True}],'status':'PASS'};bad=json.loads(json.dumps(good));bad['slides'][0]['title_fits']=False
  gp=td/'good.json';bp=td/'bad.json';gp.write_text(json.dumps(good));bp.write_text(json.dumps(bad));expect([sys.executable,str(val),str(gp)],True,'good slide fit');expect([sys.executable,str(val),str(bp)],False,'bad slide fit')
 print('PASS: Revision 1.8.7 artifact graph and slide-fit regressions')

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -8,11 +8,11 @@ from typing import Any
 from sqlalchemy import select
 
 from .bus import SemanticBus
-from .codec import SageCodec
+from .codec import AifenceCodec
 from .compiler import compile_content
 from .config import Settings, get_settings
 from .db import SessionLocal
-from .db_models import MessageAudit
+from .db_models import MesaifenceAudit
 from .facts import FactStore
 from .federation import FederationStore
 from .inspector import Inspector
@@ -22,7 +22,7 @@ from .routing import SemanticPubSub, SemanticRouter
 from .schemas import Budget, EncodeRequest, Provenance
 
 
-class SageRuntime:
+class AifenceRuntime:
     """High-level transport façade for agent runtimes.
 
     Agent frameworks should depend on this interface rather than manually deciding when
@@ -46,7 +46,7 @@ class SageRuntime:
         receiver_model: str | None = None,
     ) -> dict[str, Any]:
         with SessionLocal() as db:
-            codec = SageCodec(db, self.settings)
+            codec = AifenceCodec(db, self.settings)
             result = codec.encode(
                 EncodeRequest(
                     content=content,
@@ -78,7 +78,7 @@ class SageRuntime:
         resolve_refs: bool = False,
     ) -> dict[str, Any]:
         with SessionLocal() as db:
-            codec = SageCodec(db, self.settings)
+            codec = AifenceCodec(db, self.settings)
             packet = codec.expand(wire)
             return codec.decode(
                 packet,
@@ -213,7 +213,7 @@ class SageRuntime:
 
     def explain(self, packet_id: str) -> dict[str, Any]:
         with SessionLocal() as db:
-            item = db.scalar(select(MessageAudit).where(MessageAudit.packet_id == packet_id))
+            item = db.scalar(select(MesaifenceAudit).where(MesaifenceAudit.packet_id == packet_id))
             if item is None:
                 raise KeyError(packet_id)
             return {
@@ -291,7 +291,7 @@ class SageRuntime:
         if not 0.0 <= task_success <= 1.0:
             raise ValueError("task_success must be in [0, 1]")
         with SessionLocal() as db:
-            item = db.scalar(select(MessageAudit).where(MessageAudit.packet_id == packet_id))
+            item = db.scalar(select(MesaifenceAudit).where(MesaifenceAudit.packet_id == packet_id))
             if item is None:
                 raise KeyError(packet_id)
             item.task_success = task_success

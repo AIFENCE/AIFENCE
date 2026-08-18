@@ -3,16 +3,16 @@ requires = ["setuptools==83.0.0", "wheel==0.47.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agentdance-client"
+name = "aifence-client"
 version = "1.0.0rc5"
-description = "Official Python client for AGENTDANCE"
+description = "Official Python client for AIFENCE"
 readme = "README.md"
 requires-python = ">=3.10"
 license = "Apache-2.0"
 license-files = ["LICENSE"]
-authors = [{name = "AGENTDANCE contributors"}]
+authors = [{name = "AIFENCE contributors"}]
 dependencies = ["httpx==0.28.1"]
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["agentdance_client*"]
+include = ["aifence_client*"]

@@ -55,7 +55,7 @@ Covers (issue #22, stage 4):
   v12 all ``literal``).
 
 All tests are deterministic (fixed inputs, no network, no real model) and
-write their output directories under ``/opt/data/sage/scratch/`` -- never
+write their output directories under ``/opt/data/aifence/scratch/`` -- never
 ``/tmp``.
 """
 
@@ -76,14 +76,14 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 HARNESS_SCRIPT = ROOT / "scripts" / "model_eval_harness.py"
-SCRATCH_ROOT = Path(os.environ.get("SAGE_SCRATCH_ROOT", "/opt/data/sage/scratch")) / "stage22-warm-tests"
+SCRATCH_ROOT = Path(os.environ.get("AIFENCE_BUS_SCRATCH_ROOT", "/opt/data/aifence/scratch")) / "stage22-warm-tests"
 
-#: SAGE variants whose sealed direct-symbolic packets are rendered for real.
-SAGE_VARIANTS = ("v09", "v10", "v11", "v12")
+#: AIFENCE variants whose sealed direct-symbolic packets are rendered for real.
+AIFENCE_BUS_VARIANTS = ("v09", "v10", "v11", "v12")
 
 #: Sealed fake adapter (mirrors the stage-1/3 tests): replies with a fixed
 #: PHOENIX-flavored task_response + the sealed reply shape.  Never sees
-#: SAGE_* env (the harness scrubs the child env); the "no-op trap" is the
+#: AIFENCE_* env (the harness scrubs the child env); the "no-op trap" is the
 #: provider env being set BEFORE the child envs in the subprocess runner.
 FAKE_ADAPTER_SEALED = (
     "import json,sys; p=json.load(sys.stdin); "
@@ -115,7 +115,7 @@ def h() -> Any:
 
 @pytest.fixture()
 def scratch_dir() -> Iterator[Path]:
-    """A scratch output directory under /opt/data/sage/scratch (never /tmp)."""
+    """A scratch output directory under /opt/data/aifence/scratch (never /tmp)."""
     path = SCRATCH_ROOT / uuid.uuid4().hex[:12]
     path.mkdir(parents=True, exist_ok=True)
     yield path
@@ -154,8 +154,8 @@ def _two_family_config() -> dict[str, Any]:
 
 def _run_cli_subprocess(argv: list[str], fake_home: Path) -> subprocess.CompletedProcess:
     """Run the harness CLI in a FRESH subprocess (fake HOME + provider env)."""
-    env = {**os.environ, "HOME": str(fake_home), "SAGE_BENCH_LLM_PROVIDER": "fake"}
-    env.pop("SAGE_DATABASE_URL", None)
+    env = {**os.environ, "HOME": str(fake_home), "AIFENCE_BUS_BENCH_LLM_PROVIDER": "fake"}
+    env.pop("AIFENCE_BUS_DATABASE_URL", None)
     return subprocess.run(
         [sys.executable, str(HARNESS_SCRIPT), *argv],
         capture_output=True,
@@ -185,7 +185,7 @@ def test_priming_commits_knowledge(h, monkeypatch):
     from sqlalchemy import select
 
     from aifence.bus import db as db_module
-    from aifence.bus.codec import SageCodec
+    from aifence.bus.codec import AifenceCodec
     from aifence.bus.config import Settings
     from aifence.bus.db import SessionLocal
     from aifence.bus.db_models import LearnedPattern
@@ -198,25 +198,25 @@ def test_priming_commits_knowledge(h, monkeypatch):
         "v12": (6, 0, True),
     }
     for variant_id, (want_codes, want_refs, want_state) in expected.items():
-        spec = h._sage_variant_spec(cb, variant_id)
+        spec = h._aifence_variant_spec(cb, variant_id)
         db_module.init_db()
         cb._reset_schema(db_module)
         settings = Settings(
             auth_required=False,
-            database_url=os.environ.get("SAGE_DATABASE_URL", "sqlite://"),
+            database_url=os.environ.get("AIFENCE_BUS_DATABASE_URL", "sqlite://"),
             context_accounting_enabled=True,
             learning_mode="managed",
             **spec.get("settings", {}),
         )
         with SessionLocal() as db:
-            codec = SageCodec(db, settings)
+            codec = AifenceCodec(db, settings)
             for canonical in spec["codebook"]:
                 codec.codebook.register("global", canonical)
             db.commit()
             warmup = spec.get("warmup")
             if warmup is not None:
                 cb._pin_packet_id(codec, spec["id"], "warmup")
-                codec.encode(cb._sage_request(warmup, auto_learn=True, record_learning=True))
+                codec.encode(cb._aifence_request(warmup, auto_learn=True, record_learning=True))
                 pattern = db.scalar(select(LearnedPattern))
                 if pattern is not None:
                     codec.patterns.set_status(pattern.pattern_id, "active")
@@ -243,31 +243,31 @@ def test_priming_failure_raises_clean_error(h, monkeypatch):
     from sqlalchemy import select
 
     from aifence.bus import db as db_module
-    from aifence.bus.codec import SageCodec
+    from aifence.bus.codec import AifenceCodec
     from aifence.bus.config import Settings
     from aifence.bus.db import SessionLocal
     from aifence.bus.db_models import LearnedPattern
 
     cb = h._load_compression_benchmark()
-    spec = h._sage_variant_spec(cb, "v09")  # codebook variant: prime carries coded atoms
+    spec = h._aifence_variant_spec(cb, "v09")  # codebook variant: prime carries coded atoms
     db_module.init_db()
     cb._reset_schema(db_module)
     settings = Settings(
         auth_required=False,
-        database_url=os.environ.get("SAGE_DATABASE_URL", "sqlite://"),
+        database_url=os.environ.get("AIFENCE_BUS_DATABASE_URL", "sqlite://"),
         context_accounting_enabled=True,
         learning_mode="managed",
         **spec.get("settings", {}),
     )
     with SessionLocal() as db:
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         for canonical in spec["codebook"]:
             codec.codebook.register("global", canonical)
         db.commit()
         warmup = spec.get("warmup")
         if warmup is not None:
             cb._pin_packet_id(codec, spec["id"], "warmup")
-            codec.encode(cb._sage_request(warmup, auto_learn=True, record_learning=True))
+            codec.encode(cb._aifence_request(warmup, auto_learn=True, record_learning=True))
             pattern = db.scalar(select(LearnedPattern))
             if pattern is not None:
                 codec.patterns.set_status(pattern.pattern_id, "active")
@@ -278,7 +278,7 @@ def test_priming_failure_raises_clean_error(h, monkeypatch):
         cb._pin_packet_id(codec, spec["id"], "prime")
         prime_content = spec["content_fn"](0)
         prime_encoded = codec.encode(
-            cb._sage_request(
+            cb._aifence_request(
                 prime_content,
                 use_receiver_knowledge=False,
                 use_patterns=spec.get("patterns", True),
@@ -304,8 +304,8 @@ def test_warm_lifecycle_honesty_and_mechanism_attribution(h, monkeypatch):
     probed per-variant mechanism attribution; on THIS fixture the warm wire
     bytes equal the cold ones (receiver knowledge is decoder-side --
     documented, asserted, not hidden)."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
-    results = h.run_harness(_sealed_adapters_config(), variants=list(SAGE_VARIANTS), sealed=True)
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
+    results = h.run_harness(_sealed_adapters_config(), variants=list(AIFENCE_BUS_VARIANTS), sealed=True)
     rows = results["rows"]
     assert rows
     assert results["evaluation_boundary"] == "sealed"
@@ -335,7 +335,7 @@ def test_warm_lifecycle_honesty_and_mechanism_attribution(h, monkeypatch):
         "v12": {t: "codebook" for t in range(6)},
     }
     cb = h._load_compression_benchmark()
-    for variant_id in SAGE_VARIANTS:
+    for variant_id in AIFENCE_BUS_VARIANTS:
         for turn in range(6):
             for receiver_model in ("acme-gpt-4o", "nebula-sonnet"):
                 for state in ("cold", "warm"):
@@ -346,7 +346,7 @@ def test_warm_lifecycle_honesty_and_mechanism_attribution(h, monkeypatch):
 
     # top-level mechanism_summary counts the rows
     summary = results["mechanism_summary"]
-    for variant_id in SAGE_VARIANTS:
+    for variant_id in AIFENCE_BUS_VARIANTS:
         per_variant = [r for r in rows if r["variant"] == variant_id]
         counts: dict[str, int] = {}
         for r in per_variant:
@@ -355,8 +355,8 @@ def test_warm_lifecycle_honesty_and_mechanism_attribution(h, monkeypatch):
 
     # CROSS-CHECK mechanism_used against the rendered packet's own
     # strategy/atoms/refs/base (cheap: strategy/delta/base/refs/atoms).
-    for variant_id in SAGE_VARIANTS:
-        spec = h._sage_variant_spec(cb, variant_id)
+    for variant_id in AIFENCE_BUS_VARIANTS:
+        spec = h._aifence_variant_spec(cb, variant_id)
         for turn in range(6):
             rendered = json.loads(
                 h._render_warm_variant_packets(cb, spec)[turn]["rendering"]
@@ -370,8 +370,8 @@ def test_warm_lifecycle_honesty_and_mechanism_attribution(h, monkeypatch):
                 assert rendered.get("atoms"), (variant_id, turn)
 
     # PRIMED RE-ENCODE IS DETERMINISTIC: two calls -> identical wire bytes
-    for variant_id in SAGE_VARIANTS:
-        spec = h._sage_variant_spec(cb, variant_id)
+    for variant_id in AIFENCE_BUS_VARIANTS:
+        spec = h._aifence_variant_spec(cb, variant_id)
         first = h._render_warm_variant_packets(cb, spec)
         second = h._render_warm_variant_packets(cb, spec)
         for turn in range(6):
@@ -509,12 +509,12 @@ def test_apply_scenario_restores_globals_after_held_out(h):
     # a subsequent default render is the phoenix shape, not held-out content.
     # Clear the per-process caches first so the render genuinely re-reads the
     # RESTORED globals instead of serving a cache entry compiled earlier.
-    h._SAGE_VARIANT_SPECS_CACHE.clear()
+    h._AIFENCE_VARIANT_SPECS_CACHE.clear()
     h._PACKET_RENDER_CACHE.clear()
     h._WARM_PACKET_RENDER_CACHE.clear()
     h._FROZEN_PACKET_RENDER_CACHE.clear()
-    spec = h._sage_variant_spec(cb, "v09")
-    rendered = json.loads(h._render_sage_variant_packets(cb, spec)[0]["rendering"])
+    spec = h._aifence_variant_spec(cb, "v09")
+    rendered = json.loads(h._render_aifence_variant_packets(cb, spec)[0]["rendering"])
     text = json.dumps(rendered)
     assert "phoenix" in text
     assert "orion" not in text
@@ -527,7 +527,7 @@ def test_heldout_frozen_mode_mechanism_values(h, monkeypatch):
     ``codebook`` and the unseen held-out turns as ``literal``, v11 keeps its
     reference/state_delta design, v12 is all-literal (the frozen text-clause
     codebook never codes the held-out state-field updates)."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     results = h.run_harness(
         _sealed_adapters_config(), variants=["v09", "v11", "v12"], sealed=True, held_out=True
     )
@@ -552,7 +552,7 @@ def test_heldout_frozen_mode_mechanism_values(h, monkeypatch):
 def test_off_byte_identity_default_off(h, monkeypatch):
     """Default-OFF artifacts carry NO mechanism_used / mechanism_summary keys
     (identical shape to stage 3)."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     results = h.run_harness(_two_family_config(), variants=["v01"])
     assert "mechanism_summary" not in results
     assert results["rows"]
@@ -564,7 +564,7 @@ def test_off_byte_identity_default_off(h, monkeypatch):
 def test_off_byte_identity_sealed_cold_rows_additive(h, monkeypatch):
     """Sealed COLD rows are unchanged except the ADDITIVE mechanism_used key:
     every other row field matches the stage-3 sealed shape."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     results = h.run_harness(_sealed_adapters_config(), variants=["v09"], sealed=True)
     cold_rows = [r for r in results["rows"] if r["receiver_state"] == "cold"]
     assert cold_rows
@@ -593,7 +593,7 @@ def test_off_byte_identity_sealed_cold_rows_additive(h, monkeypatch):
 
 
 def test_sealed_warm_no_provider_skip(h, monkeypatch, capsys, scratch_dir):
-    monkeypatch.delenv("SAGE_BENCH_LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", raising=False)
     assert h.main(["--sealed"]) == 0
     assert "not run, no provider" in capsys.readouterr().out
     cfg = scratch_dir / "adapters.json"
@@ -605,7 +605,7 @@ def test_sealed_warm_no_provider_skip(h, monkeypatch, capsys, scratch_dir):
 
 
 def test_sealed_warm_with_examples_rejected(h, monkeypatch, scratch_dir, capsys):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     cfg = scratch_dir / "adapters.json"
     cfg.write_text(json.dumps(_sealed_adapters_config()))
     out_dir = scratch_dir / "must-not-exist"
@@ -616,14 +616,14 @@ def test_sealed_warm_with_examples_rejected(h, monkeypatch, scratch_dir, capsys)
     assert "--sealed cannot be combined with --with-examples" in capsys.readouterr().err
     assert not out_dir.exists()
     # static validation: fires even without a provider
-    monkeypatch.delenv("SAGE_BENCH_LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", raising=False)
     assert h.main(["--sealed", "--with-examples"]) == 2
 
 
 def test_priming_failure_clean_error_through_harness(h, monkeypatch):
     """A priming failure surfaces as a clean RuntimeError from run_harness --
     no fabricated warm rows are produced."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
 
     def _failing_verify(codec, variant_spec, content, packet):
         raise RuntimeError(

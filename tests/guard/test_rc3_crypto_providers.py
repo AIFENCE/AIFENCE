@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -53,12 +53,12 @@ def test_vault_transit_signer_issues_and_verifies_tokens(monkeypatch) -> None:
             assert kwargs["trust_env"] is False
 
         def get(self, url: str, *, headers: dict[str, str]):
-            assert url.endswith("/v1/transit/keys/agentdance-signing")
+            assert url.endswith("/v1/transit/keys/aifence-signing")
             assert headers == {"X-Vault-Token": "vault-token"}
             return _Response({"data": {"latest_version": 2, "keys": {"2": {"public_key": public_pem}}}})
 
         def post(self, url: str, *, headers: dict[str, str], json: dict[str, object]):
-            assert url.endswith("/v1/transit/sign/agentdance-signing")
+            assert url.endswith("/v1/transit/sign/aifence-signing")
             assert headers == {"X-Vault-Token": "vault-token"}
             raw = base64.b64decode(str(json["input"]), validate=True)
             signature = base64.b64encode(private.sign(raw)).decode("ascii")
@@ -69,21 +69,21 @@ def test_vault_transit_signer_issues_and_verifies_tokens(monkeypatch) -> None:
         address="https://vault.example/",
         token="vault-token",
         mount="/transit/",
-        key_name="agentdance-signing",
+        key_name="aifence-signing",
         key_id="vault-signing-v2",
     )
     signature = signer.sign(b"message")
     assert signer.verify(b"message", signature)
     assert not signer.verify(b"tampered", signature)
     token = signer.issue_token(
-        {"sub": "dec_1", "aud": "agentdance-decision"},
+        {"sub": "dec_1", "aud": "aifence-decision"},
         headers={"cty": "decision"},
         lifetime_seconds=60,
     )
-    claims = signer.verify_token(token, audience="agentdance-decision")
+    claims = signer.verify_token(token, audience="aifence-decision")
     assert claims["sub"] == "dec_1"
-    receipt = signer.issue_receipt({"sub": "receipt_1", "aud": "agentdance-receipt"})
-    assert signer.verify_receipt(receipt, audience="agentdance-receipt")["sub"] == "receipt_1"
+    receipt = signer.issue_receipt({"sub": "receipt_1", "aud": "aifence-receipt"})
+    assert signer.verify_receipt(receipt, audience="aifence-receipt")["sub"] == "receipt_1"
     assert signer.public_pem() == public_pem
 
     with pytest.raises(ValueError, match="requires HTTPS"):
@@ -91,7 +91,7 @@ def test_vault_transit_signer_issues_and_verifies_tokens(monkeypatch) -> None:
             address="http://vault.example",
             token="vault-token",
             mount="transit",
-            key_name="agentdance-signing",
+            key_name="aifence-signing",
             key_id="bad",
         )
 
@@ -129,14 +129,14 @@ def test_signing_provider_factory_and_key_file_lifecycle(tmp_path: Path, monkeyp
         signing_vault_address="https://vault.example",
         signing_vault_token="token",
         signing_vault_mount="signing",
-        signing_vault_key_name="agentdance",
+        signing_vault_key_name="aifence",
     ))
     assert isinstance(result, FakeVaultSigner)
     assert captured == {
         "address": "https://vault.example",
         "token": "token",
         "mount": "signing",
-        "key_name": "agentdance",
+        "key_name": "aifence",
         "key_id": "vault-v1",
     }
     with pytest.raises(ValueError, match="unsupported signing backend"):
@@ -149,7 +149,7 @@ def test_cloud_kms_provider_adapters_use_authenticated_context(monkeypatch) -> N
 
     class FakeAWSClient:
         def encrypt(self, **kwargs):
-            assert kwargs["EncryptionContext"]["agentdance_context"] == base64.urlsafe_b64encode(context).decode()
+            assert kwargs["EncryptionContext"]["aifence_guard_context"] == base64.urlsafe_b64encode(context).decode()
             return {"CiphertextBlob": b"aws:" + kwargs["Plaintext"]}
 
         def decrypt(self, **kwargs):

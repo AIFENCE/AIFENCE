@@ -22,9 +22,9 @@ Covers (issue #22, stage 2):
   are ABSENT, so the rendering equals the real wire packet plus the
   ``bindings`` legend (no evaluator-side decoder metadata crosses the
   sealed boundary);
-* NO stage-1 proxy shape: sealed direct-symbolic SAGE packets never carry
+* NO stage-1 proxy shape: sealed direct-symbolic AIFENCE packets never carry
   ``strategy_note`` / ``canonicals``;
-* wire-byte honesty: ``_render_sage_variant_packets`` reproduces the
+* wire-byte honesty: ``_render_aifence_variant_packets`` reproduces the
   benchmark's recorded ``wire_bytes_json`` / ``wire_bytes_msgpack`` AND the
   accumulated reconstruction for every (variant, turn) of v09/v10/v11/v12
   (the v10 pattern warm-up turn -1 is skipped);
@@ -35,18 +35,18 @@ Covers (issue #22, stage 2):
   work);
 * sealed payload integration: an end-to-end ``--sealed`` CLI run whose
   wrapper fake adapter dumps its stdin to files under the fake HOME shows
-  ``model_facing_packet`` carrying atoms/bindings for SAGE variants and NO
+  ``model_facing_packet`` carrying atoms/bindings for AIFENCE variants and NO
   leak keys;
 * non-sealed byte identity: default-OFF artifacts carry no
   ``evaluation_boundary`` and no packet-rendering fields, and sealed
-  decoder-assisted / full-expansion modes (plus non-SAGE direct-symbolic)
+  decoder-assisted / full-expansion modes (plus non-AIFENCE direct-symbolic)
   still use the reconstruction path;
-* sealed determinism: two fresh CLI sealed runs over SAGE variants produce
+* sealed determinism: two fresh CLI sealed runs over AIFENCE variants produce
   JSON-identical artifacts modulo latency keys and byte-identical printed
   tables.
 
 All tests are deterministic (fixed inputs, no network, no real model) and
-write their output directories under ``/opt/data/sage/scratch/`` -- never
+write their output directories under ``/opt/data/aifence/scratch/`` -- never
 ``/tmp``.
 """
 
@@ -67,10 +67,10 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 HARNESS_SCRIPT = ROOT / "scripts" / "model_eval_harness.py"
-SCRATCH_ROOT = Path(os.environ.get("SAGE_SCRATCH_ROOT", "/opt/data/sage/scratch")) / "stage22-packet-tests"
+SCRATCH_ROOT = Path(os.environ.get("AIFENCE_BUS_SCRATCH_ROOT", "/opt/data/aifence/scratch")) / "stage22-packet-tests"
 
-#: SAGE variants whose sealed direct-symbolic packets are rendered for real.
-SAGE_VARIANTS = ("v09", "v10", "v11", "v12")
+#: AIFENCE variants whose sealed direct-symbolic packets are rendered for real.
+AIFENCE_BUS_VARIANTS = ("v09", "v10", "v11", "v12")
 
 #: Evaluator-only fields the sealed payload must NEVER carry.
 LEAK_KEYS = ("content", "expected", "change_markers", "receiver_prior", "examples")
@@ -79,7 +79,7 @@ LEAK_KEYS = ("content", "expected", "change_markers", "receiver_prior", "example
 PROXY_KEYS = ("strategy_note", "canonicals")
 
 #: The ONLY packet ``meta`` keys the wire codec exports (mirror of the
-#: whitelist in ``WireCodec.compact``, src/sage_plugin/wire_codec.py) -- the
+#: whitelist in ``WireCodec.compact``, src/aifence/bus/wire_codec.py) -- the
 #: rendering's ``meta`` must be exactly this subset.
 WIRE_META_KEYS = frozenset({"state", "revision", "budget_exceeded", "memory_tier"})
 
@@ -98,7 +98,7 @@ FAKE_ADAPTER_SEALED = (
 FAKE_ADAPTER_DUMP_STDIN = (
     "import json,sys,os; p=json.load(sys.stdin); "
     "fn=os.path.join(os.path.expanduser('~'), "
-    "'sage_adapter_dump_%s_%s_%s.json' % (p['variant'], p['turn'], p['receiver_state'])); "
+    "'aifence_bus_adapter_dump_%s_%s_%s.json' % (p['variant'], p['turn'], p['receiver_state'])); "
     "open(fn,'w').write(json.dumps(p)); "
     "print(json.dumps({'task_response': 'Project Phoenix is blocked because three integration tests failed.', "
     "'input_tokens': 7, 'output_tokens': 5, 'provider_cost_usd': 0.0012}))"
@@ -133,7 +133,7 @@ def cb(h: Any) -> Any:
 
 @pytest.fixture()
 def scratch_dir() -> Iterator[Path]:
-    """A scratch output directory under /opt/data/sage/scratch (never /tmp)."""
+    """A scratch output directory under /opt/data/aifence/scratch (never /tmp)."""
     path = SCRATCH_ROOT / uuid.uuid4().hex[:12]
     path.mkdir(parents=True, exist_ok=True)
     yield path
@@ -142,8 +142,8 @@ def scratch_dir() -> Iterator[Path]:
 
 def _run_cli_subprocess(argv: list[str], fake_home: Path) -> subprocess.CompletedProcess:
     """Run the harness CLI in a FRESH subprocess (fake HOME + provider env)."""
-    env = {**os.environ, "HOME": str(fake_home), "SAGE_BENCH_LLM_PROVIDER": "fake"}
-    env.pop("SAGE_DATABASE_URL", None)
+    env = {**os.environ, "HOME": str(fake_home), "AIFENCE_BUS_BENCH_LLM_PROVIDER": "fake"}
+    env.pop("AIFENCE_BUS_DATABASE_URL", None)
     return subprocess.run(
         [sys.executable, str(HARNESS_SCRIPT), *argv],
         capture_output=True,
@@ -159,7 +159,7 @@ def _exchange(turn: int, variant: str = "v05") -> dict[str, Any]:
         "variant_name": "x",
         "turn": turn,
         "phase": "update",
-        "sage": False,
+        "aifence": False,
         "wire_bytes": 10,
     }
 
@@ -176,8 +176,8 @@ def _recorded_turns(cb: Any) -> dict[str, dict[int, dict[str, Any]]]:
 def _render_all(cb: Any, h: Any) -> dict[str, dict[int, dict[str, Any]]]:
     """Per-variant stage-2 re-encode results (rendering + wire bytes + reconstruction)."""
     return {
-        vid: h._render_sage_variant_packets(cb, h._sage_variant_spec(cb, vid))
-        for vid in SAGE_VARIANTS
+        vid: h._render_aifence_variant_packets(cb, h._aifence_variant_spec(cb, vid))
+        for vid in AIFENCE_BUS_VARIANTS
     }
 
 
@@ -194,7 +194,7 @@ def _replay_rendering_roundtrip(cb: Any, h: Any, spec: dict[str, Any]) -> dict[i
     from sqlalchemy import select
 
     from aifence.bus import db as db_module
-    from aifence.bus.codec import SageCodec
+    from aifence.bus.codec import AifenceCodec
     from aifence.bus.config import Settings
     from aifence.bus.db import SessionLocal
     from aifence.bus.db_models import LearnedPattern
@@ -204,7 +204,7 @@ def _replay_rendering_roundtrip(cb: Any, h: Any, spec: dict[str, Any]) -> dict[i
     cb._reset_schema(db_module)
     settings = Settings(
         auth_required=False,
-        database_url=os.environ.get("SAGE_DATABASE_URL", "sqlite://"),
+        database_url=os.environ.get("AIFENCE_BUS_DATABASE_URL", "sqlite://"),
         context_accounting_enabled=True,
         learning_mode="managed",
         **spec.get("settings", {}),
@@ -212,7 +212,7 @@ def _replay_rendering_roundtrip(cb: Any, h: Any, spec: dict[str, Any]) -> dict[i
     reconstruction = ""
     per_turn: dict[int, str] = {}
     with SessionLocal() as db:
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         for canonical in spec["codebook"]:
             codec.codebook.register("global", canonical)
         db.commit()
@@ -220,7 +220,7 @@ def _replay_rendering_roundtrip(cb: Any, h: Any, spec: dict[str, Any]) -> dict[i
         warmup = spec.get("warmup")
         if warmup is not None:
             cb._pin_packet_id(codec, spec["id"], "warmup")
-            codec.encode(cb._sage_request(warmup, auto_learn=True, record_learning=True))
+            codec.encode(cb._aifence_request(warmup, auto_learn=True, record_learning=True))
             pattern = db.scalar(select(LearnedPattern))
             if pattern is not None:
                 codec.patterns.set_status(pattern.pattern_id, "active")
@@ -233,7 +233,7 @@ def _replay_rendering_roundtrip(cb: Any, h: Any, spec: dict[str, Any]) -> dict[i
             base_state = base_id if (turn > 0 and spec.get("chain_states")) else None
             inline_limit = spec.get("inline_limit") if turn == 0 else None
             encoded = codec.encode(
-                cb._sage_request(
+                cb._aifence_request(
                     content,
                     use_receiver_knowledge=spec.get("ack", False),
                     use_patterns=spec.get("patterns", True),
@@ -268,7 +268,7 @@ def _acked_receiver_known_counts(cb: Any, h: Any, spec: dict[str, Any]) -> dict[
     per-turn encode + ACKed decode).
     """
     from aifence.bus import db as db_module
-    from aifence.bus.codec import SageCodec
+    from aifence.bus.codec import AifenceCodec
     from aifence.bus.config import Settings
     from aifence.bus.db import SessionLocal
 
@@ -276,7 +276,7 @@ def _acked_receiver_known_counts(cb: Any, h: Any, spec: dict[str, Any]) -> dict[
     cb._reset_schema(db_module)
     settings = Settings(
         auth_required=False,
-        database_url=os.environ.get("SAGE_DATABASE_URL", "sqlite://"),
+        database_url=os.environ.get("AIFENCE_BUS_DATABASE_URL", "sqlite://"),
         context_accounting_enabled=True,
         learning_mode="managed",
         **spec.get("settings", {}),
@@ -284,7 +284,7 @@ def _acked_receiver_known_counts(cb: Any, h: Any, spec: dict[str, Any]) -> dict[
     counts: dict[int, int] = {}
     base_id: str | None = None
     with SessionLocal() as db:
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         for canonical in spec["codebook"]:
             codec.codebook.register("global", canonical)
         db.commit()
@@ -294,7 +294,7 @@ def _acked_receiver_known_counts(cb: Any, h: Any, spec: dict[str, Any]) -> dict[
             base_state = base_id if (turn > 0 and spec.get("chain_states")) else None
             inline_limit = spec.get("inline_limit") if turn == 0 else None
             encoded = codec.encode(
-                cb._sage_request(
+                cb._aifence_request(
                     content,
                     use_receiver_knowledge=spec.get("ack", False),
                     use_patterns=spec.get("patterns", True),
@@ -335,12 +335,12 @@ def _sealed_adapters_config(command_tail: str = FAKE_ADAPTER_SEALED) -> dict[str
 
 
 def test_render_actual_packet_deterministic(cb, h):
-    spec = h._sage_variant_spec(cb, "v09")
+    spec = h._aifence_variant_spec(cb, "v09")
     first = h._render_actual_packet(cb, spec, 1)
     second = h._render_actual_packet(cb, spec, 1)  # served from the cache
     assert first == second  # byte-identical strings
     # ... and a FRESH re-encode (new schema, new session) is byte-identical too
-    fresh = h._render_sage_variant_packets(cb, spec)[1]["rendering"]
+    fresh = h._render_aifence_variant_packets(cb, spec)[1]["rendering"]
     assert fresh == first
     assert isinstance(first, str) and json.loads(first)["bindings"]
 
@@ -385,7 +385,7 @@ def test_real_packet_structure_v11_state_reference_and_delta(cb, h):
     t0 = json.loads(entries[0]["rendering"])
     # reference packet: refs + meta.state, no atoms, no base/delta
     assert t0["refs"], "v11 turn 0 is a reference packet"
-    assert all(str(ref).startswith("sage:sha256:") for ref in t0["refs"])
+    assert all(str(ref).startswith("aifence:sha256:") for ref in t0["refs"])
     assert t0["meta"]["state"]
     assert entries[0]["strategy"] == "reference"
     assert t0["atoms"] == []
@@ -420,7 +420,7 @@ def test_real_packet_structure_v12_acked(cb, h):
     # rendering cannot carry (the wire codec strips the key from its export
     # and the rendering's meta is filtered to exactly that whitelist), so the
     # growth is verified at the codec level
-    counts = _acked_receiver_known_counts(cb, h, h._sage_variant_spec(cb, "v12"))
+    counts = _acked_receiver_known_counts(cb, h, h._aifence_variant_spec(cb, "v12"))
     assert counts[0] == 0
     assert counts[1] > counts[0]
     t1 = json.loads(entries[1]["rendering"])
@@ -464,8 +464,8 @@ def test_real_packet_structure_v10_pattern_identifier_in_atoms(cb, h):
 
 
 def test_rendered_meta_is_wire_whitelist_only(cb, h):
-    for vid in SAGE_VARIANTS:
-        entries = h._render_sage_variant_packets(cb, h._sage_variant_spec(cb, vid))
+    for vid in AIFENCE_BUS_VARIANTS:
+        entries = h._render_aifence_variant_packets(cb, h._aifence_variant_spec(cb, vid))
         for turn in range(6):
             packet = json.loads(entries[turn]["rendering"])
             meta = packet["meta"]
@@ -480,10 +480,10 @@ def test_rendered_meta_is_wire_whitelist_only(cb, h):
 # ---------------------------------------------------------------------------
 
 
-def test_sealed_sage_packets_have_no_proxy_shape(cb, h):
-    for vid in SAGE_VARIANTS:
+def test_sealed_aifence_packets_have_no_proxy_shape(cb, h):
+    for vid in AIFENCE_BUS_VARIANTS:
         for turn in (0, 1):
-            packet = json.loads(h._render_actual_packet(cb, h._sage_variant_spec(cb, vid), turn))
+            packet = json.loads(h._render_actual_packet(cb, h._aifence_variant_spec(cb, vid), turn))
             for key in PROXY_KEYS:
                 assert key not in packet, f"{vid} turn {turn} carries proxy key {key!r}"
                 assert key not in packet.get("meta", {}), f"{vid} turn {turn} meta carries {key!r}"
@@ -497,7 +497,7 @@ def test_sealed_sage_packets_have_no_proxy_shape(cb, h):
 
 def test_wire_bytes_and_reconstruction_match_recorded_benchmark(cb, h):
     recorded = _recorded_turns(cb)
-    for vid in SAGE_VARIANTS:
+    for vid in AIFENCE_BUS_VARIANTS:
         entries = _render_all(cb, h)[vid]
         for turn in range(6):
             entry = entries[turn]
@@ -523,8 +523,8 @@ def test_wire_bytes_and_reconstruction_match_recorded_benchmark(cb, h):
 
 def test_rendering_roundtrip_reproduces_recorded_reconstruction(cb, h):
     recorded = _recorded_turns(cb)
-    for vid in SAGE_VARIANTS:
-        per_turn = _replay_rendering_roundtrip(cb, h, h._sage_variant_spec(cb, vid))
+    for vid in AIFENCE_BUS_VARIANTS:
+        per_turn = _replay_rendering_roundtrip(cb, h, h._aifence_variant_spec(cb, vid))
         for turn in range(6):
             assert per_turn[turn] == recorded[vid][turn]["reconstruction"], (
                 f"{vid} turn {turn}: round-tripped reconstruction {per_turn[turn]!r} "
@@ -537,7 +537,7 @@ def test_rendering_roundtrip_reproduces_recorded_reconstruction(cb, h):
 # ---------------------------------------------------------------------------
 
 
-def test_sealed_sage_payload_integration_adapter_stdin(scratch_dir):
+def test_sealed_aifence_payload_integration_adapter_stdin(scratch_dir):
     cfg = scratch_dir / "adapters.json"
     cfg.write_text(json.dumps(_sealed_adapters_config(FAKE_ADAPTER_DUMP_STDIN)))
     fake_home = scratch_dir / "fakehome"
@@ -554,7 +554,7 @@ def test_sealed_sage_payload_integration_adapter_stdin(scratch_dir):
     assert artifact["rows"]
 
     dumped: dict[tuple[str, int], dict[str, Any]] = {}
-    for path in fake_home.glob("sage_adapter_dump_*.json"):
+    for path in fake_home.glob("aifence_bus_adapter_dump_*.json"):
         payload = json.loads(path.read_text())
         dumped[(payload["variant"], payload["turn"])] = payload
 
@@ -579,9 +579,9 @@ def test_sealed_sage_payload_integration_adapter_stdin(scratch_dir):
 
 
 def test_non_sealed_and_other_modes_unchanged(h, cb, monkeypatch):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
 
-    # default-OFF run over a SAGE variant: no boundary, no packet-rendering fields
+    # default-OFF run over a AIFENCE variant: no boundary, no packet-rendering fields
     results = h.run_harness(_sealed_adapters_config(FAKE_ADAPTER_OK), variants=["v09"])
     assert "evaluation_boundary" not in results
     for row in results["rows"]:
@@ -590,42 +590,42 @@ def test_non_sealed_and_other_modes_unchanged(h, cb, monkeypatch):
         assert "model_facing_packet" not in row
         assert "receiver_prior" in row  # unsealed rows keep the prior field
 
-    # the unsealed SAGE representation is still the stage-1 proxy (byte-identical)
-    sage_exchange = {
+    # the unsealed AIFENCE representation is still the stage-1 proxy (byte-identical)
+    aifence_bus_exchange = {
         **_exchange(1, variant="v09"),
         "variant": "v09",
-        "representation": '{"packet": "P...", "strategy_note": "sage strategy: semantic", "canonicals": ["x"]}',
+        "representation": '{"packet": "P...", "strategy_note": "aifence strategy: semantic", "canonicals": ["x"]}',
         "reconstruction": "RECON-09",
         "wire_bytes": 182,
         "content": "SOURCE",
         "expected": {"qa": {}},
         "change_markers": [],
-        "sage": True,
+        "aifence": True,
     }
-    payload = h._build_payload(cb, sage_exchange, "cold", "direct-symbolic", False)
+    payload = h._build_payload(cb, aifence_bus_exchange, "cold", "direct-symbolic", False)
     assert "strategy_note" in payload["representation"]  # proxy preserved for unsealed
 
     # sealed non-direct-symbolic modes still use the reconstruction path
     for mode in ("decoder-assisted", "full-expansion"):
-        sealed = h._build_sealed_payload(cb, sage_exchange, "cold", mode, {"family": "a", "version": "1"})
+        sealed = h._build_sealed_payload(cb, aifence_bus_exchange, "cold", mode, {"family": "a", "version": "1"})
         assert sealed["model_facing_packet"] == "RECON-09"
-    # sealed direct-symbolic for a NON-SAGE variant still uses reconstruction
-    plain_exchange = {**_exchange(1, variant="v05"), "reconstruction": "RECON-05", "sage": False}
+    # sealed direct-symbolic for a NON-AIFENCE variant still uses reconstruction
+    plain_exchange = {**_exchange(1, variant="v05"), "reconstruction": "RECON-05", "aifence": False}
     sealed = h._build_sealed_payload(cb, plain_exchange, "cold", "direct-symbolic", {"family": "a", "version": "1"})
     assert sealed["model_facing_packet"] == "RECON-05"
-    # ... and for a SAGE variant it is the rendered packet, not the proxy/reconstruction
-    sealed = h._build_sealed_payload(cb, sage_exchange, "cold", "direct-symbolic", {"family": "a", "version": "1"})
+    # ... and for a AIFENCE variant it is the rendered packet, not the proxy/reconstruction
+    sealed = h._build_sealed_payload(cb, aifence_bus_exchange, "cold", "direct-symbolic", {"family": "a", "version": "1"})
     rendered = json.loads(sealed["model_facing_packet"])
     assert rendered["atoms"] and rendered["bindings"]
-    assert sealed["model_facing_packet"] not in ("RECON-09", sage_exchange["representation"])
+    assert sealed["model_facing_packet"] not in ("RECON-09", aifence_bus_exchange["representation"])
 
 
 # ---------------------------------------------------------------------------
-# Sealed determinism across two fresh CLI runs (SAGE variants)
+# Sealed determinism across two fresh CLI runs (AIFENCE variants)
 # ---------------------------------------------------------------------------
 
 
-def test_sealed_sage_determinism_two_runs(scratch_dir):
+def test_sealed_aifence_determinism_two_runs(scratch_dir):
     cfg = scratch_dir / "adapters.json"
     cfg.write_text(json.dumps(_sealed_adapters_config()))
     fake_home = scratch_dir / "fakehome"

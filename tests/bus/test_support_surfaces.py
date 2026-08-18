@@ -31,7 +31,7 @@ from aifence.bus.telemetry import Telemetry
 
 def test_protocol_models_cover_every_exported_contract() -> None:
     packet = ProtocolPacket(cb="global", atoms=[{"literal": "ready", "has_literal": True}])
-    assert packet.v == "sage/0.2"
+    assert packet.v == "aifence/0.2"
     assert ProtocolRef(ref="R1", byte_size=5, digest="abc").tier == "warm"
     assert ProtocolState(state="S1", revision=1, value_digest="digest").revision == 1
     delta = ProtocolDelta(
@@ -54,7 +54,7 @@ def test_protocol_models_cover_every_exported_contract() -> None:
         composition=[{"canonical": "status"}],
     )
     assert pattern.status == "shadow"
-    assert ProtocolCapability().protocol == "sage/0.2"
+    assert ProtocolCapability().protocol == "aifence/0.2"
     assert ProtocolAck(
         message_id="M1",
         packet_id="P1",
@@ -81,7 +81,7 @@ def test_protocol_models_cover_every_exported_contract() -> None:
 
 def test_corpus_jsonl_is_deterministic_and_reports_bad_rows(tmp_path: Path) -> None:
     strategy = CorpusStrategy(
-        name="sage", representation={"status": "ready"}, wire_bytes=12, estimated_tokens=3
+        name="aifence", representation={"status": "ready"}, wire_bytes=12, estimated_tokens=3
     )
     record = CorpusRecord.build(
         task_family="routing",
@@ -196,15 +196,15 @@ def test_telemetry_noop_and_enabled_paths() -> None:
         assert span is trace.manager.span
     assert trace.manager.span.attributes == {
         "gen_ai.operation.name": "encode",
-        "sage.workspace": "team",
-        "sage.attempts": 2,
+        "aifence.workspace": "team",
+        "aifence.attempts": 2,
     }
     enabled.add("packets", 2, workspace="team", ignored=["not-scalar"])
     enabled.add("packets", 3, workspace="team")
-    assert meter.created == ["sage.packets"]
+    assert meter.created == ["aifence.packets"]
     assert meter.counter.calls == [
-        (2, {"sage.workspace": "team"}),
-        (3, {"sage.workspace": "team"}),
+        (2, {"aifence.workspace": "team"}),
+        (3, {"aifence.workspace": "team"}),
     ]
 
     with pytest.raises(RuntimeError, match="boom"):
@@ -214,7 +214,7 @@ def test_telemetry_noop_and_enabled_paths() -> None:
 
 
 def test_cli_output_paths(monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]) -> None:
-    monkeypatch.setattr(sys, "argv", ["sage-integrate", "--list"])
+    monkeypatch.setattr(sys, "argv", ["aifence-integrate", "--list"])
     integrate_cli.main()
     profiles = json.loads(capsys.readouterr().out)
     assert {item["id"] for item in profiles} >= {"hermes", "openclaw"}
@@ -222,13 +222,13 @@ def test_cli_output_paths(monkeypatch: pytest.MonkeyPatch, capsys: pytest.Captur
     monkeypatch.setattr(
         sys,
         "argv",
-        ["sage-integrate", "hermes", "--agent-id", "planner", "--workspace", "team"],
+        ["aifence-integrate", "hermes", "--agent-id", "planner", "--workspace", "team"],
     )
     integrate_cli.main()
     config = json.loads(capsys.readouterr().out)
     assert config["config"]["workspace"] == "team"
 
-    monkeypatch.setattr(sys, "argv", ["sage-learning", "--codebook", "cli.contracts"])
+    monkeypatch.setattr(sys, "argv", ["aifence-learning", "--codebook", "cli.contracts"])
     learning_cli.main()
     assert json.loads(capsys.readouterr().out) == {"promoted": []}
 

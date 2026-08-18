@@ -2,12 +2,12 @@ import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import fs from 'node:fs';
 import { CoreProvider } from './core-provider.js';
-import { BizIQRouter } from './router.js';
+import { AifenceRouter } from './router.js';
 import { CORE_ROOT } from './paths.js';
 import { RUNTIME_VERSION } from './config.js';
 
 export const core=new CoreProvider();
-export const router=new BizIQRouter(core);
+export const router=new AifenceRouter(core);
 export function status(){ const v=core.verifyCoreLock(); const rows=core.registry(); const domains=new Set(rows.map(r=>r.domain).filter(Boolean)); const capabilities=new Set(rows.map(r=>r.capability_id||`${r.domain}:${r.capability}`).filter(Boolean)); return {runtimeVersion:RUNTIME_VERSION,coreRevision:core.revision(),coreIntegrity:v.ok?'PASS':'FAIL',coreFilesChecked:v.checked,domains:domains.size,capabilities:capabilities.size,controls:rows.length}; }
 export function plan(request,hints={}){return router.plan(request,hints);}
 export function getSections(items){ return items.map(i=>{

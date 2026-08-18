@@ -8,17 +8,17 @@ import pytest
 from sqlalchemy import text
 from sqlalchemy.orm import close_all_sessions
 
-_USE_CONFIGURED_DB = os.getenv("SAGE_TEST_USE_CONFIGURED_DB", "").lower() in {"1", "true", "yes"}
-_bootstrap_db = Path(tempfile.gettempdir()) / f"sage-pytest-{os.getpid()}.db"
+_USE_CONFIGURED_DB = os.getenv("AIFENCE_BUS_TEST_USE_CONFIGURED_DB", "").lower() in {"1", "true", "yes"}
+_bootstrap_db = Path(tempfile.gettempdir()) / f"aifence-pytest-{os.getpid()}.db"
 if os.name == "nt":
     os.environ.setdefault(
-        "SAGE_SCRATCH_ROOT",
-        str(Path(tempfile.gettempdir()) / "sage-model-eval-scratch"),
+        "AIFENCE_BUS_SCRATCH_ROOT",
+        str(Path(tempfile.gettempdir()) / "aifence-model-eval-scratch"),
     )
 if not _USE_CONFIGURED_DB:
-    os.environ["SAGE_DATABASE_URL"] = f"sqlite:///{_bootstrap_db}"
-os.environ["SAGE_AUTH_REQUIRED"] = "false"
-os.environ["SAGE_LEARNING_MODE"] = "managed"
+    os.environ["AIFENCE_BUS_DATABASE_URL"] = f"sqlite:///{_bootstrap_db}"
+os.environ["AIFENCE_BUS_AUTH_REQUIRED"] = "false"
+os.environ["AIFENCE_BUS_LEARNING_MODE"] = "managed"
 
 
 def _clear_database(engine, metadata) -> None:

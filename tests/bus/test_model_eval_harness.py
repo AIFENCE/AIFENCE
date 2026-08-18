@@ -3,7 +3,7 @@
 Covers (issue #16, stage 3):
 
 * clean no-provider skip -- no ``--adapters`` flag or unset
-  ``SAGE_BENCH_LLM_PROVIDER`` -> "not run, no provider", exit code 0,
+  ``AIFENCE_BUS_BENCH_LLM_PROVIDER`` -> "not run, no provider", exit code 0,
   nothing fabricated;
 * the >=2 model families gate -- configs covering fewer than 2 distinct
   ``family`` values are rejected with a clear error;
@@ -23,7 +23,7 @@ Covers (issue #16, stage 3):
   empty ``--variants``, stripped family/version);
 * round-2 hardening regression tests (reviewer F8 + adversary Adv-1..Adv-6):
   a per-process-unique scratch DB path with two CONCURRENT CLI runs both
-  succeeding, refusal to rebind a pre-imported ``sage_plugin`` engine (no
+  succeeding, refusal to rebind a pre-imported ``aifence.bus`` engine (no
   drop_all on a pre-bound user DB), ``latency_ms`` validation, bool
   rejection in ``_finite_float``, ``--timeout`` nan/inf rejection, and no
   empty ``--output`` dir left behind on a missing adapters file;
@@ -33,7 +33,7 @@ Covers (issue #16, stage 3):
   dir already holds ``model_eval_harness.json``.
 
 All tests are deterministic (fixed inputs, no network, no real model) and
-write their output directories under ``/opt/data/sage/scratch/`` -- never
+write their output directories under ``/opt/data/aifence/scratch/`` -- never
 ``/tmp``.
 """
 
@@ -54,7 +54,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 HARNESS_SCRIPT = ROOT / "scripts" / "model_eval_harness.py"
-SCRATCH_ROOT = Path(os.environ.get("SAGE_SCRATCH_ROOT", "/opt/data/sage/scratch")) / "stage3-tests"
+SCRATCH_ROOT = Path(os.environ.get("AIFENCE_BUS_SCRATCH_ROOT", "/opt/data/aifence/scratch")) / "stage3-tests"
 
 #: A deterministic fake adapter: reads the JSON payload from stdin, echoes a
 #: fixed result.  Warm receivers succeed at 1.0, cold receivers at 0.5, so the
@@ -86,7 +86,7 @@ def h() -> Any:
 
 @pytest.fixture()
 def scratch_dir() -> Iterator[Path]:
-    """A scratch output directory under /opt/data/sage/scratch (never /tmp)."""
+    """A scratch output directory under /opt/data/aifence/scratch (never /tmp)."""
     path = SCRATCH_ROOT / uuid.uuid4().hex[:12]
     path.mkdir(parents=True, exist_ok=True)
     yield path
@@ -128,13 +128,13 @@ def _run_cli_subprocess(argv: list[str], fake_home: Path) -> subprocess.Complete
     """Run the harness CLI in a FRESH subprocess (fake HOME + provider env).
 
     The Adv-1 fix makes ``main()`` refuse to rebind an already-imported
-    ``sage_plugin.db`` engine, so happy-path CLI runs must execute in a
-    process where ``sage_plugin`` has not been imported yet -- the same
+    ``aifence.bus.db`` engine, so happy-path CLI runs must execute in a
+    process where ``aifence.bus`` has not been imported yet -- the same
     isolation ``test_repeated_in_process_main_calls`` uses (the pytest
-    session's conftest imports ``sage_plugin.db`` at session start).
+    session's conftest imports ``aifence.bus.db`` at session start).
     """
-    env = {**os.environ, "HOME": str(fake_home), "SAGE_BENCH_LLM_PROVIDER": "fake"}
-    env.pop("SAGE_DATABASE_URL", None)
+    env = {**os.environ, "HOME": str(fake_home), "AIFENCE_BUS_BENCH_LLM_PROVIDER": "fake"}
+    env.pop("AIFENCE_BUS_DATABASE_URL", None)
     return subprocess.run(
         [sys.executable, str(HARNESS_SCRIPT), *argv],
         capture_output=True,
@@ -150,7 +150,7 @@ def _run_cli_subprocess(argv: list[str], fake_home: Path) -> subprocess.Complete
 
 
 def test_no_provider_skip_is_clean(h, monkeypatch, capsys, scratch_dir):
-    monkeypatch.delenv("SAGE_BENCH_LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", raising=False)
     assert h.provider_available() is False
     assert h.main([]) == 0
     assert "not run, no provider" in capsys.readouterr().out
@@ -179,7 +179,7 @@ def test_less_than_two_families_rejected(h):
 
 
 def test_less_than_two_families_cli_error(h, monkeypatch, scratch_dir, capsys):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     cfg = scratch_dir / "adapters.json"
     cfg.write_text(json.dumps(_one_family_config()))
     assert h.main(["--adapters", str(cfg)]) == 2
@@ -323,7 +323,7 @@ def test_decoder_assisted_counts_expansion_tokens(h, scratch_dir):
 
 
 def test_adapter_failure_raises_clear_error(h, monkeypatch):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     exit_config = {
         "acme-bad": {
             "family": "acme",
@@ -356,7 +356,7 @@ def test_adapter_failure_raises_clear_error(h, monkeypatch):
 
 
 def test_unknown_variant_rejected(h, monkeypatch):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     with pytest.raises(ValueError, match="unknown variant id"):
         h.run_harness(_adapters_config(), variants=["v99"])
 
@@ -384,21 +384,21 @@ def _two_family_config(command_tail: str) -> dict[str, Any]:
 
 def test_run_harness_refuses_without_database_url(h, monkeypatch, scratch_dir):
     """F1: run_harness() must never operate on the ambient default database
-    (~/sage.db); without SAGE_DATABASE_URL it refuses with a RuntimeError."""
+    (~/aifence.db); without AIFENCE_BUS_DATABASE_URL it refuses with a RuntimeError."""
     fake_home = scratch_dir / "fakehome"
     fake_home.mkdir()
     monkeypatch.setenv("HOME", str(fake_home))
-    monkeypatch.delenv("SAGE_DATABASE_URL", raising=False)
-    with pytest.raises(RuntimeError, match="SAGE_DATABASE_URL"):
+    monkeypatch.delenv("AIFENCE_BUS_DATABASE_URL", raising=False)
+    with pytest.raises(RuntimeError, match="AIFENCE_BUS_DATABASE_URL"):
         h.run_harness(_adapters_config(), variants=["v01"])
-    assert not (fake_home / "sage.db").exists()  # ambient DB never created
+    assert not (fake_home / "aifence.db").exists()  # ambient DB never created
 
 
 def test_repeated_in_process_main_calls(h, monkeypatch, scratch_dir):
     """F1: two sequential in-process main() calls must both succeed and the
-    SAGE_DATABASE_URL env must be restored (no engine left bound to a deleted
+    AIFENCE_BUS_DATABASE_URL env must be restored (no engine left bound to a deleted
     scratch db file)."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     fake_home = scratch_dir / "fakehome"
     fake_home.mkdir()
     cfg = scratch_dir / "adapters.json"
@@ -417,10 +417,10 @@ def test_repeated_in_process_main_calls(h, monkeypatch, scratch_dir):
         "h = importlib.util.module_from_spec(spec); spec.loader.exec_module(h)\n"
         "rc1 = h.main(['--adapters', CFG, '--output', OUT_A, '--variants', 'v09'])\n"
         "rc2 = h.main(['--adapters', CFG, '--output', OUT_B, '--variants', 'v09'])\n"
-        "print('rc1=' + str(rc1) + ' rc2=' + str(rc2) + ' env_after=' + repr(os.environ.get('SAGE_DATABASE_URL')))\n"
+        "print('rc1=' + str(rc1) + ' rc2=' + str(rc2) + ' env_after=' + repr(os.environ.get('AIFENCE_BUS_DATABASE_URL')))\n"
     )
     env = {**os.environ, "HOME": str(fake_home)}
-    env.pop("SAGE_DATABASE_URL", None)
+    env.pop("AIFENCE_BUS_DATABASE_URL", None)
     completed = subprocess.run(
         [sys.executable, str(script)], capture_output=True, text=True, timeout=300, env=env
     )
@@ -431,7 +431,7 @@ def test_repeated_in_process_main_calls(h, monkeypatch, scratch_dir):
 def test_adapter_garbage_numerics_rejected(h, monkeypatch, scratch_dir):
     """F2: non-finite/out-of-range/negative/string numerics raise an
     adapter-naming RuntimeError; artifacts stay valid RFC 8259 JSON."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     cases = [
         (
             "task_success inf",
@@ -494,7 +494,7 @@ def test_adapter_garbage_numerics_rejected(h, monkeypatch, scratch_dir):
 def test_missing_adapter_executable_clean_error(h, monkeypatch):
     """F3: a missing adapter executable surfaces as an adapter-naming
     RuntimeError, never a raw FileNotFoundError traceback."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     cfg = {
         "acme-missing-bin": {"family": "acme", "version": "1", "command": ["/nonexistent/binary-xyz"]},
         "nebula-ok": {"family": "nebula", "version": "1", "command": [sys.executable, "-c", FAKE_ADAPTER_OK]},
@@ -505,7 +505,7 @@ def test_missing_adapter_executable_clean_error(h, monkeypatch):
 
 def test_output_path_existing_file_exit_2(h, monkeypatch, scratch_dir, capsys):
     """F4: --output pointing at an existing FILE exits 2 before any run."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     cfg = scratch_dir / "adapters.json"
     cfg.write_text(json.dumps(_adapters_config()))
     out_file = scratch_dir / "iamafile.txt"
@@ -516,7 +516,7 @@ def test_output_path_existing_file_exit_2(h, monkeypatch, scratch_dir, capsys):
 
 def test_missing_adapters_file_exit_2(h, monkeypatch, capsys):
     """F5: a nonexistent --adapters file exits 2 with a clean message."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     assert h.main(["--adapters", "/nonexistent/no-such.json", "--variants", "v01"]) == 2
     assert "no such adapters file" in capsys.readouterr().err
 
@@ -558,7 +558,7 @@ def test_artifacts_deterministic_modulo_latency(scratch_dir):
 def test_hygiene_timeout_variants_and_stripping(h, monkeypatch, scratch_dir, capsys):
     """F7: --timeout must be > 0; an empty --variants value is an error;
     family/version values are whitespace-stripped on load."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     # --timeout <= 0 is rejected by argparse (exit 2)
     with pytest.raises(SystemExit) as excinfo:
         h.main(["--timeout", "0"])
@@ -591,14 +591,14 @@ def test_scratch_db_per_process_unique_and_concurrent_runs(h, scratch_dir):
     path = h._scratch_db_path()
     assert path.name == f"model_eval_harness-{os.getpid()}.db"
     assert str(os.getpid()) in path.name
-    assert path.parent.name == ".sage-bench"
+    assert path.parent.name == ".aifence-bench"
 
     cfg = scratch_dir / "adapters.json"
     cfg.write_text(json.dumps(_adapters_config()))
     fake_home = scratch_dir / "fakehome"
     fake_home.mkdir()
-    env = {**os.environ, "HOME": str(fake_home), "SAGE_BENCH_LLM_PROVIDER": "fake"}
-    env.pop("SAGE_DATABASE_URL", None)
+    env = {**os.environ, "HOME": str(fake_home), "AIFENCE_BUS_BENCH_LLM_PROVIDER": "fake"}
+    env.pop("AIFENCE_BUS_DATABASE_URL", None)
     base = [sys.executable, str(HARNESS_SCRIPT), "--adapters", str(cfg), "--variants", "v01"]
     procs = [
         subprocess.Popen(
@@ -624,9 +624,9 @@ def test_scratch_db_per_process_unique_and_concurrent_runs(h, scratch_dir):
     assert (scratch_dir / "outB" / "model_eval_harness.json").exists()
 
 
-def test_run_harness_refuses_prebound_sage_plugin_db(scratch_dir):
-    """Adv-1: when sage_plugin.db is already imported with an engine bound to
-    a DIFFERENT database than SAGE_DATABASE_URL, run_harness() must refuse
+def test_run_harness_refuses_prebound_aifence_plugin_db(scratch_dir):
+    """Adv-1: when aifence.bus.db is already imported with an engine bound to
+    a DIFFERENT database than AIFENCE_BUS_DATABASE_URL, run_harness() must refuse
     with a RuntimeError and must NOT drop_all the pre-bound database (a
     sentinel table must survive)."""
     cfg = scratch_dir / "adapters.json"
@@ -645,18 +645,18 @@ def test_run_harness_refuses_prebound_sage_plugin_db(scratch_dir):
         f"SENTINEL_DB = {str(sentinel_db)!r}\n"
         f"CFG = {str(cfg)!r}\n"
         "# pre-import aifence.bus bound to a USER database holding a sentinel table\n"
-        "os.environ['SAGE_DATABASE_URL'] = 'sqlite:///' + SENTINEL_DB\n"
+        "os.environ['AIFENCE_BUS_DATABASE_URL'] = 'sqlite:///' + SENTINEL_DB\n"
         "import aifence.bus.db as db\n"
         "import aifence.bus.db_models  # register tables\n"
         "# simulate a pre-existing USER db: only the sentinel table exists (no\n"
-        "# sage tables yet) -- any message_audit appearing later is pollution\n"
+        "# aifence tables yet) -- any message_audit appearing later is pollution\n"
         "with db.engine.begin() as conn:\n"
         "    conn.execute(text('CREATE TABLE sentinel_marker (id INTEGER PRIMARY KEY)'))\n"
         "    conn.execute(text('INSERT INTO sentinel_marker VALUES (1)'))\n"
         "spec = importlib.util.spec_from_file_location('model_eval_harness', HARNESS)\n"
         "h = importlib.util.module_from_spec(spec); spec.loader.exec_module(h)\n"
-        "# point SAGE_DATABASE_URL at a DIFFERENT database than the bound engine\n"
-        "os.environ['SAGE_DATABASE_URL'] = 'sqlite:///' + SENTINEL_DB + '-other'\n"
+        "# point AIFENCE_BUS_DATABASE_URL at a DIFFERENT database than the bound engine\n"
+        "os.environ['AIFENCE_BUS_DATABASE_URL'] = 'sqlite:///' + SENTINEL_DB + '-other'\n"
         "adapters = json.loads(Path(CFG).read_text())\n"
         "try:\n"
         "    h.run_harness(adapters, variants=['v01'])\n"
@@ -674,7 +674,7 @@ def test_run_harness_refuses_prebound_sage_plugin_db(scratch_dir):
         "print('MESSAGE_AUDIT=' + str(audit is not None))\n"
     )
     env = {**os.environ, "HOME": str(fake_home)}
-    env.pop("SAGE_DATABASE_URL", None)
+    env.pop("AIFENCE_BUS_DATABASE_URL", None)
     completed = subprocess.run(
         [sys.executable, str(script)], capture_output=True, text=True, timeout=300, env=env
     )
@@ -689,7 +689,7 @@ def test_adapter_latency_ms_validated(h, monkeypatch):
     """Adv-3: adapter-supplied latency_ms is validated like every other
     numeric field -- nan / negative / string values raise an adapter-naming
     RuntimeError instead of silently poisoning rows."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     cases = [
         (
             "latency_ms nan",
@@ -715,7 +715,7 @@ def test_finite_float_rejects_bools(h, monkeypatch):
     """Adv-4: JSON booleans (task_success: true/false, provider_cost_usd:
     true) must raise an adapter-naming RuntimeError, never silently coerce to
     1.0/0.0 (bool is an int subclass and float(True) == 1.0)."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     cases = [
         (
             "task_success true",
@@ -751,7 +751,7 @@ def test_timeout_nan_inf_rejected(h, capsys):
 def test_missing_adapters_leaves_no_output_dir(h, monkeypatch, scratch_dir, capsys):
     """Adv-6: when the adapters file is missing, --output must NOT be
     created -- the output dir is only made after the adapters config loads."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     out_dir = scratch_dir / "must-not-exist"
     assert (
         h.main(["--adapters", "/nonexistent/no-such.json", "--output", str(out_dir), "--variants", "v01"])
@@ -771,7 +771,7 @@ def test_empty_variants_leaves_no_output_dir(h, monkeypatch, scratch_dir, capsys
     value must exit 2 WITHOUT creating the --output dir -- the mkdir happens
     only after every config path has validated (mirrors
     test_missing_adapters_leaves_no_output_dir)."""
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     cfg = scratch_dir / "adapters.json"
     cfg.write_text(json.dumps(_adapters_config()))
     out_dir = scratch_dir / "must-not-exist"

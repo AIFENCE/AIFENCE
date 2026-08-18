@@ -12,7 +12,7 @@ def run(*args,ok=True):
     if not ok and p.returncode==0: raise AssertionError('expected failure: '+' '.join(map(str,args)))
     return p
 
-with tempfile.TemporaryDirectory(prefix='biziq-1-7-test-') as td:
+with tempfile.TemporaryDirectory(prefix='aifence-1-7-test-') as td:
     td=Path(td)
     cases=[
       {'id':'T1','category':'website','split':'development','prompt':'Create a premium landscaping website.','artifact_contracts':['marketing-website']},
@@ -37,11 +37,11 @@ with tempfile.TemporaryDirectory(prefix='biziq-1-7-test-') as td:
         w=csv.DictWriter(f,fieldnames=['judge_id','blind_id',*dims,'pairwise_preference','notes']);w.writeheader()
         km={x['blind_id']:x for x in key}
         for item in blind:
-            cond=km[item['blind_id']]['condition'];v=9.4 if cond=='biziq' else 8.8
+            cond=km[item['blind_id']]['condition'];v=9.4 if cond=='aifence' else 8.8
             w.writerow({'judge_id':'J1','blind_id':item['blind_id'],**{d:v for d in dims},'pairwise_preference':'','notes':''})
     run(ROOT/'tools'/'benchmark_pipeline.py','lock',bench,scores)
     analysis=td/'analysis';run(ROOT/'tools'/'benchmark_pipeline.py','analyze',scores,bench/'private'/'blind_key.json','--run',bench,'--out',analysis)
-    summary=json.loads((analysis/'statistical_summary.json').read_text());assert summary['pairs']==2 and summary['biziq_wins']==2 and summary['mean_delta']>0
+    summary=json.loads((analysis/'statistical_summary.json').read_text());assert summary['pairs']==2 and summary['aifence_quality_wins']==2 and summary['mean_delta']>0
 
     # Evidence schema and plan-aware acceptance.
     plan={'evidencePlan':[{'artifactId':'artifact-1','profile':'browser','required':True,'checks':['viewport captures']} ]}
@@ -102,7 +102,7 @@ with tempfile.TemporaryDirectory(prefix='biziq-1-7-test-') as td:
 
 
 # Revision 1.7.4 dense-product first-pass quality closure.
-with tempfile.TemporaryDirectory(prefix='biziq-dense-quality-') as td:
+with tempfile.TemporaryDirectory(prefix='aifence-dense-quality-') as td:
     td=Path(td)
     good={
       'artifact_id':'artifact-payments','artifact_family':'dashboard','product_flavor':'payments','provenance':'direct',
@@ -125,7 +125,7 @@ with tempfile.TemporaryDirectory(prefix='biziq-dense-quality-') as td:
     dense=json.loads((ROOT/'benchmarks'/'v3_dense_product_first_pass_cases.json').read_text());assert len(dense)==3
 
 # Revision 1.7.3 generation preflight: reserved-keyword parse failure is blocked and clean direct runtime evidence passes.
-with tempfile.TemporaryDirectory(prefix='biziq-preflight-') as td:
+with tempfile.TemporaryDirectory(prefix='aifence-preflight-') as td:
     td=Path(td); bad=td/'bad.html'; good=td/'good.html'; runtime=td/'runtime.json'
     bad.write_text('<!doctype html><button id="export">Export</button><script>export.onclick=()=>1</script>')
     good.write_text('<!doctype html><button id="export">Export</button><script>const exportButton=document.getElementById("export");exportButton.onclick=()=>1</script>')

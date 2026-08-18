@@ -1,6 +1,6 @@
 {
   "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "title":"BizIQ Universal Executable Runtime Evidence",
+  "title":"AIFENCE Universal Executable Runtime Evidence",
   "type":"object",
   "additionalProperties":false,
   "required":["artifact_id","provenance","result","executions","runtime_errors"],

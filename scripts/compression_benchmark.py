@@ -4,8 +4,8 @@ This benchmark measures how twelve context-compression strategies (the RFC
 variants) carry a fixed multi-turn conversation, using only deterministic,
 observable data -- no model, no provider, no random numbers. It is the
 companion to stage 1's context-accounting instrumentation
-(``sage_plugin.context_accounting``): the SAGE variants run the REAL
-``SageCodec`` with ``context_accounting_enabled=True`` and surface the
+(``aifence.bus.context_accounting``): the AIFENCE variants run the REAL
+``AifenceCodec`` with ``context_accounting_enabled=True`` and surface the
 per-exchange ``ContextReport`` fields (codebook/pattern setup, decoding
 volume, reference-fetch volume, fallbacks) so hidden decompression costs are
 visible.
@@ -45,14 +45,14 @@ The twelve RFC variants
 -----------------------
 Each variant encodes the same scenario and is measured with the same
 metrics.  Variants 1-8 are plain serialization/string operations; variants
-9-12 run the real ``SageCodec``:
+9-12 run the real ``AifenceCodec``:
 
  1.  full natural-language context every turn   -- receiver keeps everything
  2.  latest-only message                        -- receiver keeps only the
                                                  most recent message
  3.  minified JSON                              -- full history as a compact
                                                  JSON array
- 4.  MessagePack                                -- same content, msgpack wire
+ 4.  MesaifencePack                                -- same content, msgpack wire
  5.  conventional state snapshots               -- a key/value state dict
                                                  replaced each turn
  6.  conventional state deltas                  -- base snapshot + JSON-Patch
@@ -62,15 +62,15 @@ metrics.  Variants 1-8 are plain serialization/string operations; variants
                                                  no provider is ever required
  8.  retrieval of relevant prior messages       -- deterministic
                                                  keyword/recency selector
- 9.  SAGE codebooks only                        -- real codec, semantic
+ 9.  AIFENCE codebooks only                        -- real codec, semantic
                                                  packets, patterns disabled
- 10. SAGE codebooks + learned patterns          -- real codec; a pattern is
+ 10. AIFENCE codebooks + learned patterns          -- real codec; a pattern is
                                                  learned in a warm-up
                                                  exchange and activated
- 11. SAGE references + state deltas             -- real codec; Phase 1 as a
+ 11. AIFENCE references + state deltas             -- real codec; Phase 1 as a
                                                  reference, updates as
                                                  state deltas
- 12. full SAGE with ACKed receiver knowledge    -- real codec; state dicts
+ 12. full AIFENCE with ACKed receiver knowledge    -- real codec; state dicts
                                                  encoded semantically and
                                                  decoded with
                                                  ``acknowledge=True`` so the
@@ -80,7 +80,7 @@ metrics.  Variants 1-8 are plain serialization/string operations; variants
 Provider policy
 ---------------
 The benchmark never invokes an external provider.  A provider is considered
-configured when ``SAGE_BENCH_LLM_PROVIDER`` is a non-empty environment
+configured when ``AIFENCE_BUS_BENCH_LLM_PROVIDER`` is a non-empty environment
 variable.  Any variant whose ``requires_provider`` flag is set is skipped
 cleanly when no provider is configured and reported as
 "not run, no provider" (mirroring the adapter-skip convention of
@@ -92,7 +92,7 @@ configuration.
 Metrics
 -------
 Efficiency (per exchange and cumulative): wire bytes (canonical JSON and
-MessagePack), stored bytes (state/reference stores), model-facing input
+MesaifencePack), stored bytes (state/reference stores), model-facing input
 tokens (tokens of the transmitted representation rendered as JSON text),
 model-facing output tokens (tokens of the reconstructed context the
 receiver must read), encode/decode latency (measured with
@@ -149,7 +149,7 @@ When the saving per use is non-positive the denominator clamps to 1 and the
 break-even equals the setup cost -- interpret that as "does not break even";
 compare with the saving column.  Two semantics notes: (1) the codebook-setup
 component includes the ~24-byte codebook fingerprint re-sent on every
-exchange, so the setup cost is partly recurring (SAGE break-even values are
+exchange, so the setup cost is partly recurring (AIFENCE break-even values are
 therefore conservative); (2) a zero-setup/zero-saving variant prints
 ``break_even 0`` -- immediately at parity, nothing to amortize.
 
@@ -157,13 +157,13 @@ Determinism
 -----------
 * No RNG, no wall-clock time in the output; artifact metadata uses the
   fixed timestamp ``2026-08-01T00:00:00+00:00``.
-* SAGE packet ids are pinned to sha256-derived ids per (variant, turn); the
+* AIFENCE packet ids are pinned to sha256-derived ids per (variant, turn); the
   printed tables and artifacts never contain packet ids.
-* The SAGE codec uses a fixed ``Provenance``, ``use_cache=False``,
+* The AIFENCE codec uses a fixed ``Provenance``, ``use_cache=False``,
   ``record_learning=False``, ``auto_learn=False`` (except the variant-10
   pattern warm-up), and an isolated SQLite database whose schema is reset
-  per variant.  ``SAGE_DATABASE_URL`` must be set before the first
-  ``sage_plugin`` import; the standalone entry point does this in
+  per variant.  ``AIFENCE_BUS_DATABASE_URL`` must be set before the first
+  ``aifence.bus`` import; the standalone entry point does this in
   ``main()`` before any lazy import, and deletes its scratch database on
   exit.
 * Determinism: every printed table and the summary ``tables.*`` rows are
@@ -237,7 +237,7 @@ REF_BYTE_COST_PER_BYTE_USD = 0.0000002
 #: Fixed artifact timestamp (SOURCE_DATE_EPOCH-style).
 FIXED_TIMESTAMP = "2026-08-01T00:00:00+00:00"
 
-PROVIDER_ENV = "SAGE_BENCH_LLM_PROVIDER"
+PROVIDER_ENV = "AIFENCE_BUS_BENCH_LLM_PROVIDER"
 NO_PROVIDER_NOTE = "not run, no provider"
 
 SUMMARY_PRECISION_THRESHOLD = 0.7
@@ -296,7 +296,7 @@ def _estimate_tokens(text: str) -> int:
     """Deterministic token estimate (same estimator the codec uses).
 
     Lazily imported so the standalone entry point can bind its scratch
-    database URL before any ``sage_plugin`` import happens.
+    database URL before any ``aifence.bus`` import happens.
     """
     from aifence.bus.context_accounting import estimate_tokens
 
@@ -328,7 +328,7 @@ def read_state(text: str) -> dict[str, Any]:
     Two forms are understood:
 
     * rendered state form -- ``deployment_allowed: false`` style key/value
-      pairs (produced by the state-snapshot/delta variants and by SAGE
+      pairs (produced by the state-snapshot/delta variants and by AIFENCE
       state packets).  The MOST RECENT value for each field wins.
     * natural-language form -- the scenario's sentences, processed
       chronologically as a tiny state machine.
@@ -637,7 +637,7 @@ def _messages() -> list[str]:
 
 
 def _state_delta_ops() -> list[list[dict[str, Any]]]:
-    from aifence.bus.state import diff  # lazy: sage_plugin must not import at module level
+    from aifence.bus.state import diff  # lazy: aifence.bus must not import at module level
 
     return [diff(STATE_DICTS[index], STATE_DICTS[index + 1]) for index in range(5)]
 
@@ -647,7 +647,7 @@ def _canonical_bytes(value: Any) -> int:
 
 
 def _run_plain_variant(spec: dict[str, Any]) -> list[dict[str, Any]]:
-    """Run a plain (non-SAGE) variant; returns per-exchange turn records."""
+    """Run a plain (non-AIFENCE) variant; returns per-exchange turn records."""
     turns: list[dict[str, Any]] = []
     for turn in range(6):
         started = time.perf_counter()
@@ -745,7 +745,7 @@ def _plain_specs() -> list[dict[str, Any]]:
         },
         {
             "id": "v04",
-            "name": "4. MessagePack",
+            "name": "4. MesaifencePack",
             "repr_fn": history_repr,
             "recon_fn": json_recon,
             "stored_fn": zero_stored,
@@ -783,7 +783,7 @@ def _plain_specs() -> list[dict[str, Any]]:
 
 
 # ---------------------------------------------------------------------------
-# SAGE variants (9-12)
+# AIFENCE variants (9-12)
 # ---------------------------------------------------------------------------
 
 
@@ -800,7 +800,7 @@ def _reset_schema(db_module: Any) -> None:
     db_module.Base.metadata.create_all(db_module.engine)
 
 
-def _sage_request(
+def _aifence_request(
     content: Any,
     *,
     use_receiver_knowledge: bool = False,
@@ -828,7 +828,7 @@ def _sage_request(
 
 
 def _render_decoded(decoded: Any, *, state_form: bool) -> str:
-    """Render a SAGE decode result as reader-facing text.
+    """Render a AIFENCE decode result as reader-facing text.
 
     ``state_form`` renders dict-style concepts verbatim as
     ``canonical: literal`` (read by ``read_state``'s rendered parser);
@@ -862,7 +862,7 @@ def _render_decoded(decoded: Any, *, state_form: bool) -> str:
     return " ".join(part for part in parts if part)
 
 
-def _sage_report_aggregate(reports: list[Any]) -> dict[str, Any]:
+def _aifence_report_aggregate(reports: list[Any]) -> dict[str, Any]:
     from collections import Counter
 
     merged = {
@@ -900,12 +900,12 @@ def _sage_report_aggregate(reports: list[Any]) -> dict[str, Any]:
     return merged
 
 
-def _run_sage_variant(spec: dict[str, Any]) -> list[dict[str, Any]]:
-    """Run a real-SageCodec variant against an isolated, per-run database."""
+def _run_aifence_variant(spec: dict[str, Any]) -> list[dict[str, Any]]:
+    """Run a real-AifenceCodec variant against an isolated, per-run database."""
     from sqlalchemy import select
 
     from aifence.bus import db as db_module
-    from aifence.bus.codec import SageCodec
+    from aifence.bus.codec import AifenceCodec
     from aifence.bus.config import Settings
     from aifence.bus.db import SessionLocal
     from aifence.bus.db_models import LearnedPattern
@@ -914,7 +914,7 @@ def _run_sage_variant(spec: dict[str, Any]) -> list[dict[str, Any]]:
     _reset_schema(db_module)
     settings = Settings(
         auth_required=False,
-        database_url=os.environ.get("SAGE_DATABASE_URL", "sqlite://"),
+        database_url=os.environ.get("AIFENCE_BUS_DATABASE_URL", "sqlite://"),
         context_accounting_enabled=True,
         learning_mode="managed",
         **spec.get("settings", {}),
@@ -922,7 +922,7 @@ def _run_sage_variant(spec: dict[str, Any]) -> list[dict[str, Any]]:
     turns: list[dict[str, Any]] = []
     reconstruction = ""
     with SessionLocal() as db:
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         for canonical in spec["codebook"]:
             codec.codebook.register("global", canonical)
         db.commit()
@@ -931,7 +931,7 @@ def _run_sage_variant(spec: dict[str, Any]) -> list[dict[str, Any]]:
         if warmup is not None:
             _pin_packet_id(codec, spec["id"], "warmup")
             encode_started = time.perf_counter()
-            encoded = codec.encode(_sage_request(warmup, auto_learn=True, record_learning=True))
+            encoded = codec.encode(_aifence_request(warmup, auto_learn=True, record_learning=True))
             encode_ms = _ms_since(encode_started)
             encode_report = codec.context_report()
             turns.append(
@@ -949,7 +949,7 @@ def _run_sage_variant(spec: dict[str, Any]) -> list[dict[str, Any]]:
                     "decode_latency_ms": 0,
                     "reconstruction": "",
                     "note": "pattern learning warm-up exchange",
-                    "sage": _sage_report_aggregate([encode_report]),
+                    "aifence": _aifence_report_aggregate([encode_report]),
                 }
             )
             pattern = db.scalar(select(LearnedPattern))
@@ -963,7 +963,7 @@ def _run_sage_variant(spec: dict[str, Any]) -> list[dict[str, Any]]:
             content = spec["content_fn"](turn)
             base_state = base_id if (turn > 0 and spec.get("chain_states")) else None
             inline_limit = spec.get("inline_limit") if turn == 0 else None
-            request = _sage_request(
+            request = _aifence_request(
                 content,
                 use_receiver_knowledge=spec.get("ack", False),
                 use_patterns=spec.get("patterns", True),
@@ -1001,14 +1001,14 @@ def _run_sage_variant(spec: dict[str, Any]) -> list[dict[str, Any]]:
                     "encode_latency_ms": encode_ms,
                     "decode_latency_ms": decode_ms,
                     "reconstruction": reconstruction,
-                    "note": f"sage strategy: {encoded.strategy}",
-                    "sage": _sage_report_aggregate([encode_report, decode_report]),
+                    "note": f"aifence strategy: {encoded.strategy}",
+                    "aifence": _aifence_report_aggregate([encode_report, decode_report]),
                 }
             )
     return turns
 
 
-def _render_state_sage_piece(decoded: Any) -> str:
+def _render_state_aifence_piece(decoded: Any) -> str:
     parts: list[str] = []
     for reference in decoded.references:
         if reference.get("value") is not None:
@@ -1018,7 +1018,7 @@ def _render_state_sage_piece(decoded: Any) -> str:
     return " ".join(parts)
 
 
-def _sage_specs() -> list[dict[str, Any]]:
+def _aifence_specs() -> list[dict[str, Any]]:
     from aifence.bus.compiler import compile_content
 
     shared_clauses = [unit.canonical for unit in compile_content(SHARED_CONTEXT)]
@@ -1043,7 +1043,7 @@ def _sage_specs() -> list[dict[str, Any]]:
     return [
         {
             "id": "v09",
-            "name": "9. SAGE codebooks only",
+            "name": "9. AIFENCE codebooks only",
             "codebook": clause_canonicals,
             "content_fn": text_content,
             "render_fn": decode_text,
@@ -1052,7 +1052,7 @@ def _sage_specs() -> list[dict[str, Any]]:
         },
         {
             "id": "v10",
-            "name": "10. SAGE codebooks + learned patterns",
+            "name": "10. AIFENCE codebooks + learned patterns",
             "codebook": clause_canonicals,
             "content_fn": text_content,
             "render_fn": decode_text,
@@ -1068,10 +1068,10 @@ def _sage_specs() -> list[dict[str, Any]]:
         },
         {
             "id": "v11",
-            "name": "11. SAGE references + state deltas",
+            "name": "11. AIFENCE references + state deltas",
             "codebook": [],
             "content_fn": state_content,
-            "render_fn": _render_state_sage_piece,
+            "render_fn": _render_state_aifence_piece,
             "patterns": True,
             "ack": False,
             "resolve_refs": True,
@@ -1080,7 +1080,7 @@ def _sage_specs() -> list[dict[str, Any]]:
         },
         {
             "id": "v12",
-            "name": "12. full SAGE with ACKed receiver knowledge",
+            "name": "12. full AIFENCE with ACKed receiver knowledge",
             "codebook": state_keys,
             "content_fn": state_content,
             "render_fn": decode_state,
@@ -1095,7 +1095,7 @@ def _sage_specs() -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 
 
-def _merge_sage_aggregates(aggregates: list[dict[str, Any]]) -> dict[str, Any]:
+def _merge_aifence_aggregates(aggregates: list[dict[str, Any]]) -> dict[str, Any]:
     from collections import Counter
 
     merged: dict[str, Any] = {
@@ -1140,7 +1140,7 @@ def _turn_cost(turn: dict[str, Any]) -> float:
     )
 
 
-def _aggregate(turns: list[dict[str, Any]], sage: dict[str, Any] | None) -> dict[str, Any]:
+def _aggregate(turns: list[dict[str, Any]], aifence: dict[str, Any] | None) -> dict[str, Any]:
     total = {
         "exchanges": len(turns),
         "wire_bytes_json": sum(turn["wire_bytes_json"] for turn in turns),
@@ -1154,8 +1154,8 @@ def _aggregate(turns: list[dict[str, Any]], sage: dict[str, Any] | None) -> dict
         "encode_latency_ms_mean": statistics.mean(turn["encode_latency_ms"] for turn in turns),
         "decode_latency_ms_mean": statistics.mean(turn["decode_latency_ms"] for turn in turns),
     }
-    if sage is not None:
-        total["sage"] = sage
+    if aifence is not None:
+        total["aifence"] = aifence
     return total
 
 
@@ -1191,7 +1191,7 @@ def run_benchmark(out_dir: str | Path | None = None) -> dict[str, Any]:
     baseline_wire: int | None = None
     baseline_output_tokens: int | None = None
 
-    for spec in [*_plain_specs(), *_sage_specs()]:
+    for spec in [*_plain_specs(), *_aifence_specs()]:
         variant_id: str = spec["id"]
         if variant_status(spec) == "skipped":
             variant_rows.append(
@@ -1208,21 +1208,21 @@ def run_benchmark(out_dir: str | Path | None = None) -> dict[str, Any]:
                 }
             )
             continue
-        turns = _run_plain_variant(spec) if spec.get("plain", False) else _run_sage_variant(spec)
+        turns = _run_plain_variant(spec) if spec.get("plain", False) else _run_aifence_variant(spec)
         turn_texts = [turn["reconstruction"] for turn in turns if turn["turn"] >= 0]
         final_text = turn_texts[-1] if turn_texts else ""
         task_performance = evaluate_reconstruction(turn_texts)
         fidelity = fidelity_scores(turn_texts[1:], final_text)
-        sage_aggregate = _merge_sage_aggregates([turn["sage"] for turn in turns if turn.get("sage")]) if not spec.get("plain", False) else None
-        efficiency = _aggregate(turns, sage_aggregate)
+        aifence_bus_aggregate = _merge_aifence_aggregates([turn["aifence"] for turn in turns if turn.get("aifence")]) if not spec.get("plain", False) else None
+        efficiency = _aggregate(turns, aifence_bus_aggregate)
         if baseline_wire is None:
             baseline_wire = efficiency["wire_bytes_json"]
             baseline_output_tokens = efficiency["model_output_tokens"]
         saving_per_use_bytes = (baseline_wire - efficiency["wire_bytes_json"]) / 6.0
         saving_per_use_tokens = (baseline_output_tokens - efficiency["model_output_tokens"]) / 6.0
-        sage = efficiency.get("sage")
-        setup_bytes = (sage["codebook_setup_bytes"] + sage["pattern_setup_bytes"]) if sage else 0
-        setup_tokens = (sage["codebook_setup_tokens"] + sage["pattern_setup_tokens"]) if sage else 0
+        aifence = efficiency.get("aifence")
+        setup_bytes = (aifence["codebook_setup_bytes"] + aifence["pattern_setup_bytes"]) if aifence else 0
+        setup_tokens = (aifence["codebook_setup_tokens"] + aifence["pattern_setup_tokens"]) if aifence else 0
         amortization = {
             "setup_cost_bytes": setup_bytes,
             "setup_cost_tokens": setup_tokens,
@@ -1245,7 +1245,7 @@ def run_benchmark(out_dir: str | Path | None = None) -> dict[str, Any]:
         )
 
     results: dict[str, Any] = {
-        "schema": "sage.compression_benchmark.v1",
+        "schema": "aifence.compression_benchmark.v1",
         "generated_at": FIXED_TIMESTAMP,
         "scenario": {
             "name": "phoenix_rfc",
@@ -1463,15 +1463,15 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    # Bind an isolated scratch database BEFORE any sage_plugin import (db.py
+    # Bind an isolated scratch database BEFORE any aifence.bus import (db.py
     # creates the engine at import time).  The file lives outside the
     # worktree and is removed on exit.
     if args.out is not None:
-        scratch_db = args.out / "sage_bench.db"
+        scratch_db = args.out / "aifence_bus_bench.db"
     else:
-        scratch_db = Path.home() / ".sage-bench" / "compression_benchmark.db"
+        scratch_db = Path.home() / ".aifence-bench" / "compression_benchmark.db"
     scratch_db.parent.mkdir(parents=True, exist_ok=True)
-    os.environ["SAGE_DATABASE_URL"] = f"sqlite:///{scratch_db}"
+    os.environ["AIFENCE_BUS_DATABASE_URL"] = f"sqlite:///{scratch_db}"
     try:
         results = run_benchmark(out_dir=args.out)
         print(format_tables(results))

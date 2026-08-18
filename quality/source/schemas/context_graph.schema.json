@@ -1,7 +1,7 @@
 {
   "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "$id":"biziq://schemas/context_graph.schema.json",
-  "title":"BizIQ Context Graph",
+  "$id":"aifence://schemas/context_graph.schema.json",
+  "title":"AIFENCE Context Graph",
   "type":"object",
   "required":["industry","artifactExposure","platform","implementationMaturity","visualFidelity"],
   "properties":{

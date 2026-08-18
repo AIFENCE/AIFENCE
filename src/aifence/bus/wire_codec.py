@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Any, cast
 
 from .config import Settings
 from .protocol_spec import (
-    SAGE_WIRE_VERSION,
+    AIFENCE_WIRE_VERSION,
     canonical_json_bytes,
     canonical_msgpack_bytes,
     validate_wire_v2,
@@ -22,7 +22,7 @@ class WireCodec:
         self.settings = settings
 
     def compact(self, packet: Packet) -> dict[str, Any]:
-        payload: dict[str, Any] = {"v": SAGE_WIRE_VERSION, "c": packet.cb, "a": packet.act}
+        payload: dict[str, Any] = {"v": AIFENCE_WIRE_VERSION, "c": packet.cb, "a": packet.act}
         if packet.id:
             payload["i"] = packet.id
         if packet.sender:

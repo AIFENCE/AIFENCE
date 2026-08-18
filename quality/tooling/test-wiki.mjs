@@ -27,4 +27,4 @@ const css=fs.readFileSync(path.join(WIKI,'assets','styles.css'),'utf8');
 if(!css.includes('@media (max-width: 620px)')||!css.includes(':focus-visible')) die('responsive/accessibility styles missing');
 const js=path.join(WIKI,'assets','app.js'); const check=spawnSync(process.execPath,['--check',js],{encoding:'utf8',shell:false});
 if(check.status!==0){process.stdout.write(check.stdout||'');process.stderr.write(check.stderr||'');die('wiki app JavaScript syntax invalid');}
-console.log(`PASS: source-driven BizIQ wiki (${data.documents.length} indexed pages, ${data.navigation.reduce((n,g)=>n+g.items.length,0)} curated navigation entries)`);
+console.log(`PASS: source-driven AIFENCE wiki (${data.documents.length} indexed pages, ${data.navigation.reduce((n,g)=>n+g.items.length,0)} curated navigation entries)`);

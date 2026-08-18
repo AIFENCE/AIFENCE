@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -95,7 +95,7 @@ def resolve_host(host: str, port: int, *, timeout_seconds: int = 3) -> tuple[str
         finally:
             _DNS_RESOLUTION_SLOTS.release()
 
-    thread = threading.Thread(target=resolve, name="agentdance-dns", daemon=True)
+    thread = threading.Thread(target=resolve, name="aifence-dns", daemon=True)
     thread.start()
     try:
         records, error = results.get(timeout=timeout_seconds)
@@ -161,8 +161,8 @@ def validate_endpoint(
 
 def safe_join(base_url: str, path: str, allowed_patterns: list[str]) -> str:
     canonical = canonical_path(path)
-    normalized_patterns = [canonical_path(pattern.replace("*", "AGENTDANCE_WILDCARD"))
-                           .replace("AGENTDANCE_WILDCARD", "*") for pattern in allowed_patterns]
+    normalized_patterns = [canonical_path(pattern.replace("*", "AIFENCE_GUARD_WILDCARD"))
+                           .replace("AIFENCE_GUARD_WILDCARD", "*") for pattern in allowed_patterns]
     if not any(fnmatch.fnmatchcase(canonical, pattern) for pattern in normalized_patterns):
         raise AuthorizationError("broker path is outside the registered allowlist")
     parsed = urlsplit(base_url)

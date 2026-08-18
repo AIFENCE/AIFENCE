@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a BizIQ interaction-closure manifest."""
+"""Validate a AIFENCE interaction-closure manifest."""
 from __future__ import annotations
 import argparse,json,sys
 from pathlib import Path

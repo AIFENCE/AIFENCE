@@ -52,7 +52,7 @@ def stats(values: list[float]) -> dict[str, float]:
 def measure_round(args: argparse.Namespace, db_path: Path) -> dict[str, Any]:
     from fastapi.testclient import TestClient
 
-    from aifence.bus.codec import SageCodec
+    from aifence.bus.codec import AifenceCodec
     from aifence.bus.config import get_settings
     from aifence.bus.db import SessionLocal
     from aifence.bus.main import app
@@ -60,7 +60,7 @@ def measure_round(args: argparse.Namespace, db_path: Path) -> dict[str, Any]:
 
     settings = get_settings()
     content = {
-        "project": "sage",
+        "project": "aifence",
         "status": "active",
         "count": 17,
         "flags": ["secure", "stable", "fast"],
@@ -68,7 +68,7 @@ def measure_round(args: argparse.Namespace, db_path: Path) -> dict[str, Any]:
     }
 
     with SessionLocal() as db:
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         request = EncodeRequest(sender="latency-producer", receiver="latency-consumer", content=content)
         for _ in range(20):
             codec.encode(request)
@@ -136,7 +136,7 @@ def measure_round(args: argparse.Namespace, db_path: Path) -> dict[str, Any]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="SAGE deterministic latency verification")
+    parser = argparse.ArgumentParser(description="AIFENCE deterministic latency verification")
     parser.add_argument("--iterations", type=int, default=200)
     parser.add_argument("--best-of", type=int, default=1)
     parser.add_argument("--core-encode-p95-ms", type=float, default=40.0)
@@ -151,12 +151,12 @@ def main() -> None:
 
     best: dict[str, Any] | None = None
     chosen = 1
-    db_path = Path(tempfile.gettempdir()) / f"sage-performance-{os.getpid()}.db"
+    db_path = Path(tempfile.gettempdir()) / f"aifence-performance-{os.getpid()}.db"
     db_path.unlink(missing_ok=True)
-    os.environ["SAGE_DATABASE_URL"] = f"sqlite:///{db_path}"
-    os.environ["SAGE_AUTH_REQUIRED"] = "false"
-    os.environ["SAGE_PATTERN_LEARNING_ENABLED"] = "false"
-    os.environ["SAGE_SEMANTIC_CACHE_ENABLED"] = "false"
+    os.environ["AIFENCE_BUS_DATABASE_URL"] = f"sqlite:///{db_path}"
+    os.environ["AIFENCE_BUS_AUTH_REQUIRED"] = "false"
+    os.environ["AIFENCE_BUS_PATTERN_LEARNING_ENABLED"] = "false"
+    os.environ["AIFENCE_BUS_SEMANTIC_CACHE_ENABLED"] = "false"
 
     from aifence.bus.db import Base, engine
 

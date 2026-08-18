@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -58,7 +58,7 @@ def run_tck() -> TckResult:
                 failures.append(f"{name}: canonical JSON mismatch")
                 continue
             if canonical_msgpack_bytes(wire).hex() != case["canonical_msgpack_hex"]:
-                failures.append(f"{name}: canonical MessagePack mismatch")
+                failures.append(f"{name}: canonical MesaifencePack mismatch")
                 continue
             if unpack_data_part(pack_data_part(wire)) != wire:
                 failures.append(f"{name}: A2A data-part round trip mismatch")
@@ -110,7 +110,7 @@ def run_wire_fuzz(iterations: int = 100, seed: int = 1) -> TckResult:
     return TckResult(total=total, passed=total - len(failures), failures=failures)
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run SAGE 0.2 conformance checks")
+    parser = argparse.ArgumentParser(description="Run AIFENCE 0.2 conformance checks")
     parser.add_argument("--json", action="store_true", help="emit machine-readable JSON")
     parser.add_argument("--fuzz", type=int, default=0, metavar="N", help="run N deterministic malformed-wire mutations")
     parser.add_argument("--seed", type=int, default=1, help="mutation seed")
@@ -127,9 +127,9 @@ def main() -> None:
     if args.json:
         print(json.dumps(result, separators=(",", ":")))
     else:
-        print(f"SAGE TCK: {tck.passed}/{tck.total} passed")
+        print(f"AIFENCE TCK: {tck.passed}/{tck.total} passed")
         if fuzz:
-            print(f"SAGE wire mutations: {fuzz.passed}/{fuzz.total} rejected as expected")
+            print(f"AIFENCE wire mutations: {fuzz.passed}/{fuzz.total} rejected as expected")
         for failure in combined_failures:
             print(f"FAIL: {failure}")
     raise SystemExit(0 if result["ok"] else 1)

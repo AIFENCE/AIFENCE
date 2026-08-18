@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -242,7 +242,7 @@ def export_tenant_audit(
 
     generated_at = datetime.now(UTC).isoformat()
     unsigned_manifest = {
-        "format": "agentdance.audit-export.v1",
+        "format": "aifence.audit-export.v1",
         "tenant_id": tenant_id,
         "generated_at": generated_at,
         "archive": output.name,

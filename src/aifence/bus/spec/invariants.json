@@ -1,5 +1,5 @@
 {
-  "version": "sage/0.2",
+  "version": "aifence/0.2",
   "invariants": [
     {
       "id": "delivery.no_ack_no_knowledge",
@@ -10,7 +10,7 @@
     },
     {
       "id": "wire.canonical_identity",
-      "statement": "Canonical MessagePack bytes and SHA-256 identity are deterministic across conforming runtimes.",
+      "statement": "Canonical MesaifencePack bytes and SHA-256 identity are deterministic across conforming runtimes.",
       "checks": [
         "scripts/conformance_matrix.py",
         "scripts/differential_fuzz.py"

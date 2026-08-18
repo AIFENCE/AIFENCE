@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from typing import Any, Literal, cast
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from .protocol_spec import SAGE_PROTOCOL
+from .protocol_spec import AIFENCE_PROTOCOL
 from .schemas import Atom, Capabilities, Provenance, TraceContext
 
 
@@ -16,7 +16,7 @@ class SpecModel(BaseModel):
 
 
 class ProtocolPacket(SpecModel):
-    v: Literal["sage/0.2"] = cast(Literal["sage/0.2"], SAGE_PROTOCOL)
+    v: Literal["aifence/0.2"] = cast(Literal["aifence/0.2"], AIFENCE_PROTOCOL)
     id: str | None = None
     cb: str
     sender: str | None = None
@@ -106,7 +106,7 @@ class ProtocolPattern(SpecModel):
 
 
 class ProtocolCapability(SpecModel):
-    protocol: Literal["sage/0.2"] = cast(Literal["sage/0.2"], SAGE_PROTOCOL)
+    protocol: Literal["aifence/0.2"] = cast(Literal["aifence/0.2"], AIFENCE_PROTOCOL)
     capabilities: Capabilities = Field(default_factory=Capabilities)
     codebook_fingerprints: dict[str, str] = Field(default_factory=dict)
 

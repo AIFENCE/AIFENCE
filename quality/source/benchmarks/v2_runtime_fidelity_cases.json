@@ -157,7 +157,7 @@
     "id": "v2.runtime-fidelity.012.initialization-inline-execution",
     "category": "edge-cases",
     "title": "Initialization with inline creation request",
-    "prompt": "Initialize BizIQ and in the same request create a production front-end-only premium dashboard concept for a financial software company. Do not stop after initialization; route and execute the creation immediately.",
+    "prompt": "Initialize AIFENCE and in the same request create a production front-end-only premium dashboard concept for a financial software company. Do not stop after initialization; route and execute the creation immediately.",
     "artifact_contracts": [
       "dashboard"
     ],

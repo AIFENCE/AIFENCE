@@ -135,7 +135,7 @@ def test_throttled_backpressure_rejects_new_work():
 
 def test_optional_learning_and_cache_failures_preserve_delivery(monkeypatch):
     from aifence.bus.cache import CacheStore
-    from aifence.bus.codec import SageCodec
+    from aifence.bus.codec import AifenceCodec
     from aifence.bus.patterns import PatternStore
     from aifence.bus.schemas import EncodeRequest
 
@@ -144,9 +144,9 @@ def test_optional_learning_and_cache_failures_preserve_delivery(monkeypatch):
         monkeypatch.setattr(PatternStore, "observe_units", lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("learning unavailable")))
         monkeypatch.setattr(CacheStore, "get", lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("cache unavailable")))
         monkeypatch.setattr(CacheStore, "put", lambda *args, **kwargs: (_ for _ in ()).throw(RuntimeError("cache unavailable")))
-        result = SageCodec(db, settings).encode(EncodeRequest(content={"permission": "do not delete"}, sender="a", receiver="b"))
+        result = AifenceCodec(db, settings).encode(EncodeRequest(content={"permission": "do not delete"}, sender="a", receiver="b"))
         assert result.packet.atoms or result.packet.refs
-        audit = db.scalar(select(__import__("aifence.bus.db_models", fromlist=["MessageAudit"]).MessageAudit).where(__import__("aifence.bus.db_models", fromlist=["MessageAudit"]).MessageAudit.packet_id == result.packet.id))
+        audit = db.scalar(select(__import__("aifence.bus.db_models", fromlist=["MesaifenceAudit"]).MesaifenceAudit).where(__import__("aifence.bus.db_models", fromlist=["MesaifenceAudit"]).MesaifenceAudit.packet_id == result.packet.id))
         subsystems = {row.get("subsystem") for row in audit.decisions if row.get("action") == "optional_subsystem_fallback"}
         assert "pattern_learning" in subsystems
         assert "semantic_cache_read" in subsystems
@@ -224,7 +224,7 @@ def test_information_flow_labels_union_without_downgrade():
 def test_economics_includes_infrastructure_cost_and_utility_per_bit():
     row = score_observation(
         {
-            "strategy": "sage",
+            "strategy": "aifence",
             "input_tokens": 100,
             "output_tokens": 10,
             "task_success": 1.0,
@@ -250,7 +250,7 @@ def test_http_write_idempotency_replays_same_response():
         second = client.post("/v1/states", json=payload, headers=headers)
     assert first.status_code == 200
     assert second.status_code == 200
-    assert second.headers.get("x-sage-idempotent-replay") == "true"
+    assert second.headers.get("x-aifence-idempotent-replay") == "true"
     assert first.json() == second.json()
 
 
@@ -267,7 +267,7 @@ def test_http_write_idempotency_rejects_payload_change():
 
 
 def test_holdout_activation_requires_distinct_validation_traffic():
-    from aifence.bus.codec import SageCodec
+    from aifence.bus.codec import AifenceCodec
     from aifence.bus.db_models import LearnedPattern
     from aifence.bus.schemas import EncodeRequest
 
@@ -294,11 +294,11 @@ def test_holdout_activation_requires_distinct_validation_traffic():
             pattern_max_source_share=1.0,
             semantic_cache_enabled=False,
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         result = codec.encode(EncodeRequest(content={"a": "x", "b": "y"}, sender="trainer", source_trust=1.0, use_cache=False))
         pattern = db.scalar(select(LearnedPattern))
         assert pattern is not None
-        codec.patterns.record_feedback(next(a.decisions for a in db.query(__import__('aifence.bus.db_models', fromlist=['MessageAudit']).MessageAudit).filter_by(packet_id=result.packet.id)), 1.0)
+        codec.patterns.record_feedback(next(a.decisions for a in db.query(__import__('aifence.bus.db_models', fromlist=['MesaifenceAudit']).MesaifenceAudit).filter_by(packet_id=result.packet.id)), 1.0)
         for _ in range(3):
             codec.patterns.record_counterfactual(pattern.pattern_id, full_success=1, compressed_success=1, semantic_fidelity=1, validation_id="same")
         assert pattern.status != "active"

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/decision_rights.schema.json",
-  "title": "BizIQ Decision Rights",
+  "$id": "aifence://schemas/decision_rights.schema.json",
+  "title": "AIFENCE Decision Rights",
   "type": "object",
   "additionalProperties": false,
   "required": [

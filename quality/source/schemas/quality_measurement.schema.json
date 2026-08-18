@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "BizIQ Quality Measurement Calibration",
+  "title": "AIFENCE Quality Measurement Calibration",
   "type": "object",
   "required": [
     "dimension",

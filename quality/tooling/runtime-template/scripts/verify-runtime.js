@@ -27,4 +27,4 @@ if (failures.length) {
   for (const f of failures.slice(0, 20)) console.error(JSON.stringify(f));
   process.exit(1);
 }
-console.log(`PASS: BizIQ Runtime lock verified (${checked} files).`);
+console.log(`PASS: AIFENCE Runtime lock verified (${checked} files).`);

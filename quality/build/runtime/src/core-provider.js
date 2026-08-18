@@ -14,7 +14,7 @@ function canonicalBytes(p){
 
 const SAFE_TOP = /^(?:[A-Z0-9_-]+\.md|control_registry(?:_extension)?\.csv)$/;
 const SAFE_SUB = /^(contracts|controls|operations|schemas|evals|benchmarks)\/[A-Za-z0-9._/-]+$/;
-function safeRel(rel){ const r=rel.replaceAll('\\','/').replace(/^\.\//,''); if(r.includes('..')) throw new Error('Path traversal rejected'); if(!(SAFE_TOP.test(r)||SAFE_SUB.test(r))) throw new Error(`Unsupported BizIQ path: ${r}`); return r; }
+function safeRel(rel){ const r=rel.replaceAll('\\','/').replace(/^\.\//,''); if(r.includes('..')) throw new Error('Path traversal rejected'); if(!(SAFE_TOP.test(r)||SAFE_SUB.test(r))) throw new Error(`Unsupported AIFENCE path: ${r}`); return r; }
 
 export class CoreProvider {
   constructor(coreRoot=CORE_ROOT){ this.root=coreRoot; this._registry=null; this._profiles=null; this._ops=null; }
@@ -80,7 +80,7 @@ export class CoreProvider {
       const p=path.join(this.root,rel); if(!fs.existsSync(p)){failures.push({rel,reason:'missing'});continue;}
       const got=crypto.createHash('sha256').update(canonicalBytes(p)).digest('hex'); checked++; if(got!==expected) failures.push({rel,reason:'hash',expected,got});
     }
-    return {ok:failures.length===0,checked,revision:this.revision(),expectedRevision:lock.biziq_revision,failures};
+    return {ok:failures.length===0,checked,revision:this.revision(),expectedRevision:lock.aifence_quality_revision,failures};
   }
 }
 

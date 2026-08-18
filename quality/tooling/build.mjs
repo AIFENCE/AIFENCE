@@ -18,7 +18,7 @@ const quiet = args.has('--quiet');
 const noValidate = args.has('--no-validate');
 
 function log(...x){ if(!quiet) console.log(...x); }
-function trace(...x){ if(process.env.BIZIQ_TRACE) console.error('[build-trace]',...x); }
+function trace(...x){ if(process.env.AIFENCE_TRACE) console.error('[build-trace]',...x); }
 function fail(msg){ console.error(`BUILD FAIL: ${msg}`); process.exit(1); }
 function read(p){ return fs.readFileSync(p, 'utf8'); }
 function write(p, text){ fs.mkdirSync(path.dirname(p), {recursive:true}); fs.writeFileSync(p, text); }
@@ -245,7 +245,7 @@ writeJson(path.join(BUILD,'BUILD_MANIFEST.json'), {
   architecture:{domains:domains.size,capabilities:capabilities.size,controls,firstControl:ids[0],lastControl:ids.at(-1)},
   contracts, operationsProfiles:operations
 });
-write(path.join(BUILD,'README.md'), `# Generated BizIQ Build\n\nDo not edit files in this directory by hand. They are generated from \`source/\` by \`node tooling/build.mjs\`.\n\n- Runtime: ${runtimeVersion}\n- Core revision: ${coreRevision}\n- Domains: ${domains.size}\n- Capabilities: ${capabilities.size}\n- Controls: ${controls}\n\nRun \`npm run build\` after changing canonical source files.\n`);
+write(path.join(BUILD,'README.md'), `# Generated AIFENCE Build\n\nDo not edit files in this directory by hand. They are generated from \`source/\` by \`node tooling/build.mjs\`.\n\n- Runtime: ${runtimeVersion}\n- Core revision: ${coreRevision}\n- Domains: ${domains.size}\n- Capabilities: ${capabilities.size}\n- Controls: ${controls}\n\nRun \`npm run build\` after changing canonical source files.\n`);
 
 // Derived capability shards: exact stable sections for context-efficient retrieval.
 const capabilityShardRoot=path.join(BUILD,'capability-shards');
@@ -259,7 +259,7 @@ for(const [id,r] of [...capGroups.entries()].sort((a,b)=>a[0].localeCompare(b[0]
 }
 
 // Skill build: template + source-derived progressive references.
-const skillRoot=path.join(BUILD,'skill','biziq');
+const skillRoot=path.join(BUILD,'skill','aifence');
 copyRendered(SKILL_TEMPLATE,skillRoot,vars);
 const generatedHeader=(sources)=>`<!-- GENERATED from ${sources.join(', ')} by tooling/build.mjs. Do not hand edit. -->\n\n`;
 const routingParts=['Retrieval Rules','Creation-Type Router','Routing by Task','Context Efficiency Protocol'].map(x=>extractSection(readme,x)).filter(Boolean);
@@ -285,7 +285,7 @@ write(path.join(skillRoot,'references','operations.md'),generatedHeader(['source
 const adapterRoot=path.join(BUILD,'adapters');
 copyRendered(ADAPTER_TEMPLATE,adapterRoot,vars);
 // Every skill-capable adapter gets the exact same generated skill.
-for(const target of [path.join(adapterRoot,'claude-code','skills','biziq'),path.join(adapterRoot,'gemini-cli','skills','biziq'),path.join(adapterRoot,'generic','biziq')]){
+for(const target of [path.join(adapterRoot,'claude-code','skills','aifence'),path.join(adapterRoot,'gemini-cli','skills','aifence'),path.join(adapterRoot,'generic','aifence')]){
   fs.rmSync(target,{recursive:true,force:true}); copyDir(skillRoot,target);
 }
 
@@ -293,12 +293,12 @@ for(const target of [path.join(adapterRoot,'claude-code','skills','biziq'),path.
 const runtimeRoot=path.join(BUILD,'runtime');
 copyRendered(RUNTIME_TEMPLATE,runtimeRoot,vars);
 // Replace repo-sensitive paths implementation.
-write(path.join(runtimeRoot,'src','paths.js'),`import fs from 'node:fs';\nimport path from 'node:path';\nimport {fileURLToPath} from 'node:url';\n\nexport const RUNTIME_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');\nexport const REPO_ROOT = path.resolve(RUNTIME_ROOT, '..', '..');\nexport const REPO_SOURCE_ROOT = path.join(REPO_ROOT, 'source');\nexport const BUNDLED_CORE_ROOT = path.join(RUNTIME_ROOT, 'core');\nconst envCore = process.env.BIZIQ_SOURCE_DIR ? path.resolve(process.env.BIZIQ_SOURCE_DIR) : null;\nexport const CORE_ROOT = envCore || (fs.existsSync(path.join(BUNDLED_CORE_ROOT,'README.md')) ? BUNDLED_CORE_ROOT : REPO_SOURCE_ROOT);\nexport const SKILL_ROOT = path.join(RUNTIME_ROOT, 'skill', 'biziq');\nexport const UI_FILE = path.join(RUNTIME_ROOT, 'ui', 'dashboard.html');\n`);
+write(path.join(runtimeRoot,'src','paths.js'),`import fs from 'node:fs';\nimport path from 'node:path';\nimport {fileURLToPath} from 'node:url';\n\nexport const RUNTIME_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');\nexport const REPO_ROOT = path.resolve(RUNTIME_ROOT, '..', '..');\nexport const REPO_SOURCE_ROOT = path.join(REPO_ROOT, 'source');\nexport const BUNDLED_CORE_ROOT = path.join(RUNTIME_ROOT, 'core');\nconst envCore = process.env.AIFENCE_SOURCE_DIR ? path.resolve(process.env.AIFENCE_SOURCE_DIR) : null;\nexport const CORE_ROOT = envCore || (fs.existsSync(path.join(BUNDLED_CORE_ROOT,'README.md')) ? BUNDLED_CORE_ROOT : REPO_SOURCE_ROOT);\nexport const SKILL_ROOT = path.join(RUNTIME_ROOT, 'skill', 'aifence');\nexport const UI_FILE = path.join(RUNTIME_ROOT, 'ui', 'dashboard.html');\n`);
 // Dynamic package/config.
 const runtimePkg={
-  name:'biziq-runtime',version:runtimeVersion,private:false,type:'module',
-  description:'Portable BizIQ Runtime generated from canonical BizIQ source.',
-  bin:{biziq:'./src/cli.js'}, engines:{node:'>=20'},
+  name:'aifence-runtime',version:runtimeVersion,private:false,type:'module',
+  description:'Portable AIFENCE Runtime generated from canonical AIFENCE source.',
+  bin:{aifence:'./src/cli.js'}, engines:{node:'>=20'},
   scripts:{test:'node scripts/run-tests.js',doctor:'node src/cli.js doctor',status:'node src/cli.js status','mcp:stdio':'node src/mcp-stdio.js','mcp:http':'node src/mcp-http.js',ui:'node src/ui-server.js',verify:'node scripts/verify-runtime.js && node src/cli.js verify && node scripts/run-tests.js'},
   dependencies:{'@modelcontextprotocol/server':'2.0.0','@modelcontextprotocol/node':'2.0.0-beta.5',zod:'4.4.3'}
 };
@@ -306,15 +306,15 @@ writeJson(path.join(runtimeRoot,'package.json'),runtimePkg);
 writeJson(path.join(runtimeRoot,'runtime.config.json'),{
   runtimeVersion,coreRevision,packVersion,sourcePath:'../../source',bundledCorePath:'./core',defaultMode:'production',
   generatedFrom:'source/',architecture:{domains:domains.size,capabilities:capabilities.size,controls},
-  mcp:{stdio:true,http:{enabled:true,defaultHost:'127.0.0.1',defaultPort:3888,path:'/mcp'},appUi:{resourceUri:'ui://biziq/status'}},
+  mcp:{stdio:true,http:{enabled:true,defaultHost:'127.0.0.1',defaultPort:3888,path:'/mcp'},appUi:{resourceUri:'ui://aifence/status'}},
   install:{scope:'project',globalRequiresExplicitFlag:true,mergeExistingConfig:true,backupBeforeMutation:true},
   compatibility:{coreRevisionExact:coreRevision,policy:'exact-generated-core'},
   retrieval:{primaryUnit:'stable-capability-section',generatedShardPath:'./capability-shards',activeModulesRole:'compatibility-debug-only'}
 });
-writeJson(path.join(runtimeRoot,'CORE_LOCK.json'),{biziq_revision:coreRevision,pack_version:packVersion,source_root:'source/',files:Object.fromEntries(sourceFiles.map(p=>[rel(p,SOURCE),sha(p)]))});
+writeJson(path.join(runtimeRoot,'CORE_LOCK.json'),{aifence_quality_revision:coreRevision,pack_version:packVersion,source_root:'source/',files:Object.fromEntries(sourceFiles.map(p=>[rel(p,SOURCE),sha(p)]))});
 writeJson(path.join(runtimeRoot,'SOURCE_INDEX.json'),sourceIndex);
 // Runtime installer needs generated Skill and adapters.
-copyDir(skillRoot,path.join(runtimeRoot,'skill','biziq'));
+copyDir(skillRoot,path.join(runtimeRoot,'skill','aifence'));
 copyDir(adapterRoot,path.join(runtimeRoot,'adapters'));
 copyDir(capabilityShardRoot,path.join(runtimeRoot,'capability-shards'));
 
@@ -345,14 +345,14 @@ for(const item of wikiInputs){
   const target=path.join(wikiRoot,contentPath); write(target,text.replace(/\r\n?/g,'\n'));
   wikiDocuments.push({
     slug:wikiSlugFor(sourcePath),title:firstHeading(text,path.basename(sourcePath,'.md')),category:wikiCategory(sourcePath),summary:plainSummary(text),sourcePath,contentPath:'./'+contentPath,
-    sourceUrl:`https://github.com/NeuralBinary/BizIQ/blob/main/${sourcePath}`,
+    sourceUrl:`https://github.com/NeuralBinary/AIFENCE/blob/main/${sourcePath}`,
     headings:headings(text).filter(h=>h.level<=3).map(h=>({level:h.level,title:h.title,id:h.id})),
     searchText:(firstHeading(text,'')+' '+plainSummary(text,700)+' '+headings(text).map(h=>h.title).join(' ')).replace(/\s+/g,' ').trim()
   });
 }
 const gettingStarted=`# Getting Started
 
-BizIQ keeps canonical standards in \`source/\` and generates portable interoperability under \`build/\`.
+AIFENCE keeps canonical standards in \`source/\` and generates portable interoperability under \`build/\`.
 
 ## Clone and validate
 
@@ -362,7 +362,7 @@ npm run build
 npm test
 \`\`\`
 
-The build validates BizIQ Core ${coreRevision}, runs Operations 2.0 executable regressions, regenerates the Skill/Runtime/adapters/wiki, and verifies generated integrity locks.
+The build validates AIFENCE Core ${coreRevision}, runs Operations 2.0 executable regressions, regenerates the Skill/Runtime/adapters/wiki, and verifies generated integrity locks.
 
 ## Start the Runtime
 
@@ -391,15 +391,15 @@ node src/cli.js mcp --http --host 127.0.0.1 --port 3888
 After linking the Runtime CLI with \`npm link\`, install integrations into a project scope:
 
 \`\`\`bash
-biziq install all --project . --dry-run
-biziq install all --project .
+aifence install all --project . --dry-run
+aifence install all --project .
 \`\`\`
 
-BizIQ intentionally does not mutate global/home configuration automatically.
+AIFENCE intentionally does not mutate global/home configuration automatically.
 `;
 const runtimeGuide=`# Runtime & Integrations
 
-Runtime **${runtimeVersion}** exposes BizIQ Core **${coreRevision}** through a portable Skill, CLI, MCP server, local UI, and platform adapters.
+Runtime **${runtimeVersion}** exposes AIFENCE Core **${coreRevision}** through a portable Skill, CLI, MCP server, local UI, and platform adapters.
 
 ## Runtime responsibilities
 
@@ -411,7 +411,7 @@ Runtime **${runtimeVersion}** exposes BizIQ Core **${coreRevision}** through a p
 
 ## Generated integrations
 
-The build produces adapters for Claude, Gemini, VS Code/Copilot, Cursor, OpenAI/Codex, and a generic Skill/MCP integration. All adapters are generated from the same Runtime and Skill source rather than maintained as independent BizIQ forks.
+The build produces adapters for Claude, Gemini, VS Code/Copilot, Cursor, OpenAI/Codex, and a generic Skill/MCP integration. All adapters are generated from the same Runtime and Skill source rather than maintained as independent AIFENCE forks.
 
 ## Core relationship
 
@@ -431,7 +431,7 @@ const navSpec=[
 ];
 const navigation=navSpec.map(([label,slugs])=>({label,items:slugs.map(slug=>wikiBySlug.get(slug)).filter(Boolean).map(d=>({slug:d.slug,title:d.title}))}));
 writeJson(path.join(wikiRoot,'wiki-index.json'),{
-  generated:true,meta:{project:'BizIQ',runtimeVersion,coreRevision,packVersion,domains:domains.size,capabilities:capabilities.size,controls,documents:markdownFiles.length,contracts:contracts.length,operationsProfiles:operations.length,repositoryUrl:'https://github.com/NeuralBinary/BizIQ',sourceUpdated},
+  generated:true,meta:{project:'AIFENCE',runtimeVersion,coreRevision,packVersion,domains:domains.size,capabilities:capabilities.size,controls,documents:markdownFiles.length,contracts:contracts.length,operationsProfiles:operations.length,repositoryUrl:'https://github.com/NeuralBinary/AIFENCE',sourceUpdated},
   navigation,documents:wikiDocuments.sort((a,b)=>a.category.localeCompare(b.category)||a.title.localeCompare(b.title))
 });
 
@@ -451,7 +451,7 @@ writeJson(path.join(runtimeRoot,'RUNTIME_LOCK.json'),{runtime_version:runtimeVer
 // Build lock spans all generated files except itself.
 writeJson(path.join(BUILD,'BUILD_LOCK.json'),{runtimeVersion,coreRevision,files:lockTree(BUILD,['BUILD_LOCK.json'])});
 
-log(`BizIQ build complete`);
+log(`AIFENCE build complete`);
 trace('all generation and locks complete');
 log(`Core ${coreRevision} · Runtime ${runtimeVersion}`);
 log(`${domains.size} domains · ${capabilities.size} capabilities · ${controls} controls`);

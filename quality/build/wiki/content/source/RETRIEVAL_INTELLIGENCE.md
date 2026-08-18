@@ -49,4 +49,4 @@ The build emits generated `capability-shards/` files from canonical control-shar
 # Retrieval Handoff
 <!-- id: retrieval-intelligence.handoff -->
 
-Execution should consume `phases[].retrievalActions` or `activeCapabilities`, not `activeModules`, unless explicitly debugging the router. This protects context quality as BizIQ grows.
+Execution should consume `phases[].retrievalActions` or `activeCapabilities`, not `activeModules`, unless explicitly debugging the router. This protects context quality as AIFENCE grows.

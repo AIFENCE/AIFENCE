@@ -15,19 +15,17 @@ from pathlib import Path
 _TRUE = {"1", "true", "yes", "on"}
 
 
-def apply_legacy_prefix(new_prefix: str, legacy_prefix: str) -> None:
-    """Bridge a subsystem's new ``AIFENCE_*`` env prefix to its legacy one.
+def adopt_legacy_prefix(legacy_prefix: str, prefix: str) -> None:
+    """Accept a subsystem's pre-merge env prefix as an alias for its current one.
 
-    For every ``{new_prefix}NAME`` variable set in the environment, populate the
-    corresponding ``{legacy_prefix}NAME`` (without overwriting an explicit legacy
-    value). This lets a subsystem accept the unified ``AIFENCE_GUARD_`` /
-    ``AIFENCE_BUS_`` prefixes without rewriting every ``os.getenv`` call, while a
-    subsystem's own legacy variable names keep working unchanged.
+    For every ``{legacy_prefix}NAME`` variable set in the environment, populate
+    ``{prefix}NAME`` unless that is already set. Deployments written against the
+    pre-merge variable names keep working, and an explicitly set current name
+    always wins over the legacy alias.
     """
     for key, value in list(os.environ.items()):
-        if key.startswith(new_prefix):
-            legacy = legacy_prefix + key[len(new_prefix):]
-            os.environ.setdefault(legacy, value)
+        if key.startswith(legacy_prefix):
+            os.environ.setdefault(prefix + key[len(legacy_prefix):], value)
 
 
 def env_str(name: str, default: str = "", *, legacy: tuple[str, ...] = ()) -> str:

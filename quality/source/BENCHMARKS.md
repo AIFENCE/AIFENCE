@@ -6,10 +6,10 @@ Module-Version: 3
 Control-Plane-Revision: 1.8.8
 Last-Updated: 2026-08-10
 -->
-# BizIQ Benchmark Protocol
+# AIFENCE Benchmark Protocol
 <!-- id: benchmarks.root -->
 
-Purpose: measure whether BizIQ improves real artifacts rather than merely adding rules or optimizing against its own evaluator.
+Purpose: measure whether AIFENCE improves real artifacts rather than merely adding rules or optimizing against its own evaluator.
 
 # Benchmark V2
 <!-- id: benchmarks.v2 -->
@@ -18,13 +18,13 @@ The public development set contains **48 representative requests**. A paired A/B
 
 A serious release benchmark SHOULD also use a separately maintained private holdout of at least **24 requests** (48 paired artifacts), producing at least **144 artifacts** across public development + private holdout.
 
-Private holdout prompts should not be committed to the public BizIQ repository.
+Private holdout prompts should not be committed to the public AIFENCE repository.
 
 # Conditions
 <!-- id: benchmarks.conditions -->
 
-- Control: same model/tool stack with BizIQ disabled; use only the request and unavoidable platform instructions.
-- BizIQ: same model/tool stack, same request, same external facts/assets when practical, BizIQ enabled.
+- Control: same model/tool stack with AIFENCE disabled; use only the request and unavoidable platform instructions.
+- AIFENCE: same model/tool stack, same request, same external facts/assets when practical, AIFENCE enabled.
 - Keep model family, generation mode, tool access, resource budget, and request facts matched.
 - Randomize condition order.
 - Do not intentionally degrade the control.
@@ -82,7 +82,7 @@ Browser-rendered benchmarks MUST normalize viewport, scroll origin, focus/hover/
 
 `benchmarks/v2_runtime_fidelity_cases.json` contains 12 public paired-benchmark prompts targeting the newest Runtime/Core integration failure modes: Domain 29/30 module routing, asset routing, high-fidelity concept semantics, financial-regulated risk expansion, initialization-with-inline-execution, responsive detail, and floor-capable quality evidence. It is a **separate extension suite** and MUST NOT be merged into the frozen 48-case longitudinal Benchmark V2 score.
 
-A release may report this suite as **prepared** or **executed** only according to available evidence. Do not publish efficacy scores until matched control/BizIQ artifacts have been generated under identical model/tool conditions, opaque IDs have been scored by condition-blind judges, scores have been locked before unblinding, and an external private holdout has also been evaluated. Runtime regression PASS is not a substitute for visual efficacy evidence.
+A release may report this suite as **prepared** or **executed** only according to available evidence. Do not publish efficacy scores until matched control/AIFENCE artifacts have been generated under identical model/tool conditions, opaque IDs have been scored by condition-blind judges, scores have been locked before unblinding, and an external private holdout has also been evaluated. Runtime regression PASS is not a substitute for visual efficacy evidence.
 
 # Revision 1.5 Operations 2.0 Targeted Corpus
 <!-- id: benchmarks.operations-2 -->

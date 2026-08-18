@@ -1,19 +1,19 @@
-# BizIQ
+# AIFENCE
 
-BizIQ is a source-driven production quality/control system for AI-generated artifacts and operational work.
+AIFENCE is a source-driven production quality/control system for AI-generated artifacts and operational work.
 
 **Stable 2.0 status:** Core 1.8.8 passed the sealed Holdout 9 internal engineering qualification (10/10 predeclared gates) and is frozen as the Stable 2.0 architecture. Runtime packaging is 2.0.0. See `source/ARCHITECTURE_FREEZE_STATUS.md`.
 
 ## Performance evidence
 
-On the fresh 30-brief **External Value Benchmark 1**, the locked same-environment engineering score was **96.800/100 for BizIQ 2.0**, **85.867/100 for a strong handcrafted production prompt**, and **65.200/100 for brief-only/default generation**. BizIQ won **30/30 paired comparisons** against both baselines and achieved **30/30 production acceptance** under the benchmark's family-native engineering checks.
+On the fresh 30-brief **External Value Benchmark 1**, the locked same-environment engineering score was **96.800/100 for AIFENCE 2.0**, **85.867/100 for a strong handcrafted production prompt**, and **65.200/100 for brief-only/default generation**. AIFENCE won **30/30 paired comparisons** against both baselines and achieved **30/30 production acceptance** under the benchmark's family-native engineering checks.
 
 These are controlled engineering benchmark results, not independent third-party preference ratings. See [`docs/PERFORMANCE_EVIDENCE.md`](docs/PERFORMANCE_EVIDENCE.md) for the protocol, category breakdown, Stable 2.0 qualification results, reproducibility hashes, and reporting boundaries.
 
-This repository deliberately separates **canonical BizIQ source** from **generated interoperability builds**.
+This repository deliberately separates **canonical AIFENCE source** from **generated interoperability builds**.
 
 ```text
-source/   canonical BizIQ standards, controls, schemas, profiles, operations and validators
+source/   canonical AIFENCE standards, controls, schemas, profiles, operations and validators
    │
    ▼
 tooling/  deterministic generator + templates
@@ -27,9 +27,9 @@ dist/     release archives generated locally/CI; not committed
 
 ## Canonical source
 
-`source/README.md` is the authoritative BizIQ entry point. All policy/control changes belong in `source/`, never directly in `build/`.
+`source/README.md` is the authoritative AIFENCE entry point. All policy/control changes belong in `source/`, never directly in `build/`.
 
-The canonical source remains a complete BizIQ pack, including Markdown standards, stable control registries, JSON schemas, operational profiles, benchmark definitions, and validation tools.
+The canonical source remains a complete AIFENCE pack, including Markdown standards, stable control registries, JSON schemas, operational profiles, benchmark definitions, and validation tools.
 
 ## Prerequisites
 
@@ -58,7 +58,7 @@ The builder validates the canonical pack, reads its Markdown metadata/headings/s
 
 Source integrity is cross-platform: textual source files are canonicalized to LF for hashing, so Git line-ending normalization does not change Core/build lock identity. Binary files remain byte-exact.
 
-- `build/skill/biziq/` — portable Agent Skill with source-derived progressive references
+- `build/skill/aifence/` — portable Agent Skill with source-derived progressive references
 - `build/runtime/` — CLI + MCP stdio/HTTP server + local/MCP App UI
 - `build/adapters/` — Claude, Gemini, VS Code/Copilot, Cursor, OpenAI/Codex and generic adapters
 - `build/SOURCE_INDEX.json` — generated Markdown document/heading/stable-ID index
@@ -70,7 +70,7 @@ Source integrity is cross-platform: textual source files are canonicalized to LF
 
 ## Documentation wiki
 
-BizIQ includes a generated wiki-style GitHub Pages site. The wiki indexes canonical Markdown, keeps a curated navigation layer for the most important project/Core/Runtime/Operations documents, and links every source-backed page directly to GitHub.
+AIFENCE includes a generated wiki-style GitHub Pages site. The wiki indexes canonical Markdown, keeps a curated navigation layer for the most important project/Core/Runtime/Operations documents, and links every source-backed page directly to GitHub.
 
 ```bash
 npm run build
@@ -86,7 +86,7 @@ Local preview defaults to `http://127.0.0.1:4173`. GitHub Pages deployment is ha
 npm test
 ```
 
-This runs the canonical BizIQ pack validation, Operations 2.0 executable regressions, generated-build integrity checks, and Runtime unit/integration tests.
+This runs the canonical AIFENCE pack validation, Operations 2.0 executable regressions, generated-build integrity checks, and Runtime unit/integration tests.
 
 ## Ship a release
 

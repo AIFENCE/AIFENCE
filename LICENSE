@@ -1,14 +1,14 @@
-SAGE Dual License
+AIFENCE Dual License
 
-Current SAGE source on `main`, and releases v0.2.7 and later, are offered under a dual-licensing model:
+Current AIFENCE source on `main`, and releases v0.2.7 and later, are offered under a dual-licensing model:
 
 1. Open Source License — GNU Affero General Public License v3.0 or later
-   (SPDX: AGPL-3.0-or-later). You may use, modify, and redistribute SAGE
-   under the AGPL terms below. SAGE expressly selects the "or any later
+   (SPDX: AGPL-3.0-or-later). You may use, modify, and redistribute AIFENCE
+   under the AGPL terms below. AIFENCE expressly selects the "or any later
    version" option described by section 14 of the AGPL.
 
 2. Commercial License — Alternative proprietary terms may be available
-   directly from NeuralBinary for organizations that prefer not to use SAGE
+   directly from NeuralBinary for organizations that prefer not to use AIFENCE
    under the AGPL. Commercial terms are granted only by a separate written
    agreement.
 

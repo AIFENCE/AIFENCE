@@ -13,11 +13,11 @@ from aifence.bus.config import Settings
 def test_default_sqlite_database_does_not_depend_on_working_directory(tmp_path, monkeypatch):
     monkeypatch.chdir(tmp_path)
 
-    monkeypatch.delenv("SAGE_DATABASE_URL", raising=False)
+    monkeypatch.delenv("AIFENCE_BUS_DATABASE_URL", raising=False)
     settings = Settings(auth_required=False)
 
-    assert settings.database_url == f"sqlite:///{Path.home() / 'sage.db'}"
-    assert not settings.database_url.endswith("./sage.db")
+    assert settings.database_url == f"sqlite:///{Path.home() / 'aifence.db'}"
+    assert not settings.database_url.endswith("./aifence.db")
 
 
 def test_default_database_initializes_from_non_writable_working_directory(tmp_path):
@@ -45,12 +45,12 @@ from sqlalchemy import inspect
 from aifence.bus.config import Settings
 from aifence.bus.db import Base, engine, init_db
 
-assert Settings(auth_required=False).database_url == f"sqlite:///{Path.home() / 'sage.db'}"
+assert Settings(auth_required=False).database_url == f"sqlite:///{Path.home() / 'aifence.db'}"
 init_db()
 assert inspect(engine).has_table('concepts')
-assert (Path.home() / 'sage.db').is_file()
+assert (Path.home() / 'aifence.db').is_file()
 """
-    env = {key: value for key, value in os.environ.items() if not key.startswith("SAGE_")}
+    env = {key: value for key, value in os.environ.items() if not key.startswith("AIFENCE_")}
     env.update({"HOME": str(home), "PYTHONPATH": str(source_root)})
 
     result = subprocess.run(
@@ -63,12 +63,12 @@ assert (Path.home() / 'sage.db').is_file()
     )
 
     assert result.returncode == 0, result.stderr
-    assert (home / "sage.db").is_file()
+    assert (home / "aifence.db").is_file()
 
 
 def test_explicit_database_url_is_preserved(tmp_path, monkeypatch):
     database_url = f"sqlite:///{tmp_path / 'explicit.db'}"
-    monkeypatch.setenv("SAGE_DATABASE_URL", database_url)
+    monkeypatch.setenv("AIFENCE_BUS_DATABASE_URL", database_url)
 
     settings = Settings(auth_required=False)
 

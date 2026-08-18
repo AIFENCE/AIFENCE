@@ -14,7 +14,7 @@ generic migration-review sentence kept verbatim for the fidelity checker);
 the held-out UPDATE canonicals are fully disjoint from Phoenix):
 
 * Phase 1 -- establishment: ``ESTABLISHMENT_SHARED_CONTEXT`` is transmitted
-  once.  In held-out mode this is the ONLY material the SAGE variants'
+  once.  In held-out mode this is the ONLY material the AIFENCE variants'
   FROZEN codebook is compiled from (see ``establishment_canonicals``); the
   held-out updates below are deliberately NOT part of it.
 * Phase 2 -- five held-out updates (``HELDOUT_UPDATES[0:5]``) mutate the
@@ -51,9 +51,9 @@ fixture itself (the FROZEN-CODEBOOK-PROOF and coverage tests compile every
 update).
 
 The module is fully embedded and deterministic: constants only, no RNG, no
-timestamps, no external files, and ``sage_plugin`` is NEVER imported at module
+timestamps, no external files, and ``aifence.bus`` is NEVER imported at module
 import time (``establishment_canonicals`` imports the compiler lazily so the
-fixture stays importable before ``SAGE_DATABASE_URL`` is bound).
+fixture stays importable before ``AIFENCE_BUS_DATABASE_URL`` is bound).
 """
 
 from __future__ import annotations
@@ -127,14 +127,14 @@ HELDOUT_CHANGE_MARKERS: dict[int, list[str]] = {
 
 def establishment_canonicals(cb: Any | None = None) -> list[str]:
     """The FROZEN codebook source: canonical clauses of the ESTABLISHMENT
-    material ONLY, sorted and deduplicated (the exact shape the SAGE variants'
+    material ONLY, sorted and deduplicated (the exact shape the AIFENCE variants'
     codebook registration order needs -- deterministic).
 
     ``cb`` is the loaded ``compression_benchmark`` module (the harness passes
-    it for symmetry with ``cb._sage_specs()``); ``compile_content`` is
-    imported LAZILY so this module never imports ``sage_plugin`` at import
-    time (the standalone CLI binds ``SAGE_DATABASE_URL`` before any
-    ``sage_plugin`` import).
+    it for symmetry with ``cb._aifence_specs()``); ``compile_content`` is
+    imported LAZILY so this module never imports ``aifence.bus`` at import
+    time (the standalone CLI binds ``AIFENCE_BUS_DATABASE_URL`` before any
+    ``aifence.bus`` import).
     """
     from aifence.bus.compiler import compile_content  # lazy (see module docstring)
 

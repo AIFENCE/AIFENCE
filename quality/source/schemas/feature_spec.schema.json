@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/feature_spec.schema.json",
-  "title": "BizIQ Feature Specification",
+  "$id": "aifence://schemas/feature_spec.schema.json",
+  "title": "AIFENCE Feature Specification",
   "type": "object",
   "required": [
     "feature_id",

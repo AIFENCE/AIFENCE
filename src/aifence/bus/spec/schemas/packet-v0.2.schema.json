@@ -271,8 +271,8 @@
       "default": null
     },
     "v": {
-      "const": "sage/0.2",
-      "default": "sage/0.2",
+      "const": "aifence/0.2",
+      "default": "aifence/0.2",
       "title": "V",
       "type": "string"
     }

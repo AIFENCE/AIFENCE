@@ -10,7 +10,7 @@ Last-Updated: 2026-08-09
 # Quality Measurement Calibration
 <!-- id: quality-measurement.root -->
 
-Purpose: ensure BizIQ quality floors are measurable without corrupting longitudinal benchmarks or mistaking evaluator limitations for artifact failures.
+Purpose: ensure AIFENCE quality floors are measurable without corrupting longitudinal benchmarks or mistaking evaluator limitations for artifact failures.
 
 # Two-Lane Evaluation Model
 <!-- id: quality-measurement.two-lane-model -->
@@ -64,7 +64,7 @@ When frozen numerical scoring and direct acceptance evidence disagree:
 # Acceptance
 <!-- id: quality-measurement.acceptance -->
 
-BizIQ may claim a production floor only when the evidence instrument can reach and discriminate around that floor. Benchmark comparability and release acceptance are related but not interchangeable goals.
+AIFENCE may claim a production floor only when the evidence instrument can reach and discriminate around that floor. Benchmark comparability and release acceptance are related but not interchangeable goals.
 
 # Render-State Normalization
 <!-- id: quality-measurement.render-state-normalization -->

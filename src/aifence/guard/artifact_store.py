@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -103,7 +103,7 @@ class S3ArtifactStore:
         region: str,
         access_key: str = "",
         secret_key: str = "",
-        prefix: str = "agentdance",
+        prefix: str = "aifence",
         kms_key_id: str = "",
         object_lock_days: int = 0,
         delete_enabled: bool = False,
@@ -184,9 +184,9 @@ class S3ArtifactStore:
             "ContentType": "application/octet-stream",
             "IfNoneMatch": "*",
             "Metadata": {
-                "agentdance-tenant": tenant_id,
-                "agentdance-object": object_id,
-                "agentdance-namespace": namespace or "artifacts",
+                "aifence-tenant": tenant_id,
+                "aifence-object": object_id,
+                "aifence-namespace": namespace or "artifacts",
                 **(metadata or {}),
             },
         }

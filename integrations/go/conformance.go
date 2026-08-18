@@ -288,7 +288,7 @@ func main() {
 			failures = append(failures, t.Name+": canonical JSON mismatch")
 		}
 		if hex.EncodeToString(packed) != t.CanonicalMsgpack {
-			failures = append(failures, t.Name+": canonical MessagePack mismatch")
+			failures = append(failures, t.Name+": canonical MesaifencePack mismatch")
 		}
 		if "sha256:"+hex.EncodeToString(sum[:]) != t.CanonicalSHA {
 			failures = append(failures, t.Name+": digest mismatch")

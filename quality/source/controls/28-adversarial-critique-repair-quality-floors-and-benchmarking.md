@@ -402,12 +402,12 @@ Use exact capability sections only.
 <!-- id: controls.capability.blind-benchmark-protocol -->
 
 **Targets:** BENCHMARKS.md / benchmarks/* / tools/prepare_benchmark.py  
-**Requirement:** Evaluate BizIQ efficacy with matched control/BizIQ conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.
+**Requirement:** Evaluate AIFENCE efficacy with matched control/AIFENCE conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.
 
 ### Contract — BQ-1141
 <!-- id: control.bq-1141 -->
 
-- **MUST:** Evaluate BizIQ efficacy with matched control/BizIQ conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.
+- **MUST:** Evaluate AIFENCE efficacy with matched control/AIFENCE conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.
 - Inputs are the minimum project facts, resolved artifact contract, and upstream decisions needed for deterministic execution.
 - Output is an explicit decision, compiled specification, evidence record, quality state, or benchmark artifact.
 - Invariants: higher-precedence instructions control; unknown facts remain unknown; production intent cannot be silently weakened; evidence cannot be fabricated.

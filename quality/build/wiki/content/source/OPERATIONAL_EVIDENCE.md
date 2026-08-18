@@ -112,4 +112,4 @@ Evidence rigor must be proportional to risk, reversibility, legal/contractual ob
 # Machine Evidence Integrity
 <!-- id: operational-evidence.machine-integrity -->
 
-Evidence records use stable `evidence_id` values and are referenced by material steps, decisions, exceptions, handoffs, and Definition-of-Done criteria. References must resolve to an evidence record in the same procedure package. If a retention rule is specified, `retention_provenance` is required; BizIQ may not invent legal/contractual retention periods.
+Evidence records use stable `evidence_id` values and are referenced by material steps, decisions, exceptions, handoffs, and Definition-of-Done criteria. References must resolve to an evidence record in the same procedure package. If a retention rule is specified, `retention_provenance` is required; AIFENCE may not invent legal/contractual retention periods.

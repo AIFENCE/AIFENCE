@@ -8,9 +8,9 @@ from aifence.bus.main import app
 
 def test_representation_benchmark_marks_estimates_as_estimates():
     report = benchmark_representations(
-        representations={"raw_history": "hello world", "sage": {"v": 1, "c": "g"}},
+        representations={"raw_history": "hello world", "aifence": {"v": 1, "c": "g"}},
         tokenizer={"kind": "estimate", "chars_per_token": 4},
-        task_success={"raw_history": 1.0, "sage": 1.0},
+        task_success={"raw_history": 1.0, "aifence": 1.0},
         price={"input_per_million": 10.0, "output_per_million": 0.0},
     )
     assert report["tokenizer"]["exact"] is False
@@ -22,11 +22,11 @@ def test_observed_run_scoring_is_cost_per_success_not_compression_ratio():
     report = score_observed_runs(
         [
             {"strategy": "raw", "input_tokens": 1000, "output_tokens": 100, "task_success": 1.0},
-            {"strategy": "sage", "input_tokens": 100, "output_tokens": 100, "task_success": 1.0},
+            {"strategy": "aifence", "input_tokens": 100, "output_tokens": 100, "task_success": 1.0},
         ],
         {"input_per_million": 10.0, "output_per_million": 20.0},
     )
-    assert report["summary"]["sage"]["cost_per_success"] < report["summary"]["raw"]["cost_per_success"]
+    assert report["summary"]["aifence"]["cost_per_success"] < report["summary"]["raw"]["cost_per_success"]
 
 
 def test_economics_api_compares_required_builtin_strategies():
@@ -39,14 +39,14 @@ def test_economics_api_compares_required_builtin_strategies():
                 "rag": {"project": "phoenix"},
                 "budget_tokens": 100,
                 "tokenizer": {"kind": "estimate", "chars_per_token": 4},
-                "task_success": {"raw_history": 1.0, "sage": 1.0},
+                "task_success": {"raw_history": 1.0, "aifence": 1.0},
                 "price": {"input_per_million": 5.0, "output_per_million": 15.0},
             },
         )
         assert response.status_code == 200, response.text
         body = response.json()
         names = {row["strategy"] for row in body["strategies"]}
-        assert {"raw_history", "summarized_history", "rag", "json_state", "state_refs", "sage", "sage_learned", "sage_patterns", "sage_receiver"} <= names
+        assert {"raw_history", "summarized_history", "rag", "json_state", "state_refs", "aifence", "aifence_bus_learned", "aifence_bus_patterns", "aifence_bus_receiver"} <= names
         assert body["methodology"]["task_success"].startswith("caller-observed")
         assert body["methodology"]["learning_side_effects"] == "disabled for benchmark encodes"
 
@@ -54,7 +54,7 @@ def test_economics_api_compares_required_builtin_strategies():
 def test_production_http_tokenizer_requires_allowlist():
     from aifence.bus.config import Settings
     from aifence.bus.db import SessionLocal
-    from aifence.bus.economics import run_sage_economics_benchmark
+    from aifence.bus.economics import run_aifence_economics_benchmark
     from aifence.bus.schemas import EconomicsBenchmarkRequest
 
     req = EconomicsBenchmarkRequest.model_validate({
@@ -64,15 +64,15 @@ def test_production_http_tokenizer_requires_allowlist():
     with SessionLocal() as db:
         settings = Settings(
             env="production",
-            database_url="postgresql+psycopg://sage:secret@db/sage",
+            database_url="postgresql+psycopg://aifence:secret@db/aifence",
             auth_required=True,
             api_keys=["s" * 32],
-            allowed_hosts=["sage.invalid"],
+            allowed_hosts=["aifence.invalid"],
             auto_create_schema=False,
             docs_enabled=False,
         )
         try:
-            run_sage_economics_benchmark(db, settings, req)
+            run_aifence_economics_benchmark(db, settings, req)
         except ValueError as exc:
             assert "ALLOWED_HOSTS" in str(exc)
         else:

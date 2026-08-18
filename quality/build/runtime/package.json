@@ -1,11 +1,11 @@
 {
-  "name": "biziq-runtime",
+  "name": "aifence-runtime",
   "version": "2.0.0",
   "private": false,
   "type": "module",
-  "description": "Portable BizIQ Runtime generated from canonical BizIQ source.",
+  "description": "Portable AIFENCE Runtime generated from canonical AIFENCE source.",
   "bin": {
-    "biziq": "./src/cli.js"
+    "aifence": "./src/cli.js"
   },
   "engines": {
     "node": ">=20"

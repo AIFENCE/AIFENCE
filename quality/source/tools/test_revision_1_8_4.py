@@ -17,7 +17,7 @@ def expect_pass(artifact,ev):
 def expect_fail(artifact,ev):
  if run([sys.executable,str(VAL),str(artifact),'--evidence',str(ev)]).returncode==0: raise SystemExit(f'FAIL: expected FAIL for {artifact}')
 
-with tempfile.TemporaryDirectory(prefix='biziq-184-') as td:
+with tempfile.TemporaryDirectory(prefix='aifence-184-') as td:
  td=Path(td)
  # Brand uses brand-native rules, not workflow states.
  b=td/'brand.md'; b.write_text('''# Northline Metrology identity\nThe split-axis mark signals calibration alignment. The narrow wordmark is reserved for horizontal lockups.\nUse Instrument Sans for interface labels and Source Serif for technical editorial copy. Cobalt is the verification accent; warm gray is neutral.\nComposition uses a left measurement rail and large numeric anchors. Photography shows real inspection setups; icons use square measurement geometry.\nApplications: calibration certificate, instrument case label, service portal header. Never stretch the mark. Never use cobalt for warning states.\nCalibration claims require documented scope confirmation. dimensional calibration optical inspection traceability''')

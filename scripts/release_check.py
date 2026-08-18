@@ -9,9 +9,9 @@ ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_VERSION = "0.2.7"
 LATEST_TAGGED_VERSION = "0.2.6"
 EXPECTED_RELEASE = "v0.2"
-EXPECTED_PROTOCOL = "sage/0.2"
+EXPECTED_PROTOCOL = "aifence/0.2"
 EXPECTED_WIRE = 2
-EXPECTED_REPOSITORY = "https://github.com/NeuralBinary/SAGE"
+EXPECTED_REPOSITORY = "https://github.com/NeuralBinary/AIFENCE"
 EXPECTED_AUTHOR = "NeuralBinary"
 EXPECTED_CREDITS = ["@NeuralBinary", "@ro0ti"]
 
@@ -46,18 +46,18 @@ def main() -> None:
     require([item["name"] for item in project["maintainers"]] == ["NeuralBinary", "ro0ti"], "pyproject maintainers drift")
     require(project["urls"]["Repository"] == EXPECTED_REPOSITORY, "pyproject repository drift")
     scripts = project.get("scripts", {})
-    require(scripts.get("sage-doctor") == "aifence.bus.doctor_cli:main", "sage-doctor entry point drift")
-    require(scripts.get("sage-demo") == "aifence.bus.demo_cli:main", "sage-demo entry point drift")
+    require(scripts.get("aifence-doctor") == "aifence.bus.doctor_cli:main", "aifence-doctor entry point drift")
+    require(scripts.get("aifence-demo") == "aifence.bus.demo_cli:main", "aifence-demo entry point drift")
     dev_dependencies = project.get("optional-dependencies", {}).get("dev", [])
     require(any(dep.startswith("mypy") for dep in dev_dependencies), "mypy missing from dev dependencies")
     require(any(dep.startswith("pytest-cov") for dep in dev_dependencies), "pytest-cov missing from dev dependencies")
-    require((ROOT / "src/sage_plugin/py.typed").is_file(), "PEP 561 py.typed marker missing")
-    package_data = pyproject.get("tool", {}).get("setuptools", {}).get("package-data", {}).get("sage_plugin", [])
+    require((ROOT / "src/aifence/bus/py.typed").is_file(), "PEP 561 py.typed marker missing")
+    package_data = pyproject.get("tool", {}).get("setuptools", {}).get("package-data", {}).get("aifence.bus", [])
     require("py.typed" in package_data, "py.typed missing from wheel package data")
 
     ci = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
-    require("mypy src/sage_plugin" in ci, "whole-package strict type-check CI gate missing")
-    require("--cov=sage_plugin" in ci and "--cov-fail-under=80" in ci, "coverage CI gate missing")
+    require("mypy src/aifence.bus" in ci, "whole-package strict type-check CI gate missing")
+    require("--cov=aifence.bus" in ci and "--cov-fail-under=80" in ci, "coverage CI gate missing")
     require("permissions:\n  contents: read" in ci, "least-privilege CI permissions missing")
 
     scale = (ROOT / ".github/workflows/scale.yml").read_text(encoding="utf-8")
@@ -67,7 +67,7 @@ def main() -> None:
     require((ROOT / ".github/dependabot.yml").is_file(), "Dependabot configuration missing")
 
     plugin = load_json("plugin.json")
-    require(plugin["name"] == "SAGE", "plugin project name drift")
+    require(plugin["name"] == "AIFENCE", "plugin project name drift")
     require(plugin["version"] == EXPECTED_VERSION, "plugin version drift")
     require(plugin["release"] == EXPECTED_RELEASE, "plugin public release drift")
     require(plugin["protocol"] == EXPECTED_PROTOCOL, "plugin protocol drift")
@@ -76,7 +76,7 @@ def main() -> None:
     require(plugin["repository"] == EXPECTED_REPOSITORY, "plugin repository drift")
 
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
-    for value in ["Project | SAGE", "Author | NeuralBinary", EXPECTED_REPOSITORY, "@NeuralBinary, @ro0ti", f"Version | {EXPECTED_RELEASE}"]:
+    for value in ["Project | AIFENCE", "Author | NeuralBinary", EXPECTED_REPOSITORY, "@NeuralBinary, @ro0ti", f"Version | {EXPECTED_RELEASE}"]:
         require(value in readme, f"README metadata missing: {value}")
     require(f"Source package version | {EXPECTED_VERSION}" in readme, "README source package version drift")
     require(f"Latest tagged release | v{LATEST_TAGGED_VERSION}" in readme, "README latest tagged release drift")
@@ -88,10 +88,10 @@ def main() -> None:
     source_docs = {
         "docs/OPERATIONS.md": [f"source version `{EXPECTED_VERSION}`"],
         "site/Development.md": [
-            f"sage-plugin-v{EXPECTED_VERSION}.zip",
-            f"sage_agent_protocol-{EXPECTED_VERSION}-py3-none-any.whl",
-            f"sage-hermes-plugin-v{EXPECTED_VERSION}.zip",
-            f"sage-agent-openclaw-sage-{EXPECTED_VERSION}.tgz",
+            f"aifence-plugin-v{EXPECTED_VERSION}.zip",
+            f"aifence_bus_agent_protocol-{EXPECTED_VERSION}-py3-none-any.whl",
+            f"aifence-hermes-plugin-v{EXPECTED_VERSION}.zip",
+            f"aifence-agent-openclaw-aifence-{EXPECTED_VERSION}.tgz",
         ],
     }
     for rel, markers in source_docs.items():
@@ -110,7 +110,7 @@ def main() -> None:
 
     license_text = (ROOT / "LICENSE").read_text(encoding="utf-8")
     require(project.get("license", {}).get("text") == "AGPL-3.0-or-later", "pyproject license metadata drift")
-    require("SAGE Dual License" in license_text, "dual-license preamble missing")
+    require("AIFENCE Dual License" in license_text, "dual-license preamble missing")
     require("SPDX: AGPL-3.0-or-later" in license_text, "AGPL-or-later selection missing")
     require("GNU AFFERO GENERAL PUBLIC LICENSE" in license_text, "AGPL license text missing")
     require("sage@digitalacre.org" in license_text, "commercial license contact missing")
@@ -131,23 +131,23 @@ def main() -> None:
     require((ROOT / "integrations/openclaw/LICENSE").read_bytes() == (ROOT / "LICENSE").read_bytes(), "OpenClaw license payload drift")
     require((ROOT / "integrations/hermes/LICENSE").read_bytes() == (ROOT / "LICENSE").read_bytes(), "Hermes license payload drift")
 
-    hermes_yaml = (ROOT / "integrations/hermes/sage/plugin.yaml").read_text(encoding="utf-8")
+    hermes_yaml = (ROOT / "integrations/hermes/aifence/plugin.yaml").read_text(encoding="utf-8")
     require(re.search(rf'^version:\s*["\']?{re.escape(EXPECTED_VERSION)}["\']?\s*$', hermes_yaml, re.MULTILINE) is not None, "Hermes manifest version drift")
-    require((ROOT / "integrations/hermes/sage/__init__.py").read_bytes() == (ROOT / "src/sage_plugin/hermes_plugin.py").read_bytes(), "standalone Hermes adapter drift")
+    require((ROOT / "integrations/hermes/aifence/__init__.py").read_bytes() == (ROOT / "src/aifence/bus/hermes_plugin.py").read_bytes(), "standalone Hermes adapter drift")
 
-    init_py = (ROOT / "src/sage_plugin/__init__.py").read_text(encoding="utf-8")
-    protocol_py = (ROOT / "src/sage_plugin/protocol_spec.py").read_text(encoding="utf-8")
+    init_py = (ROOT / "src/aifence/bus/__init__.py").read_text(encoding="utf-8")
+    protocol_py = (ROOT / "src/aifence/bus/protocol_spec.py").read_text(encoding="utf-8")
     require(f'__version__ = "{EXPECTED_VERSION}"' in init_py, "Python package version drift")
-    require(f'SAGE_PROTOCOL = "{EXPECTED_PROTOCOL}"' in protocol_py, "protocol constant drift")
-    require(f"SAGE_WIRE_VERSION = {EXPECTED_WIRE}" in protocol_py, "wire constant drift")
+    require(f'AIFENCE_PROTOCOL = "{EXPECTED_PROTOCOL}"' in protocol_py, "protocol constant drift")
+    require(f"AIFENCE_WIRE_VERSION = {EXPECTED_WIRE}" in protocol_py, "wire constant drift")
 
     tck = load_json("tck/vectors/core.json")
     require(tck["protocol"] == EXPECTED_PROTOCOL, "TCK protocol drift")
     require(tck["wire_version"] == EXPECTED_WIRE, "TCK wire version drift")
-    require(load_json("src/sage_plugin/tck/vectors/core.json") == tck, "packaged TCK differs from repository TCK")
+    require(load_json("src/aifence/bus/tck/vectors/core.json") == tck, "packaged TCK differs from repository TCK")
     implementations = load_json("tck/implementations.json")
-    require(implementations["suite"] == "sage-tck/0.2", "TCK implementation matrix drift")
-    require(load_json("src/sage_plugin/tck/implementations.json") == implementations, "packaged TCK implementation matrix drift")
+    require(implementations["suite"] == "aifence-tck/0.2", "TCK implementation matrix drift")
+    require(load_json("src/aifence/bus/tck/implementations.json") == implementations, "packaged TCK implementation matrix drift")
     require({item["id"] for item in implementations["implementations"]} == {"python", "javascript", "go"}, "TCK implementation matrix incomplete")
 
     required = [
@@ -168,14 +168,14 @@ def main() -> None:
         "docker-compose.quickstart.yml",
         "quickstart.sh",
         "quickstart.ps1",
-        "src/sage_plugin/doctor_cli.py",
-        "src/sage_plugin/demo_cli.py",
+        "src/aifence/bus/doctor_cli.py",
+        "src/aifence/bus/demo_cli.py",
         "integrations/hermes/README.md",
         "integrations/hermes/LICENSE",
         "integrations/hermes/install.sh",
         "integrations/hermes/install.ps1",
-        "integrations/hermes/sage/__init__.py",
-        "integrations/hermes/sage/plugin.yaml",
+        "integrations/hermes/aifence/__init__.py",
+        "integrations/hermes/aifence/plugin.yaml",
         "docs/GETTING_STARTED.md",
         "integrations/openclaw/src/index.ts",
         "integrations/openclaw/src/conformance.ts",
@@ -186,46 +186,46 @@ def main() -> None:
         "deploy/staging/compose.yml",
         ".github/workflows/scale.yml",
         "deploy/staging/nginx.conf",
-        "src/sage_plugin/corpus.py",
-        "src/sage_plugin/api_transport.py",
-        "src/sage_plugin/api_memory.py",
-        "src/sage_plugin/api_learning.py",
-        "src/sage_plugin/api_semantic.py",
-        "src/sage_plugin/api_helpers.py",
-        "src/sage_plugin/pattern_structure.py",
-        "src/sage_plugin/telemetry.py",
-        "src/sage_plugin/information_flow.py",
-        "src/sage_plugin/reachability.py",
-        "src/sage_plugin/qualification.py",
-        "src/sage_plugin/inspector_ui.py",
-        "src/sage_plugin/pattern_policy.py",
-        "src/sage_plugin/reliability.py",
-        "src/sage_plugin/merkle.py",
-        "src/sage_plugin/codebook_releases.py",
+        "src/aifence/bus/corpus.py",
+        "src/aifence/bus/api_transport.py",
+        "src/aifence/bus/api_memory.py",
+        "src/aifence/bus/api_learning.py",
+        "src/aifence/bus/api_semantic.py",
+        "src/aifence/bus/api_helpers.py",
+        "src/aifence/bus/pattern_structure.py",
+        "src/aifence/bus/telemetry.py",
+        "src/aifence/bus/information_flow.py",
+        "src/aifence/bus/reachability.py",
+        "src/aifence/bus/qualification.py",
+        "src/aifence/bus/inspector_ui.py",
+        "src/aifence/bus/pattern_policy.py",
+        "src/aifence/bus/reliability.py",
+        "src/aifence/bus/merkle.py",
+        "src/aifence/bus/codebook_releases.py",
         "spec/invariants.json",
         "spec/generated/manifest.json",
         "docs/THREAT_MODEL.md",
         "docs/ARCHITECTURE.md",
         "docs/INVARIANTS.md",
-        "spec/SAGE-0.2.md",
-        "spec/sage-v0.2.proto",
+        "spec/AIFENCE-0.2.md",
+        "spec/aifence-v0.2.proto",
         "spec/schemas/wire-v2.schema.json",
         "spec/schemas/pattern-v0.2.schema.json",
-        "src/sage_plugin/spec/SAGE-0.2.md",
-        "src/sage_plugin/spec/sage-v0.2.proto",
-        "src/sage_plugin/spec/schemas/wire-v2.schema.json",
-        "src/sage_plugin/spec/schemas/pattern-v0.2.schema.json",
+        "src/aifence/bus/spec/AIFENCE-0.2.md",
+        "src/aifence/bus/spec/aifence-v0.2.proto",
+        "src/aifence/bus/spec/schemas/wire-v2.schema.json",
+        "src/aifence/bus/spec/schemas/pattern-v0.2.schema.json",
     ]
     for rel in required:
         require((ROOT / rel).is_file(), f"missing required v0.2 artifact: {rel}")
 
-    require((ROOT / "spec/SAGE-0.2.md").read_bytes() == (ROOT / "src/sage_plugin/spec/SAGE-0.2.md").read_bytes(), "packaged protocol specification drift")
-    require((ROOT / "spec/sage-v0.2.proto").read_bytes() == (ROOT / "src/sage_plugin/spec/sage-v0.2.proto").read_bytes(), "packaged protobuf binding drift")
+    require((ROOT / "spec/AIFENCE-0.2.md").read_bytes() == (ROOT / "src/aifence/bus/spec/AIFENCE-0.2.md").read_bytes(), "packaged protocol specification drift")
+    require((ROOT / "spec/aifence-v0.2.proto").read_bytes() == (ROOT / "src/aifence/bus/spec/aifence-v0.2.proto").read_bytes(), "packaged protobuf binding drift")
 
     repo_schemas = sorted((ROOT / "spec/schemas").glob("*.json"))
     require(repo_schemas, "no normative schemas found")
     for schema_path in repo_schemas:
-        packaged = ROOT / "src/sage_plugin/spec/schemas" / schema_path.name
+        packaged = ROOT / "src/aifence/bus/spec/schemas" / schema_path.name
         require(packaged.is_file(), f"missing packaged schema: {schema_path.name}")
         require(schema_path.read_bytes() == packaged.read_bytes(), f"packaged schema drift: {schema_path.name}")
 
@@ -243,8 +243,8 @@ def main() -> None:
         "spec/generated/wire-v2.ts",
         "spec/generated/wire-v2.go",
         "spec/generated/WIRE-FIELDS.md",
-        "spec/sage-v0.2.proto",
-        "src/sage_plugin/spec/sage-v0.2.proto",
+        "spec/aifence-v0.2.proto",
+        "src/aifence/bus/spec/aifence-v0.2.proto",
     }, "generated protocol artifact manifest incomplete")
 
     dockerfile = (ROOT / "Dockerfile").read_text(encoding="utf-8")
@@ -255,15 +255,18 @@ def main() -> None:
     require('command: ["alembic", "upgrade", "head"]' in staging_compose, "staging migration service missing")
 
     migration_files = sorted(path.name for path in (ROOT / "alembic/versions").glob("*.py") if path.name != "__init__.py")
-    require(migration_files == ["0001_sage_0_2_baseline.py"], f"unexpected migration history: {migration_files}")
+    require(
+        migration_files == ["05a2a405852d_initial_merged_schema.py"],
+        f"unexpected migration history: {migration_files}",
+    )
 
     obsolete_patterns = [
-        re.compile(r"sage/0\.(?:1|[3-9])"),
+        re.compile(r"aifence/0\.(?:1|[3-9])"),
         re.compile(r"\bv0\.(?:1|[3-9])(?:\.\d+)?\b"),
         re.compile(r"\b0\.(?:1|[3-9])\.0\b"),
         re.compile(r"wire-v(?:1|[3-9])"),
-        re.compile(r"SAGE-0\.(?:1|[3-9])"),
-        re.compile(r"sage-v0\.(?:1|[3-9])"),
+        re.compile(r"AIFENCE-0\.(?:1|[3-9])"),
+        re.compile(r"aifence-v0\.(?:1|[3-9])"),
     ]
     prose_forbidden = re.compile(r"\b(?:example|examples|placeholder|placeholders|mock|mocks|scaffold|scaffolding|guess|guessing)\b", re.IGNORECASE)
     obsolete: list[str] = []
@@ -298,7 +301,7 @@ def main() -> None:
 
     print(json.dumps({
         "ok": True,
-        "project": "SAGE",
+        "project": "AIFENCE",
         "author": EXPECTED_AUTHOR,
         "release": EXPECTED_RELEASE,
         "version": EXPECTED_VERSION,

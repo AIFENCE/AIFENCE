@@ -1,5 +1,5 @@
 {
-  "spec_version": "agentdance.policy.v1",
+  "spec_version": "aifence.policy.v1",
   "version": "baseline-2026.08.03+strict",
   "default": {
     "outcome": "require_approval",

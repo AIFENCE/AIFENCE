@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -83,7 +83,7 @@ class ReferenceStore:
     def _encrypt(self, data: bytes, ref_id: str) -> str:
         key = self._key()
         if key is None:
-            raise ValueError("reference encryption requested but SAGE_REF_ENCRYPTION_KEY is unset")
+            raise ValueError("reference encryption requested but AIFENCE_BUS_REF_ENCRYPTION_KEY is unset")
         nonce = os.urandom(12)
         encrypted = AESGCM(key).encrypt(nonce, data, ref_id.encode())
         return base64.b64encode(nonce + encrypted).decode()
@@ -101,7 +101,7 @@ class ReferenceStore:
 
     @staticmethod
     def content_id(data: bytes) -> str:
-        return "sage:sha256:" + hashlib.sha256(data).hexdigest()
+        return "aifence:sha256:" + hashlib.sha256(data).hexdigest()
 
     def _grant_query(self, ref_id: str, workspace: str) -> Any:
         return select(ReferenceGrant).where(

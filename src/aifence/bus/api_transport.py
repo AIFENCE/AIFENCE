@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -20,32 +20,32 @@ from .a2a_adapter import (
 )
 from .api_helpers import _apply_trace_headers, bus_response
 from .bus import SemanticBus
-from .codec import SageCodec
+from .codec import AifenceCodec
 from .config import get_settings
 from .conformance import run_tck
 from .db import get_db
-from .db_models import MessageAudit
+from .db_models import MesaifenceAudit
 from .inspector import Inspector
 from .integrations import config_for, profiles
 from .patterns import PatternStore
 from .protocol_spec import (
-    SAGE_PROTOCOL,
-    SAGE_SUPPORTED_PROTOCOLS,
-    SAGE_WIRE_VERSION,
+    AIFENCE_PROTOCOL,
+    AIFENCE_SUPPORTED_PROTOCOLS,
+    AIFENCE_WIRE_VERSION,
     canonical_digest,
     validate_wire_v2,
     wire_schema,
 )
 from .resilience import BackpressureError, QuotaExceededError
 from .schemas import (
-    A2AMessagePackRequest,
-    A2AMessageUnpackRequest,
+    A2AMesaifencePackRequest,
+    A2AMesaifenceUnpackRequest,
     A2APackRequest,
     A2AUnpackRequest,
     BusAckRequest,
     BusBatchAckRequest,
     BusContextItem,
-    BusMessageResponse,
+    BusMesaifenceResponse,
     DecodeRequest,
     DecodeResponse,
     EncodeRequest,
@@ -68,8 +68,8 @@ router = APIRouter()
 
 settings = get_settings()
 
-@router.post("/bus/handoff", response_model=BusMessageResponse)
-def bus_handoff(req: HandoffRequest, db: Session = Depends(get_db)) -> BusMessageResponse:
+@router.post("/bus/handoff", response_model=BusMesaifenceResponse)
+def bus_handoff(req: HandoffRequest, db: Session = Depends(get_db)) -> BusMesaifenceResponse:
     """Compress and durably enqueue a framework-neutral agent-to-agent handoff."""
     sender = enforce_agent_scope(actor=req.sender, workspace=req.workspace)
     try:
@@ -98,7 +98,7 @@ def bus_handoff(req: HandoffRequest, db: Session = Depends(get_db)) -> BusMessag
     db.commit()
     return bus_response(item)
 
-@router.get("/bus/pull/{receiver}", response_model=list[BusMessageResponse])
+@router.get("/bus/pull/{receiver}", response_model=list[BusMesaifenceResponse])
 def bus_pull(
     receiver: str,
     workspace: str = Query(default="default"),
@@ -107,7 +107,7 @@ def bus_pull(
     budget_tokens: int | None = Query(default=None, ge=1),
     partition: str | None = Query(default=None, pattern=r"^p[0-9]{4}$"),
     db: Session = Depends(get_db),
-) -> list[BusMessageResponse]:
+) -> list[BusMesaifenceResponse]:
     enforce_agent_scope(actor=receiver, workspace=workspace)
     items = SemanticBus(db, settings).pull(
         receiver=receiver, workspace=workspace, limit=limit, claim=claim, budget_tokens=budget_tokens, partition=partition
@@ -170,10 +170,10 @@ def bus_context(
     db.commit()
     return result
 
-@router.post("/bus/ack-batch", response_model=list[BusMessageResponse])
+@router.post("/bus/ack-batch", response_model=list[BusMesaifenceResponse])
 def bus_ack_batch(
     req: BusBatchAckRequest, db: Session = Depends(get_db)
-) -> list[BusMessageResponse]:
+) -> list[BusMesaifenceResponse]:
     receiver = enforce_agent_scope(actor=req.receiver, workspace=req.workspace)
     assert receiver is not None
     bus = SemanticBus(db, settings)
@@ -193,10 +193,10 @@ def bus_ack_batch(
     db.commit()
     return [bus_response(item) for item in items]
 
-@router.post("/bus/{message_id}/ack", response_model=BusMessageResponse)
+@router.post("/bus/{message_id}/ack", response_model=BusMesaifenceResponse)
 def bus_ack(
     message_id: str, req: BusAckRequest, db: Session = Depends(get_db)
-) -> BusMessageResponse:
+) -> BusMesaifenceResponse:
     enforce_agent_scope(actor=req.receiver, workspace=req.workspace)
     try:
         item = SemanticBus(db, settings).ack(
@@ -211,10 +211,10 @@ def bus_ack(
     db.commit()
     return bus_response(item)
 
-@router.post("/bus/{message_id}/nack", response_model=BusMessageResponse)
+@router.post("/bus/{message_id}/nack", response_model=BusMesaifenceResponse)
 def bus_nack(
     message_id: str, req: BusAckRequest, db: Session = Depends(get_db)
-) -> BusMessageResponse:
+) -> BusMesaifenceResponse:
     enforce_agent_scope(actor=req.receiver, workspace=req.workspace)
     try:
         item = SemanticBus(db, settings).nack(
@@ -241,7 +241,7 @@ def a2a_unpack(req: A2AUnpackRequest) -> dict[str, Any]:
         raise HTTPException(422, str(exc)) from exc
 
 @router.post("/a2a/message/pack")
-def a2a_message_pack(req: A2AMessagePackRequest) -> dict[str, Any]:
+def a2a_message_pack(req: A2AMesaifencePackRequest) -> dict[str, Any]:
     try:
         return pack_message(
             req.wire,
@@ -255,7 +255,7 @@ def a2a_message_pack(req: A2AMessagePackRequest) -> dict[str, Any]:
         raise HTTPException(422, str(exc)) from exc
 
 @router.post("/a2a/message/unpack")
-def a2a_message_unpack(req: A2AMessageUnpackRequest) -> dict[str, Any]:
+def a2a_message_unpack(req: A2AMesaifenceUnpackRequest) -> dict[str, Any]:
     try:
         return {"wire": unpack_message(req.message)}
     except ValueError as exc:
@@ -268,8 +268,8 @@ def a2a_extension() -> dict[str, Any]:
 @router.get("/a2a/agent-card")
 def a2a_agent_card(
     url: str = Query(..., description="Public A2A 1.0 endpoint URL"),
-    name: str = Query(default="SAGE-enabled agent"),
-    description: str = Query(default="Agent supporting SAGE semantic payloads"),
+    name: str = Query(default="AIFENCE-enabled agent"),
+    description: str = Query(default="Agent supporting AIFENCE semantic payloads"),
     version: str = Query(default="1.0.0"),
     protocol_binding: str = Query(default="HTTP+JSON"),
 ) -> dict[str, Any]:
@@ -286,9 +286,9 @@ def a2a_agent_card(
 @router.get("/protocol")
 def protocol_info() -> dict[str, Any]:
     return {
-        "protocol": SAGE_PROTOCOL,
-        "wire_version": SAGE_WIRE_VERSION,
-        "supported_protocols": list(SAGE_SUPPORTED_PROTOCOLS),
+        "protocol": AIFENCE_PROTOCOL,
+        "wire_version": AIFENCE_WIRE_VERSION,
+        "supported_protocols": list(AIFENCE_SUPPORTED_PROTOCOLS),
         "canonical_digest": "sha256(canonical-msgpack)",
         "frozen_line": "0.2.x",
     }
@@ -303,7 +303,7 @@ def protocol_validate(wire: dict[str, Any]) -> dict[str, Any]:
         validate_wire_v2(wire)
     except (ValidationError, ValueError, TypeError) as exc:
         raise HTTPException(422, str(exc)) from exc
-    return {"valid": True, "protocol": SAGE_PROTOCOL, "digest": canonical_digest(wire)}
+    return {"valid": True, "protocol": AIFENCE_PROTOCOL, "digest": canonical_digest(wire)}
 
 @router.get("/protocol/tck")
 def protocol_tck() -> dict[str, Any]:
@@ -329,11 +329,11 @@ def send(
     req: SendRequest, db: Session = Depends(get_db),
     traceparent: str | None = Header(default=None), tracestate: str | None = Header(default=None),
 ) -> EncodeResponse:
-    """Primary SAGE transport: receiver-aware, budget-constrained communication."""
+    """Primary AIFENCE transport: receiver-aware, budget-constrained communication."""
     req.sender = enforce_agent_scope(actor=req.sender, workspace=req.workspace)
     _apply_trace_headers(req, traceparent, tracestate)
     try:
-        return SageCodec(db, settings).encode(req)
+        return AifenceCodec(db, settings).encode(req)
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except ValueError as exc:
@@ -347,7 +347,7 @@ def transport_send(
 ) -> TransportResponse:
     req.sender = enforce_agent_scope(actor=req.sender, workspace=req.workspace)
     _apply_trace_headers(req, traceparent, tracestate)
-    codec = SageCodec(db, settings)
+    codec = AifenceCodec(db, settings)
     try:
         result = codec.encode(req)
     except KeyError as exc:
@@ -367,7 +367,7 @@ def transport_send(
 @router.post("/transport/receive", response_model=DecodeResponse)
 def transport_receive(req: TransportReceiveRequest, db: Session = Depends(get_db)) -> DecodeResponse:
     req.receiver = enforce_agent_scope(actor=req.receiver, workspace=req.workspace)
-    codec = SageCodec(db, settings)
+    codec = AifenceCodec(db, settings)
     packet = codec.expand(req.wire)
     return codec.decode(
         packet,
@@ -380,7 +380,7 @@ def transport_receive(req: TransportReceiveRequest, db: Session = Depends(get_db
 @router.post("/receive", response_model=DecodeResponse)
 def receive(req: ReceiveRequest, db: Session = Depends(get_db)) -> DecodeResponse:
     req.receiver = enforce_agent_scope(actor=req.receiver, workspace=req.workspace)
-    return SageCodec(db, settings).decode(
+    return AifenceCodec(db, settings).decode(
         req.packet,
         req.resolve_refs,
         receiver=req.receiver,
@@ -391,7 +391,7 @@ def receive(req: ReceiveRequest, db: Session = Depends(get_db)) -> DecodeRespons
 @router.post("/encode", response_model=EncodeResponse)
 def encode(req: EncodeRequest, db: Session = Depends(get_db)) -> EncodeResponse:
     try:
-        return SageCodec(db, settings).encode(req)
+        return AifenceCodec(db, settings).encode(req)
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except ValueError as exc:
@@ -400,7 +400,7 @@ def encode(req: EncodeRequest, db: Session = Depends(get_db)) -> EncodeResponse:
 
 @router.post("/decode", response_model=DecodeResponse)
 def decode(req: DecodeRequest, db: Session = Depends(get_db)) -> DecodeResponse:
-    return SageCodec(db, settings).decode(
+    return AifenceCodec(db, settings).decode(
         req.packet,
         req.resolve_refs,
         receiver=req.receiver,
@@ -409,7 +409,7 @@ def decode(req: DecodeRequest, db: Session = Depends(get_db)) -> DecodeResponse:
 
 @router.get("/explain/{packet_id}", response_model=ExplainResponse)
 def explain(packet_id: str, db: Session = Depends(get_db)) -> ExplainResponse:
-    item = db.scalar(select(MessageAudit).where(MessageAudit.packet_id == packet_id))
+    item = db.scalar(select(MesaifenceAudit).where(MesaifenceAudit.packet_id == packet_id))
     if item is None:
         raise HTTPException(404, "packet not found")
     return ExplainResponse(
@@ -446,7 +446,7 @@ def inspect_run(run_id: str, db: Session = Depends(get_db)) -> dict[str, Any]:
 
 @router.post("/feedback/{packet_id}")
 def feedback(packet_id: str, req: FeedbackRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
-    item = db.scalar(select(MessageAudit).where(MessageAudit.packet_id == packet_id))
+    item = db.scalar(select(MesaifenceAudit).where(MesaifenceAudit.packet_id == packet_id))
     if item is None:
         raise HTTPException(404, "packet not found")
     item.task_success = req.task_success
@@ -462,7 +462,7 @@ def feedback(packet_id: str, req: FeedbackRequest, db: Session = Depends(get_db)
 def replay(run_id: str, db: Session = Depends(get_db)) -> ReplayResponse:
     items = list(
         db.scalars(
-            select(MessageAudit).where(MessageAudit.run_id == run_id).order_by(MessageAudit.created_at, MessageAudit.id)
+            select(MesaifenceAudit).where(MesaifenceAudit.run_id == run_id).order_by(MesaifenceAudit.created_at, MesaifenceAudit.id)
         )
     )
     return ReplayResponse(

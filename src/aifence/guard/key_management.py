@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -31,11 +31,11 @@ class AWSKMSProvider:
         return boto3.client("kms", region_name=self.region)
     def wrap(self, plaintext_key: bytes, *, context: bytes) -> bytes:
         result = self._client().encrypt(KeyId=self.key_id, Plaintext=plaintext_key,
-            EncryptionContext={"agentdance_context": base64.urlsafe_b64encode(context).decode()})
+            EncryptionContext={"aifence_guard_context": base64.urlsafe_b64encode(context).decode()})
         return bytes(result["CiphertextBlob"])
     def unwrap(self, wrapped_key: bytes, *, context: bytes) -> bytes:
         result = self._client().decrypt(KeyId=self.key_id, CiphertextBlob=wrapped_key,
-            EncryptionContext={"agentdance_context": base64.urlsafe_b64encode(context).decode()})
+            EncryptionContext={"aifence_guard_context": base64.urlsafe_b64encode(context).decode()})
         return bytes(result["Plaintext"])
     def destroy(self, *, reason: str) -> dict[str, str]:
         from datetime import datetime

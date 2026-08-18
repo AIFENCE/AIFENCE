@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -274,7 +274,7 @@ class SemanticCache(Base):
     expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
-class MessageAudit(Base):
+class MesaifenceAudit(Base):
     __tablename__ = "message_audit"
     __table_args__ = (
         Index("ix_message_sender_receiver", "sender", "receiver"),

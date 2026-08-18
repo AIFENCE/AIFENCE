@@ -4,7 +4,7 @@ from sqlalchemy import select
 
 from aifence.bus.calibration import CalibrationStore
 from aifence.bus.codebook import Codebook
-from aifence.bus.codec import SageCodec
+from aifence.bus.codec import AifenceCodec
 from aifence.bus.config import Settings
 from aifence.bus.db import SessionLocal
 from aifence.bus.db_models import LearnedPattern, PatternCandidate
@@ -42,7 +42,7 @@ def trust_settings(**updates) -> Settings:
 def test_pattern_poisoning_requires_diverse_trusted_sources():
     with SessionLocal() as db:
         settings = trust_settings()
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         content = {"deployment": "blocked", "reason": "tests"}
         for _ in range(5):
             codec.encode(EncodeRequest(content=content, sender="agent-a", source_trust=1.0, use_cache=False))
@@ -71,7 +71,7 @@ def test_pattern_trust_scope_requires_broader_source_diversity():
             pattern_domain_min_sources=5,
             pattern_federation_min_sources=6,
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         content = {"deployment": "blocked", "reason": "tests"}
         for index in range(3):
             codec.encode(
@@ -138,7 +138,7 @@ def test_large_vocabulary_uses_bounded_lsh_candidates():
 
 def test_trace_context_round_trips_wire_v2():
     with SessionLocal() as db:
-        codec = SageCodec(db, Settings(auth_required=False, semantic_cache_enabled=False))
+        codec = AifenceCodec(db, Settings(auth_required=False, semantic_cache_enabled=False))
         trace = TraceContext(
             traceparent="00-4bf92f3577b34da6a3ce929d0e0e4736-00f067aa0ba902b7-01",
             tracestate="vendor=value",

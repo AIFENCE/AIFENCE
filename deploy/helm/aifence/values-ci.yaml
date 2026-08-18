@@ -106,7 +106,7 @@ environment:
   vaultAddress: https://vault.example.test
   vaultTransitMount: transit
   operatorConsoleEnabled: true
-  operatorTenantHeader: X-Agentdance-Tenant-ID
+  operatorTenantHeader: X-Aifence-Tenant-ID
   operatorIdentityHeader: X-Auth-Request-Email
   operatorGroupsHeader: X-Auth-Request-Groups
   operatorAllowedGroups: [aifence-operators]

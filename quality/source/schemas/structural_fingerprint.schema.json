@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/structural_fingerprint.schema.json",
-  "title": "BizIQ Structural Fingerprint",
+  "$id": "aifence://schemas/structural_fingerprint.schema.json",
+  "title": "AIFENCE Structural Fingerprint",
   "type": "object",
   "required": [
     "artifact_family",

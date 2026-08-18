@@ -25,4 +25,4 @@ for(const rel of ['source/tools/validate_pack.py'])
 
 run(process.execPath,[path.join(ROOT,'tooling/test-wiki.mjs')],'tooling/test-wiki.mjs');
 
-console.log('PASS: complete BizIQ repository test suite');
+console.log('PASS: complete AIFENCE repository test suite');

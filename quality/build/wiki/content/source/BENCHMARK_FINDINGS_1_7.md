@@ -9,7 +9,7 @@ Last-Updated: 2026-08-10
 # Revision 1.7 Real-Artifact Benchmark Findings
 <!-- id: benchmark-findings-1-7.root -->
 
-The matched six-pair rendered benchmark for Core 1.7 produced a BizIQ mean of 90.555/100 versus 77.315/100 control, a +13.241 mean paired improvement, and 6/6 pairwise wins. The benchmark also exposed release-floor failures that Revision 1.7.1 treats as permanent regressions rather than one-off artifact fixes.
+The matched six-pair rendered benchmark for Core 1.7 produced a AIFENCE mean of 90.555/100 versus 77.315/100 control, a +13.241 mean paired improvement, and 6/6 pairwise wins. The benchmark also exposed release-floor failures that Revision 1.7.1 treats as permanent regressions rather than one-off artifact fixes.
 
 ## Permanent Failure Classes
 <!-- id: benchmark-findings-1-7.failures -->

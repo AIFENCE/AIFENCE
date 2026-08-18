@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -27,8 +27,8 @@ from .db_models import IdempotencyRecord
 from .resilience import BackpressureError, QuotaExceededError, request_hash
 from .security import bearer_token
 
-REQUESTS = Counter("sage_http_requests_total", "SAGE HTTP requests", ["method", "path", "status"])
-LATENCY = Histogram("sage_http_request_seconds", "SAGE HTTP latency", ["method", "path"])
+REQUESTS = Counter("aifence_bus_http_requests_total", "AIFENCE HTTP requests", ["method", "path", "status"])
+LATENCY = Histogram("aifence_bus_http_request_seconds", "AIFENCE HTTP latency", ["method", "path"])
 settings = get_settings()
 logger = logging.getLogger(__name__)
 
@@ -166,7 +166,7 @@ class IdempotencyMiddleware:
                         content=cached["body"].encode("utf-8"),
                         status_code=int(cached.get("status", 200)),
                         media_type=cached.get("media_type", "application/json"),
-                        headers={"X-SAGE-Idempotent-Replay": "true"},
+                        headers={"X-AIFENCE-Idempotent-Replay": "true"},
                     )(scope, receive, send)
                     return
             else:
@@ -334,7 +334,7 @@ async def quota_error(_: Request, exc: QuotaExceededError) -> Response:
 async def backpressure_error(_: Request, exc: BackpressureError) -> Response:
     status = 503 if exc.state == "unavailable" else 429
     return Response(json.dumps({"detail": str(exc), "state": exc.state}), status_code=status, media_type="application/json", headers={"Retry-After": "1"})
-app.mount("/mcp", mcp_mount, name="sage-mcp")
+app.mount("/mcp", mcp_mount, name="aifence-mcp")
 
 
 def _valid_service_bearer(request: Request) -> bool:

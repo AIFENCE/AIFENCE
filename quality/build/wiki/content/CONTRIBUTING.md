@@ -1,6 +1,6 @@
 # Contributing
 
-## Change BizIQ behavior
+## Change AIFENCE behavior
 
 Edit canonical files under `source/`. On a fresh clone/environment, install the declared validator dependencies first:
 
@@ -25,5 +25,5 @@ Edit `tooling/runtime-template/`, `tooling/templates/`, or the tooling scripts. 
 
 - hand-edit `build/` as the source of a fix;
 - commit `dist/` release ZIPs;
-- duplicate BizIQ control logic inside individual platform adapters;
-- change stable control IDs without following BizIQ source governance.
+- duplicate AIFENCE control logic inside individual platform adapters;
+- change stable control IDs without following AIFENCE source governance.

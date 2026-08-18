@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ class AuthPrincipal:
 
 
 _principal: ContextVar[AuthPrincipal | None] = ContextVar(
-    "sage_auth_principal", default=None
+    "aifence_bus_auth_principal", default=None
 )
 
 _AGENT_ALLOWED_PREFIXES = (

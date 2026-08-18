@@ -10,7 +10,7 @@ Last-Updated: 2026-08-09
 # Operational Procedure Compiler
 <!-- id: operational-procedure-compiler.root -->
 
-Purpose: convert BizIQ's industry, operating-profile, role, task, authority, risk, and organization context into a **task-executable, controlled, evidence-bearing operating procedure** without fabricating company policy or external authority.
+Purpose: convert AIFENCE's industry, operating-profile, role, task, authority, risk, and organization context into a **task-executable, controlled, evidence-bearing operating procedure** without fabricating company policy or external authority.
 
 Existing `JOBS.md` role definitions and `operations/*.md` SOP sections are **baseline operating context**. They are not automatically an approved organization procedure, licensed work instruction, manufacturer procedure, regulatory instruction, or jurisdiction-specific mandate.
 
@@ -210,7 +210,7 @@ Before calling a procedure **verified**, **approved**, **regulatory**, **manufac
 - identify the exact source and authority;
 - confirm scope/jurisdiction/product/facility applicability when material;
 - confirm version/effective date or currentness when material;
-- distinguish source requirement from BizIQ interpretation;
+- distinguish source requirement from AIFENCE interpretation;
 - identify unresolved conflicts or missing evidence;
 - preserve mandatory wording only to the extent copyright/source-use rules permit;
 - mark the result `UNVERIFIED` if authoritative evidence is unavailable.

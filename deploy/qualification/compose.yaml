@@ -1,13 +1,13 @@
-name: agentdance-qualification
+name: aifence-qualification
 services:
   postgres:
     image: postgres:18.4-bookworm
     environment:
-      POSTGRES_DB: agentdance
+      POSTGRES_DB: aifence
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: qualification-admin
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d agentdance"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d aifence"]
       interval: 5s
       timeout: 5s
       retries: 30
@@ -18,7 +18,7 @@ services:
     image: quay.io/minio/minio:RELEASE.2025-07-23T15-54-02Z
     command: ["server", "/data", "--console-address", ":9001"]
     environment:
-      MINIO_ROOT_USER: agentdance
+      MINIO_ROOT_USER: aifence
       MINIO_ROOT_PASSWORD: qualification-secret-change-me
     healthcheck:
       test: ["CMD", "mc", "ready", "local"]
@@ -37,10 +37,10 @@ services:
       - /bin/sh
       - -ec
       - |
-        mc alias set local http://minio:9000 agentdance qualification-secret-change-me
-        mc mb --ignore-existing local/agentdance-artifacts
-        mc version enable local/agentdance-artifacts
-        mc retention set --default governance 1d local/agentdance-artifacts || true
+        mc alias set local http://minio:9000 aifence qualification-secret-change-me
+        mc mb --ignore-existing local/aifence-artifacts
+        mc version enable local/aifence-artifacts
+        mc retention set --default governance 1d local/aifence-artifacts || true
 
   clamav:
     image: clamav/clamav:1.4.5-debian@sha256:0542880c8abebb7430be5366657aec561f03693ed7be4e64a45fd2ee60b08d02
@@ -72,15 +72,15 @@ services:
     entrypoint: ["/bin/sh", "-ec"]
     command:
       - |
-        psql -v ON_ERROR_STOP=1 -h postgres -U postgres -d agentdance <<'SQL'
-        SELECT 'CREATE ROLE agentdance_app LOGIN PASSWORD ''qualification-only'''
-          WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'agentdance_app')\gexec
-        SELECT 'CREATE ROLE agentdance_dispatcher LOGIN PASSWORD ''dispatcher-only'''
-          WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'agentdance_dispatcher')\gexec
-        SELECT 'CREATE ROLE agentdance_lifecycle LOGIN PASSWORD ''lifecycle-only'''
-          WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'agentdance_lifecycle')\gexec
-        SELECT 'CREATE ROLE agentdance_anchor LOGIN PASSWORD ''anchor-only'''
-          WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'agentdance_anchor')\gexec
+        psql -v ON_ERROR_STOP=1 -h postgres -U postgres -d aifence <<'SQL'
+        SELECT 'CREATE ROLE aifence_guard_app LOGIN PASSWORD ''qualification-only'''
+          WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'aifence_guard_app')\gexec
+        SELECT 'CREATE ROLE aifence_guard_dispatcher LOGIN PASSWORD ''dispatcher-only'''
+          WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'aifence_guard_dispatcher')\gexec
+        SELECT 'CREATE ROLE aifence_guard_lifecycle LOGIN PASSWORD ''lifecycle-only'''
+          WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'aifence_guard_lifecycle')\gexec
+        SELECT 'CREATE ROLE aifence_guard_anchor LOGIN PASSWORD ''anchor-only'''
+          WHERE NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'aifence_guard_anchor')\gexec
         SQL
 
   migrate:
@@ -88,46 +88,46 @@ services:
       context: ../..
     command: ["migrate"]
     environment:
-      AGENTDANCE_ENVIRONMENT: staging
-      AGENTDANCE_DATABASE_URL: postgresql+psycopg://postgres:qualification-admin@postgres:5432/agentdance
-      AGENTDANCE_AUTO_CREATE_SCHEMA: "false"
+      AIFENCE_GUARD_ENVIRONMENT: staging
+      AIFENCE_GUARD_DATABASE_URL: postgresql+psycopg://postgres:qualification-admin@postgres:5432/aifence
+      AIFENCE_GUARD_AUTO_CREATE_SCHEMA: "false"
     depends_on:
       init-db-roles:
         condition: service_completed_successfully
 
-  agentdance:
+  aifence:
     build:
       context: ../..
     command: ["serve", "--workers", "1"]
     environment: &runtime
-      AGENTDANCE_ENVIRONMENT: staging
-      AGENTDANCE_PUBLIC_BASE_URL: https://agentdance:8080
-      AGENTDANCE_SOURCE_CODE_URL: https://github.com/AIFENCE/AIFENCE/tree/v1.0.0-rc.5
-      AGENTDANCE_COMMERCIAL_LICENSE_URL: https://github.com/AIFENCE/AIFENCE/blob/main/COMMERCIAL-LICENSE.md
-      AGENTDANCE_DATABASE_URL: postgresql+psycopg://agentdance_app:qualification-only@postgres:5432/agentdance
-      AGENTDANCE_RUNTIME_ROLE: control-plane
-      AGENTDANCE_AUTO_CREATE_SCHEMA: "false"
-      AGENTDANCE_SIGNING_PRIVATE_KEY_FILE: /run/agentdance/signing-private.pem
-      AGENTDANCE_SIGNING_PUBLIC_KEY_FILE: /run/agentdance/signing-public.pem
-      AGENTDANCE_MASTER_KEY_B64_FILE: /run/agentdance/master-key.b64
-      AGENTDANCE_API_KEY_PEPPER_FILE: /run/agentdance/api-key-pepper
-      AGENTDANCE_TLS_CERT_FILE: /run/agentdance/tls.crt
-      AGENTDANCE_TLS_KEY_FILE: /run/agentdance/tls.key
-      AGENTDANCE_CLAMAV_HOST: clamav
-      AGENTDANCE_CLAMAV_REQUIRED: "true"
-      AGENTDANCE_DISPATCH_MODE: async
-      AGENTDANCE_ARTIFACT_STORE_BACKEND: s3
-      AGENTDANCE_ARTIFACT_S3_ENDPOINT: http://minio:9000
-      AGENTDANCE_ARTIFACT_S3_BUCKET: agentdance-artifacts
-      AGENTDANCE_ARTIFACT_S3_ACCESS_KEY: agentdance
-      AGENTDANCE_ARTIFACT_S3_SECRET_KEY: qualification-secret-change-me
-      AGENTDANCE_AUDIT_ANCHOR_BACKEND: file
-      AGENTDANCE_AUDIT_ANCHOR_DIRECTORY: /evidence/anchors
-      AGENTDANCE_EGRESS_PROXY_URL: http://egress-proxy:8080
-      AGENTDANCE_PROVIDER_ALLOWED_HOSTS: api.openai.com,api.anthropic.com,generativelanguage.googleapis.com
-      AGENTDANCE_TOOL_ALLOWED_HOSTS: api.openai.com
-      AGENTDANCE_OTEL_SERVICE_NAME: agentdance-qualification
-      AGENTDANCE_DOCS_ENABLED: "true"
+      AIFENCE_GUARD_ENVIRONMENT: staging
+      AIFENCE_GUARD_PUBLIC_BASE_URL: https://aifence:8080
+      AIFENCE_GUARD_SOURCE_CODE_URL: https://github.com/AIFENCE/AIFENCE/tree/v1.0.0-rc.5
+      AIFENCE_GUARD_COMMERCIAL_LICENSE_URL: https://github.com/AIFENCE/AIFENCE/blob/main/COMMERCIAL-LICENSE.md
+      AIFENCE_GUARD_DATABASE_URL: postgresql+psycopg://aifence_guard_app:qualification-only@postgres:5432/aifence
+      AIFENCE_GUARD_RUNTIME_ROLE: control-plane
+      AIFENCE_GUARD_AUTO_CREATE_SCHEMA: "false"
+      AIFENCE_GUARD_SIGNING_PRIVATE_KEY_FILE: /run/aifence/signing-private.pem
+      AIFENCE_GUARD_SIGNING_PUBLIC_KEY_FILE: /run/aifence/signing-public.pem
+      AIFENCE_GUARD_MASTER_KEY_B64_FILE: /run/aifence/master-key.b64
+      AIFENCE_GUARD_API_KEY_PEPPER_FILE: /run/aifence/api-key-pepper
+      AIFENCE_GUARD_TLS_CERT_FILE: /run/aifence/tls.crt
+      AIFENCE_GUARD_TLS_KEY_FILE: /run/aifence/tls.key
+      AIFENCE_GUARD_CLAMAV_HOST: clamav
+      AIFENCE_GUARD_CLAMAV_REQUIRED: "true"
+      AIFENCE_GUARD_DISPATCH_MODE: async
+      AIFENCE_GUARD_ARTIFACT_STORE_BACKEND: s3
+      AIFENCE_GUARD_ARTIFACT_S3_ENDPOINT: http://minio:9000
+      AIFENCE_GUARD_ARTIFACT_S3_BUCKET: aifence-artifacts
+      AIFENCE_GUARD_ARTIFACT_S3_ACCESS_KEY: aifence
+      AIFENCE_GUARD_ARTIFACT_S3_SECRET_KEY: qualification-secret-change-me
+      AIFENCE_GUARD_AUDIT_ANCHOR_BACKEND: file
+      AIFENCE_GUARD_AUDIT_ANCHOR_DIRECTORY: /evidence/anchors
+      AIFENCE_GUARD_EGRESS_PROXY_URL: http://egress-proxy:8080
+      AIFENCE_GUARD_PROVIDER_ALLOWED_HOSTS: api.openai.com,api.anthropic.com,generativelanguage.googleapis.com
+      AIFENCE_GUARD_TOOL_ALLOWED_HOSTS: api.openai.com
+      AIFENCE_GUARD_OTEL_SERVICE_NAME: aifence-qualification
+      AIFENCE_GUARD_DOCS_ENABLED: "true"
     deploy:
       replicas: 3
     depends_on:
@@ -141,7 +141,7 @@ services:
     tmpfs:
       - /tmp:size=64m,mode=1777
     volumes:
-      - ../../secrets:/run/agentdance:ro
+      - ../../secrets:/run/aifence:ro
       - evidence:/evidence
     security_opt: ["no-new-privileges:true"]
     cap_drop: ["ALL"]
@@ -152,13 +152,13 @@ services:
     command: ["worker"]
     environment:
       <<: *runtime
-      AGENTDANCE_DATABASE_URL: postgresql+psycopg://agentdance_dispatcher:dispatcher-only@postgres:5432/agentdance
-      AGENTDANCE_RUNTIME_ROLE: dispatcher
+      AIFENCE_GUARD_DATABASE_URL: postgresql+psycopg://aifence_guard_dispatcher:dispatcher-only@postgres:5432/aifence
+      AIFENCE_GUARD_RUNTIME_ROLE: dispatcher
     deploy:
       replicas: 3
     restart: on-failure
     depends_on:
-      agentdance:
+      aifence:
         condition: service_started
       create-bucket:
         condition: service_completed_successfully
@@ -168,7 +168,7 @@ services:
     tmpfs:
       - /tmp:size=64m,mode=1777
     volumes:
-      - ../../secrets:/run/agentdance:ro
+      - ../../secrets:/run/aifence:ro
       - evidence:/evidence
     security_opt: ["no-new-privileges:true"]
     cap_drop: ["ALL"]
@@ -179,13 +179,13 @@ services:
     command: ["lifecycle-worker"]
     environment:
       <<: *runtime
-      AGENTDANCE_DATABASE_URL: postgresql+psycopg://agentdance_lifecycle:lifecycle-only@postgres:5432/agentdance
-      AGENTDANCE_RUNTIME_ROLE: lifecycle
+      AIFENCE_GUARD_DATABASE_URL: postgresql+psycopg://aifence_guard_lifecycle:lifecycle-only@postgres:5432/aifence
+      AIFENCE_GUARD_RUNTIME_ROLE: lifecycle
     deploy:
       replicas: 2
     restart: on-failure
     depends_on:
-      agentdance:
+      aifence:
         condition: service_started
       create-bucket:
         condition: service_completed_successfully
@@ -195,7 +195,7 @@ services:
     tmpfs:
       - /tmp:size=64m,mode=1777
     volumes:
-      - ../../secrets:/run/agentdance:ro
+      - ../../secrets:/run/aifence:ro
       - evidence:/evidence
     security_opt: ["no-new-privileges:true"]
     cap_drop: ["ALL"]
@@ -206,19 +206,19 @@ services:
     command: ["anchor-worker"]
     environment:
       <<: *runtime
-      AGENTDANCE_DATABASE_URL: postgresql+psycopg://agentdance_anchor:anchor-only@postgres:5432/agentdance
-      AGENTDANCE_RUNTIME_ROLE: anchor
+      AIFENCE_GUARD_DATABASE_URL: postgresql+psycopg://aifence_guard_anchor:anchor-only@postgres:5432/aifence
+      AIFENCE_GUARD_RUNTIME_ROLE: anchor
     deploy:
       replicas: 2
     restart: on-failure
     depends_on:
-      agentdance:
+      aifence:
         condition: service_started
     read_only: true
     tmpfs:
       - /tmp:size=64m,mode=1777
     volumes:
-      - ../../secrets:/run/agentdance:ro
+      - ../../secrets:/run/aifence:ro
       - evidence:/evidence
     security_opt: ["no-new-privileges:true"]
     cap_drop: ["ALL"]

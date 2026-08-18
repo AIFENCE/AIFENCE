@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ from .config import Settings
 from .crypto import EnvelopeCipher, SigningKey, SigningProvider, build_signing_provider
 from .db import Base, create_database_engine, create_session_factory
 from .dispatcher import DispatchWorker
-from .errors import AgentDanceError, RateLimitError
+from .errors import AifenceError, RateLimitError
 from .key_management import build_managed_cipher
 from .lifecycle import TenantLifecycleWorker
 from .metrics import MetricsMiddleware
@@ -39,7 +39,7 @@ from .middleware import (
 )
 from .models import SigningPublicKey
 from .policy import PolicyEngine, load_baseline_policy
-from .service import AgentDanceService
+from .service import AifenceService
 from .telemetry import configure_telemetry
 from .tenant_crypto import TenantCryptography
 
@@ -106,7 +106,7 @@ def create_app(
     else:
         artifact_store = FileArtifactStore(settings.artifact_store_path)
     tenant_crypto = TenantCryptography(cipher, settings)
-    service = AgentDanceService(
+    service = AifenceService(
         settings, signing_key, cipher, policy_engine, clamav,
         artifact_store=artifact_store, tenant_crypto=tenant_crypto,
     )
@@ -223,8 +223,8 @@ def create_app(
         )
     app.include_router(router)
 
-    @app.exception_handler(AgentDanceError)
-    async def agentdance_error_handler(request: Request, exc: AgentDanceError) -> JSONResponse:
+    @app.exception_handler(AifenceError)
+    async def aifence_guard_error_handler(request: Request, exc: AifenceError) -> JSONResponse:
         headers: dict[str, str] = {}
         if isinstance(exc, RateLimitError) and "retry_after" in exc.details:
             headers["Retry-After"] = str(exc.details["retry_after"])
@@ -280,16 +280,16 @@ def create_app(
         )
         info = schema.setdefault("info", {})
         info["license"] = {"name": "Apache License 2.0", "identifier": "Apache-2.0"}
-        info["x-agentdance-server-license"] = "AGPL-3.0-only OR commercial"
-        info["x-agentdance-source-code"] = settings.source_code_url
-        info["x-agentdance-commercial-license"] = settings.commercial_license_url
+        info["x-aifence-server-license"] = "AGPL-3.0-only OR commercial"
+        info["x-aifence-source-code"] = settings.source_code_url
+        info["x-aifence-commercial-license"] = settings.commercial_license_url
         components = schema.setdefault("components", {})
         security_schemes = components.setdefault("securitySchemes", {})
-        security_schemes["AgentDanceBearer"] = {
+        security_schemes["AifenceBearer"] = {
             "type": "http",
             "scheme": "bearer",
             "bearerFormat": "adk_<key-id>.<secret>",
-            "description": "AGENTDANCE API key, optionally bound to an immutable agent manifest, workload, instance, and principal.",
+            "description": "AIFENCE API key, optionally bound to an immutable agent manifest, workload, instance, and principal.",
         }
         security_schemes["MutualTLS"] = {
             "type": "mutualTLS",
@@ -302,7 +302,7 @@ def create_app(
             "description": "A SPIFFE ID asserted by a mutually authenticated, trusted workload-identity proxy. Direct Internet callers must not be able to set this header.",
         }
         schema["security"] = [
-            {"AgentDanceBearer": [], "MutualTLS": []},
+            {"AifenceBearer": [], "MutualTLS": []},
             {"SPIFFEWorkload": []},
         ]
         schema["servers"] = [{"url": settings.public_base_url}]
@@ -345,7 +345,7 @@ def create_app(
                 if method.lower() not in {"get", "post", "put", "patch", "delete"} or not isinstance(operation, dict):
                     continue
                 if path not in {"/health/live", "/health/ready", "/source"}:
-                    operation["security"] = [{"AgentDanceBearer": [], "MutualTLS": []}, {"SPIFFEWorkload": []}]
+                    operation["security"] = [{"AifenceBearer": [], "MutualTLS": []}, {"SPIFFEWorkload": []}]
                     responses = operation.setdefault("responses", {})
                     for code, response in common_errors.items():
                         responses.setdefault(code, response)
@@ -357,7 +357,7 @@ def create_app(
                 operation.setdefault("parameters", []).append({
                     "name": "X-Request-ID", "in": "header", "required": False,
                     "schema": {"type": "string", "maxLength": 128},
-                    "description": "Caller-provided correlation identifier; AGENTDANCE generates one when omitted.",
+                    "description": "Caller-provided correlation identifier; AIFENCE generates one when omitted.",
                 })
         for public_path in ("/health/live", "/health/ready", "/source"):
             for operation in schema.get("paths", {}).get(public_path, {}).values():

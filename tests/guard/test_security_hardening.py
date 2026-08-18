@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -92,7 +92,7 @@ def test_delegated_api_keys_cannot_escalate_or_outlive_parent(client) -> None:
 def test_policy_requires_independent_activation(client) -> None:
     test_client, _, publisher = client
     document = {
-        "spec_version": "agentdance.policy.v1",
+        "spec_version": "aifence.policy.v1",
         "version": "separated-duties-1",
         "default": {
             "outcome": "require_approval",
@@ -310,9 +310,9 @@ def test_database_rate_limit_enforces_across_requests(tmp_path, monkeypatch) -> 
     )
     app = create_app(settings, SigningKey.ephemeral_for_tests())
     with TestClient(app) as test_client:
-        first = test_client.get("/.well-known/agentdance.json")
-        second = test_client.get("/.well-known/agentdance.json")
-        limited = test_client.get("/.well-known/agentdance.json")
+        first = test_client.get("/.well-known/aifence.json")
+        second = test_client.get("/.well-known/aifence.json")
+        limited = test_client.get("/.well-known/aifence.json")
     app.state.engine.dispose()
 
     assert first.status_code == 200

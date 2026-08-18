@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Auditable BizIQ benchmark lifecycle: prepare -> capture -> blind -> lock -> analyze."""
+"""Auditable AIFENCE benchmark lifecycle: prepare -> capture -> blind -> lock -> analyze."""
 from __future__ import annotations
 import argparse,csv,hashlib,json,random,statistics,math,shutil
 from pathlib import Path
@@ -24,14 +24,14 @@ def stage_prepare(args):
     rng=random.Random(args.seed); jobs=[]; blind_key=[]
     for case in cases:
         cid=case['id']
-        for condition in ['control','biziq']:
+        for condition in ['control','aifence']:
             blind_id=f"B{rng.randrange(10**9,10**10)}"
             jobs.append({'job_id':f'{cid}:{condition}','case_id':cid,'condition':condition,'prompt':prompt_of(case),'artifact_contracts':case.get('artifact_contracts',[]),'evaluation_emphasis':case.get('evaluation_emphasis',[])})
             blind_key.append({'blind_id':blind_id,'case_id':cid,'condition':condition,'job_id':f'{cid}:{condition}','category':case.get('category','unclassified'),'split':case.get('split','unspecified'),'evaluation_emphasis':case.get('evaluation_emphasis',[])})
     rng.shuffle(jobs); rng.shuffle(blind_key)
     dump(out/'generation_jobs.json',{'run_id':args.run_id,'jobs':jobs})
     dump(out/'private'/'blind_key.json',{'run_id':args.run_id,'items':blind_key})
-    run={'run_id':args.run_id,'stage':'prepared','case_count':len(cases),'conditions':['control','biziq'],'hashes':{'cases':sha(args.cases),'generation_jobs':sha(out/'generation_jobs.json'),'blind_key':sha(out/'private'/'blind_key.json')},'artifacts':[],'score_lock':None,'notes':['Generation jobs are explicit and condition-labelled; judge-facing material is produced only by the blind stage.','No artifact generation is implied by preparation.']}
+    run={'run_id':args.run_id,'stage':'prepared','case_count':len(cases),'conditions':['control','aifence'],'hashes':{'cases':sha(args.cases),'generation_jobs':sha(out/'generation_jobs.json'),'blind_key':sha(out/'private'/'blind_key.json')},'artifacts':[],'score_lock':None,'notes':['Generation jobs are explicit and condition-labelled; judge-facing material is produced only by the blind stage.','No artifact generation is implied by preparation.']}
     dump(out/'run_state.json',run);print(out/'run_state.json')
 
 def stage_capture(args):
@@ -96,21 +96,21 @@ def stage_analyze(args):
         meta=km[bid];pairs.setdefault(meta['case_id'],{})[meta['condition']]=s
     deltas=[];dims={d:[] for d in D};wins=losses=ties=0
     for cid,pair in pairs.items():
-        if not {'control','biziq'}<=set(pair):continue
-        d=pair['biziq']['overall_100']-pair['control']['overall_100'];deltas.append(d);wins+=d>0;losses+=d<0;ties+=d==0
-        for k in D:dims[k].append(pair['biziq'][k]-pair['control'][k])
+        if not {'control','aifence'}<=set(pair):continue
+        d=pair['aifence']['overall_100']-pair['control']['overall_100'];deltas.append(d);wins+=d>0;losses+=d<0;ties+=d==0
+        for k in D:dims[k].append(pair['aifence'][k]-pair['control'][k])
     sd=statistics.stdev(deltas) if len(deltas)>1 else 0;effect=(statistics.mean(deltas)/sd if sd else None)
     pref=[(r.get('pairwise_preference') or '').strip().lower() for r in rows if (r.get('pairwise_preference') or '').strip()]
-    family={};split_deltas={};floor_failures={'control':0,'biziq':0};floor_total={'control':0,'biziq':0}
+    family={};split_deltas={};floor_failures={'control':0,'aifence':0};floor_total={'control':0,'aifence':0}
     for cid,pair in pairs.items():
-        if not {'control','biziq'}<=set(pair):continue
+        if not {'control','aifence'}<=set(pair):continue
         meta=next((v for v in km.values() if v['case_id']==cid),{})
-        delta=pair['biziq']['overall_100']-pair['control']['overall_100']
+        delta=pair['aifence']['overall_100']-pair['control']['overall_100']
         family.setdefault(meta.get('category','unclassified'),[]).append(delta);split_deltas.setdefault(meta.get('split','unspecified'),[]).append(delta)
-        for cond in ['control','biziq']:
+        for cond in ['control','aifence']:
             floor_total[cond]+=1
             if pair[cond]['overall_100'] < args.floor*10 or any(pair[cond][d] < args.floor for d in D): floor_failures[cond]+=1
-    summary={'pairs':len(deltas),'mean_delta':round(statistics.mean(deltas),3) if deltas else None,'median_delta':round(statistics.median(deltas),3) if deltas else None,'mean_delta_ci95':bootstrap_ci(deltas,statistics.mean),'median_delta_ci95':bootstrap_ci(deltas,statistics.median),'biziq_wins':wins,'control_wins':losses,'ties':ties,'paired_effect_size':round(effect,3) if effect is not None else None,'dimensions':{d:{'mean_delta':round(statistics.mean(v),3) if v else None,'wins':sum(x>0 for x in v),'losses':sum(x<0 for x in v),'ties':sum(x==0 for x in v)} for d,v in dims.items()},'artifact_family_deltas':{k:round(statistics.mean(v),3) for k,v in family.items()},'split_deltas':{k:round(statistics.mean(v),3) for k,v in split_deltas.items()},'floor':args.floor,'floor_failures':{k:{'failures':floor_failures[k],'total':floor_total[k],'rate':round(floor_failures[k]/floor_total[k],3) if floor_total[k] else None} for k in floor_failures},'judge_agreement':judge_agreement(rows),'pairwise_preference_counts':{x:pref.count(x) for x in sorted(set(pref))},'score_file_sha256':sha(score_path)}
+    summary={'pairs':len(deltas),'mean_delta':round(statistics.mean(deltas),3) if deltas else None,'median_delta':round(statistics.median(deltas),3) if deltas else None,'mean_delta_ci95':bootstrap_ci(deltas,statistics.mean),'median_delta_ci95':bootstrap_ci(deltas,statistics.median),'aifence_quality_wins':wins,'control_wins':losses,'ties':ties,'paired_effect_size':round(effect,3) if effect is not None else None,'dimensions':{d:{'mean_delta':round(statistics.mean(v),3) if v else None,'wins':sum(x>0 for x in v),'losses':sum(x<0 for x in v),'ties':sum(x==0 for x in v)} for d,v in dims.items()},'artifact_family_deltas':{k:round(statistics.mean(v),3) for k,v in family.items()},'split_deltas':{k:round(statistics.mean(v),3) for k,v in split_deltas.items()},'floor':args.floor,'floor_failures':{k:{'failures':floor_failures[k],'total':floor_total[k],'rate':round(floor_failures[k]/floor_total[k],3) if floor_total[k] else None} for k in floor_failures},'judge_agreement':judge_agreement(rows),'pairwise_preference_counts':{x:pref.count(x) for x in sorted(set(pref))},'score_file_sha256':sha(score_path)}
     out=Path(args.out);out.mkdir(parents=True,exist_ok=True);dump(out/'statistical_summary.json',summary);print(json.dumps(summary,indent=2))
 
 ap=argparse.ArgumentParser();sub=ap.add_subparsers(dest='cmd',required=True)

@@ -13,15 +13,15 @@ pip install ./sdks/python
 Published packages will use:
 
 ```bash
-pip install agentdance-client
+pip install aifence-client
 ```
 
 ## Usage
 
 ```python
-from agentdance_client import AgentDanceClient
+from aifence_client import AifenceClient
 
-with AgentDanceClient(
+with AifenceClient(
     "https://aifence.example.com/guard",
     api_key="replace-with-secret-manager-value",
 ) as client:

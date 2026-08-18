@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -116,7 +116,7 @@ class TenantLifecycleWorker:
                 rows = session.execute(
                     text(
                         "SELECT job_id, tenant_id, fencing_token FROM "
-                        "agentdance_claim_lifecycle(:worker_id, :batch_size, :lease_seconds)"
+                        "aifence_guard_claim_lifecycle(:worker_id, :batch_size, :lease_seconds)"
                     ),
                     {
                         "worker_id": self.worker_id,
@@ -353,7 +353,7 @@ class TenantLifecycleWorker:
                 self._write_zip(archive, entries, f"content/artifacts/{artifact.id}", content)
             verification = verify_tenant_chain(session, self.service.signing_key, job.tenant_id)
             manifest = {
-                "format": "agentdance.tenant-export.v1",
+                "format": "aifence.tenant-export.v1",
                 "tenant_id": job.tenant_id,
                 "job_id": job.id,
                 "created_at": datetime.now(UTC).isoformat(),
@@ -499,7 +499,7 @@ class TenantLifecycleWorker:
                 tenants = [
                     str(row[0])
                     for row in session.execute(
-                        text("SELECT tenant_id FROM agentdance_list_maintenance_tenants(:limit)"),
+                        text("SELECT tenant_id FROM aifence_guard_list_maintenance_tenants(:limit)"),
                         {"limit": self.settings.lifecycle_batch_size},
                     ).all()
                 ]

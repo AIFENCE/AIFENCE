@@ -88,7 +88,7 @@ def main() -> None:
     rng = random.Random(args.seed)
     valid = [_vector(f"diff-{i}", _wire(rng, i)) for i in range(args.iterations)]
     invalid = [{"name": f"invalid-{i}", "wire": _invalid(valid[i]["wire"], i)} for i in range(args.iterations)]
-    suite = {"suite": "sage-differential/0.2", "protocol": "sage/0.2", "wire_version": 2, "valid": valid, "invalid": invalid}
+    suite = {"suite": "aifence-differential/0.2", "protocol": "aifence/0.2", "wire_version": 2, "valid": valid, "invalid": invalid}
     with tempfile.TemporaryDirectory() as tmp:
         path = Path(tmp) / "vectors.json"
         path.write_text(json.dumps(suite, separators=(",", ":")))

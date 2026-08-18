@@ -19,7 +19,7 @@ def test_bus_mounted_and_alive(client: TestClient) -> None:
 
 
 def test_bus_shares_core_database_url(tmp_path) -> None:
-    # register() pins SAGE to the shared database URL before importing the app.
+    # register() pins AIFENCE to the shared database URL before importing the app.
     # Use a fresh tmp database so guard's ephemeral signing key never collides.
     import os
 
@@ -28,7 +28,7 @@ def test_bus_shares_core_database_url(tmp_path) -> None:
 
     url = f"sqlite+pysqlite:///{tmp_path/'share_probe.db'}"
     _create(_CS(database_url=url))
-    assert os.environ["SAGE_DATABASE_URL"] == url
+    assert os.environ["AIFENCE_BUS_DATABASE_URL"] == url
 
 
 def test_bus_models_attached_to_shared_base(client: TestClient) -> None:

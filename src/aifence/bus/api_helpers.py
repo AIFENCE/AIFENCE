@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from .db_models import Concept
-from .schemas import BusMessageResponse, ConceptResponse, EncodeRequest, TraceContext
+from .schemas import BusMesaifenceResponse, ConceptResponse, EncodeRequest, TraceContext
 
 
 def _apply_trace_headers(req: EncodeRequest, traceparent: str | None, tracestate: str | None) -> None:
@@ -38,8 +38,8 @@ def concept_response(c: Concept, db: Session | None = None) -> ConceptResponse:
         replacement_code=replacement_code,
     )
 
-def bus_response(item: Any) -> BusMessageResponse:
-    return BusMessageResponse(
+def bus_response(item: Any) -> BusMesaifenceResponse:
+    return BusMesaifenceResponse(
         message_id=item.id,
         packet_id=item.packet_id,
         sender=item.sender,

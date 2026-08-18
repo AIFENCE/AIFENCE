@@ -17,7 +17,7 @@ Purpose: turn benchmark preparation and scoring into an auditable lifecycle rath
 
 ```text
 case corpus
-→ control/BizIQ generation manifest
+→ control/AIFENCE generation manifest
 → artifact capture + hashes
 → render normalization
 → automated evidence bundle

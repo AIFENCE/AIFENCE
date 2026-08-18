@@ -22,7 +22,7 @@ For an active capability in this domain:
 2. Follow its **Procedure** in order; later task changes that invalidate inputs require re-evaluation.
 3. Do not mark it passed until its **Evidence Gate** is supported by observable evidence.
 4. If the gate cannot pass, execute **Recovery** and keep the dependent result provisional or blocked.
-5. Use the **Regression** clause when changing BizIQ or evaluating a real-world failure.
+5. Use the **Regression** clause when changing AIFENCE or evaluating a real-world failure.
 
 ## Creation-type classifier
 <!-- id: controls.capability.creation-type-classifier -->

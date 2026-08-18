@@ -51,16 +51,16 @@ def test_a2a_v1_message_and_agent_card_binding():
     )
     assert card["supportedInterfaces"][0]["protocolVersion"] == "1.0"
     assert card["capabilities"]["extensions"][0]["params"]["wireVersion"] == 2
-    assert card["defaultInputModes"] == ["application/vnd.sage.packet+json"]
-    assert card["defaultOutputModes"] == ["application/vnd.sage.packet+json"]
-    assert card["skills"][0]["id"] == "sage-semantic-handoff"
+    assert card["defaultInputModes"] == ["application/vnd.aifence.packet+json"]
+    assert card["defaultOutputModes"] == ["application/vnd.aifence.packet+json"]
+    assert card["skills"][0]["id"] == "aifence-semantic-handoff"
 
 
 def test_protocol_api_reports_frozen_v02_and_validates_vectors():
     with TestClient(app) as client:
         info = client.get("/v1/protocol")
         assert info.status_code == 200
-        assert info.json()["protocol"] == "sage/0.2"
+        assert info.json()["protocol"] == "aifence/0.2"
         assert info.json()["wire_version"] == 2
         tck = client.get("/v1/protocol/tck")
         assert tck.status_code == 200
@@ -84,10 +84,10 @@ def test_packaged_wire_schema_matches_reference_model():
 
 
 def test_v02_is_the_only_supported_protocol_and_wire():
-    from aifence.bus.protocol_spec import SAGE_SUPPORTED_PROTOCOLS, SAGE_SUPPORTED_WIRES
+    from aifence.bus.protocol_spec import AIFENCE_SUPPORTED_PROTOCOLS, AIFENCE_SUPPORTED_WIRES
 
-    assert SAGE_SUPPORTED_PROTOCOLS == ("sage/0.2",)
-    assert SAGE_SUPPORTED_WIRES == (2,)
+    assert AIFENCE_SUPPORTED_PROTOCOLS == ("aifence/0.2",)
+    assert AIFENCE_SUPPORTED_WIRES == (2,)
     with pytest.raises(ValueError):
         validate_wire_v2({"v": 99, "c": "global", "a": "report", "p": {}})
 
@@ -96,10 +96,10 @@ def test_packaged_protocol_spec_and_protobuf_binding_present():
     from importlib.resources import files
 
     root = files("aifence.bus").joinpath("spec")
-    spec = root.joinpath("SAGE-0.2.md").read_text(encoding="utf-8")
-    proto = root.joinpath("sage-v0.2.proto").read_text(encoding="utf-8")
+    spec = root.joinpath("AIFENCE-0.2.md").read_text(encoding="utf-8")
+    proto = root.joinpath("aifence-v0.2.proto").read_text(encoding="utf-8")
     assert "initial protocol baseline" in spec
-    assert 'package sage.v02;' in proto
+    assert 'package aifence.v02;' in proto
     assert 'uint32 wire_version = 1; // MUST be 2.' in proto
     assert 'string protocol = 1' in proto
     pattern_schema = json.loads(root.joinpath('schemas/pattern-v0.2.schema.json').read_text(encoding='utf-8'))

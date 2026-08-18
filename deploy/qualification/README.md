@@ -1,4 +1,4 @@
-# AGENTDANCE qualification stack
+# AIFENCE qualification stack
 
 This stack exercises the RC3 topology with PostgreSQL, three API replicas, three independent dispatch workers, MinIO object storage, ClamAV, and a controlled HTTP CONNECT egress proxy.
 

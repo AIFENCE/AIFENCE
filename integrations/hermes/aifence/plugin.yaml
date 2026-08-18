@@ -1,0 +1,5 @@
+name: aifence
+version: "0.2.7"
+description: Vendor-neutral AIFENCE semantic bus with automatic context injection and structured handoff.
+requires_env:
+  - AIFENCE_BUS_URL

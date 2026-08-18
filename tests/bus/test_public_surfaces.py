@@ -7,7 +7,7 @@ from aifence.bus.config import Settings
 from aifence.bus.db import SessionLocal
 from aifence.bus.db_models import Contradiction
 from aifence.bus.main import app
-from aifence.bus.runtime import SageRuntime
+from aifence.bus.runtime import AifenceRuntime
 
 
 def test_memory_state_and_concept_rest_workflows() -> None:
@@ -244,7 +244,7 @@ def test_fact_pubsub_routing_and_operational_rest_workflows() -> None:
 
 def test_runtime_facade_covers_transport_memory_bus_and_semantics() -> None:
     workspace = "runtime-contract"
-    runtime = SageRuntime(Settings(auth_required=False, database_url="sqlite://"))
+    runtime = AifenceRuntime(Settings(auth_required=False, database_url="sqlite://"))
 
     sent = runtime.send(
         sender="planner",
@@ -439,7 +439,7 @@ def test_learning_calibration_latent_and_receiver_rest_workflows() -> None:
                 "workspace": workspace,
                 "known_codes": [],
                 "capabilities": {
-                    "protocol_versions": ["sage/0.2"],
+                    "protocol_versions": ["aifence/0.2"],
                     "max_packet_bytes": 4096,
                     "supports_patterns": False,
                 },
@@ -458,7 +458,7 @@ def test_learning_calibration_latent_and_receiver_rest_workflows() -> None:
 
 
 def test_runtime_conformance_facade() -> None:
-    report = SageRuntime(Settings(auth_required=False, database_url="sqlite://")).conform(
+    report = AifenceRuntime(Settings(auth_required=False, database_url="sqlite://")).conform(
         fuzz_iterations=3
     )
     assert report["ok"] is True

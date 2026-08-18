@@ -9,12 +9,12 @@ Last-Updated: 2026-08-10
 # Domain-Specific Materialization & Artifact Naturalization
 <!-- id: materialization-closure.root -->
 
-Core 1.8.2 closes the repeated Stable-2.0 Holdout-2 failure cluster in which an artifact could satisfy the shape of a compiler/evidence contract while remaining shallow, generic, or visibly written in internal BizIQ/QA vocabulary. This module is fail-closed for substantial high-fidelity artifacts and supplements, rather than replaces, family depth, truth boundaries, completeness, accessibility, and artifact contracts.
+Core 1.8.2 closes the repeated Stable-2.0 Holdout-2 failure cluster in which an artifact could satisfy the shape of a compiler/evidence contract while remaining shallow, generic, or visibly written in internal AIFENCE/QA vocabulary. This module is fail-closed for substantial high-fidelity artifacts and supplements, rather than replaces, family depth, truth boundaries, completeness, accessibility, and artifact contracts.
 
 # Naturalization Boundary
 <!-- id: materialization-closure.naturalization -->
 
-Production-facing copy, labels, headings, controls, diagrams, slides, worksheets, CLI help, and customer-visible annotations MUST be written in the vocabulary of the user, business, workflow, and artifact. Internal orchestration terms are implementation metadata, not user-facing content. Unless the user explicitly asks for BizIQ process documentation, production artifacts MUST NOT expose labels such as `P0`, `P1`, `decision depth closure`, `truth boundary`, `feature depth`, `quality gate`, `genericity`, `artifact contract`, `evidence plan`, `compiler`, `QA gate`, `acceptance ledger`, or equivalent internal control language.
+Production-facing copy, labels, headings, controls, diagrams, slides, worksheets, CLI help, and customer-visible annotations MUST be written in the vocabulary of the user, business, workflow, and artifact. Internal orchestration terms are implementation metadata, not user-facing content. Unless the user explicitly asks for AIFENCE process documentation, production artifacts MUST NOT expose labels such as `P0`, `P1`, `decision depth closure`, `truth boundary`, `feature depth`, `quality gate`, `genericity`, `artifact contract`, `evidence plan`, `compiler`, `QA gate`, `acceptance ledger`, or equivalent internal control language.
 
 Internal requirements MUST be translated into natural artifact language. For example, an internal requirement for a secondary decision path becomes a concrete comparison, qualification, preparation, support, or evaluation journey appropriate to the domain; it does not become a section titled "Secondary Decision Path".
 

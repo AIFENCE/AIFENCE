@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -504,7 +504,7 @@ def _request_with_client(headers: list[tuple[bytes, bytes]], host: str) -> Reque
         "query_string": b"",
         "headers": headers,
         "client": (host, 12345),
-        "server": ("agentdance.example", 443),
+        "server": ("aifence.example", 443),
     })
 
 
@@ -561,7 +561,7 @@ def test_s3_artifact_store_uses_immutable_signed_requests() -> None:
     fake = FakeS3()
     store = S3ArtifactStore(
         endpoint="https://objects.example",
-        bucket="agentdance-evidence",
+        bucket="aifence-evidence",
         region="us-east-1",
         kms_key_id="kms-artifacts",
         delete_enabled=False,
@@ -592,9 +592,9 @@ def test_operator_console_uses_nonce_csp(client) -> None:
     object.__setattr__(app.state.settings, "operator_console_enabled", True)
     object.__setattr__(app.state.settings, "trusted_proxy_cidrs", ("127.0.0.0/8",))
     headers = {
-        "X-Agentdance-Tenant-ID": tenant_id,
+        "X-Aifence-Tenant-ID": tenant_id,
         "X-Auth-Request-Email": "security@example.test",
-        "X-Auth-Request-Groups": "agentdance-operators",
+        "X-Auth-Request-Groups": "aifence-operators",
     }
     response = test_client.get("/operator", headers=headers)
     assert response.status_code == 200, response.text

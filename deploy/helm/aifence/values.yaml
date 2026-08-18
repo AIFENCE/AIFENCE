@@ -144,7 +144,7 @@ environment:
   signingVaultMount: transit
   signingVaultKeyName: aifence-signing
   operatorConsoleEnabled: false
-  operatorTenantHeader: X-Agentdance-Tenant-ID
+  operatorTenantHeader: X-Aifence-Tenant-ID
   operatorIdentityHeader: X-Auth-Request-Email
   operatorGroupsHeader: X-Auth-Request-Groups
   operatorAllowedGroups:

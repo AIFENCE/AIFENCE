@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -86,9 +86,9 @@ def issue_capability(
     arguments_hash = hash_object(arguments)
     constraints = dict(decision.constraints)
     claims = {
-        "iss": "agentdance",
+        "iss": "aifence",
         "sub": capability_id,
-        "aud": "agentdance-tool-broker",
+        "aud": "aifence-tool-broker",
         "tenant_id": tenant_id,
         "decision_id": decision.id,
         "agent_id": decision.agent_id,
@@ -146,7 +146,7 @@ def consume_capability(
     try:
         claims = signing_key.verify_token(
             token,
-            audience="agentdance-tool-broker",
+            audience="aifence-tool-broker",
             required=(
                 "iss", "sub", "aud", "exp", "nbf", "iat", "jti", "tenant_id",
                 "decision_id", "agent_id", "trace_id", "tool", "operation", "resources",

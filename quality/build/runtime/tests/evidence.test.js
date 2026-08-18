@@ -22,33 +22,33 @@ function fixture(dir,request='Create a payments operations dashboard.'){
 }
 
 test('direct exhaustive control and mobile-task evidence can satisfy release-critical plan',()=>{
-  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'biziq-evidence-'));try{const x=fixture(dir);const result=validate({target:'evidence',file:x.evidenceFile,plan:x.planFile,interactionManifest:x.manifestFile});assert.equal(result.ok,true,result.stderr||result.stdout);}finally{fs.rmSync(dir,{recursive:true,force:true});}
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'aifence-evidence-'));try{const x=fixture(dir);const result=validate({target:'evidence',file:x.evidenceFile,plan:x.planFile,interactionManifest:x.manifestFile});assert.equal(result.ok,true,result.stderr||result.stdout);}finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
 
 test('required interaction closure fails without manifest',()=>{
-  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'biziq-evidence-'));try{const x=fixture(dir);const result=validate({target:'evidence',file:x.evidenceFile,plan:x.planFile});assert.equal(result.ok,false);assert.match(result.stdout,/requires interaction-closure manifest/);}finally{fs.rmSync(dir,{recursive:true,force:true});}
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'aifence-evidence-'));try{const x=fixture(dir);const result=validate({target:'evidence',file:x.evidenceFile,plan:x.planFile});assert.equal(result.ok,false);assert.match(result.stdout,/requires interaction-closure manifest/);}finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
 
 test('dead enabled controls fail exhaustive closure',()=>{
-  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'biziq-evidence-'));try{const x=fixture(dir);const records=JSON.parse(fs.readFileSync(x.evidenceFile));const ctrl=records.find(r=>r.evidence_type==='interactive control closure');ctrl.details.exercisedControlIds=['period-30d'];ctrl.details.deadControlIds=['more-actions'];fs.writeFileSync(x.evidenceFile,JSON.stringify(records));const result=validate({target:'evidence',file:x.evidenceFile,plan:x.planFile,interactionManifest:x.manifestFile});assert.equal(result.ok,false);assert.match(result.stdout,/dead enabled controls block PASS/);}finally{fs.rmSync(dir,{recursive:true,force:true});}
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'aifence-evidence-'));try{const x=fixture(dir);const records=JSON.parse(fs.readFileSync(x.evidenceFile));const ctrl=records.find(r=>r.evidence_type==='interactive control closure');ctrl.details.exercisedControlIds=['period-30d'];ctrl.details.deadControlIds=['more-actions'];fs.writeFileSync(x.evidenceFile,JSON.stringify(records));const result=validate({target:'evidence',file:x.evidenceFile,plan:x.planFile,interactionManifest:x.manifestFile});assert.equal(result.ok,false);assert.match(result.stdout,/dead enabled controls block PASS/);}finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
 
 test('mobile task loss at 320 fails even when generic responsive evidence passes',()=>{
-  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'biziq-evidence-'));try{const x=fixture(dir);const records=JSON.parse(fs.readFileSync(x.evidenceFile));const mobile=records.find(r=>r.evidence_type==='mobile task preservation');mobile.details.taskResults=mobile.details.taskResults.map(r=>r.viewport===320?{...r,result:'FAIL',completionReachable:false,recoveryStatus:'FAIL'}:r);fs.writeFileSync(x.evidenceFile,JSON.stringify(records));const result=validate({target:'evidence',file:x.evidenceFile,plan:x.planFile,interactionManifest:x.manifestFile});assert.equal(result.ok,false);assert.match(result.stdout,/mobile task did not preserve/);}finally{fs.rmSync(dir,{recursive:true,force:true});}
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'aifence-evidence-'));try{const x=fixture(dir);const records=JSON.parse(fs.readFileSync(x.evidenceFile));const mobile=records.find(r=>r.evidence_type==='mobile task preservation');mobile.details.taskResults=mobile.details.taskResults.map(r=>r.viewport===320?{...r,result:'FAIL',completionReachable:false,recoveryStatus:'FAIL'}:r);fs.writeFileSync(x.evidenceFile,JSON.stringify(records));const result=validate({target:'evidence',file:x.evidenceFile,plan:x.planFile,interactionManifest:x.manifestFile});assert.equal(result.ok,false);assert.match(result.stdout,/mobile task did not preserve/);}finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
 
 test('inferred PASS evidence is rejected',()=>{
-  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'biziq-evidence-'));try{const evidenceFile=path.join(dir,'evidence.json');fs.writeFileSync(evidenceFile,JSON.stringify({artifact_id:'artifact-1',profile:'browser',evidence_type:'viewport captures',result:'PASS',observations:[],artifacts:[],hashes:{},provenance:'inferred'}));const result=validate({target:'evidence',file:evidenceFile});assert.equal(result.ok,false);}finally{fs.rmSync(dir,{recursive:true,force:true});}
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'aifence-evidence-'));try{const evidenceFile=path.join(dir,'evidence.json');fs.writeFileSync(evidenceFile,JSON.stringify({artifact_id:'artifact-1',profile:'browser',evidence_type:'viewport captures',result:'PASS',observations:[],artifacts:[],hashes:{},provenance:'inferred'}));const result=validate({target:'evidence',file:evidenceFile});assert.equal(result.ok,false);}finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
 
 
 test('runtime-discovered control omitted from manifest fails closure',()=>{
-  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'biziq-evidence-'));try{const x=fixture(dir);const records=JSON.parse(fs.readFileSync(x.evidenceFile));const ctrl=records.find(r=>r.evidence_type==='interactive control closure');ctrl.details.discoveredEnabledControlIds.push('undeclared-nav');fs.writeFileSync(x.evidenceFile,JSON.stringify(records));const result=validate({target:'evidence',file:x.evidenceFile,plan:x.planFile,interactionManifest:x.manifestFile});assert.equal(result.ok,false);assert.match(result.stdout,/runtime discovered enabled controls omitted from manifest|evidence references controls absent from manifest/);}finally{fs.rmSync(dir,{recursive:true,force:true});}
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'aifence-evidence-'));try{const x=fixture(dir);const records=JSON.parse(fs.readFileSync(x.evidenceFile));const ctrl=records.find(r=>r.evidence_type==='interactive control closure');ctrl.details.discoveredEnabledControlIds.push('undeclared-nav');fs.writeFileSync(x.evidenceFile,JSON.stringify(records));const result=validate({target:'evidence',file:x.evidenceFile,plan:x.planFile,interactionManifest:x.manifestFile});assert.equal(result.ok,false);assert.match(result.stdout,/runtime discovered enabled controls omitted from manifest|evidence references controls absent from manifest/);}finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
 
 
 test('generation preflight rejects reserved-keyword DOM-global JavaScript syntax failure',()=>{
-  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'biziq-preflight-'));try{
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'aifence-preflight-'));try{
     const html=path.join(dir,'index.html');const runtime=path.join(dir,'runtime.json');
     fs.writeFileSync(html,'<!doctype html><button id="export">Export</button><script>export.onclick=()=>1</script>');
     fs.writeFileSync(runtime,JSON.stringify({provenance:'direct',result:'PASS',document_loaded:true,page_errors:[],console_errors:[],failed_required_resources:[]}));
@@ -57,14 +57,14 @@ test('generation preflight rejects reserved-keyword DOM-global JavaScript syntax
 });
 
 test('generation preflight fails closed when JavaScript has no direct runtime evidence',()=>{
-  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'biziq-preflight-'));try{
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'aifence-preflight-'));try{
     const html=path.join(dir,'index.html');fs.writeFileSync(html,'<!doctype html><button id="x">X</button><script>const xButton=document.getElementById("x");xButton.onclick=()=>document.body.dataset.ok="1";</script>');
     const result=validate({target:'generation-preflight',file:html});assert.equal(result.ok,false);assert.match(result.stdout,/requires direct runtime-preflight evidence/);
   }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });
 
 test('generation preflight rejects clean syntax with direct runtime initialization error',()=>{
-  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'biziq-preflight-'));try{
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'aifence-preflight-'));try{
     const html=path.join(dir,'index.html'),runtime=path.join(dir,'runtime.json');fs.writeFileSync(html,'<!doctype html><script>const ok=1;</script>');
     fs.writeFileSync(runtime,JSON.stringify({provenance:'direct',result:'FAIL',document_loaded:true,page_errors:['ReferenceError: missingSymbol is not defined'],console_errors:[],failed_required_resources:[]}));
     const result=validate({target:'generation-preflight',file:html,plan:runtime});assert.equal(result.ok,false);assert.match(result.stdout,/runtime initialization\/load preflight failed/);
@@ -72,7 +72,7 @@ test('generation preflight rejects clean syntax with direct runtime initializati
 });
 
 test('generation preflight accepts parsed JavaScript with clean direct runtime evidence',()=>{
-  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'biziq-preflight-'));try{
+  const dir=fs.mkdtempSync(path.join(os.tmpdir(),'aifence-preflight-'));try{
     const html=path.join(dir,'index.html'),runtime=path.join(dir,'runtime.json');fs.writeFileSync(html,'<!doctype html><button id="export">Export</button><script>const exportButton=document.getElementById("export");exportButton.onclick=()=>document.body.dataset.ok="1";</script>');
     fs.writeFileSync(runtime,JSON.stringify({provenance:'direct',result:'PASS',document_loaded:true,page_errors:[],console_errors:[],failed_required_resources:[]}));
     const result=validate({target:'generation-preflight',file:html,plan:runtime});assert.equal(result.ok,true,result.stdout+result.stderr);

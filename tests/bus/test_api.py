@@ -22,7 +22,7 @@ def test_negotiation_returns_fingerprint():
         response = client.post("/v1/negotiate", json={"known_codes": []})
         assert response.status_code == 200
         body = response.json()
-        assert body["protocol_version"] == "sage/0.2"
+        assert body["protocol_version"] == "aifence/0.2"
         assert len(body["fingerprint"]) == 24
         assert body["missing_codes"]
 
@@ -31,10 +31,10 @@ def test_negotiation_rejects_non_v02_peer():
     with TestClient(app) as client:
         response = client.post(
             "/v1/negotiate",
-            json={"known_codes": [], "capabilities": {"protocol_versions": ["sage/9.9"]}},
+            json={"known_codes": [], "capabilities": {"protocol_versions": ["aifence/9.9"]}},
         )
         assert response.status_code == 409
-        assert "sage/0.2" in response.json()["detail"]
+        assert "aifence/0.2" in response.json()["detail"]
 
 
 def test_bearer_auth_when_enabled():

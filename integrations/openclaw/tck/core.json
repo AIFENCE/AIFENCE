@@ -1,6 +1,6 @@
 {
-  "suite": "sage-tck/0.2",
-  "protocol": "sage/0.2",
+  "suite": "aifence-tck/0.2",
+  "protocol": "aifence/0.2",
   "wire_version": 2,
   "valid": [
     {

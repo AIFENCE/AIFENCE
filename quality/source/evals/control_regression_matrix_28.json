@@ -196,7 +196,7 @@
     "capability": "Blind Benchmark Protocol",
     "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
     "case": "normal",
-    "requirement": "Evaluate BizIQ efficacy with matched control/BizIQ conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.",
+    "requirement": "Evaluate AIFENCE efficacy with matched control/AIFENCE conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.",
     "expected": "produce a compliant result and observable evidence"
   },
   {
@@ -204,7 +204,7 @@
     "capability": "Blind Benchmark Protocol",
     "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
     "case": "ambiguous",
-    "requirement": "Evaluate BizIQ efficacy with matched control/BizIQ conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.",
+    "requirement": "Evaluate AIFENCE efficacy with matched control/AIFENCE conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.",
     "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
   },
   {
@@ -212,7 +212,7 @@
     "capability": "Blind Benchmark Protocol",
     "domain": "28. Adversarial Critique, Repair, Quality Floors & Benchmarking",
     "case": "failure",
-    "requirement": "Evaluate BizIQ efficacy with matched control/BizIQ conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.",
+    "requirement": "Evaluate AIFENCE efficacy with matched control/AIFENCE conditions, randomized opaque artifact IDs, locked blind scoring, multiple independent evidence sources, and unblinding only after scores are fixed.",
     "expected": "trigger recovery and refuse a false pass"
   },
   {

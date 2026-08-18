@@ -1,3 +1,3 @@
-module github.com/agentdance/agentdance-go
+module github.com/aifence/aifence-go
 
 go 1.23

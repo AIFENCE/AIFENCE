@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from .db_models import ReceiverKnowledge
 from .knowledge import KnowledgeStore
 from .latent import pack_latent, unpack_latent
 from .patterns import PatternStore
-from .protocol_spec import SAGE_PROTOCOL
+from .protocol_spec import AIFENCE_PROTOCOL
 from .schemas import (
     CalibrationRecordRequest,
     CalibrationResponse,
@@ -185,9 +185,9 @@ def negotiate(req: NegotiateRequest, db: Session = Depends(get_db)) -> Negotiate
         req.receiver = enforce_agent_scope(actor=req.receiver, workspace=req.workspace)
     else:
         enforce_agent_scope(actor=None, workspace=req.workspace)
-    if SAGE_PROTOCOL not in req.capabilities.protocol_versions:
-        raise HTTPException(409, f"peer must support {SAGE_PROTOCOL}")
-    protocol = SAGE_PROTOCOL
+    if AIFENCE_PROTOCOL not in req.capabilities.protocol_versions:
+        raise HTTPException(409, f"peer must support {AIFENCE_PROTOCOL}")
+    protocol = AIFENCE_PROTOCOL
     cb_name = req.codebook or settings.codebook
     principal = current_principal()
     if principal.kind == "agent" and cb_name != settings.codebook:

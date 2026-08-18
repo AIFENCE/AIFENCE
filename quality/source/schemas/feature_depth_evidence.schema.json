@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/feature_depth_evidence.schema.json",
+  "$id": "aifence://schemas/feature_depth_evidence.schema.json",
   "type": "object",
   "required": [
     "artifact_id",

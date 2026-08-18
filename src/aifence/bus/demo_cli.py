@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -26,12 +26,12 @@ def run_demo(
 ) -> dict[str, Any]:
     suffix = uuid.uuid4().hex[:10]
     if single_agent:
-        agent = sender or receiver or f"sage-demo-{suffix}"
+        agent = sender or receiver or f"aifence-demo-{suffix}"
         sender_id = agent
         receiver_id = agent
     else:
-        sender_id = sender or f"sage-demo-a-{suffix}"
-        receiver_id = receiver or f"sage-demo-b-{suffix}"
+        sender_id = sender or f"aifence-demo-a-{suffix}"
+        receiver_id = receiver or f"aifence-demo-b-{suffix}"
 
     handoff = _expect_json(
         client,
@@ -103,10 +103,10 @@ def _parse_content(value: str | None) -> dict[str, Any]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Run a visible end-to-end SAGE handoff demo")
-    parser.add_argument("--url", default=os.getenv("SAGE_URL", "http://127.0.0.1:8080"))
-    parser.add_argument("--api-key", default=os.getenv("SAGE_API_KEY"))
-    parser.add_argument("--workspace", default=os.getenv("SAGE_WORKSPACE", "default"))
+    parser = argparse.ArgumentParser(description="Run a visible end-to-end AIFENCE handoff demo")
+    parser.add_argument("--url", default=os.getenv("AIFENCE_BUS_URL", "http://127.0.0.1:8080"))
+    parser.add_argument("--api-key", default=os.getenv("AIFENCE_BUS_API_KEY"))
+    parser.add_argument("--workspace", default=os.getenv("AIFENCE_BUS_WORKSPACE", "default"))
     parser.add_argument("--sender")
     parser.add_argument("--receiver")
     parser.add_argument("--single-agent", action="store_true")
@@ -128,7 +128,7 @@ def main() -> None:
                 receiver=args.receiver,
             )
     except (httpx.HTTPError, RuntimeError, ValueError) as exc:
-        print(f"SAGE demo failed: {exc}", file=sys.stderr)
+        print(f"AIFENCE demo failed: {exc}", file=sys.stderr)
         sys.exit(1)
 
     if args.json_output:
@@ -139,7 +139,7 @@ def main() -> None:
     print(f"Message: {result['message_id']}")
     print("Sent raw application data:")
     print(json.dumps(result["sent"], indent=2, ensure_ascii=False))
-    print("Received decoded SAGE context:")
+    print("Received decoded AIFENCE context:")
     print(json.dumps(result["received"], indent=2, ensure_ascii=False))
     print("[OK] Message acknowledged")
 

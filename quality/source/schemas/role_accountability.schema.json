@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/role_accountability.schema.json",
-  "title": "BizIQ Operational Role Accountability",
+  "$id": "aifence://schemas/role_accountability.schema.json",
+  "title": "AIFENCE Operational Role Accountability",
   "type": "object",
   "additionalProperties": false,
   "required": [

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/operational_evidence.schema.json",
-  "title": "BizIQ Operational Evidence",
+  "$id": "aifence://schemas/operational_evidence.schema.json",
+  "title": "AIFENCE Operational Evidence",
   "type": "object",
   "additionalProperties": false,
   "required": [

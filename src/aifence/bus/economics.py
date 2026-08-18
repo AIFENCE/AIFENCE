@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -39,7 +39,7 @@ class TiktokenCounter:
         try:
             import tiktoken
         except ImportError as exc:  # pragma: no cover
-            raise RuntimeError("install SAGE with the 'bench' extra for tiktoken counting") from exc
+            raise RuntimeError("install AIFENCE with the 'bench' extra for tiktoken counting") from exc
         if encoding:
             self._enc = tiktoken.get_encoding(encoding)
             self.name = f"tiktoken:{encoding}"
@@ -179,7 +179,7 @@ def benchmark_representations(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Score recorded SAGE strategy economics")
+    parser = argparse.ArgumentParser(description="Score recorded AIFENCE strategy economics")
     parser.add_argument("input", help="JSON file containing observations and price")
     args = parser.parse_args()
     payload = json.loads(open(args.input, encoding="utf-8").read())
@@ -192,15 +192,15 @@ if __name__ == "__main__":
     main()
 
 
-def run_sage_economics_benchmark(db: Any, settings: Any, request: Any) -> dict[str, Any]:
+def run_aifence_economics_benchmark(db: Any, settings: Any, request: Any) -> dict[str, Any]:
     """Compare model-token economics for the protocol's required baselines.
 
-    The harness produces raw history, JSON state, state+ref, structural SAGE,
-    SAGE with the current learned codebook, and SAGE with receiver knowledge.
+    The harness produces raw history, JSON state, state+ref, structural AIFENCE,
+    AIFENCE with the current learned codebook, and AIFENCE with receiver knowledge.
     Summary/RAG representations are included only when supplied by a real caller;
-    SAGE never fabricates model or retriever outputs. Task success is caller-observed.
+    AIFENCE never fabricates model or retriever outputs. Task success is caller-observed.
     """
-    from .codec import SageCodec
+    from .codec import AifenceCodec
     from .references import ReferenceStore
     from .schemas import Budget, EncodeRequest
 
@@ -242,7 +242,7 @@ def run_sage_economics_benchmark(db: Any, settings: Any, request: Any) -> dict[s
             "core_codebook": "__benchmark_empty_core__",
         }
     )
-    plain_codec = SageCodec(db, plain_settings)
+    plain_codec = AifenceCodec(db, plain_settings)
     plain_result = plain_codec.encode(
         EncodeRequest(
             **common,
@@ -250,9 +250,9 @@ def run_sage_economics_benchmark(db: Any, settings: Any, request: Any) -> dict[s
             use_receiver_knowledge=False,
         )
     )
-    representations["sage"] = plain_codec.compact(plain_result.packet)
+    representations["aifence"] = plain_codec.compact(plain_result.packet)
 
-    learned_codec = SageCodec(db, settings)
+    learned_codec = AifenceCodec(db, settings)
     learned_result = learned_codec.encode(
         EncodeRequest(
             **common,
@@ -261,9 +261,9 @@ def run_sage_economics_benchmark(db: Any, settings: Any, request: Any) -> dict[s
             use_patterns=False,
         )
     )
-    representations["sage_learned"] = learned_codec.compact(learned_result.packet)
+    representations["aifence_bus_learned"] = learned_codec.compact(learned_result.packet)
 
-    pattern_codec = SageCodec(db, settings)
+    pattern_codec = AifenceCodec(db, settings)
     pattern_result = pattern_codec.encode(
         EncodeRequest(
             **common,
@@ -272,9 +272,9 @@ def run_sage_economics_benchmark(db: Any, settings: Any, request: Any) -> dict[s
             use_patterns=True,
         )
     )
-    representations["sage_patterns"] = pattern_codec.compact(pattern_result.packet)
+    representations["aifence_bus_patterns"] = pattern_codec.compact(pattern_result.packet)
 
-    receiver_codec = SageCodec(db, settings)
+    receiver_codec = AifenceCodec(db, settings)
     receiver_result = receiver_codec.encode(
         EncodeRequest(
             **common,
@@ -282,7 +282,7 @@ def run_sage_economics_benchmark(db: Any, settings: Any, request: Any) -> dict[s
             use_receiver_knowledge=True,
         )
     )
-    representations["sage_receiver"] = receiver_codec.compact(receiver_result.packet)
+    representations["aifence_bus_receiver"] = receiver_codec.compact(receiver_result.packet)
 
     tokenizer_spec = request.tokenizer.model_dump(exclude_none=True)
     if tokenizer_spec.get("kind") == "http":
@@ -290,7 +290,7 @@ def run_sage_economics_benchmark(db: Any, settings: Any, request: Any) -> dict[s
         host = (urlparse(endpoint).hostname or "").lower()
         allowed_hosts = {h.lower() for h in settings.benchmark_tokenizer_allowed_hosts}
         if settings.env == "production" and not allowed_hosts:
-            raise ValueError("production HTTP tokenizer requires SAGE_BENCHMARK_TOKENIZER_ALLOWED_HOSTS")
+            raise ValueError("production HTTP tokenizer requires AIFENCE_BUS_BENCHMARK_TOKENIZER_ALLOWED_HOSTS")
         if allowed_hosts and host not in allowed_hosts:
             raise ValueError(f"tokenizer host is not allowlisted: {host}")
         if settings.benchmark_tokenizer_api_key is not None:
@@ -303,26 +303,26 @@ def run_sage_economics_benchmark(db: Any, settings: Any, request: Any) -> dict[s
         price=request.price.model_dump(),
         chars_per_token=settings.chars_per_token_estimate,
     )
-    report["sage_variants"] = {
-        "sage": {
+    report["aifence_bus_variants"] = {
+        "aifence": {
             "strategy": plain_result.strategy,
             "packet_id": plain_result.packet.id,
             "wire_msgpack_bytes": plain_result.output_bytes_msgpack,
             "estimated_tokens": plain_result.estimated_tokens,
         },
-        "sage_learned": {
+        "aifence_bus_learned": {
             "strategy": learned_result.strategy,
             "packet_id": learned_result.packet.id,
             "wire_msgpack_bytes": learned_result.output_bytes_msgpack,
             "estimated_tokens": learned_result.estimated_tokens,
         },
-        "sage_patterns": {
+        "aifence_bus_patterns": {
             "strategy": pattern_result.strategy,
             "packet_id": pattern_result.packet.id,
             "wire_msgpack_bytes": pattern_result.output_bytes_msgpack,
             "estimated_tokens": pattern_result.estimated_tokens,
         },
-        "sage_receiver": {
+        "aifence_bus_receiver": {
             "strategy": receiver_result.strategy,
             "packet_id": receiver_result.packet.id,
             "wire_msgpack_bytes": receiver_result.output_bytes_msgpack,
@@ -334,9 +334,9 @@ def run_sage_economics_benchmark(db: Any, settings: Any, request: Any) -> dict[s
         "task_success": "caller-observed; omitted values remain null",
         "summary_rag": "included only when caller supplies actual outputs",
         "state_refs": "counts the ref pointer, not a later dereference; record dereference tokens separately when a task requires them",
-        "sage": "structural SAGE with an empty benchmark codebook and receiver knowledge disabled",
-        "sage_learned": "current learned/registered codebook with receiver knowledge disabled",
-        "sage_receiver": "current learned/registered codebook plus receiver knowledge/capability state",
+        "aifence": "structural AIFENCE with an empty benchmark codebook and receiver knowledge disabled",
+        "aifence_bus_learned": "current learned/registered codebook with receiver knowledge disabled",
+        "aifence_bus_receiver": "current learned/registered codebook plus receiver knowledge/capability state",
         "learning_side_effects": "disabled for benchmark encodes",
     }
     db.commit()

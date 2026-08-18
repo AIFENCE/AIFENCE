@@ -6,7 +6,7 @@ response shares one envelope shape::
 
     {"error": {"code", "message", "details", "request_id"}}
 
-Guard keeps its historical ``AgentDanceError`` name as an alias of
+Guard keeps its historical ``AifenceError`` name as an alias of
 :class:`AIFenceError` during the merge (see ``aifence.guard.errors``).
 """
 from __future__ import annotations

@@ -9,7 +9,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from sqlalchemy import func, select
 
 from aifence.bus.bus import SemanticBus
-from aifence.bus.codec import SageCodec
+from aifence.bus.codec import AifenceCodec
 from aifence.bus.compiler import compile_content
 from aifence.bus.config import Settings
 from aifence.bus.db import SessionLocal
@@ -17,7 +17,7 @@ from aifence.bus.db_models import (
     Contradiction,
     FactDependency,
     LearnedPattern,
-    MessageAudit,
+    MesaifenceAudit,
     PatternEdge,
     Reference,
     ReferenceGrant,
@@ -91,7 +91,7 @@ def test_semantic_firewall_preserves_critical_unknowns_and_epistemic_type():
             max_inline_bytes=100_000,
             semantic_cache_enabled=False,
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         result = codec.encode(
             EncodeRequest(
                 content={"permission": "must not delete", "amount": 10000, "prediction": "likely outage"},
@@ -103,7 +103,7 @@ def test_semantic_firewall_preserves_critical_unknowns_and_epistemic_type():
         assert by_path["$.permission"].literal == "must not delete"
         assert by_path["$.amount"].literal == 10000
         assert any(atom.epistemic_type in {"prediction", "constraint", "fact"} for atom in result.packet.atoms)
-        audit = db.scalar(select(MessageAudit).where(MessageAudit.packet_id == result.packet.id))
+        audit = db.scalar(select(MesaifenceAudit).where(MesaifenceAudit.packet_id == result.packet.id))
         assert audit is not None and audit.semantic_loss_score == 0.0
 
 
@@ -160,7 +160,7 @@ def test_content_addressed_refs_selective_grants_and_zero_copy_forward():
         a = refs.put(value, workspace="w", owner="agent-a", acl=["agent-a"], allowed_paths=["case"])
         b = refs.put(value, workspace="other", owner="agent-x", acl=["agent-x"])
         assert a.id == b.id
-        assert a.id.startswith("sage:sha256:")
+        assert a.id.startswith("aifence:sha256:")
         assert db.scalar(select(func.count(Reference.id))) == 1
         assert db.scalar(select(func.count(ReferenceGrant.id))) == 2
         assert refs.resolve(a.id, actor="agent-a", workspace="w", fields=["case.status"]) == {"case.status": "open"}
@@ -178,7 +178,7 @@ def test_content_addressed_refs_selective_grants_and_zero_copy_forward():
 def test_signed_packets_verify_and_tamper_fails_closed():
     private_key, public_key = signing_keys()
     with SessionLocal() as db:
-        signer = SageCodec(
+        signer = AifenceCodec(
             db,
             Settings(
                 auth_required=False,
@@ -191,7 +191,7 @@ def test_signed_packets_verify_and_tamper_fails_closed():
         wire = signer.compact(sent.packet)
         assert wire["g"]["alg"] == "Ed25519"
 
-        verifier = SageCodec(
+        verifier = AifenceCodec(
             db,
             Settings(
                 auth_required=False,
@@ -216,7 +216,7 @@ def test_counterfactual_receiver_fidelity_controls_pattern_use_and_gc():
             pattern_gc_cooling_days=1,
             pattern_gc_retire_days=2,
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         content = {"deployment": "blocked", "failure": "tests"}
         codec.encode(EncodeRequest(content=content, use_cache=False))
         pattern = db.scalar(select(LearnedPattern))
@@ -290,7 +290,7 @@ def test_recursive_pattern_graph_and_namespace_promotion():
 def test_inspector_reports_compression_waterfall():
     with SessionLocal() as db:
         settings = Settings(auth_required=False, max_inline_bytes=32, semantic_cache_enabled=False)
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         result = codec.encode(EncodeRequest(content={"blob": "x" * 4000}, run_id="run-inspect", use_cache=False))
         report = Inspector(db).packet(result.packet.id or "")
         assert report["original_bytes"] > report["sent_bytes"]

@@ -74,8 +74,8 @@
       "type": "object"
     },
     "protocol": {
-      "const": "sage/0.2",
-      "default": "sage/0.2",
+      "const": "aifence/0.2",
+      "default": "aifence/0.2",
       "title": "Protocol",
       "type": "string"
     }

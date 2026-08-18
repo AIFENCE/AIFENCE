@@ -1,6 +1,6 @@
 {
-  "name": "biziq",
-  "description": "BizIQ production-quality routing, MCP tools, validation, and Agent Skill.",
+  "name": "aifence",
+  "description": "AIFENCE production-quality routing, MCP tools, validation, and Agent Skill.",
   "version": "{{RUNTIME_VERSION}}",
   "author": {
     "name": "NeuralBinary"

@@ -72,5 +72,5 @@ def test_handoff_rejects_semantic_envelope(monkeypatch: pytest.MonkeyPatch) -> N
         "references": [],
         "provenance": {},
     }
-    with pytest.raises(ValueError, match="encoded SAGE semantic envelope"):
+    with pytest.raises(ValueError, match="encoded AIFENCE semantic envelope"):
         ctx.handler({"receiver": "peer", "content": content})

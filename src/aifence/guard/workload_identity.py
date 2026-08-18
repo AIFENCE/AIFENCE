@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -71,7 +71,7 @@ def extract_workload_assertion(request: Request, settings: Settings) -> Workload
             raise AuthenticationError("ambiguous forwarded workload identity")
         value = candidates[0]
     spiffe_id, _ = parse_spiffe_id(value)
-    return WorkloadAssertion(spiffe_id, request.headers.get("X-Agentdance-Instance-ID"))
+    return WorkloadAssertion(spiffe_id, request.headers.get("X-Aifence-Instance-ID"))
 
 
 def authenticate_workload(session: Session, assertion: WorkloadAssertion, settings: Settings) -> AuthContext:
@@ -80,7 +80,7 @@ def authenticate_workload(session: Session, assertion: WorkloadAssertion, settin
         raise AuthenticationError("workload trust domain is not allowed")
     if session.get_bind().dialect.name == "postgresql":
         session.execute(
-            text("SELECT set_config('agentdance.spiffe_id', :value, true)"),
+            text("SELECT set_config('aifence.spiffe_id', :value, true)"),
             {"value": spiffe_id},
         )
     session.info["spiffe_id"] = spiffe_id

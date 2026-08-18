@@ -1,6 +1,6 @@
-# BizIQ Runtime/Core Compatibility
+# AIFENCE Runtime/Core Compatibility
 
-BizIQ generated releases use an exact generated-core compatibility policy. A generated Runtime must execute against the Core revision recorded in its build metadata unless a later compatibility document explicitly permits another pairing.
+AIFENCE generated releases use an exact generated-core compatibility policy. A generated Runtime must execute against the Core revision recorded in its build metadata unless a later compatibility document explicitly permits another pairing.
 
 | Runtime | Core | Policy |
 |---|---|---|

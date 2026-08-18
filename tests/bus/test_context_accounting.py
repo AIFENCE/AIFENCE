@@ -21,7 +21,7 @@ import pytest
 from sqlalchemy import text
 
 import aifence.bus.context_accounting as ca
-from aifence.bus.codec import SageCodec
+from aifence.bus.codec import AifenceCodec
 from aifence.bus.config import Settings
 from aifence.bus.db import SessionLocal
 from aifence.bus.schemas import Atom, EncodeRequest, Packet, Provenance
@@ -30,7 +30,7 @@ from aifence.bus.state import StateStore
 PROV = Provenance(observed_at="2026-08-01T00:00:00+00:00", producer="alice")
 
 
-def _fixed_packet_id(codec: SageCodec, name: str) -> None:
+def _fixed_packet_id(codec: AifenceCodec, name: str) -> None:
     import hashlib
 
     codec._packet_id = lambda n=name: "P" + hashlib.sha256(n.encode()).hexdigest()[:32]  # type: ignore[method-assign]
@@ -172,7 +172,7 @@ def test_noop_collector_is_behaviorally_inert():
 
 def test_codec_disabled_accounting_is_default_and_inert():
     with SessionLocal() as db:
-        codec = SageCodec(db, Settings(auth_required=False, database_url="sqlite://"))
+        codec = AifenceCodec(db, Settings(auth_required=False, database_url="sqlite://"))
         assert codec.accounting.enabled is False
         result = codec.encode(_base_request(content="hello world"))
         assert codec.context_report() is None
@@ -185,7 +185,7 @@ def test_encode_records_accounting_metrics():
         settings = Settings(
             auth_required=False, database_url="sqlite://", context_accounting_enabled=True
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         result = codec.encode(_base_request(content="hello world"))
         rep = codec.context_report()
         assert rep is not None
@@ -204,7 +204,7 @@ def test_encode_records_codebook_definitions_for_unknown_codes():
         settings = Settings(
             auth_required=False, database_url="sqlite://", context_accounting_enabled=True
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         codec.codebook.register("global", "refund_requested")
         db.commit()
         codec.encode(_base_request(content="refund requested"))
@@ -219,7 +219,7 @@ def test_encode_records_stored_bytes_for_state_and_reference():
         settings = Settings(
             auth_required=False, database_url="sqlite://", context_accounting_enabled=True
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         codec.encode(_base_request(content={"status": "blocked", "count": 3}))
         rep = codec.context_report()
         assert rep is not None
@@ -237,7 +237,7 @@ def test_decode_records_decoding_and_reference_fetch_metrics():
         settings = Settings(
             auth_required=False, database_url="sqlite://", context_accounting_enabled=True
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         encoded = codec.encode(_base_request(content={"blob": "x" * 3000}))
         codec.decode(encoded.packet, resolve_refs=True, receiver="bob")
         rep = codec.context_report()
@@ -255,7 +255,7 @@ def test_decode_records_fallback_for_unknown_code():
         settings = Settings(
             auth_required=False, database_url="sqlite://", context_accounting_enabled=True
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         encoded = codec.encode(_base_request(content="hello world"))
         codec.decode(encoded.packet, receiver="bob")
         rep = codec.context_report()
@@ -289,10 +289,10 @@ GOLDEN_CASES = {
     },
     "reference": {
         "strategy": "reference",
-        "wire_json": "{\"R\":[\"sage:sha256:b6b7f9a9be427689b75d86a5fd3b63d874bd5a453d51c324ada7772552764c4a\"],\"a\":\"report\",\"c\":\"global\",\"i\":\"P52367a6622b19f08825e915fad80c542\",\"m\":{\"memory_tier\":\"hot\",\"revision\":1,\"state\":\"Sf95883a1680cc9f429b2b69cc86afcaa7aed7dd2\"},\"p\":{\"p\":\"alice\",\"t\":1785542400},\"r\":\"bob\",\"s\":\"alice\",\"v\":2}",
-        "wire_msgpack_b64": "iaFSkdlMc2FnZTpzaGEyNTY6YjZiN2Y5YTliZTQyNzY4OWI3NWQ4NmE1ZmQzYjYzZDg3NGJkNWE0NTNkNTFjMzI0YWRhNzc3MjU1Mjc2NGM0YaFhpnJlcG9ydKFjpmdsb2JhbKFp2SFQNTIzNjdhNjYyMmIxOWYwODgyNWU5MTVmYWQ4MGM1NDKhbYOrbWVtb3J5X3RpZXKjaG90qHJldmlzaW9uAaVzdGF0ZdkpU2Y5NTg4M2ExNjgwY2M5ZjQyOWIyYjY5Y2M4NmFmY2FhN2FlZDdkZDKhcIKhcKVhbGljZaF0zmptNwChcqNib2Khc6VhbGljZaF2Ag==",
-        "output_bytes_json": 304,
-        "output_bytes_msgpack": 250,
+        "wire_json": "{\"R\":[\"aifence:sha256:b6b7f9a9be427689b75d86a5fd3b63d874bd5a453d51c324ada7772552764c4a\"],\"a\":\"report\",\"c\":\"global\",\"i\":\"P52367a6622b19f08825e915fad80c542\",\"m\":{\"memory_tier\":\"hot\",\"revision\":1,\"state\":\"Sf95883a1680cc9f429b2b69cc86afcaa7aed7dd2\"},\"p\":{\"p\":\"alice\",\"t\":1785542400},\"r\":\"bob\",\"s\":\"alice\",\"v\":2}",
+        "wire_msgpack_b64": "iaFSkdlPYWlmZW5jZTpzaGEyNTY6YjZiN2Y5YTliZTQyNzY4OWI3NWQ4NmE1ZmQzYjYzZDg3NGJkNWE0NTNkNTFjMzI0YWRhNzc3MjU1Mjc2NGM0YaFhpnJlcG9ydKFjpmdsb2JhbKFp2SFQNTIzNjdhNjYyMmIxOWYwODgyNWU5MTVmYWQ4MGM1NDKhbYOrbWVtb3J5X3RpZXKjaG90qHJldmlzaW9uAaVzdGF0ZdkpU2Y5NTg4M2ExNjgwY2M5ZjQyOWIyYjY5Y2M4NmFmY2FhN2FlZDdkZDKhcIKhcKVhbGljZaF0zmptNwChcqNib2Khc6VhbGljZaF2Ag==",
+        "output_bytes_json": 307,
+        "output_bytes_msgpack": 253,
         "packet_id": "P52367a6622b19f08825e915fad80c542",
     },
     "semantic_code": {
@@ -322,7 +322,7 @@ GOLDEN_CASES = {
 def test_instrumented_codec_wire_bytes_match_pre_instrumentation_golden(name, golden):
     with SessionLocal() as db:
         settings = Settings(auth_required=False, database_url="sqlite://")
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         _fixed_packet_id(codec, name)
 
         if name == "delta":
@@ -364,7 +364,7 @@ def test_decode_survives_corrupted_byte_size_reference_row():
         settings = Settings(
             auth_required=False, database_url="sqlite://", context_accounting_enabled=True
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         encoded = codec.encode(_base_request(content={"blob": "x" * 3000}))
         ref_id = encoded.packet.refs[0]
         # SQLite does not enforce Integer on the column; corrupt it directly.
@@ -450,7 +450,7 @@ def test_round_trip_retains_both_encode_and_decode_reports():
         settings = Settings(
             auth_required=False, database_url="sqlite://", context_accounting_enabled=True
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         encoded = codec.encode(_base_request(content="hello world"))
         encode_rep = codec.context_report()
         assert encode_rep is not None
@@ -494,7 +494,7 @@ def test_concurrent_exchanges_on_shared_codec_publish_uncorrupted_reports():
             settings = Settings(
                 auth_required=False, database_url="sqlite://", context_accounting_enabled=True
             )
-            codec = SageCodec(db, settings)
+            codec = AifenceCodec(db, settings)
             errors: list[str] = []
             err_lock = threading.Lock()
             real: dict[str, object] = {}
@@ -557,7 +557,7 @@ def test_concurrent_exchanges_on_shared_codec_publish_uncorrupted_reports():
 
 def test_context_reports_history_api_disabled_and_bounded():
     with SessionLocal() as db:
-        codec = SageCodec(db, Settings(auth_required=False, database_url="sqlite://"))
+        codec = AifenceCodec(db, Settings(auth_required=False, database_url="sqlite://"))
         assert codec.context_report() is None  # disabled: no completed reports
         assert codec.context_reports(limit=5) == []
 
@@ -597,7 +597,7 @@ def test_decode_survives_lone_surrogate_atom_with_accounting_enabled():
         settings = Settings(
             auth_required=False, database_url="sqlite://", context_accounting_enabled=True
         )
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         packet = Packet(
             cb="global",
             sender="alice",

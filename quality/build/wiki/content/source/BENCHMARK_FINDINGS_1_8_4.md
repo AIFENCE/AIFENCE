@@ -40,7 +40,7 @@ The namespace-safe XLSX/OOXML adapter also generalized successfully. All five sp
 
 The exact Holdout-4 deck + spreadsheet composite routing defect did not recur: the airport retrofit request resolved as **Presentation / Deck + Spreadsheet / Financial Model**.
 
-The successful Core 1.8.3 naturalization and universal syntax/grammar systems also remained intact. No Core 1.8.4 treatment artifact leaked forbidden BizIQ/compiler vocabulary, and no catastrophic parser/runtime/native-file failure occurred.
+The successful Core 1.8.3 naturalization and universal syntax/grammar systems also remained intact. No Core 1.8.4 treatment artifact leaked forbidden AIFENCE/compiler vocabulary, and no catastrophic parser/runtime/native-file failure occurred.
 
 ## Remaining Failure Clusters
 <!-- id: benchmark-findings-1-8-4.remaining-clusters -->

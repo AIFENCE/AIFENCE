@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/artifact_acceptance.schema.json",
-  "title": "BizIQ Artifact Acceptance",
+  "$id": "aifence://schemas/artifact_acceptance.schema.json",
+  "title": "AIFENCE Artifact Acceptance",
   "type": "object",
   "required": [
     "artifact_id",

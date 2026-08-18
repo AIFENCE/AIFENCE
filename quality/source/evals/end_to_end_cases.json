@@ -80,7 +80,7 @@
   },
   {
     "id": "e2e.pack-failure-postmortem",
-    "prompt": "A real-world BizIQ-generated artifact passes static QA but looks generic. Improve BizIQ.",
+    "prompt": "A real-world AIFENCE-generated artifact passes static QA but looks generic. Improve AIFENCE.",
     "expected": [
       "root cause classified at pack level",
       "new regression fixture added or existing one strengthened",
@@ -219,7 +219,7 @@
   },
   {
     "id": "e2e.blind-benchmark-integrity",
-    "prompt": "Compare BizIQ and non-BizIQ outputs in a benchmark.",
+    "prompt": "Compare AIFENCE and non-AIFENCE outputs in a benchmark.",
     "expected": [
       "matched conditions",
       "opaque randomized IDs",

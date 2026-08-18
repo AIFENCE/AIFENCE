@@ -36,9 +36,9 @@ The two Revision 1.8.8 routing changes generalized on unseen wording. Board/publ
 ## Benchmark harness invalidation record
 <!-- id: benchmark-findings-1-8-8.harness-invalidation -->
 
-The initial Holdout-9 artifact run was invalidated before scores were locked because a reused benchmark generator template hardcoded `P1 workflow` into mobile treatment copy, contradicting BizIQ's pre-existing emission-naturalization rules. No Core rule, sealed brief, expected graph, or release gate was changed. The entire artifact run was discarded and regenerated from the same sealed corpus. Only the second run is qualification evidence.
+The initial Holdout-9 artifact run was invalidated before scores were locked because a reused benchmark generator template hardcoded `P1 workflow` into mobile treatment copy, contradicting AIFENCE's pre-existing emission-naturalization rules. No Core rule, sealed brief, expected graph, or release gate was changed. The entire artifact run was discarded and regenerated from the same sealed corpus. Only the second run is qualification evidence.
 
 ## Freeze conclusion
 <!-- id: benchmark-findings-1-8-8.freeze -->
 
-Core 1.8.8 is approved as the **BizIQ Stable 2.0 architecture**. Further control-plane changes require new repeated failure evidence or a new sealed benchmark. Existing holdouts become regression corpora only.
+Core 1.8.8 is approved as the **AIFENCE Stable 2.0 architecture**. Further control-plane changes require new repeated failure evidence or a new sealed benchmark. Existing holdouts become regression corpora only.

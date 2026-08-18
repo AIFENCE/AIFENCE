@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -135,7 +135,7 @@ def test_provider_redaction_is_applied_and_idempotent(client, monkeypatch) -> No
     )
     assert second.status_code == 200, second.text
     assert len(forwarded) == 1
-    assert forwarded[0]["body"]["password"] == "[REDACTED_BY_AGENTDANCE]"
+    assert forwarded[0]["body"]["password"] == "[REDACTED_BY_AIFENCE]"
     assert first.json()["execution_id"] == second.json()["execution_id"]
 
 
@@ -259,10 +259,10 @@ def test_audit_checkpoint_endpoint_and_openapi_security(tmp_path) -> None:
     assert checkpoints.status_code == 200
     assert checkpoints.json()
     schemes = contract["components"]["securitySchemes"]
-    assert schemes["AgentDanceBearer"]["scheme"] == "bearer"
+    assert schemes["AifenceBearer"]["scheme"] == "bearer"
     assert schemes["MutualTLS"]["type"] == "mutualTLS"
     protected = contract["paths"]["/v1/decisions"]["post"]
-    assert protected["security"] == [{"AgentDanceBearer": [], "MutualTLS": []}, {"SPIFFEWorkload": []}]
+    assert protected["security"] == [{"AifenceBearer": [], "MutualTLS": []}, {"SPIFFEWorkload": []}]
     assert "429" in protected["responses"]
     assert not any(
         parameter.get("name", "").lower() == "authorization"

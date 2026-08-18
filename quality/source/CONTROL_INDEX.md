@@ -7,10 +7,10 @@ Control-Plane-Revision: 1.8.8
 Last-Updated: 2026-08-09
 -->
 
-# BizIQ Control Index
+# AIFENCE Control Index
 <!-- id: control-index.root -->
 
-This is the canonical routing index for the BizIQ control plane. It is **not** a request to preload every control. Resolve the active task first, then retrieve only the exact capability sections required by the current decision.
+This is the canonical routing index for the AIFENCE control plane. It is **not** a request to preload every control. Resolve the active task first, then retrieve only the exact capability sections required by the current decision.
 
 The logical control plane contains **31 domains, 260 capabilities, and 1,300 controls (`BQ-0001` through `BQ-1300`)**.
 
@@ -58,9 +58,9 @@ Use these bundles as retrieval hints. Load exact sections, not whole shards unle
 | Search/Discovery | Indexable public web content | 15, 20 |
 | Operational System | Jobs, SOPs, staffing, workflows | 23, 31, 22, 24, 27, 28 |
 | Document / Report | Decision documents and formal reports | 15, 22, 24, 27, 28 |
-| Pack Maintenance | BizIQ itself is being changed | 25, 22, 24, 28 |
+| Pack Maintenance | AIFENCE itself is being changed | 25, 22, 24, 28 |
 
-Domain 26 is mandatory for substantial production visual/product interfaces when craft is material. Domain 27 is mandatory for substantial production artifacts that benefit from compilation. Domain 28 is mandatory for substantial production acceptance and behaviorally meaningful BizIQ benchmark changes unless clearly inapplicable. Domain 31 is mandatory for material SOPs, work instructions, runbooks, operational role specifications, and governed KPI/decision-rights systems intended for real execution.
+Domain 26 is mandatory for substantial production visual/product interfaces when craft is material. Domain 27 is mandatory for substantial production artifacts that benefit from compilation. Domain 28 is mandatory for substantial production acceptance and behaviorally meaningful AIFENCE benchmark changes unless clearly inapplicable. Domain 31 is mandatory for material SOPs, work instructions, runbooks, operational role specifications, and governed KPI/decision-rights systems intended for real execution.
 
 # High-Leverage Mandatory Capability Set
 <!-- id: control-index.high-leverage-set -->

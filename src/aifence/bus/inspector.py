@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -8,7 +8,7 @@ from typing import Any
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from .db_models import MessageAudit, Reference
+from .db_models import MesaifenceAudit, Reference
 
 
 class Inspector:
@@ -16,7 +16,7 @@ class Inspector:
         self.db = db
 
     def packet(self, packet_id: str, *, workspace: str | None = None, actor: str | None = None) -> dict[str, Any]:
-        audit = self.db.scalar(select(MessageAudit).where(MessageAudit.packet_id == packet_id))
+        audit = self.db.scalar(select(MesaifenceAudit).where(MesaifenceAudit.packet_id == packet_id))
         if audit is None or (workspace is not None and audit.workspace != workspace):
             raise KeyError(packet_id)
         if actor is not None and actor not in {audit.sender, audit.receiver}:
@@ -59,12 +59,12 @@ class Inspector:
         }
 
     def run(self, run_id: str, *, workspace: str | None = None, actor: str | None = None) -> dict[str, Any]:
-        stmt = select(MessageAudit).where(MessageAudit.run_id == run_id)
+        stmt = select(MesaifenceAudit).where(MesaifenceAudit.run_id == run_id)
         if workspace is not None:
-            stmt = stmt.where(MessageAudit.workspace == workspace)
+            stmt = stmt.where(MesaifenceAudit.workspace == workspace)
         if actor is not None:
-            stmt = stmt.where((MessageAudit.sender == actor) | (MessageAudit.receiver == actor))
-        rows = list(self.db.scalars(stmt.order_by(MessageAudit.created_at)))
+            stmt = stmt.where((MesaifenceAudit.sender == actor) | (MesaifenceAudit.receiver == actor))
+        rows = list(self.db.scalars(stmt.order_by(MesaifenceAudit.created_at)))
         if not rows:
             raise KeyError(run_id)
         return {

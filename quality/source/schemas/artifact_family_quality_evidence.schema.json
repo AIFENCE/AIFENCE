@@ -1,6 +1,6 @@
 {
   "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "title":"BizIQ Artifact Family Quality Evidence",
+  "title":"AIFENCE Artifact Family Quality Evidence",
   "type":"object",
   "additionalProperties":false,
   "required":["artifact_id","artifact_family","provenance","checks","critical_dimensions","overall_score","status"],

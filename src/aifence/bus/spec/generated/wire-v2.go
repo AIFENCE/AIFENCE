@@ -1,6 +1,6 @@
-package sagewire
+package aifencewire
 
-const Protocol = "sage/0.2"
+const Protocol = "aifence/0.2"
 const WireVersion = 2
 
 type Packet map[string]any

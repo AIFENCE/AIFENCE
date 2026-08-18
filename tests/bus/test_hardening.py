@@ -14,10 +14,10 @@ from aifence.bus.main import BodyLimitMiddleware
 def _production_settings(**overrides: object) -> dict[str, object]:
     values: dict[str, object] = {
         "env": "production",
-        "database_url": "postgresql+psycopg://sage:secret@db/sage",
+        "database_url": "postgresql+psycopg://aifence:secret@db/aifence",
         "auth_required": True,
         "api_keys": ["s" * 32],
-        "allowed_hosts": ["sage.invalid"],
+        "allowed_hosts": ["aifence.invalid"],
         "auto_create_schema": False,
         "docs_enabled": False,
     }
@@ -32,7 +32,7 @@ def test_production_fails_closed_without_authentication() -> None:
 
 def test_production_rejects_sqlite_and_wildcard_hosts() -> None:
     with pytest.raises(ValidationError):
-        Settings(**_production_settings(database_url="sqlite:///sage.db"))
+        Settings(**_production_settings(database_url="sqlite:///aifence.db"))
     with pytest.raises(ValidationError):
         Settings(**_production_settings(allowed_hosts=["*"]))
 

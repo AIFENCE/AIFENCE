@@ -19,9 +19,9 @@ classifiers = [
   "Topic :: Security",
 ]
 
-# Reconciled union of the SAGE (bus) and AGENTDANCE (guard) runtime stacks.
+# Reconciled union of the AIFENCE (bus) and AIFENCE (guard) runtime stacks.
 # Versions are pinned to the intersection both projects already agreed on;
-# only uvicorn moved up to satisfy SAGE's floor.
+# only uvicorn moved up to satisfy AIFENCE's floor.
 dependencies = [
   "fastapi>=0.139.2,<1",
   "uvicorn[standard]>=0.52,<1",
@@ -94,7 +94,7 @@ src = ["src", "tests"]
 select = ["E", "F", "I", "B", "UP"]
 ignore = ["B008", "E501"]
 
-# The vendored subsystem ports (guard from AGENTDANCE, bus from SAGE) are under
+# The vendored subsystem ports (guard from AIFENCE, bus from AIFENCE) are under
 # the unified gate, but keep their upstream compact-statement style; those few
 # stylistic rules are tolerated for those paths rather than reformatting ~27k
 # LOC of proven code.

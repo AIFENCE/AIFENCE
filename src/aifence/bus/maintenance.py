@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from .config import Settings
 from .db_models import (
     BusMessage,
     IdempotencyRecord,
-    MessageAudit,
+    MesaifenceAudit,
     PatternCandidate,
     QuotaCounter,
     Reference,
@@ -65,7 +65,7 @@ def cleanup(db: Session, settings: Settings) -> dict[str, int]:
     bus_audit_result = db.execute(
         delete(BusMessage).where(BusMessage.status == "acked", BusMessage.acked_at < cutoff)
     )
-    audit_result = db.execute(delete(MessageAudit).where(MessageAudit.created_at < cutoff))
+    audit_result = db.execute(delete(MesaifenceAudit).where(MesaifenceAudit.created_at < cutoff))
     idempotency_result = db.execute(delete(IdempotencyRecord).where(IdempotencyRecord.expires_at.is_not(None), IdempotencyRecord.expires_at <= now))
     quota_cutoff = now - timedelta(seconds=settings.quota_window_seconds * 2)
     quota_result = db.execute(delete(QuotaCounter).where(QuotaCounter.window_start < quota_cutoff))

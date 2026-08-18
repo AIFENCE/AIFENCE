@@ -1,9 +1,9 @@
 {
-  "name": "biziq",
+  "name": "aifence",
   "version": "2.0.0",
   "private": true,
   "type": "module",
-  "description": "BizIQ canonical source and generated cross-model runtime builds.",
+  "description": "AIFENCE canonical source and generated cross-model runtime builds.",
   "engines": {
     "node": ">=20"
   },

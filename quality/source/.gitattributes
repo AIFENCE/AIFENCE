@@ -1,4 +1,4 @@
-# Canonical BizIQ text line endings
+# Canonical AIFENCE text line endings
 * text=auto eol=lf
 *.zip binary
 *.png binary

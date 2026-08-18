@@ -224,7 +224,7 @@
     }
   },
   "additionalProperties": false,
-  "description": "Normative SAGE wire-v2 object.\n\nShort field names are part of the v2 wire contract. Writers and readers use wire version 2.",
+  "description": "Normative AIFENCE wire-v2 object.\n\nShort field names are part of the v2 wire contract. Writers and readers use wire version 2.",
   "properties": {
     "R": {
       "anyOf": [

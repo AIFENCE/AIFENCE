@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -31,10 +31,10 @@ def test_discovery_events_policy_and_idempotent_decision(client) -> None:
     assert deep_ready.json()["dependencies"]["database"] == "ready"
     assert test_client.get("/internal/metrics").status_code == 200
 
-    discovery = test_client.get("/.well-known/agentdance.json")
+    discovery = test_client.get("/.well-known/aifence.json")
     assert discovery.status_code == 200
-    assert discovery.json()["event_spec"] == "agentdance.event.v1"
-    keys = test_client.get("/.well-known/agentdance-signing-keys.json")
+    assert discovery.json()["event_spec"] == "aifence.event.v1"
+    keys = test_client.get("/.well-known/aifence-signing-keys.json")
     assert keys.status_code == 200
     assert len(keys.json()["keys"]) == 1
 
@@ -59,7 +59,7 @@ def test_discovery_events_policy_and_idempotent_decision(client) -> None:
     assert trace.json()[0]["event_type"] == "agent.observation"
 
     policy = {
-        "spec_version": "agentdance.policy.v1",
+        "spec_version": "aifence.policy.v1",
         "version": "tenant-1",
         "default": {
             "outcome": "require_approval",
@@ -456,11 +456,11 @@ def test_public_source_and_license_discovery(client) -> None:
     assert document["sdk_license"] == "Apache-2.0"
     assert document["source_code_url"].startswith("https://")
 
-    discovery = test_client.get("/.well-known/agentdance.json").json()
+    discovery = test_client.get("/.well-known/aifence.json").json()
     assert discovery["source_code_url"] == document["source_code_url"]
     assert discovery["commercial_license_url"] == document["commercial_license_url"]
 
     contract = test_client.get("/openapi.json").json()
     assert contract["info"]["license"]["identifier"] == "Apache-2.0"
-    assert contract["info"]["x-agentdance-server-license"] == "AGPL-3.0-only OR commercial"
+    assert contract["info"]["x-aifence-server-license"] == "AGPL-3.0-only OR commercial"
     assert contract["paths"]["/source"]["get"]["security"] == []

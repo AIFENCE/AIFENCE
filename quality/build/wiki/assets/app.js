@@ -61,8 +61,8 @@ function parseMarkdown(md=''){
   closeList();flushQuote();
   return html;
 }
-function setTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem('biziq-wiki-theme',theme);}
-function initTheme(){const saved=localStorage.getItem('biziq-wiki-theme');setTheme(saved||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));}
+function setTheme(theme){document.documentElement.dataset.theme=theme;localStorage.setItem('aifence-wiki-theme',theme);}
+function initTheme(){const saved=localStorage.getItem('aifence-wiki-theme');setTheme(saved||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));}
 function renderNav(){
   $('#primaryNav').innerHTML=state.data.navigation.map(group=>`<div class="nav-group"><div class="nav-group-title">${esc(group.label)}</div>${group.items.map(item=>`<a class="nav-link" data-route="${esc(item.slug)}" href="#/${esc(item.slug)}"><span class="nav-dot"></span><span>${esc(item.title)}</span></a>`).join('')}</div>`).join('');
 }
@@ -73,10 +73,10 @@ function overview(){
   return `<section class="hero">
     <div class="hero-eyebrow">Source-driven production system</div>
     <h1>One control plane. Multiple AI runtimes.</h1>
-    <p>BizIQ turns canonical standards, controls, profiles, compilers, and validation into a portable quality system for production artifacts and operational work.</p>
+    <p>AIFENCE turns canonical standards, controls, profiles, compilers, and validation into a portable quality system for production artifacts and operational work.</p>
     <div class="hero-actions"><a class="button primary" href="#/getting-started">Get started</a><a class="button" href="#/source-readme">Explore Core routing</a><a class="button" href="${esc(m.repositoryUrl)}" target="_blank" rel="noreferrer">View repository</a></div>
   </section>
-  <section class="stat-grid" aria-label="BizIQ architecture statistics">
+  <section class="stat-grid" aria-label="AIFENCE architecture statistics">
     <div class="stat-card"><span class="stat-value">${m.domains}</span><span class="stat-label">Control domains</span></div>
     <div class="stat-card"><span class="stat-value">${m.capabilities}</span><span class="stat-label">Capabilities</span></div>
     <div class="stat-card"><span class="stat-value">${Number(m.controls).toLocaleString()}</span><span class="stat-label">Stable controls</span></div>
@@ -104,14 +104,14 @@ async function loadDoc(doc){const r=await fetch(doc.contentPath,{cache:'no-store
 function articleHeader(doc){const source=doc.sourceUrl?`<a href="${esc(doc.sourceUrl)}" target="_blank" rel="noreferrer">View source on GitHub ↗</a>`:'';return `<header class="article-header"><div class="article-kicker">${esc(doc.category)}</div><h1>${esc(doc.title)}</h1>${doc.summary?`<div class="article-lede">${esc(doc.summary)}</div>`:''}<div class="article-meta"><span>${esc(doc.sourcePath)}</span>${source}</div></header>`;}
 function renderToc(){const hs=$$('#article h2, #article h3');const toc=$('#toc');if(hs.length<2){toc.innerHTML='';return;}toc.innerHTML='<div class="toc-title">On this page</div>'+hs.map(h=>`<a class="depth-${h.tagName==='H3'?3:2}" href="#${h.id}">${esc(h.textContent.replace(/#$/,''))}</a>`).join('');}
 function bindCopies(root=document){$$('.copy-button',root).forEach(btn=>btn.addEventListener('click',async()=>{const code=btn.parentElement.querySelector('code')?.textContent||'';try{await navigator.clipboard.writeText(code);btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy',1200);}catch{btn.textContent='Select';}}));}
-function renderBreadcrumbs(doc){$('#breadcrumbs').innerHTML=`<a href="#/overview">BizIQ</a><span>/</span><span>${esc(doc?.category||'Overview')}</span>${doc?`<span>/</span><span>${esc(doc.title)}</span>`:''}`;}
+function renderBreadcrumbs(doc){$('#breadcrumbs').innerHTML=`<a href="#/overview">AIFENCE</a><span>/</span><span>${esc(doc?.category||'Overview')}</span>${doc?`<span>/</span><span>${esc(doc.title)}</span>`:''}`;}
 function renderPageNav(){const flat=state.data.navigation.flatMap(g=>g.items);const idx=flat.findIndex(x=>x.slug===state.route);if(idx<0){$('#pageNav').innerHTML='';return;}const prev=flat[idx-1],next=flat[idx+1];$('#pageNav').innerHTML=`${prev?`<a href="#/${prev.slug}"><span>Previous</span><strong>← ${esc(prev.title)}</strong></a>`:'<span></span>'}${next?`<a class="next" href="#/${next.slug}"><span>Next</span><strong>${esc(next.title)} →</strong></a>`:''}`;}
 async function route(){
   const raw=(location.hash||'#/overview').replace(/^#\/?/,'').split('#')[0]||'overview';state.route=raw;updateActive();closeSidebar();const article=$('#article');
   try{
-    if(raw==='overview'){renderBreadcrumbs(null);article.innerHTML=overview();$('#toc').innerHTML='';$('#pageNav').innerHTML='';bindCopies(article);document.title='BizIQ Wiki';window.scrollTo(0,0);return;}
+    if(raw==='overview'){renderBreadcrumbs(null);article.innerHTML=overview();$('#toc').innerHTML='';$('#pageNav').innerHTML='';bindCopies(article);document.title='AIFENCE Wiki';window.scrollTo(0,0);return;}
     const doc=state.docs.get(raw)||state.docs.get('getting-started');renderBreadcrumbs(doc);article.innerHTML='<div class="loading-state"><span class="spinner"></span><span>Loading documentation…</span></div>';
-    const md=await loadDoc(doc);const rendered=parseMarkdown(md).replace(/^<h1[^>]*>[\s\S]*?<\/h1>/,'');article.innerHTML=articleHeader(doc)+rendered;bindCopies(article);renderToc();renderPageNav();document.title=`${doc.title} · BizIQ Wiki`;window.scrollTo(0,0);
+    const md=await loadDoc(doc);const rendered=parseMarkdown(md).replace(/^<h1[^>]*>[\s\S]*?<\/h1>/,'');article.innerHTML=articleHeader(doc)+rendered;bindCopies(article);renderToc();renderPageNav();document.title=`${doc.title} · AIFENCE Wiki`;window.scrollTo(0,0);
   }catch(err){article.innerHTML=`<div class="error-card"><strong>Documentation could not be loaded.</strong><div>${esc(err.message)}</div></div>`;}
 }
 function closeSidebar(){$('#sidebar').classList.remove('open');$('#sidebarScrim').classList.remove('visible');$('#sidebarScrim').hidden=true;$('#menuButton').setAttribute('aria-expanded','false');}

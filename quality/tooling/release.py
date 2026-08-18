@@ -37,14 +37,14 @@ def make(name,parts):
         if bad: raise SystemExit(f'ZIP integrity failure {name}: {bad}')
     return out
 packages=[]
-packages.append(make(f'BizIQ-Source-{cv}.zip',[(SOURCE,'')]))
+packages.append(make(f'AIFENCE-Source-{cv}.zip',[(SOURCE,'')]))
 # Standalone runtime vendors canonical source as core and generated integrations.
-packages.append(make(f'BizIQ-Runtime-{rv}-Core-{cv}.zip',[(BUILD/'runtime',''),(SOURCE,'core')]))
-packages.append(make(f'BizIQ-Skill-{rv}.zip',[(BUILD/'skill','')]))
-packages.append(make(f'BizIQ-Claude-Plugin-{rv}.zip',[(BUILD/'adapters'/'claude-code','')]))
-packages.append(make(f'BizIQ-Gemini-Extension-{rv}.zip',[(BUILD/'adapters'/'gemini-cli','')]))
-packages.append(make(f'BizIQ-Platform-Adapters-{rv}.zip',[(BUILD/'adapters','')]))
-packages.append(make(f'BizIQ-Wiki-{rv}.zip',[(BUILD/'wiki','')]))
+packages.append(make(f'AIFENCE-Runtime-{rv}-Core-{cv}.zip',[(BUILD/'runtime',''),(SOURCE,'core')]))
+packages.append(make(f'AIFENCE-Skill-{rv}.zip',[(BUILD/'skill','')]))
+packages.append(make(f'AIFENCE-Claude-Plugin-{rv}.zip',[(BUILD/'adapters'/'claude-code','')]))
+packages.append(make(f'AIFENCE-Gemini-Extension-{rv}.zip',[(BUILD/'adapters'/'gemini-cli','')]))
+packages.append(make(f'AIFENCE-Platform-Adapters-{rv}.zip',[(BUILD/'adapters','')]))
+packages.append(make(f'AIFENCE-Wiki-{rv}.zip',[(BUILD/'wiki','')]))
 manifest={'runtimeVersion':rv,'coreRevision':cv,'compatibility':{'policy':'exact-generated-core','coreRevision':cv},'packages':[]}
 for p in packages:
     manifest['packages'].append({'file':p.name,'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'bytes':p.stat().st_size})

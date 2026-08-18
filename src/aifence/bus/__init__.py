@@ -28,16 +28,16 @@ def register(app: FastAPI, ctx: SubsystemContext) -> None:
     it to the shared core database *before* importing the bus app, and let the
     composed app own schema creation.
     """
-    from ..core.env import apply_legacy_prefix
+    from ..core.env import adopt_legacy_prefix
 
-    apply_legacy_prefix("AIFENCE_BUS_", "SAGE_")
+    adopt_legacy_prefix("SAGE_", "AIFENCE_BUS_")
     # The bus builds its engine at import time from the environment, so the
     # values the composed application owns are assigned (not defaulted) here.
     # They are derived from core settings, so re-composing is idempotent.
     core = ctx.settings
-    os.environ["SAGE_DATABASE_URL"] = core.database_url
-    os.environ["SAGE_AUTO_CREATE_SCHEMA"] = "false"
-    os.environ["SAGE_ENV"] = "production" if core.environment == "staging" else core.environment
+    os.environ["AIFENCE_BUS_DATABASE_URL"] = core.database_url
+    os.environ["AIFENCE_BUS_AUTO_CREATE_SCHEMA"] = "false"
+    os.environ["AIFENCE_BUS_ENV"] = "production" if core.environment == "staging" else core.environment
 
     from .main import app as bus_app
 

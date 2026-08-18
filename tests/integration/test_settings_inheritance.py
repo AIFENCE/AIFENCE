@@ -30,7 +30,7 @@ def test_guard_inherits_core_database_url(app: FastAPI) -> None:
 
 def test_production_propagates_and_guard_fails_closed(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
     """A production fence must not be able to start an unhardened guard tier."""
-    for name in ("AGENTDANCE_ENVIRONMENT", "AIFENCE_GUARD_ENVIRONMENT"):
+    for name in ("AIFENCE_GUARD_ENVIRONMENT", "AIFENCE_GUARD_ENVIRONMENT"):
         monkeypatch.delenv(name, raising=False)
 
     settings = CoreSettings(

@@ -10,7 +10,7 @@ Last-Updated: 2026-08-10
 # 26. Feature & Component Craft
 <!-- id: controls.domain.26 -->
 
-This native shard extends the BizIQ 4 control plane with BQ-1001 through BQ-1050. Existing BQ-0001 through BQ-1000 remain stable and unchanged.
+This native shard extends the AIFENCE 4 control plane with BQ-1001 through BQ-1050. Existing BQ-0001 through BQ-1000 remain stable and unchanged.
 
 Load only the exact capability sections required by the active visual/product task. Resolve them through the canonical `CONTROL_INDEX.md`.
 

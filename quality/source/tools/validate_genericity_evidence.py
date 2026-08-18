@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate BizIQ dense-product structural genericity evidence."""
+"""Validate AIFENCE dense-product structural genericity evidence."""
 from __future__ import annotations
 import argparse,json,sys
 from pathlib import Path

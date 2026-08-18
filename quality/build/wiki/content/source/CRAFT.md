@@ -11,7 +11,7 @@ Last-Updated: 2026-08-09
 
 Purpose: raise substantial websites, dashboards, SaaS products, portals, ecommerce experiences, and application interfaces from strong macro composition to premium feature-level and component-level execution.
 
-This module is a native BizIQ domain standard used by Domain 26 of the standard control plane. It complements `CREATIVE.md`, `DESIGN.md`, `FEATURES.md`, `STRUCTURE.md`, and accessibility/engineering controls; it does not replace them.
+This module is a native AIFENCE domain standard used by Domain 26 of the standard control plane. It complements `CREATIVE.md`, `DESIGN.md`, `FEATURES.md`, `STRUCTURE.md`, and accessibility/engineering controls; it does not replace them.
 
 Use `CONTROL_INDEX.md` to resolve the exact Domain 26 capability sections required for the current task. Do not preload this entire module when one exact `craft.*` section is sufficient.
 

@@ -1,3 +1,3 @@
 # Generic Agent Skills adapter
 
-Copy `biziq/` to a skills-compatible project location such as `.agents/skills/biziq/`. This adapter contains no duplicate BizIQ core rules; it activates the shared Runtime.
+Copy `aifence/` to a skills-compatible project location such as `.agents/skills/aifence/`. This adapter contains no duplicate AIFENCE core rules; it activates the shared Runtime.

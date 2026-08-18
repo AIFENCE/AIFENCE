@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CORE = ROOT / "src" / "sage_plugin"
+CORE = ROOT / "src" / "aifence.bus"
 ADAPTERS = {"mcp_server.py", "main.py"}
 
 
@@ -36,7 +36,7 @@ def main() -> None:
             violations.append(f"missing API domain module: {module.name}")
     if not (CORE / "pattern_structure.py").is_file():
         violations.append("pattern structure module missing")
-    spec = (ROOT / "spec" / "SAGE-0.2.md").read_text()
+    spec = (ROOT / "spec" / "AIFENCE-0.2.md").read_text()
     if "wire version `2`" not in spec.lower() and "wire 2" not in spec.lower():
         violations.append("protocol specification does not state wire 2")
     if violations:

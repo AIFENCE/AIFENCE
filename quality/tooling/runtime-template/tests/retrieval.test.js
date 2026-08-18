@@ -4,10 +4,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {RUNTIME_ROOT} from '../src/paths.js';
 import {CoreProvider} from '../src/core-provider.js';
-import {BizIQRouter} from '../src/router.js';
+import {AifenceRouter} from '../src/router.js';
 
 const core=new CoreProvider();
-const router=new BizIQRouter();
+const router=new AifenceRouter();
 
 test('generated capability shards cover every registry capability',()=>{
   const registry=core.registry();

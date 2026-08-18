@@ -24,7 +24,7 @@ The new `benchmarks/v2_runtime_fidelity_cases.json` 12-case extension is publish
 ## What is not yet an efficacy claim
 <!-- id: benchmark-status-1-6.not-yet-efficacy -->
 
-No visual-quality delta is recorded here without a newly generated matched control/BizIQ artifact set and condition-blind judging. The prior Revision 1.3 scores remain historical evidence only. Do not infer a Revision 1.6 visual score from Runtime tests.
+No visual-quality delta is recorded here without a newly generated matched control/AIFENCE artifact set and condition-blind judging. The prior Revision 1.3 scores remain historical evidence only. Do not infer a Revision 1.6 visual score from Runtime tests.
 
 ## Required external efficacy run
 <!-- id: benchmark-status-1-6.external-run -->

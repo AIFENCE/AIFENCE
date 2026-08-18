@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -12,12 +12,12 @@ from sqlalchemy.orm import Session
 from .audit import append_event
 from .ids import new_id
 from .models import BudgetReservation, DelegationGrant, MemoryRecord, RuntimeBudget
-from .service import AgentDanceService
+from .service import AifenceService
 
 
 def run_tenant_maintenance(
     session: Session,
-    service: AgentDanceService,
+    service: AifenceService,
     *,
     tenant_id: str,
     batch_size: int = 500,

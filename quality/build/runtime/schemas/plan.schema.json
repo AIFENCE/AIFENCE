@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://biziq.local/runtime/plan.schema.json",
-  "title": "BizIQ Runtime Plan",
+  "$id": "https://aifence.local/runtime/plan.schema.json",
+  "title": "AIFENCE Runtime Plan",
   "type": "object",
   "additionalProperties": true,
   "required": [

@@ -1,4 +1,4 @@
-# Generated BizIQ Build
+# Generated AIFENCE Build
 
 Do not edit files in this directory by hand. They are generated from `source/` by `node tooling/build.mjs`.
 

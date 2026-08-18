@@ -8,7 +8,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from aifence.bus.codebook import Codebook
-from aifence.bus.codec import SageCodec
+from aifence.bus.codec import AifenceCodec
 from aifence.bus.config import Settings
 from aifence.bus.db import SessionLocal
 from aifence.bus.main import app
@@ -18,7 +18,7 @@ from aifence.bus.schemas import Budget, EncodeRequest
 
 def test_receiver_aware_send_automatically_uses_delta_after_ack():
     with SessionLocal() as db:
-        codec = SageCodec(db, Settings(auth_required=False, database_url="sqlite://"))
+        codec = AifenceCodec(db, Settings(auth_required=False, database_url="sqlite://"))
         first = codec.encode(
             EncodeRequest(
                 content={"project": "phoenix", "failed": 3, "blocked": True, "context": "x" * 1000},
@@ -43,7 +43,7 @@ def test_receiver_aware_send_automatically_uses_delta_after_ack():
 
 def test_compact_wire_round_trip_preserves_provenance():
     with SessionLocal() as db:
-        codec = SageCodec(db, Settings(auth_required=False, database_url="sqlite://"))
+        codec = AifenceCodec(db, Settings(auth_required=False, database_url="sqlite://"))
         result = codec.encode(
             EncodeRequest(
                 content={"screen_damage": True},
@@ -65,7 +65,7 @@ def test_compact_wire_round_trip_preserves_provenance():
 def test_semantic_cache_reuses_safe_packet_template_but_new_packet_id():
     with SessionLocal() as db:
         settings = Settings(auth_required=False, database_url="sqlite://")
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         codec.codebook.register("global", "refund_requested")
         db.commit()
         first = codec.encode(
@@ -128,7 +128,7 @@ def test_concept_namespace_alias_and_deprecation_redirect():
 
 def test_budget_falls_back_to_reference_without_dropping_content():
     with SessionLocal() as db:
-        codec = SageCodec(db, Settings(auth_required=False, database_url="sqlite://"))
+        codec = AifenceCodec(db, Settings(auth_required=False, database_url="sqlite://"))
         content = {"blob": "x" * 5000, "critical": "must-preserve"}
         result = codec.encode(
             EncodeRequest(
@@ -187,22 +187,22 @@ def test_eval_reports_lossless_plain_transport_baselines():
         assert baselines["raw_json_bytes"] > 0
         assert baselines["raw_msgpack_bytes"] > 0
         assert baselines["raw_gzip_json_bytes"] > 0
-        assert baselines["sage_msgpack_bytes"] > 0
+        assert baselines["aifence_bus_msgpack_bytes"] > 0
 
 
 def test_integration_config_hermes_release_asset() -> None:
     from aifence.bus.integrations import config_for
 
-    cfg = config_for("hermes", "http://sage:8080", "hermes-a", "team")
+    cfg = config_for("hermes", "http://aifence:8080", "hermes-a", "team")
     assert cfg.config["workspace"] == "team"
-    assert "SAGE_WORKSPACE=team" in cfg.files["env"]
-    assert any("sage-hermes-plugin-v0.2.7.zip" in command for command in cfg.commands)
+    assert "AIFENCE_BUS_WORKSPACE=team" in cfg.files["env"]
+    assert any("aifence-hermes-plugin-v0.2.7.zip" in command for command in cfg.commands)
 
 
 def test_integration_config_openclaw_release_asset() -> None:
     from aifence.bus.integrations import config_for
 
-    cfg = config_for("openclaw", "http://sage:8080", "claw-a", "team")
+    cfg = config_for("openclaw", "http://aifence:8080", "claw-a", "team")
     assert cfg.config["workspace"] == "team"
-    assert "SAGE_WORKSPACE=team" in cfg.files["env"]
-    assert any("sage-agent-openclaw-sage-0.2.7.tgz" in command for command in cfg.commands)
+    assert "AIFENCE_BUS_WORKSPACE=team" in cfg.files["env"]
+    assert any("aifence-agent-openclaw-aifence-0.2.7.tgz" in command for command in cfg.commands)

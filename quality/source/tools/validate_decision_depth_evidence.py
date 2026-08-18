@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate BizIQ complex-B2B buyer decision-depth evidence."""
+"""Validate AIFENCE complex-B2B buyer decision-depth evidence."""
 from __future__ import annotations
 import argparse,json,sys
 from pathlib import Path

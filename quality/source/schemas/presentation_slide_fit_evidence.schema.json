@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "BizIQ Presentation Slide Fit Evidence",
+  "title": "AIFENCE Presentation Slide Fit Evidence",
   "type": "object",
   "additionalProperties": false,
   "required": [

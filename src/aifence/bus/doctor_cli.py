@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -71,14 +71,14 @@ def run_doctor(
         if not isinstance(live, dict) or live.get("alive") is not True:
             raise RuntimeError(f"unexpected response: {live!r}")
         version = str(live.get("version", "unknown"))
-        results.append(CheckResult("Service reachable", True, f"SAGE {version}"))
+        results.append(CheckResult("Service reachable", True, f"AIFENCE {version}"))
     except (httpx.HTTPError, RuntimeError) as exc:
         results.append(
             CheckResult(
                 "Service reachable",
                 False,
                 str(exc),
-                "Start SAGE and confirm --url points to the service from this machine or container.",
+                "Start AIFENCE and confirm --url points to the service from this machine or container.",
             )
         )
         return results
@@ -103,23 +103,23 @@ def run_doctor(
                 raise RuntimeError(f"unexpected response: {ready!r}")
             results.append(CheckResult("Database ready", True, "database query succeeded"))
     except (httpx.HTTPError, RuntimeError, ValueError) as exc:
-        hint = "Set --api-key or SAGE_API_KEY when authentication is enabled."
+        hint = "Set --api-key or AIFENCE_BUS_API_KEY when authentication is enabled."
         results.append(CheckResult("Database ready", False, str(exc), hint))
 
     try:
         protocol = _expect_json(client, "GET", "/v1/protocol")
         if not isinstance(protocol, dict):
             raise RuntimeError(f"unexpected response: {protocol!r}")
-        if protocol.get("protocol") != "sage/0.2" or protocol.get("wire_version") != 2:
+        if protocol.get("protocol") != "aifence/0.2" or protocol.get("wire_version") != 2:
             raise RuntimeError(f"unsupported protocol response: {protocol!r}")
-        results.append(CheckResult("Protocol compatible", True, "sage/0.2, wire 2"))
+        results.append(CheckResult("Protocol compatible", True, "aifence/0.2, wire 2"))
     except (httpx.HTTPError, RuntimeError) as exc:
         results.append(
             CheckResult(
                 "Protocol compatible",
                 False,
                 str(exc),
-                "Use a SAGE v0.2.x server and provide the correct API key.",
+                "Use a AIFENCE v0.2.x server and provide the correct API key.",
             )
         )
 
@@ -131,8 +131,8 @@ def run_doctor(
         sender = agent_id
         receiver = agent_id
     else:
-        sender = f"sage-doctor-sender-{suffix}"
-        receiver = f"sage-doctor-receiver-{suffix}"
+        sender = f"aifence-doctor-sender-{suffix}"
+        receiver = f"aifence-doctor-receiver-{suffix}"
     message_id: str | None = None
     try:
         handoff = _expect_json(
@@ -145,7 +145,7 @@ def run_doctor(
                 "workspace": workspace,
                 "run_id": suffix,
                 "content": {
-                    "check": "sage-doctor",
+                    "check": "aifence-doctor",
                     "nonce": suffix,
                     "expected": "claim-and-ack",
                 },
@@ -253,13 +253,13 @@ def _print_results(results: list[CheckResult], *, json_output: bool) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Verify a SAGE service and its durable delivery flow")
-    parser.add_argument("--url", default=os.getenv("SAGE_URL", "http://127.0.0.1:8080"))
-    parser.add_argument("--api-key", default=os.getenv("SAGE_API_KEY"))
-    parser.add_argument("--workspace", default=os.getenv("SAGE_WORKSPACE", "default"))
+    parser = argparse.ArgumentParser(description="Verify a AIFENCE service and its durable delivery flow")
+    parser.add_argument("--url", default=os.getenv("AIFENCE_BUS_URL", "http://127.0.0.1:8080"))
+    parser.add_argument("--api-key", default=os.getenv("AIFENCE_BUS_API_KEY"))
+    parser.add_argument("--workspace", default=os.getenv("AIFENCE_BUS_WORKSPACE", "default"))
     parser.add_argument(
         "--agent-id",
-        default=os.getenv("SAGE_AGENT_ID"),
+        default=os.getenv("AIFENCE_BUS_AGENT_ID"),
         help="use a self-addressed check suitable for an agent-scoped API key",
     )
     parser.add_argument("--timeout", type=float, default=10.0)
@@ -282,7 +282,7 @@ def main() -> None:
                 "Service reachable",
                 False,
                 str(exc),
-                "Check --url, DNS, Docker networking, and whether the SAGE service is running.",
+                "Check --url, DNS, Docker networking, and whether the AIFENCE service is running.",
             )
         ]
     _print_results(results, json_output=args.json_output)

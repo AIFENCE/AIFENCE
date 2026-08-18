@@ -7,10 +7,10 @@ Control-Plane-Revision: 1.8.8
 Last-Updated: 2026-08-11
 -->
 
-# BizIQ 2.0 Performance & Evidence
+# AIFENCE 2.0 Performance & Evidence
 <!-- id: performance-evidence.root -->
 
-BizIQ Stable 2.0 is the frozen Core 1.8.8 architecture with Runtime packaging 2.0.0. This page separates **internal Stable qualification**, **external-value engineering evidence**, and the remaining **independent-judging boundary** so public performance claims stay traceable and appropriately scoped.
+AIFENCE Stable 2.0 is the frozen Core 1.8.8 architecture with Runtime packaging 2.0.0. This page separates **internal Stable qualification**, **external-value engineering evidence**, and the remaining **independent-judging boundary** so public performance claims stay traceable and appropriately scoped.
 
 ## Headline results
 <!-- id: performance-evidence.headline -->
@@ -21,22 +21,22 @@ The strongest current product-value evidence is **External Value Benchmark 1**, 
 |---|---:|---:|---:|
 | Brief-only / default | **65.200 / 100** | 0 / 30 | 0 |
 | Strong handcrafted production prompt | **85.867 / 100** | 4 / 30 | 0 |
-| **BizIQ Stable 2.0** | **96.800 / 100** | **30 / 30** | **0** |
+| **AIFENCE Stable 2.0** | **96.800 / 100** | **30 / 30** | **0** |
 
 Paired results:
 
-- **BizIQ vs default:** +31.600 points, **30/30 wins**, bootstrap 95% CI **+29.067 to +34.400**.
-- **BizIQ vs strong expert prompt:** +10.933 points, **30/30 wins**, bootstrap 95% CI **+9.333 to +12.533**.
+- **AIFENCE vs default:** +31.600 points, **30/30 wins**, bootstrap 95% CI **+29.067 to +34.400**.
+- **AIFENCE vs strong expert prompt:** +10.933 points, **30/30 wins**, bootstrap 95% CI **+9.333 to +12.533**.
 - **Expert prompt vs default:** +20.667 points, **30/30 wins**.
 
-BizIQ reached **100% production acceptance in every tested family** under the locked engineering acceptance rule.
+AIFENCE reached **100% production acceptance in every tested family** under the locked engineering acceptance rule.
 
 ## Engineering value dimensions
 <!-- id: performance-evidence.dimensions -->
 
 The external-value score uses five equally weighted 20-point categories. These categories emphasize observable production behavior rather than aesthetic preference alone.
 
-| Dimension | Default | Expert prompt | **BizIQ 2.0** |
+| Dimension | Default | Expert prompt | **AIFENCE 2.0** |
 |---|---:|---:|---:|
 | Production completeness | 12.40 | 17.73 | **19.60** |
 | Operational usability | 10.13 | 15.60 | **20.00** |
@@ -44,7 +44,7 @@ The external-value score uses five equally weighted 20-point categories. These c
 | Accessibility / render quality | 15.07 | 17.20 | **19.60** |
 | Domain / evidence depth | 8.80 | 15.73 | **18.00** |
 
-The expert baseline is intentionally strong. Its implementation-resilience score is already near the ceiling, while BizIQ's largest additional gains come from materialization depth, recovery and continuation behavior, provenance, decision usefulness, family-native completeness, and cross-artifact continuity.
+The expert baseline is intentionally strong. Its implementation-resilience score is already near the ceiling, while AIFENCE's largest additional gains come from materialization depth, recovery and continuation behavior, provenance, decision usefulness, family-native completeness, and cross-artifact continuity.
 
 ## External Value Benchmark 1 protocol
 <!-- id: performance-evidence.external-value-protocol -->
@@ -53,7 +53,7 @@ External Value Benchmark 1 uses **30 previously unseen briefs across 10 artifact
 
 1. brief-only/default generation;
 2. one frozen strong handcrafted production prompt;
-3. BizIQ Stable 2.0 / Core 1.8.8.
+3. AIFENCE Stable 2.0 / Core 1.8.8.
 
 The scoring protocol and family-native subchecks are fixed before scoring. Artifacts are frozen before audit. Engineering acceptance is based on direct artifact evidence such as browser execution, compact-width containment, CLI execution, native PPTX/XLSX/PDF integrity, formula checks, render geometry, accessibility evidence, domain materialization, provenance, and composite continuity where applicable.
 
@@ -111,16 +111,16 @@ Stable 2.0 is architecture-frozen. New controls or broad control-plane expansion
 ## What the evidence supports
 <!-- id: performance-evidence.claim-boundary -->
 
-The current evidence supports the claim that, **inside the locked same-environment engineering benchmark**, BizIQ 2.0 materially outperformed both brief-only generation and the frozen strong handcrafted production prompt while maintaining zero catastrophic failures and 100% engineering acceptance across the tested families.
+The current evidence supports the claim that, **inside the locked same-environment engineering benchmark**, AIFENCE 2.0 materially outperformed both brief-only generation and the frozen strong handcrafted production prompt while maintaining zero catastrophic failures and 100% engineering acceptance across the tested families.
 
 It does **not** establish universal superiority across all models, tasks, users, domains, or future versions. The engineering scores are not independent third-party ratings and should not be presented as such.
 
-The next credibility layer is independent blinded preference judging using the already-frozen benchmark artifacts. That test should evaluate whether BizIQ's engineering advantage also translates into preference by judges who do not know which condition produced each artifact.
+The next credibility layer is independent blinded preference judging using the already-frozen benchmark artifacts. That test should evaluate whether AIFENCE's engineering advantage also translates into preference by judges who do not know which condition produced each artifact.
 
 ## Public reporting rules
 <!-- id: performance-evidence.reporting-rules -->
 
-When citing BizIQ performance publicly:
+When citing AIFENCE performance publicly:
 
 - identify the benchmark and condition being compared;
 - distinguish **engineering value score** from subjective visual preference;

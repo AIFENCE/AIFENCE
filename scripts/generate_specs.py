@@ -29,7 +29,7 @@ def main() -> None:
     args = parser.parse_args()
 
     repo = ROOT / "spec" / "schemas"
-    packaged = ROOT / "src" / "sage_plugin" / "spec" / "schemas"
+    packaged = ROOT / "src" / "aifence.bus" / "spec" / "schemas"
     mismatches: list[str] = []
     for name, model in SPEC_MODELS.items():
         payload = model.model_json_schema()

@@ -9,7 +9,7 @@ const tools = new Map();
 const calls = [];
 const context = {
   console,
-  process: { env: { SAGE_URL: "http://sage", SAGE_AGENT_ID: "claw-a", SAGE_WORKSPACE: "team" } },
+  process: { env: { AIFENCE_BUS_URL: "http://aifence", AIFENCE_BUS_AGENT_ID: "claw-a", AIFENCE_BUS_WORKSPACE: "team" } },
   Headers,
   URLSearchParams,
   encodeURIComponent,
@@ -33,8 +33,8 @@ context.__plugin.register({
   on() {},
 });
 
-const handoff = tools.get("sage_handoff");
-if (!handoff) throw new Error("sage_handoff not registered");
+const handoff = tools.get("aifence_bus_handoff");
+if (!handoff) throw new Error("aifence_bus_handoff not registered");
 if (handoff.parameters.properties.content.type !== "object") throw new Error("content schema is not object");
 
 await handoff.execute("1", { receiver: "peer", content: { value: 7 } }, {});
@@ -53,7 +53,7 @@ try {
     receiver: "peer",
     content: { concepts: [], literals: [], references: [], provenance: {} },
   }, {});
-} catch (error) { envelopeRejected = String(error).includes("encoded SAGE semantic envelope"); }
+} catch (error) { envelopeRejected = String(error).includes("encoded AIFENCE semantic envelope"); }
 if (!envelopeRejected) throw new Error("semantic envelope was not rejected");
 
 console.log(JSON.stringify({ ok: true, adapter: "openclaw", checks: 5 }));

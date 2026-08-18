@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://biziq.local/schemas/generation_preflight_evidence.schema.json",
-  "title": "BizIQ Generation Preflight Evidence",
+  "$id": "https://aifence.local/schemas/generation_preflight_evidence.schema.json",
+  "title": "AIFENCE Generation Preflight Evidence",
   "type": "object",
   "additionalProperties": false,
   "required": [

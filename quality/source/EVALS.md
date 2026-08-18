@@ -6,10 +6,10 @@ Module-Version: 5
 Control-Plane-Revision: 1.8.8
 Last-Updated: 2026-08-09
 -->
-# BizIQ Evaluation System
+# AIFENCE Evaluation System
 <!-- id: evals.root -->
 
-BizIQ uses three layers:
+AIFENCE uses three layers:
 
 1. The logical control regression matrix is the union of `evals/control_regression_matrix.json` and `evals/control_regression_matrix_*.json` shards: **780 conditions** for **260 capabilities**.
 2. `evals/end_to_end_cases.json` contains curated cross-module cases for classification, production visual quality, craft, compilation, adversarial review, floors, and benchmark governance.
@@ -18,7 +18,7 @@ BizIQ uses three layers:
 # Evaluation Rule
 <!-- id: evals.execution-rule -->
 
-Run `python tools/validate_pack.py` first when BizIQ changes. For behavioral prompt/control changes, review applicable end-to-end cases. For claims that BizIQ improves artifacts, use the blinded paired benchmark protocol; static validation and self-scoring are insufficient.
+Run `python tools/validate_pack.py` first when AIFENCE changes. For behavioral prompt/control changes, review applicable end-to-end cases. For claims that AIFENCE improves artifacts, use the blinded paired benchmark protocol; static validation and self-scoring are insufficient.
 
 # Matrix Sharding Rule
 <!-- id: evals.matrix-sharding -->

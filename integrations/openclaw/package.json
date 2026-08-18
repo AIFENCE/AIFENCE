@@ -1,5 +1,5 @@
 {
-  "name": "@sage-agent/openclaw-sage",
+  "name": "@aifence-agent/openclaw-aifence",
   "version": "0.2.7",
   "type": "module",
   "files": [
@@ -37,11 +37,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NeuralBinary/SAGE.git"
+    "url": "git+https://github.com/NeuralBinary/AIFENCE.git"
   },
-  "homepage": "https://github.com/NeuralBinary/SAGE",
+  "homepage": "https://github.com/NeuralBinary/AIFENCE",
   "bugs": {
-    "url": "https://github.com/NeuralBinary/SAGE/issues"
+    "url": "https://github.com/NeuralBinary/AIFENCE/issues"
   },
   "engines": {
     "node": ">=22.22.3"

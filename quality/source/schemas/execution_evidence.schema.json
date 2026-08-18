@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/execution_evidence.schema.json",
-  "title": "BizIQ Executable Evidence Record",
+  "$id": "aifence://schemas/execution_evidence.schema.json",
+  "title": "AIFENCE Executable Evidence Record",
   "type": "object",
   "required": [
     "artifact_id",

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/procedure_authority.schema.json",
-  "title": "BizIQ Procedure Authority Record",
+  "$id": "aifence://schemas/procedure_authority.schema.json",
+  "title": "AIFENCE Procedure Authority Record",
   "type": "object",
   "additionalProperties": false,
   "required": [

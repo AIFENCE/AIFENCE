@@ -1,6 +1,6 @@
 {
-  "id": "sage",
-  "name": "SAGE Semantic Bus",
+  "id": "aifence",
+  "name": "AIFENCE Semantic Bus",
   "description": "Vendor-neutral semantic handoffs, refs, deltas, and automatic cross-agent context injection.",
   "version": "0.2.7",
   "activation": {
@@ -8,9 +8,9 @@
   },
   "contracts": {
     "tools": [
-      "sage_handoff",
-      "sage_poll",
-      "sage_ack"
+      "aifence_bus_handoff",
+      "aifence_bus_poll",
+      "aifence_bus_ack"
     ]
   },
   "configSchema": {

@@ -8,7 +8,7 @@ Covers (issue #16, stage 2):
   crafted known inputs (a negation flip must fail the negation check, a
   correct number must pass the numeric check, ...), the rule-based state
   reader, the extractive-summary stub, and the retrieval selector;
-* the SAGE path -- a real ``SageCodec`` exchange on the benchmark fixture
+* the AIFENCE path -- a real ``AifenceCodec`` exchange on the benchmark fixture
   produces ``ContextReport`` data with the expected fields;
 * the twelve RFC variant rows are all present in the output;
 * clean no-provider skipping (``not run, no provider``);
@@ -27,7 +27,7 @@ from pathlib import Path
 
 import pytest
 
-from aifence.bus.codec import SageCodec
+from aifence.bus.codec import AifenceCodec
 from aifence.bus.config import Settings
 from aifence.bus.db import SessionLocal
 from aifence.bus.schemas import EncodeRequest, Provenance
@@ -94,7 +94,7 @@ def test_printed_tables_cover_all_sections(cb, bench_run):
     assert "Task performance" in text
     assert "Semantic fidelity" in text
     assert "Amortization vs full-context baseline" in text
-    assert "12. full SAGE with ACKed receiver knowledge" in text
+    assert "12. full AIFENCE with ACKed receiver knowledge" in text
     assert "1. full natural-language context every turn" in text
 
 
@@ -296,25 +296,25 @@ def test_retrieval_selector_caps_and_keeps_latest(cb):
 
 
 def test_provider_skip_is_clean(cb, monkeypatch):
-    monkeypatch.delenv("SAGE_BENCH_LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", raising=False)
     assert cb.provider_available() is False
     spec = {"id": "v99", "name": "99. provider-bound variant", "requires_provider": True}
     assert cb.variant_status(spec) == "skipped"
     assert cb.NO_PROVIDER_NOTE == "not run, no provider"
     # none of the twelve built-in variants requires a provider
-    specs = [*cb._plain_specs(), *cb._sage_specs()]
+    specs = [*cb._plain_specs(), *cb._aifence_specs()]
     assert all(cb.variant_status(spec) == "ok" for spec in specs)
 
 
 # ---------------------------------------------------------------------------
-# SAGE integration
+# AIFENCE integration
 # ---------------------------------------------------------------------------
 
 
-def test_sage_variant_produces_context_report_data(cb):
+def test_aifence_variant_produces_context_report_data(cb):
     with SessionLocal() as db:
         settings = Settings(auth_required=False, database_url="sqlite://", context_accounting_enabled=True)
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         codec._packet_id = lambda: "P" + "0" * 32  # type: ignore[method-assign]
         encoded = codec.encode(
             EncodeRequest(
@@ -347,13 +347,13 @@ def test_sage_variant_produces_context_report_data(cb):
 
 
 def test_cli_entrypoint_prints_tables_and_writes_artifacts(tmp_path):
-    env = {key: value for key, value in os.environ.items() if not key.startswith("SAGE_")}
+    env = {key: value for key, value in os.environ.items() if not key.startswith("AIFENCE_")}
     env.update(
         {
             "PYTHONPATH": str(ROOT / "src"),
-            "SAGE_AUTH_REQUIRED": "false",
-            "SAGE_LEARNING_MODE": "managed",
-            "SAGE_DATABASE_URL": f"sqlite:///{tmp_path / 'cli.db'}",
+            "AIFENCE_BUS_AUTH_REQUIRED": "false",
+            "AIFENCE_BUS_LEARNING_MODE": "managed",
+            "AIFENCE_BUS_DATABASE_URL": f"sqlite:///{tmp_path / 'cli.db'}",
         }
     )
     result = subprocess.run(

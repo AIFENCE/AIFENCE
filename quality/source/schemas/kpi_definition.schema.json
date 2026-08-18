@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/kpi_definition.schema.json",
-  "title": "BizIQ KPI Definition",
+  "$id": "aifence://schemas/kpi_definition.schema.json",
+  "title": "AIFENCE KPI Definition",
   "type": "object",
   "additionalProperties": false,
   "required": [

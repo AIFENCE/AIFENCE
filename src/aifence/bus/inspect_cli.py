@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -32,7 +32,7 @@ def _print(value: dict[str, Any], as_json: bool) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Inspect SAGE packet/run compression and semantic decisions")
+    parser = argparse.ArgumentParser(description="Inspect AIFENCE packet/run compression and semantic decisions")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--packet", help="packet ID to inspect")
     group.add_argument("--run", help="run ID to inspect")

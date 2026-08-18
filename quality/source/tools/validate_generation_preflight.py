@@ -33,7 +33,7 @@ def scripts(html_path):
 def check_js(items):
     node=shutil.which('node'); errors=[];checked=0
     if not node:return 'FAIL','node-unavailable',0,['Node.js is required for JavaScript syntax preflight']
-    with tempfile.TemporaryDirectory(prefix='biziq-js-preflight-') as td:
+    with tempfile.TemporaryDirectory(prefix='aifence-js-preflight-') as td:
         for label,code,is_module in items:
             checked+=1
             if code is None:

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/responsive_composition.schema.json",
+  "$id": "aifence://schemas/responsive_composition.schema.json",
   "type": "object",
   "required": [
     "artifact_id",

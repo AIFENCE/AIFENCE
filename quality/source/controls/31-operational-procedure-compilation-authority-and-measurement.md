@@ -10,7 +10,7 @@ Last-Updated: 2026-08-09
 # Domain 31 — Operational Procedure Compilation, Authority & Measurement
 <!-- id: controls.domain-31 -->
 
-Purpose: make BizIQ operational outputs executable, authority-aware, measurable, auditable, and resistant to false procedural certainty. This domain strengthens Domain 23 rather than replacing its stable BQ controls.
+Purpose: make AIFENCE operational outputs executable, authority-aware, measurable, auditable, and resistant to false procedural certainty. This domain strengthens Domain 23 rather than replacing its stable BQ controls.
 
 ## Domain Execution Rule
 <!-- id: controls.domain-31.execution-rule -->
@@ -127,7 +127,7 @@ Use the smallest relevant capability set. For substantial operating procedures, 
 1. Classify the procedure and each material authority-bearing section as GENERAL_GUIDANCE, ORGANIZATION_DRAFT, VERIFIED_ORGANIZATION_PROCEDURE, EXTERNAL_AUTHORITATIVE_REQUIREMENT, or MIXED.
 2. For every strong authority source, capture stable source ID, title, issuer/owner, scope, applicability basis, supplied/retrieved date, verification state, and version/effective/currentness evidence.
 3. For MIXED procedures, build an authority_map covering every material step/section; strong entries must reference verified authority_source_ids.
-4. Separate source requirement, organization control, and BizIQ recommendation; do not let nearby verified content confer authority on draft guidance.
+4. Separate source requirement, organization control, and AIFENCE recommendation; do not let nearby verified content confer authority on draft guidance.
 5. If applicability/currentness cannot be proven, downgrade the affected section to draft/general guidance or keep it UNVERIFIED and create a verification task.
 
 ### Evidence Gate — BQ-1263

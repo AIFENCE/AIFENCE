@@ -1,4 +1,4 @@
-export type SageWireV2 = {
+export type AifenceWireV2 = {
   v: 2;
   c: string;
   "R"?: unknown;
@@ -15,5 +15,5 @@ export type SageWireV2 = {
   "z"?: unknown;
 };
 
-export const SAGE_PROTOCOL = "sage/0.2" as const;
-export const SAGE_WIRE_VERSION = 2 as const;
+export const AIFENCE_PROTOCOL = "aifence/0.2" as const;
+export const AIFENCE_WIRE_VERSION = 2 as const;

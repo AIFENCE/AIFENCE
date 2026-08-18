@@ -9,7 +9,7 @@ Last-Updated: 2026-08-10
 # Fresh Core 1.7.2 Benchmark Finding: Generation Compiler Preflight
 <!-- id: benchmark-findings-1-7-2.root -->
 
-A completely fresh six-pair rendered benchmark reproduced the Core 1.7.2 structural-genericity and B2B decision-depth improvements, but all six freshly generated dense-product artifacts contained the same JavaScript parser defect: an element ID named `export` was used as an implicit global in `export.onclick = ...`. Controls and BizIQ treatments therefore rendered visually but their scripts did not execute.
+A completely fresh six-pair rendered benchmark reproduced the Core 1.7.2 structural-genericity and B2B decision-depth improvements, but all six freshly generated dense-product artifacts contained the same JavaScript parser defect: an element ID named `export` was used as an implicit global in `export.onclick = ...`. Controls and AIFENCE treatments therefore rendered visually but their scripts did not execute.
 
 Revision 1.7.3 converts this failure into a fail-closed generation boundary:
 
@@ -25,12 +25,12 @@ A fresh six-pair no-repair replication was then executed against Runtime 1.1.3 /
 Measured result:
 
 - Brief-only control mean: **76.481/100**.
-- BizIQ 1.7.3 treatment mean: **91.444/100**.
-- Mean paired improvement: **+14.963 points**; BizIQ won **6/6** pairs.
+- AIFENCE 1.7.3 treatment mean: **91.444/100**.
+- Mean paired improvement: **+14.963 points**; AIFENCE won **6/6** pairs.
 - Bootstrap 95% interval for mean paired delta: **+12.407 to +17.500**.
-- All **6/6 BizIQ artifacts passed generation preflight**.
-- Fresh BizIQ payments, SaaS, and analytics each passed the targeted 320/390 interaction workflow audit.
+- All **6/6 AIFENCE artifacts passed generation preflight**.
+- Fresh AIFENCE payments, SaaS, and analytics each passed the targeted 320/390 interaction workflow audit.
 - The three brief-only product controls reproduced the parser failure and failed preflight.
-- Strict >=9.0-every-dimension remained **3/6** because dense-product visual quality/completeness/accessibility and payments/analytics feature depth still had sub-9 scores; the parser/dead-JS failure itself was eliminated in the BizIQ treatment.
+- Strict >=9.0-every-dimension remained **3/6** because dense-product visual quality/completeness/accessibility and payments/analytics feature depth still had sub-9 scores; the parser/dead-JS failure itself was eliminated in the AIFENCE treatment.
 
 This remains a single-session/single-judge engineering benchmark rather than independent third-party validation.

@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ from sqlalchemy.orm import Session, sessionmaker
 from .audit import append_event
 from .auth import AuthContext
 from .db import set_tenant_context
-from .errors import AgentDanceError, AuthorizationError, ConflictError, DependencyUnavailableError
+from .errors import AifenceError, AuthorizationError, ConflictError, DependencyUnavailableError
 from .ids import new_id
 from .metrics import DISPATCH_LATENCY, OUTBOX_BACKLOG, OUTBOX_EVENTS
 from .models import (
@@ -31,7 +31,7 @@ from .models import (
     Tool,
 )
 from .network import ValidatedEndpoint, pin_validated_target, validate_endpoint
-from .service import AgentDanceService
+from .service import AifenceService
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +75,7 @@ class DispatchWorker:
         self,
         *,
         session_factory: sessionmaker[Session],
-        service: AgentDanceService,
+        service: AifenceService,
         client: httpx.AsyncClient,
         worker_id: str,
     ) -> None:
@@ -101,7 +101,7 @@ class DispatchWorker:
             if session.get_bind().dialect.name == "postgresql":
                 rows = session.execute(
                     text(
-                        "SELECT outbox_id, tenant_id, fencing_token FROM agentdance_claim_dispatch("
+                        "SELECT outbox_id, tenant_id, fencing_token FROM aifence_guard_claim_dispatch("
                         ":worker_id, :batch_size, :lease_seconds)"
                     ),
                     {
@@ -436,8 +436,8 @@ class DispatchWorker:
         headers = {
             "Content-Type": "application/json",
             "Accept": "application/json",
-            "User-Agent": "AGENTDANCE-Dispatcher/1.0.0-rc.5",
-            "X-Agentdance-Execution-ID": execution_id,
+            "User-Agent": "AIFENCE-Dispatcher/1.0.0-rc.5",
+            "X-Aifence-Execution-ID": execution_id,
             "Idempotency-Key": upstream_idempotency_key,
         }
         headers["Host"] = host_header
@@ -491,9 +491,9 @@ class DispatchWorker:
                     or claim.fencing_token != fencing_token
                     or claim.lease_owner != self.worker_id):
                 return "failed"
-            code = exc.code if isinstance(exc, AgentDanceError) else "unexpected_dispatch_failure"
+            code = exc.code if isinstance(exc, AifenceError) else "unexpected_dispatch_failure"
             error_message = (
-                exc.message if isinstance(exc, AgentDanceError) else str(exc) or type(exc).__name__
+                exc.message if isinstance(exc, AifenceError) else str(exc) or type(exc).__name__
             )[:4096]
             request_method = str(execution.request_json.get("method", "POST")).upper()
             operation = self._tool_operation(execution.controls_applied, required=False)

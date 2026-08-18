@@ -25,7 +25,7 @@ def nearest_pkg_type(p):
 def check_js_code(code,label,module=False):
  node=shutil.which('node')
  if not node:return False,'Node.js unavailable'
- with tempfile.TemporaryDirectory(prefix='biziq-universal-js-') as td:
+ with tempfile.TemporaryDirectory(prefix='aifence-universal-js-') as td:
   if module:
    p=Path(td)/'check.mjs';p.write_text(code);r=subprocess.run([node,'--check',str(p)],capture_output=True,text=True)
   else:

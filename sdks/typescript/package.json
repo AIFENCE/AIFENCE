@@ -1,7 +1,7 @@
 {
-  "name": "@agentdance/client",
+  "name": "@aifence/client",
   "version": "1.0.0-rc.5",
-  "description": "Official TypeScript client for AGENTDANCE",
+  "description": "Official TypeScript client for AIFENCE",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

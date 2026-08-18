@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/document_depth.schema.json",
+  "$id": "aifence://schemas/document_depth.schema.json",
   "type": "object",
   "required": [
     "document_id",

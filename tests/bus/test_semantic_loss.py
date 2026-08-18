@@ -1,4 +1,4 @@
-from aifence.bus.codec import SageCodec
+from aifence.bus.codec import AifenceCodec
 from aifence.bus.config import Settings
 from aifence.bus.db import SessionLocal
 from aifence.bus.schemas import EncodeRequest
@@ -6,7 +6,7 @@ from aifence.bus.schemas import EncodeRequest
 
 def test_unknown_literal_is_preserved_not_silently_mapped():
     with SessionLocal() as db:
-        codec = SageCodec(db, Settings(auth_required=False, database_url="sqlite://"))
+        codec = AifenceCodec(db, Settings(auth_required=False, database_url="sqlite://"))
         result = codec.encode(
             EncodeRequest(
                 content={"approval": False, "limit": 0, "note": "do not deploy"},
@@ -22,7 +22,7 @@ def test_unknown_literal_is_preserved_not_silently_mapped():
 
 def test_explicit_null_and_delete_survive_delta_round_trip():
     with SessionLocal() as db:
-        codec = SageCodec(db, Settings(auth_required=False, database_url="sqlite://"))
+        codec = AifenceCodec(db, Settings(auth_required=False, database_url="sqlite://"))
         first = codec.encode(
             EncodeRequest(content={"a": 1, "b": 2}, sender="a", receiver="b", use_cache=False)
         )

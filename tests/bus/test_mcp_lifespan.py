@@ -1,8 +1,8 @@
 """Regression tests for GitHub issue #11.
 
 The MCP SDK's ``StreamableHTTPSessionManager.run()`` may only be entered once
-per FastMCP instance. SAGE therefore builds a fresh FastMCP on every lifespan
-startup (see ``src/sage_plugin/main.py``: the ``lifespan`` context manager and
+per FastMCP instance. AIFENCE therefore builds a fresh FastMCP on every lifespan
+startup (see ``src/aifence/bus/main.py``: the ``lifespan`` context manager and
 the delegating ``_MCPMount`` at ``/mcp``), so repeated app startups in a
 single process — e.g. one ``TestClient`` per test — no longer raise
 ``RuntimeError: StreamableHTTPSessionManager .run() can only be called once

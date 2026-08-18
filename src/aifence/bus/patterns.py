@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -55,7 +55,7 @@ class PatternStore:
 
     Patterns are exact templates over compiled semantic units. Constant values are part
     of the template; dynamic values are represented as typed slots. A promoted pattern
-    owns an ordinary Concept, so active patterns use the existing SAGE atom/code path.
+    owns an ordinary Concept, so active patterns use the existing AIFENCE atom/code path.
     """
 
     def __init__(self, db: Session, settings: Settings, codebook: Codebook | None = None) -> None:

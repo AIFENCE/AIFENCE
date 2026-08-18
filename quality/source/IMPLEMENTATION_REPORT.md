@@ -6,7 +6,7 @@ Module-Version: 1
 Last-Updated: 2026-08-09
 -->
 
-# BizIQ 4.0 Improvement Implementation Report
+# AIFENCE 4.0 Improvement Implementation Report
 <!-- id: implementation-report.4-0-0 -->
 
 The original 1,000-item improvement backlog was implemented as **200 capabilities × 5 controls = 1,000 normative controls**. Subsequent hardening revisions expanded the current canonical plane without renumbering those original controls.

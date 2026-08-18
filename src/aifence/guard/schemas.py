@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -134,7 +134,7 @@ class EnforcementControl(BaseModel):
 
 
 class EnforcementPlan(BaseModel):
-    version: Literal["agentdance.enforcement.v1"] = "agentdance.enforcement.v1"
+    version: Literal["aifence.enforcement.v1"] = "aifence.enforcement.v1"
     original_request_hash: str
     transformed_request_hash: str
     transformed_action: dict[str, Any]
@@ -284,7 +284,7 @@ _HTTP_TOKEN = re.compile(r"^[!#$%&'*+.^_`|~0-9A-Za-z-]+$")
 _FORBIDDEN_AUTH_HEADERS = {
     "connection", "content-length", "expect", "host", "proxy-authenticate",
     "proxy-authorization", "te", "trailer", "transfer-encoding", "upgrade",
-    "x-agentdance-request-id",
+    "x-aifence-request-id",
 }
 
 def _validate_auth_header(value: str) -> str:

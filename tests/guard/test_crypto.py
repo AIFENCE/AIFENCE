@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -23,8 +23,8 @@ def test_envelope_cipher_authenticates_context() -> None:
 
 def test_signing_receipt_round_trip() -> None:
     key = SigningKey.ephemeral_for_tests()
-    token = key.issue_receipt({"aud": "agentdance-decision", "sub": "dec_1"})
-    claims = key.verify_receipt(token, audience="agentdance-decision")
+    token = key.issue_receipt({"aud": "aifence-decision", "sub": "dec_1"})
+    claims = key.verify_receipt(token, audience="aifence-decision")
     assert claims["sub"] == "dec_1"
 
 

@@ -1,10 +1,10 @@
 {
-  "name": "biziq",
+  "name": "aifence",
   "version": "{{RUNTIME_VERSION}}",
-  "description": "BizIQ production runtime and skill",
+  "description": "AIFENCE production runtime and skill",
   "mcpServers": {
-    "biziq": {
-      "command": "biziq",
+    "aifence": {
+      "command": "aifence",
       "args": [
         "mcp",
         "--stdio"

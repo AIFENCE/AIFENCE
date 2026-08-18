@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/genericity_evidence.schema.json",
-  "title": "BizIQ Dense Product Genericity Evidence",
+  "$id": "aifence://schemas/genericity_evidence.schema.json",
+  "title": "AIFENCE Dense Product Genericity Evidence",
   "type": "object",
   "additionalProperties": false,
   "required": [

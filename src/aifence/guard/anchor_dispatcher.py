@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -73,7 +73,7 @@ class AuditAnchorWorker:
                 rows = session.execute(
                     text(
                         "SELECT anchor_id, tenant_id, fencing_token FROM "
-                        "agentdance_claim_audit_anchors(:worker_id, :batch_size, :lease_seconds)"
+                        "aifence_guard_claim_audit_anchors(:worker_id, :batch_size, :lease_seconds)"
                     ),
                     {
                         "worker_id": self.worker_id,

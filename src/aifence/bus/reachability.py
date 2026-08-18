@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 
 from .db_models import (
     BusMessage,
-    MessageAudit,
+    MesaifenceAudit,
     ReceiverKnowledge,
     ReceiverKnowledgeItem,
     ReferenceGrant,
@@ -45,7 +45,7 @@ def reference_roots(db: Session, *, retain_audit: bool = True) -> set[str]:
     for item in db.scalars(select(BusMessage).where(BusMessage.status != "acked")):
         roots |= _refs_from_wire(item.wire or {})
     if retain_audit:
-        for audit in db.scalars(select(MessageAudit)):
+        for audit in db.scalars(select(MesaifenceAudit)):
             roots |= _refs_from_wire(audit.packet or {})
     roots.update(
         db.scalars(
@@ -61,7 +61,7 @@ def state_roots(db: Session, *, retain_audit: bool = True) -> set[str]:
     for item in db.scalars(select(BusMessage).where(BusMessage.status != "acked")):
         roots |= _states_from_wire(item.wire or {})
     if retain_audit:
-        for audit in db.scalars(select(MessageAudit)):
+        for audit in db.scalars(select(MesaifenceAudit)):
             roots |= _states_from_wire(audit.packet or {})
     return roots
 

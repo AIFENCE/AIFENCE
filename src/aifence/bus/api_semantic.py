@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ from .codebook_releases import CodebookReleaseStore
 from .config import get_settings
 from .db import get_db
 from .db_models import Contradiction
-from .economics import run_sage_economics_benchmark, score_observed_runs
+from .economics import run_aifence_economics_benchmark, score_observed_runs
 from .evals import run_eval
 from .facts import FactStore
 from .federation import FederationStore
@@ -30,7 +30,7 @@ from .reliability import ModelIdentityStore, ReliabilityMonitor
 from .routing import SemanticPubSub, SemanticRouter
 from .schemas import (
     AgentCapabilityRequest,
-    BusMessageResponse,
+    BusMesaifenceResponse,
     CheckpointResponse,
     CodebookReleaseRequest,
     ContradictionResolveRequest,
@@ -134,8 +134,8 @@ def route_choose(req: RouteRequest, db: Session = Depends(get_db)) -> dict[str, 
         raise HTTPException(404, str(exc)) from exc
     return {"agent": winner.agent, "score": score}
 
-@router.post("/routing/send", response_model=BusMessageResponse)
-def route_send(req: RouteRequest, db: Session = Depends(get_db)) -> BusMessageResponse:
+@router.post("/routing/send", response_model=BusMesaifenceResponse)
+def route_send(req: RouteRequest, db: Session = Depends(get_db)) -> BusMesaifenceResponse:
     sender = enforce_agent_scope(actor=req.sender, workspace=req.workspace)
     try:
         winner, _ = SemanticRouter(db, settings).choose(content=req.content, workspace=req.workspace, capability=req.capability, authority=req.authority, exclude={sender} if sender else None)
@@ -175,9 +175,9 @@ def eval_run(req: EvalRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
 
 @router.post("/benchmarks/economics")
 def economics_benchmark(req: EconomicsBenchmarkRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
-    """Measure model-token/cost economics across raw, JSON, refs, SAGE, and supplied RAG/summary baselines."""
+    """Measure model-token/cost economics across raw, JSON, refs, AIFENCE, and supplied RAG/summary baselines."""
     try:
-        return run_sage_economics_benchmark(db, settings, req)
+        return run_aifence_economics_benchmark(db, settings, req)
     except RuntimeError as exc:
         raise HTTPException(422, str(exc)) from exc
     except (ValueError, httpx.HTTPError) as exc:

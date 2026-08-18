@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 
 from aifence.guard.config import Settings
 from aifence.guard.errors import AuthorizationError
-from aifence.guard.service import AgentDanceService
+from aifence.guard.service import AifenceService
 
 
 def test_production_configuration_rejects_insecure_database(tmp_path: Path) -> None:
@@ -24,7 +24,7 @@ def test_production_configuration_rejects_insecure_database(tmp_path: Path) -> N
         path.write_text("present")
     settings = Settings(
         environment="production",
-        database_url="postgresql+psycopg://db/agentdance?sslmode=require",
+        database_url="postgresql+psycopg://db/aifence?sslmode=require",
         auto_create_schema=False,
         public_base_url="https://security.example",
         signing_private_key_file=str(private),
@@ -42,8 +42,8 @@ def test_production_configuration_rejects_insecure_database(tmp_path: Path) -> N
 
 def test_private_broker_endpoint_requires_explicit_allowlist() -> None:
     with pytest.raises(AuthorizationError):
-        AgentDanceService._validate_external_url("https://localhost", ())
-    AgentDanceService._validate_external_url("https://localhost", ("localhost",))
+        AifenceService._validate_external_url("https://localhost", ())
+    AifenceService._validate_external_url("https://localhost", ("localhost",))
 
 
 def test_master_keyring_and_pepperring_rotation() -> None:
@@ -69,16 +69,16 @@ def test_master_keyring_and_pepperring_rotation() -> None:
 def test_settings_from_env_parses_hardening_fields(monkeypatch, tmp_path) -> None:
     from aifence.guard.config import Settings
 
-    monkeypatch.setenv("AGENTDANCE_ENVIRONMENT", "test")
-    monkeypatch.setenv("AGENTDANCE_DATABASE_URL", f"sqlite+pysqlite:///{tmp_path / 'env.db'}")
-    monkeypatch.setenv("AGENTDANCE_PROVIDER_ALLOWED_HOSTS", "api.example.com,*.models.example")
-    monkeypatch.setenv("AGENTDANCE_TOOL_ALLOWED_HOSTS", "tools.example.com")
-    monkeypatch.setenv("AGENTDANCE_DNS_RESOLUTION_TIMEOUT_SECONDS", "4")
-    monkeypatch.setenv("AGENTDANCE_MAX_BROKER_RESPONSE_BYTES", "8192")
-    monkeypatch.setenv("AGENTDANCE_MAX_PAGE_SIZE", "125")
-    monkeypatch.setenv("AGENTDANCE_EXECUTION_LEASE_SECONDS", "90")
-    monkeypatch.setenv("AGENTDANCE_ARTIFACT_STORE_PATH", str(tmp_path / "artifacts"))
-    monkeypatch.setenv("AGENTDANCE_EXTRA_JSON", '{"deployment":"ci"}')
+    monkeypatch.setenv("AIFENCE_GUARD_ENVIRONMENT", "test")
+    monkeypatch.setenv("AIFENCE_GUARD_DATABASE_URL", f"sqlite+pysqlite:///{tmp_path / 'env.db'}")
+    monkeypatch.setenv("AIFENCE_GUARD_PROVIDER_ALLOWED_HOSTS", "api.example.com,*.models.example")
+    monkeypatch.setenv("AIFENCE_GUARD_TOOL_ALLOWED_HOSTS", "tools.example.com")
+    monkeypatch.setenv("AIFENCE_GUARD_DNS_RESOLUTION_TIMEOUT_SECONDS", "4")
+    monkeypatch.setenv("AIFENCE_GUARD_MAX_BROKER_RESPONSE_BYTES", "8192")
+    monkeypatch.setenv("AIFENCE_GUARD_MAX_PAGE_SIZE", "125")
+    monkeypatch.setenv("AIFENCE_GUARD_EXECUTION_LEASE_SECONDS", "90")
+    monkeypatch.setenv("AIFENCE_GUARD_ARTIFACT_STORE_PATH", str(tmp_path / "artifacts"))
+    monkeypatch.setenv("AIFENCE_GUARD_EXTRA_JSON", '{"deployment":"ci"}')
 
     settings = Settings.from_env()
     assert settings.environment == "test"
@@ -90,7 +90,7 @@ def test_settings_from_env_parses_hardening_fields(monkeypatch, tmp_path) -> Non
     assert settings.execution_lease_seconds == 90
     assert settings.extra == {"deployment": "ci"}
 
-    monkeypatch.setenv("AGENTDANCE_EXTRA_JSON", "not-json")
+    monkeypatch.setenv("AIFENCE_GUARD_EXTRA_JSON", "not-json")
     with pytest.raises(ValueError, match="must be valid JSON"):
         Settings.from_env()
 
@@ -117,7 +117,7 @@ def test_external_kms_does_not_require_local_master_key(tmp_path: Path) -> None:
     ))
     settings = Settings(
         environment="production",
-        database_url="postgresql+psycopg://db/agentdance?sslmode=verify-full",
+        database_url="postgresql+psycopg://db/aifence?sslmode=verify-full",
         auto_create_schema=False,
         public_base_url="https://security.example",
         signing_private_key_file=str(files[0]),
@@ -138,7 +138,7 @@ def test_external_kms_does_not_require_local_master_key(tmp_path: Path) -> None:
         signing_backend="vault",
         signing_vault_address="https://vault.example",
         signing_vault_token="s" * 48,
-        signing_vault_key_name="agentdance-signing",
+        signing_vault_key_name="aifence-signing",
         policy_rollout_secret="r" * 48,
         kms_backend="aws",
         kms_key_id="arn:aws:kms:us-east-1:123456789012:key/example",
@@ -152,9 +152,9 @@ def test_external_kms_does_not_require_local_master_key(tmp_path: Path) -> None:
         audit_anchor_webhook_key_ids=("anchor-key-v1",),
         audit_anchor_webhook_token="a" * 48,
         artifact_store_backend="s3",
-        artifact_store_path="/var/lib/agentdance/artifacts",
+        artifact_store_path="/var/lib/aifence/artifacts",
         artifact_s3_endpoint="https://objects.example",
-        artifact_s3_bucket="agentdance",
+        artifact_s3_bucket="aifence",
         artifact_s3_kms_key_id="arn:aws:kms:us-east-1:123456789012:key/artifacts",
         artifact_s3_access_key="access",
         artifact_s3_secret_key="secret",

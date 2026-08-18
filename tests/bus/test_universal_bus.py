@@ -6,8 +6,8 @@ import pytest
 from pydantic import ValidationError
 
 from aifence.bus.a2a_adapter import (
-    SAGE_EXTENSION_URI,
-    SAGE_MEDIA_TYPE,
+    AIFENCE_EXTENSION_URI,
+    AIFENCE_MEDIA_TYPE,
     pack_data_part,
     unpack_data_part,
 )
@@ -79,13 +79,13 @@ def test_acked_message_cannot_be_nacked():
 def test_a2a_data_part_round_trip_and_rejects_non_v02():
     wire = {"v": 2, "c": "global", "a": "handoff", "p": {}}
     part = pack_data_part(wire)
-    assert part["mediaType"] == SAGE_MEDIA_TYPE
-    assert SAGE_EXTENSION_URI.startswith("urn:uuid:")
-    assert part["data"]["sageProtocol"] == "sage/0.2"
+    assert part["mediaType"] == AIFENCE_MEDIA_TYPE
+    assert AIFENCE_EXTENSION_URI.startswith("urn:uuid:")
+    assert part["data"]["aifenceProtocol"] == "aifence/0.2"
     assert unpack_data_part(part) == wire
     invalid_wire = {"v": 99, "a": "handoff", "x": [1, 2]}
-    with pytest.raises(ValueError, match="sage/0.2"):
-        unpack_data_part({"data": {"sageProtocol": "sage/9.9", "wire": invalid_wire}, "mediaType": "application/json"})
+    with pytest.raises(ValueError, match="aifence/0.2"):
+        unpack_data_part({"data": {"aifenceProtocol": "aifence/9.9", "wire": invalid_wire}, "mediaType": "application/json"})
     with pytest.raises(ValidationError):
         pack_data_part(invalid_wire)
 
@@ -94,9 +94,9 @@ def test_cross_vendor_profiles_share_same_core_endpoint():
     for platform in ("hermes", "openclaw", "claude", "openai", "generic"):
         p = profile(platform)
         assert p.id == platform
-        cfg = config_for(platform, "https://sage.invalid", agent_id="agent-7")
-        assert cfg.config["sage_url"] == "https://sage.invalid"
-        assert cfg.config["mcp_url"] == "https://sage.invalid/mcp"
+        cfg = config_for(platform, "https://aifence.invalid", agent_id="agent-7")
+        assert cfg.config["aifence_bus_url"] == "https://aifence.invalid"
+        assert cfg.config["mcp_url"] == "https://aifence.invalid/mcp"
 
 
 def test_pull_respects_receiver_injection_budget():

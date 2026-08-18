@@ -10,9 +10,9 @@ Last-Updated: 2026-08-09
 # Revision 1.2 Benchmark Findings → Revision 1.3 Hardening
 <!-- id: benchmark-findings.revision-1-2 -->
 
-The real browser-rendered V2 run established a 72-pair combined BizIQ mean of 89.67/100 versus 79.92 control, with BizIQ winning 72/72 pairs. The strongest dimension was genericity resistance (9.80), which Revision 1.3 intentionally preserves.
+The real browser-rendered V2 run established a 72-pair combined AIFENCE mean of 89.67/100 versus 79.92 control, with AIFENCE winning 72/72 pairs. The strongest dimension was genericity resistance (9.80), which Revision 1.3 intentionally preserves.
 
-Measured remaining BizIQ means were approximately: responsiveness 7.97, feature depth 8.77, completeness 8.79, accessibility 8.80, and visual quality 8.88. Documents were the weakest artifact family: roughly 6.86 feature depth and 7.15 completeness under the original general-purpose judge. Dense SaaS/dashboard/edge interfaces repeatedly scored about 6.55 responsiveness because narrow-screen controls/data were still compressed rather than fully transformed.
+Measured remaining AIFENCE means were approximately: responsiveness 7.97, feature depth 8.77, completeness 8.79, accessibility 8.80, and visual quality 8.88. Documents were the weakest artifact family: roughly 6.86 feature depth and 7.15 completeness under the original general-purpose judge. Dense SaaS/dashboard/edge interfaces repeatedly scored about 6.55 responsiveness because narrow-screen controls/data were still compressed rather than fully transformed.
 
 # Revision 1.3 Response
 <!-- id: benchmark-findings.revision-1-3-response -->

@@ -3,7 +3,7 @@
 Official Go client for the AIFENCE guard tier (the security control plane).
 
 ```go
-client, err := agentdance.NewClient(
+client, err := aifence.NewClient(
     "https://aifence.example.com/guard",
     os.Getenv("AIFENCE_API_KEY"),
     nil,

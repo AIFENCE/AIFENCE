@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/interaction_closure_manifest.schema.json",
-  "title": "BizIQ Interaction Closure Manifest",
+  "$id": "aifence://schemas/interaction_closure_manifest.schema.json",
+  "title": "AIFENCE Interaction Closure Manifest",
   "type": "object",
   "additionalProperties": false,
   "required": [

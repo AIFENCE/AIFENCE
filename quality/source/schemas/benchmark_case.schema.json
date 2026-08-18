@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/benchmark_case.schema.json",
-  "title": "BizIQ Benchmark Case",
+  "$id": "aifence://schemas/benchmark_case.schema.json",
+  "title": "AIFENCE Benchmark Case",
   "type": "object",
   "required": [
     "id",

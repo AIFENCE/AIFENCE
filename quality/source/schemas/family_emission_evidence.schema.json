@@ -1,6 +1,6 @@
 {
   "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "title":"BizIQ Family-Aware Emission Evidence",
+  "title":"AIFENCE Family-Aware Emission Evidence",
   "type":"object",
   "additionalProperties":false,
   "required":["artifact_id","family","provenance","domain_terms","evidence_boundaries","surface_markers","semantics","status"],

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate executable BizIQ QA evidence, Runtime coverage, and interaction/mobile closure."""
+"""Validate executable AIFENCE QA evidence, Runtime coverage, and interaction/mobile closure."""
 from __future__ import annotations
 import argparse,json,sys
 from pathlib import Path

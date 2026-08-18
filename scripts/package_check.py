@@ -13,8 +13,8 @@ from pathlib import Path, PurePosixPath
 
 VERSION = "0.2.7"
 AUTHOR = "NeuralBinary"
-SOURCE_PREFIX = f"sage-plugin-v{VERSION}/"
-HERMES_PREFIX = f"sage-hermes-plugin-v{VERSION}/"
+SOURCE_PREFIX = f"aifence-plugin-v{VERSION}/"
+HERMES_PREFIX = f"aifence-hermes-plugin-v{VERSION}/"
 
 
 def require(condition: bool, message: str) -> None:
@@ -54,14 +54,14 @@ def check_source(path: Path) -> dict[str, object]:
             f"{SOURCE_PREFIX}CODE_OF_CONDUCT.md",
             f"{SOURCE_PREFIX}.github/dependabot.yml",
             f"{SOURCE_PREFIX}scripts/build_release.py",
-            f"{SOURCE_PREFIX}src/sage_plugin/doctor_cli.py",
-            f"{SOURCE_PREFIX}src/sage_plugin/demo_cli.py",
+            f"{SOURCE_PREFIX}src/aifence/bus/doctor_cli.py",
+            f"{SOURCE_PREFIX}src/aifence/bus/demo_cli.py",
         }
         missing = sorted(required - files)
         require(not missing, f"source content missing: {missing}")
         pyproject = archive.read(f"{SOURCE_PREFIX}pyproject.toml").decode()
         require(f'version = "{VERSION}"' in pyproject, "source version drift")
-        require("sage-doctor" in pyproject and "sage-demo" in pyproject, "quick-start CLI entries missing")
+        require("aifence-doctor" in pyproject and "aifence-demo" in pyproject, "quick-start CLI entries missing")
     return {"source": path.name, "entries": len(files), "ok": True}
 
 
@@ -94,22 +94,22 @@ def check_wheel(path: Path) -> dict[str, object]:
         require(metadata.get("Version") == VERSION, "wheel version drift")
         require(metadata.get("Author") == AUTHOR, "wheel author drift")
         required = {
-            "sage_plugin/py.typed",
-            "sage_plugin/spec/SAGE-0.2.md",
-            "sage_plugin/spec/sage-v0.2.proto",
-            "sage_plugin/spec/schemas/wire-v2.schema.json",
-            "sage_plugin/spec/schemas/pattern-v0.2.schema.json",
-            "sage_plugin/tck/implementations.json",
-            "sage_plugin/tck/vectors/core.json",
-            "sage_plugin/doctor_cli.py",
-            "sage_plugin/demo_cli.py",
+            "aifence.bus/py.typed",
+            "aifence.bus/spec/AIFENCE-0.2.md",
+            "aifence.bus/spec/aifence-v0.2.proto",
+            "aifence.bus/spec/schemas/wire-v2.schema.json",
+            "aifence.bus/spec/schemas/pattern-v0.2.schema.json",
+            "aifence.bus/tck/implementations.json",
+            "aifence.bus/tck/vectors/core.json",
+            "aifence.bus/doctor_cli.py",
+            "aifence.bus/demo_cli.py",
         }
         missing = sorted(required - names)
         require(not missing, f"wheel content missing: {missing}")
         entries = archive.read(entry_name).decode()
-        require("[hermes_agent.plugins]" in entries and "sage = sage_plugin.hermes_plugin" in entries, "Hermes entry point missing")
-        require("sage-doctor = sage_plugin.doctor_cli:main" in entries, "sage-doctor entry point missing")
-        require("sage-demo = sage_plugin.demo_cli:main" in entries, "sage-demo entry point missing")
+        require("[hermes_agent.plugins]" in entries and "aifence = aifence.bus.hermes_plugin" in entries, "Hermes entry point missing")
+        require("aifence-doctor = aifence.bus.doctor_cli:main" in entries, "aifence-doctor entry point missing")
+        require("aifence-demo = aifence.bus.demo_cli:main" in entries, "aifence-demo entry point missing")
         check_record(archive, names)
     return {"wheel": path.name, "entries": len(names), "ok": True}
 
@@ -126,17 +126,17 @@ def check_hermes(path: Path) -> dict[str, object]:
             f"{HERMES_PREFIX}LICENSE",
             f"{HERMES_PREFIX}install.sh",
             f"{HERMES_PREFIX}install.ps1",
-            f"{HERMES_PREFIX}sage/__init__.py",
-            f"{HERMES_PREFIX}sage/plugin.yaml",
+            f"{HERMES_PREFIX}aifence/__init__.py",
+            f"{HERMES_PREFIX}aifence/plugin.yaml",
         }
         missing = sorted(required - files)
         require(not missing, f"Hermes content missing: {missing}")
-        manifest = archive.read(f"{HERMES_PREFIX}sage/plugin.yaml").decode()
+        manifest = archive.read(f"{HERMES_PREFIX}aifence/plugin.yaml").decode()
         require(f'version: "{VERSION}"' in manifest, "Hermes version drift")
-        source_adapter = Path("integrations/hermes/sage/__init__.py")
+        source_adapter = Path("integrations/hermes/aifence/__init__.py")
         if source_adapter.is_file():
             require(
-                archive.read(f"{HERMES_PREFIX}sage/__init__.py") == source_adapter.read_bytes(),
+                archive.read(f"{HERMES_PREFIX}aifence/__init__.py") == source_adapter.read_bytes(),
                 "Hermes adapter differs from repository source",
             )
     return {"hermes": path.name, "entries": len(files), "ok": True}

@@ -24,12 +24,12 @@ Covers (issue #22, stage 1):
   ``evaluation_boundary`` key and no per-row ``sealed``/``task_response``;
 * sealed mode with a missing/empty ``task_response`` raises an
   adapter-naming RuntimeError (exit 1 through the CLI);
-* the adapter subprocess environment is scrubbed of every ``SAGE_*``
+* the adapter subprocess environment is scrubbed of every ``AIFENCE_*``
   variable (the scratch ground-truth DB path must never be reachable by a
   hostile adapter -- adversary F1): a unit test spawns a child through
-  ``_invoke`` with ``SAGE_DATABASE_URL`` + ``SAGE_BENCH_LLM_PROVIDER`` set
+  ``_invoke`` with ``AIFENCE_BUS_DATABASE_URL`` + ``AIFENCE_BUS_BENCH_LLM_PROVIDER`` set
   in the parent env and asserts the child sees none, and an ENV-LEAK-
-  DETECTING adapter (checks its own env, exits 3 on any ``SAGE_*`` key)
+  DETECTING adapter (checks its own env, exits 3 on any ``AIFENCE_*`` key)
   passes an end-to-end ``--sealed`` CLI run, with a negative control
   proving the detector is armed;
 * sealed ``task_response`` is capped at ``MAX_TASK_RESPONSE_CHARS``
@@ -39,7 +39,7 @@ Covers (issue #22, stage 1):
 * no-provider skip with ``--sealed`` prints "not run, no provider", exit 0.
 
 All tests are deterministic (fixed inputs, no network, no real model) and
-write their output directories under ``/opt/data/sage/scratch/`` -- never
+write their output directories under ``/opt/data/aifence/scratch/`` -- never
 ``/tmp``.
 """
 
@@ -60,7 +60,7 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[2]
 HARNESS_SCRIPT = ROOT / "scripts" / "model_eval_harness.py"
-SCRATCH_ROOT = Path(os.environ.get("SAGE_SCRATCH_ROOT", "/opt/data/sage/scratch")) / "stage22-sealed-tests"
+SCRATCH_ROOT = Path(os.environ.get("AIFENCE_BUS_SCRATCH_ROOT", "/opt/data/aifence/scratch")) / "stage22-sealed-tests"
 
 #: Evaluator-only fields the sealed payload must NEVER carry.
 LEAK_KEYS = ("content", "expected", "change_markers", "receiver_prior", "examples")
@@ -93,15 +93,15 @@ FAKE_ADAPTER_NO_TASK_RESPONSE = (
 )
 
 #: ENV-LEAK-DETECTING fake adapter: reads the payload from stdin; if the
-#: child environment carries ANY ``SAGE_*`` variable (e.g. a leaked
-#: SAGE_DATABASE_URL pointing at the harness's ground-truth scratch DB) it
+#: child environment carries ANY ``AIFENCE_*`` variable (e.g. a leaked
+#: AIFENCE_BUS_DATABASE_URL pointing at the harness's ground-truth scratch DB) it
 #: prints {"error": "ENV_LEAK", "keys": [...]} and exits 3 (proving the
 #: detector is armed), otherwise it echoes a valid sealed reply.  Proves
-#: ``_invoke`` scrubs SAGE_* variables from the adapter subprocess env
+#: ``_invoke`` scrubs AIFENCE_* variables from the adapter subprocess env
 #: (issue #22 adversary F1).
 FAKE_ADAPTER_ENV_LEAK = (
     "import json,sys,os; p=json.load(sys.stdin); "
-    "leak=[k for k in os.environ if k.startswith('SAGE_')]; "
+    "leak=[k for k in os.environ if k.startswith('AIFENCE_')]; "
     "print(json.dumps({'error':'ENV_LEAK','keys':leak})) if leak else None; "
     "sys.exit(3) if leak else None; "
     "print(json.dumps({'task_response': 'Project Phoenix is blocked because three integration tests failed.', "
@@ -132,7 +132,7 @@ def h() -> Any:
 
 @pytest.fixture()
 def scratch_dir() -> Iterator[Path]:
-    """A scratch output directory under /opt/data/sage/scratch (never /tmp)."""
+    """A scratch output directory under /opt/data/aifence/scratch (never /tmp)."""
     path = SCRATCH_ROOT / uuid.uuid4().hex[:12]
     path.mkdir(parents=True, exist_ok=True)
     yield path
@@ -172,8 +172,8 @@ def _two_family_config(command_tail: str) -> dict[str, Any]:
 
 def _run_cli_subprocess(argv: list[str], fake_home: Path) -> subprocess.CompletedProcess:
     """Run the harness CLI in a FRESH subprocess (fake HOME + provider env)."""
-    env = {**os.environ, "HOME": str(fake_home), "SAGE_BENCH_LLM_PROVIDER": "fake"}
-    env.pop("SAGE_DATABASE_URL", None)
+    env = {**os.environ, "HOME": str(fake_home), "AIFENCE_BUS_BENCH_LLM_PROVIDER": "fake"}
+    env.pop("AIFENCE_BUS_DATABASE_URL", None)
     return subprocess.run(
         [sys.executable, str(HARNESS_SCRIPT), *argv],
         capture_output=True,
@@ -184,7 +184,7 @@ def _run_cli_subprocess(argv: list[str], fake_home: Path) -> subprocess.Complete
 
 
 def _exchange(turn: int, variant: str = "v05") -> dict[str, Any]:
-    return {"variant": variant, "variant_name": "x", "turn": turn, "phase": "update", "sage": False}
+    return {"variant": variant, "variant_name": "x", "turn": turn, "phase": "update", "aifence": False}
 
 
 # ---------------------------------------------------------------------------
@@ -225,7 +225,7 @@ def test_sealed_payload_exact_shape_and_no_leaks(h):
     for key in LEAK_KEYS + ("representation", "model_facing_text", "receiver_prior"):
         assert key not in payload
     assert payload["symbolic_examples"] is False
-    assert payload["protocol"] == "sage/0.2"
+    assert payload["protocol"] == "aifence/0.2"
     assert payload["decoder_configuration"] == "direct symbolic"
     assert payload["model_facing_packet"] == exchange["reconstruction"]  # plain variant
     assert payload["allowed_decoder_metadata"] == {
@@ -254,22 +254,22 @@ def test_sealed_payload_task_and_packet_selection(h):
     # default codebook_version when the spec pins none
     assert payload["allowed_decoder_metadata"]["codebook_version"] == "global:1"
     assert payload["allowed_decoder_metadata"]["receiver_state"] == "warm"
-    # sage variant in direct-symbolic -> the RENDERED ACTUAL codec packet
+    # aifence variant in direct-symbolic -> the RENDERED ACTUAL codec packet
     # (stage 2): a canonical compact-JSON rendering of the real v12 packet
     # for (v12, turn 1), not the stage-1 canonical-clause proxy.
-    sage_exchange = {**text_exchange, "variant": "v12", "sage": True}
-    payload = h._build_sealed_payload(cb, sage_exchange, "cold", "direct-symbolic", {"family": "a", "version": "1"})
+    aifence_bus_exchange = {**text_exchange, "variant": "v12", "aifence": True}
+    payload = h._build_sealed_payload(cb, aifence_bus_exchange, "cold", "direct-symbolic", {"family": "a", "version": "1"})
     rendered = json.loads(payload["model_facing_packet"])
     assert payload["model_facing_packet"] != "REPR"
     for key in ("act", "atoms", "bindings", "cb", "id", "meta", "prov", "receiver", "sender", "v"):
         assert key in rendered
-    assert rendered["atoms"]  # ACKed full-SAGE packets carry code/cv atoms
+    assert rendered["atoms"]  # ACKed full-AIFENCE packets carry code/cv atoms
     assert rendered["bindings"]
     for key in ("strategy_note", "canonicals"):
         assert key not in rendered
     assert "Report the current receiver state" in payload["task"]  # v12 is a state variant
-    # sage variant in full-expansion -> reconstruction again
-    payload = h._build_sealed_payload(cb, sage_exchange, "cold", "full-expansion", {"family": "a", "version": "1"})
+    # aifence variant in full-expansion -> reconstruction again
+    payload = h._build_sealed_payload(cb, aifence_bus_exchange, "cold", "full-expansion", {"family": "a", "version": "1"})
     assert payload["model_facing_packet"] == "RECON"
     assert payload["decoder_configuration"] == "full natural-language expansion"
 
@@ -331,7 +331,7 @@ def test_sealed_scoring_rejects_empty_or_non_string(h):
 
 
 def test_sealed_adapter_reported_scores_ignored(h, monkeypatch):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     config = {
         "acme-echo": {
             "family": "acme",
@@ -419,7 +419,7 @@ def test_sealed_leak_detecting_adapter_end_to_end(scratch_dir):
 
 
 def test_sealed_with_examples_rejected_cleanly(h, monkeypatch, scratch_dir, capsys):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     cfg = scratch_dir / "adapters.json"
     cfg.write_text(json.dumps(_sealed_adapters_config()))
     out_dir = scratch_dir / "must-not-exist"
@@ -433,13 +433,13 @@ def test_sealed_with_examples_rejected_cleanly(h, monkeypatch, scratch_dir, caps
     assert not out_dir.exists()  # no artifacts on the flag-conflict path
 
     # the conflict is a static CLI validation error: it fires even with no provider
-    monkeypatch.delenv("SAGE_BENCH_LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", raising=False)
     assert h.main(["--sealed", "--with-examples"]) == 2
     assert "--sealed cannot be combined with --with-examples" in capsys.readouterr().err
 
 
 def test_sealed_no_provider_skip(h, monkeypatch, capsys, scratch_dir):
-    monkeypatch.delenv("SAGE_BENCH_LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", raising=False)
     assert h.main(["--sealed"]) == 0
     assert "not run, no provider" in capsys.readouterr().out
     # an adapters config alone is not enough: the provider gate still skips
@@ -457,7 +457,7 @@ def test_sealed_no_provider_skip(h, monkeypatch, capsys, scratch_dir):
 
 
 def test_sealed_missing_task_response_raises(h, monkeypatch):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     with pytest.raises(RuntimeError, match="acme-bad") as exc_info:
         h.run_harness(_two_family_config(FAKE_ADAPTER_NO_TASK_RESPONSE), variants=["v01"], sealed=True)
     assert "task_response" in str(exc_info.value)
@@ -536,7 +536,7 @@ def test_sealed_determinism_modulo_latency(scratch_dir):
 
 
 def test_non_sealed_results_have_no_evaluation_boundary(h, monkeypatch):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     config = {
         "acme-gpt-4o": {
             "family": "acme",
@@ -564,29 +564,29 @@ def test_non_sealed_results_have_no_evaluation_boundary(h, monkeypatch):
 
 
 def test_sealed_adapter_env_scrubbed_in_invoke(h, monkeypatch):
-    """A child spawned by ``_invoke`` must see NO ``SAGE_*`` env vars.
+    """A child spawned by ``_invoke`` must see NO ``AIFENCE_*`` env vars.
 
-    With ``SAGE_DATABASE_URL`` and ``SAGE_BENCH_LLM_PROVIDER`` set in the
-    PARENT env, a ``python -c`` child that prints the ``SAGE_*`` keys it
-    observes must see an empty list -- and non-SAGE vars (HOME/PATH) must
+    With ``AIFENCE_BUS_DATABASE_URL`` and ``AIFENCE_BUS_BENCH_LLM_PROVIDER`` set in the
+    PARENT env, a ``python -c`` child that prints the ``AIFENCE_*`` keys it
+    observes must see an empty list -- and non-AIFENCE vars (HOME/PATH) must
     still pass through.
     """
-    monkeypatch.setenv("SAGE_DATABASE_URL", "sqlite:///should-never-leak.db")
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_DATABASE_URL", "sqlite:///should-never-leak.db")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     child = (
         "import json,os; "
-        "print(json.dumps({'sage_env_keys': sorted(k for k in os.environ if k.startswith('SAGE_')), "
+        "print(json.dumps({'aifence_bus_env_keys': sorted(k for k in os.environ if k.startswith('AIFENCE_')), "
         "'has_home': 'HOME' in os.environ, 'has_path': 'PATH' in os.environ}))"
     )
     result = h._invoke([sys.executable, "-c", child], {"turn": 1}, 60, "acme")
-    assert result["sage_env_keys"] == []
+    assert result["aifence_bus_env_keys"] == []
     assert result["has_home"] is True
     assert result["has_path"] is True
 
 
 def test_sealed_env_leak_detecting_adapter_end_to_end(scratch_dir):
-    """A --sealed CLI run whose adapter checks its own env for SAGE_* vars
-    must exit 0: the child env carries no SAGE_* variables (F1)."""
+    """A --sealed CLI run whose adapter checks its own env for AIFENCE_* vars
+    must exit 0: the child env carries no AIFENCE_* variables (F1)."""
     cfg = scratch_dir / "adapters.json"
     cfg.write_text(json.dumps(_two_family_config(FAKE_ADAPTER_ENV_LEAK)))
     fake_home = scratch_dir / "fakehome"
@@ -603,9 +603,9 @@ def test_sealed_env_leak_detecting_adapter_end_to_end(scratch_dir):
     assert artifact["evaluation_boundary"] == "sealed"
     assert artifact["rows"]
 
-    # negative control: the detector is ARMED -- with a SAGE_* var in ITS env
+    # negative control: the detector is ARMED -- with a AIFENCE_* var in ITS env
     # it must fire (exit 3, ENV_LEAK), proving a leaked env would be caught.
-    leaked_env = {**os.environ, "SAGE_DATABASE_URL": "sqlite:///leak.db"}
+    leaked_env = {**os.environ, "AIFENCE_BUS_DATABASE_URL": "sqlite:///leak.db"}
     proc = subprocess.run(
         [sys.executable, "-c", FAKE_ADAPTER_ENV_LEAK],
         input=json.dumps({"turn": 1}),
@@ -633,7 +633,7 @@ def _oversized_task_response_script(h: Any) -> str:
 
 
 def test_sealed_oversized_task_response_raises(h, monkeypatch):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     with pytest.raises(RuntimeError, match="acme-bad") as exc_info:
         h.run_harness(
             _two_family_config(_oversized_task_response_script(h)),

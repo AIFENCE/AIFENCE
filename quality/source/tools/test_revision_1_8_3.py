@@ -20,7 +20,7 @@ def evidence():
  }
 
 def run(cmd):return subprocess.run(cmd,cwd=ROOT,text=True,capture_output=True)
-with tempfile.TemporaryDirectory(prefix='biziq-183-') as td:
+with tempfile.TemporaryDirectory(prefix='aifence-183-') as td:
  td=Path(td);ev=td/'evidence.json';ev.write_text(json.dumps(evidence()))
  good=td/'good.html';good.write_text('''<!doctype html><main><h1>Commercial roof planning</h1><p>Compare roof membrane conditions and choose repair or replacement for an occupied building.</p><p>Confirm occupied-building staging before work. A drainage inspection supports the review.</p><button>Request roof assessment</button><p>Review drainage findings when the inspection scheduled notice arrives. A weather delay keeps the request open.</p><p>Outcome: repair scope confirmed or replacement plan prepared. Warranty eligibility requires manufacturer confirmation.</p></main>''')
  p=run([sys.executable,str(EMIT),str(good),'--evidence',str(ev)])

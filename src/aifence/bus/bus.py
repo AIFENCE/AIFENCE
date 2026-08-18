@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -11,9 +11,9 @@ from typing import Any
 from sqlalchemy import and_, func, or_, select
 from sqlalchemy.orm import Session
 
-from .codec import SageCodec
+from .codec import AifenceCodec
 from .config import Settings
-from .db_models import BusMessage, MessageAudit, OrderingCounter
+from .db_models import BusMessage, MesaifenceAudit, OrderingCounter
 from .resilience import QuotaManager
 from .schemas import Budget, EncodeRequest, Packet, Provenance
 
@@ -23,7 +23,7 @@ def _utcnow() -> datetime:
 
 
 class SemanticBus:
-    """Durable, vendor-neutral delivery for compact SAGE packets.
+    """Durable, vendor-neutral delivery for compact AIFENCE packets.
 
     Framework adapters map their local agent identities to the stable receiver strings
     used here. Claims are leases, so a crashed consumer does not strand a message.
@@ -32,7 +32,7 @@ class SemanticBus:
     def __init__(self, db: Session, settings: Settings) -> None:
         self.db = db
         self.settings = settings
-        self.codec = SageCodec(db, settings)
+        self.codec = AifenceCodec(db, settings)
         self.quotas = QuotaManager(db, settings)
 
     def _next_sequence(self, workspace: str, ordering_key: str) -> int:
@@ -210,7 +210,7 @@ class SemanticBus:
             strategy="zero_copy", estimated_tokens=max(1, len(str(wire)) // 4), wire_bytes=len(packed), expires_at=expires_at,
         )
         self.db.add(item)
-        self.db.add(MessageAudit(
+        self.db.add(MesaifenceAudit(
             packet_id=packet.id or "", run_id=run_id, sender=sender, receiver=receiver, workspace=workspace, strategy="zero_copy",
             cache_hit=False, input_bytes=0, output_bytes=len(packed), estimated_tokens=item.estimated_tokens, budget_tokens=None,
             atom_count=0, ref_count=len(refs), packet=packet.model_dump(exclude_none=True),

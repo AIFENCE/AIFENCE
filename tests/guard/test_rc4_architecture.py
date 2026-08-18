@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -140,7 +140,7 @@ def test_native_protocol_discovery_normalizes_mcp_and_a2a(monkeypatch) -> None:
             assert endpoint == "https://mcp.example/rpc"
             assert kwargs["json"]["method"] == "tools/list"
             return Response(
-                {"jsonrpc": "2.0", "id": "agentdance-discovery", "result": {
+                {"jsonrpc": "2.0", "id": "aifence-discovery", "result": {
                     "tools": [{"name": "lookup", "description": "Lookup", "inputSchema": {"type": "object"}}]
                 }},
                 headers={"content-type": "application/json", "MCP-Protocol-Version": "2025-06-18"},

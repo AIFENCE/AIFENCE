@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://biziq.local/runtime/request.schema.json",
-  "title": "BizIQ Runtime Request",
+  "$id": "https://aifence.local/runtime/request.schema.json",
+  "title": "AIFENCE Runtime Request",
   "type": "object",
   "additionalProperties": false,
   "required": [

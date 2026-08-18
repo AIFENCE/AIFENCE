@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -84,7 +84,7 @@ from .schemas import (
 from .tenant_crypto import TenantCryptography
 
 
-class AgentDanceService:
+class AifenceService:
     def __init__(
         self,
         settings: Settings,
@@ -495,7 +495,7 @@ class AgentDanceService:
 
         receipt = self.signing_key.issue_receipt(
             {
-                "aud": "agentdance-decision",
+                "aud": "aifence-decision",
                 "sub": decision_id,
                 "tenant_id": auth.tenant_id,
                 "trace_id": request.trace_id,
@@ -602,7 +602,7 @@ class AgentDanceService:
                     trace_id=request.trace_id,
                     severity=severity,
                     category="agent_security_decision",
-                    title=f"AGENTDANCE enforced {outcome}",
+                    title=f"AIFENCE enforced {outcome}",
                     description="The enforcement pipeline identified a prohibited or high-risk action.",
                     status="open",
                     evidence=[
@@ -694,7 +694,7 @@ class AgentDanceService:
                 trace_id=request.trace_id,
                 severity="high",
                 category="policy_required_incident",
-                title="Policy-required AGENTDANCE incident",
+                title="Policy-required AIFENCE incident",
                 description="An active policy required an incident for this decision.",
                 status="open",
                 evidence=[{"decision_id": decision.id, "request_hash": decision.request_hash}],
@@ -1213,7 +1213,7 @@ class AgentDanceService:
                     trace_id=trace_id,
                     severity="critical" if scan_status == "infected" else "high",
                     category="malware" if scan_status == "infected" else "artifact_scan_failure",
-                    title="Artifact quarantined by AGENTDANCE",
+                    title="Artifact quarantined by AIFENCE",
                     description="The artifact was not released because its malware scan did not produce a clean result.",
                     status="open",
                     evidence=[{"artifact_id": artifact.id, "sha256": sha256, **scan_result}],
@@ -1839,7 +1839,7 @@ class AgentDanceService:
             priority=100,
             lease_owner="inline" if inline_dispatch else None,
             next_attempt_at=now,
-            upstream_idempotency_key=f"agentdance-{execution_id}",
+            upstream_idempotency_key=f"aifence-{execution_id}",
             reconciliation_status="not_required",
             lease_expires_at=(
                 now + timedelta(seconds=self.settings.execution_lease_seconds)

@@ -9,7 +9,7 @@ Last-Updated: 2026-08-10
 
 # Core 1.7.3 Fresh Six-Pair Findings
 
-A completely fresh six-pair no-repair benchmark against Runtime 1.1.3 / Core 1.7.3 generated six brief-only controls and six BizIQ treatments from the same frozen briefs. The BizIQ treatment mean was **91.444/100** versus **76.481/100** control, with BizIQ winning **6/6** pairs. Revision 1.7.3 successfully eliminated the fresh JavaScript parser/runtime failure from all six BizIQ artifacts.
+A completely fresh six-pair no-repair benchmark against Runtime 1.1.3 / Core 1.7.3 generated six brief-only controls and six AIFENCE treatments from the same frozen briefs. The AIFENCE treatment mean was **91.444/100** versus **76.481/100** control, with AIFENCE winning **6/6** pairs. Revision 1.7.3 successfully eliminated the fresh JavaScript parser/runtime failure from all six AIFENCE artifacts.
 
 The remaining strict-floor result was **3/6**. All three dense-product treatments remained below 9.0 in one or more first-pass quality dimensions despite correct runtime execution:
 

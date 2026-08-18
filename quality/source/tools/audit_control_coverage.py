@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate BizIQ capability/control activation, regression, benchmark, and dead-rule review inventory."""
+"""Generate AIFENCE capability/control activation, regression, benchmark, and dead-rule review inventory."""
 from __future__ import annotations
 import csv,json,re,argparse
 from pathlib import Path

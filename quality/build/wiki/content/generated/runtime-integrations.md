@@ -1,6 +1,6 @@
 # Runtime & Integrations
 
-Runtime **2.0.0** exposes BizIQ Core **1.8.8** through a portable Skill, CLI, MCP server, local UI, and platform adapters.
+Runtime **2.0.0** exposes AIFENCE Core **1.8.8** through a portable Skill, CLI, MCP server, local UI, and platform adapters.
 
 ## Runtime responsibilities
 
@@ -12,7 +12,7 @@ Runtime **2.0.0** exposes BizIQ Core **1.8.8** through a portable Skill, CLI, MC
 
 ## Generated integrations
 
-The build produces adapters for Claude, Gemini, VS Code/Copilot, Cursor, OpenAI/Codex, and a generic Skill/MCP integration. All adapters are generated from the same Runtime and Skill source rather than maintained as independent BizIQ forks.
+The build produces adapters for Claude, Gemini, VS Code/Copilot, Cursor, OpenAI/Codex, and a generic Skill/MCP integration. All adapters are generated from the same Runtime and Skill source rather than maintained as independent AIFENCE forks.
 
 ## Core relationship
 

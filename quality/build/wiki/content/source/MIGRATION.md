@@ -7,10 +7,10 @@ Control-Plane-Revision: 1.8.8
 Last-Updated: 2026-08-09
 -->
 
-# Migration — BizIQ 3.1.0 → 4.0.0
+# Migration — AIFENCE 3.1.0 → 4.0.0
 <!-- id: migration.4-0-0 -->
 
-BizIQ 4.0.0 introduced the normative lazy control plane. Existing domain modules remain authoritative for domain content while `CONTROL_INDEX.md` and `controls/*.md` provide execution contracts, Evidence Gates, Recovery behavior, and regression coverage.
+AIFENCE 4.0.0 introduced the normative lazy control plane. Existing domain modules remain authoritative for domain content while `CONTROL_INDEX.md` and `controls/*.md` provide execution contracts, Evidence Gates, Recovery behavior, and regression coverage.
 
 ## Required behavior
 
@@ -19,7 +19,7 @@ BizIQ 4.0.0 introduced the normative lazy control plane. Existing domain modules
 - Treat Evidence Gates as completion gates.
 - Use UNVERIFIED when evidence cannot be obtained.
 - Preserve decision state and re-evaluate affected controls after material changes.
-- Run `tools/validate_pack.py` when BizIQ itself changes.
+- Run `tools/validate_pack.py` when AIFENCE itself changes.
 
 ## Compatibility
 
@@ -28,7 +28,7 @@ Existing industry/design/feature/halo/job/SOP IDs remain stable.
 # Control-Plane Revision 1.1 — Native Feature & Component Craft
 <!-- id: migration.control-plane-1-1 -->
 
-This revision promotes Feature & Component Craft into the canonical BizIQ control plane as **Domain 26**.
+This revision promotes Feature & Component Craft into the canonical AIFENCE control plane as **Domain 26**.
 
 ## Architecture
 

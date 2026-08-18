@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BizIQ Core 1.8.6 family-aware finished-surface emission validator."""
+"""AIFENCE Core 1.8.6 family-aware finished-surface emission validator."""
 from pathlib import Path
 import argparse, html, json, re, shutil, subprocess, sys, zipfile
 import xml.etree.ElementTree as ET
@@ -167,7 +167,7 @@ def evidence_generic(items,family):
  return [x for x in items if any(re.search(p,norm(x),re.I) for p in pats)]
 
 def main():
- ap=argparse.ArgumentParser(description='Validate family-native substance on finished BizIQ artifact surfaces.')
+ ap=argparse.ArgumentParser(description='Validate family-native substance on finished AIFENCE artifact surfaces.')
  ap.add_argument('artifact'); ap.add_argument('--evidence',required=True); ap.add_argument('--runtime-evidence'); ap.add_argument('--out'); a=ap.parse_args()
  art=Path(a.artifact).resolve()
  try:

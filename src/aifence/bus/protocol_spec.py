@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -11,12 +11,12 @@ from typing import Any, Literal, cast
 import msgpack
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
-SAGE_PROTOCOL = "sage/0.2"
-SAGE_WIRE_VERSION = 2
-SAGE_SUPPORTED_PROTOCOLS = (SAGE_PROTOCOL,)
-SAGE_SUPPORTED_WIRES = (SAGE_WIRE_VERSION,)
-SAGE_MEDIA_TYPE_JSON = "application/vnd.sage.packet+json"
-SAGE_MEDIA_TYPE_MSGPACK = "application/vnd.sage.packet+msgpack"
+AIFENCE_PROTOCOL = "aifence/0.2"
+AIFENCE_WIRE_VERSION = 2
+AIFENCE_SUPPORTED_PROTOCOLS = (AIFENCE_PROTOCOL,)
+AIFENCE_SUPPORTED_WIRES = (AIFENCE_WIRE_VERSION,)
+AIFENCE_MEDIA_TYPE_JSON = "application/vnd.aifence.packet+json"
+AIFENCE_MEDIA_TYPE_MSGPACK = "application/vnd.aifence.packet+msgpack"
 
 
 class WireProvenanceV2(BaseModel):
@@ -57,14 +57,14 @@ class WireTraceV2(BaseModel):
 
 
 class WirePacketV2(BaseModel):
-    """Normative SAGE wire-v2 object.
+    """Normative AIFENCE wire-v2 object.
 
     Short field names are part of the v2 wire contract. Writers and readers use wire version 2.
     """
 
     model_config = ConfigDict(extra="forbid", populate_by_name=True)
 
-    version: int = Field(default=SAGE_WIRE_VERSION, alias="v")
+    version: int = Field(default=AIFENCE_WIRE_VERSION, alias="v")
     codebook: str = Field(alias="c")
     act: str = Field(default="report", alias="a")
     packet_id: str | None = Field(default=None, alias="i")
@@ -81,21 +81,21 @@ class WirePacketV2(BaseModel):
 
 
 def _normalized(value: Any) -> Any:
-    """Convert JSON-like data to SAGE's canonical serialization domain.
+    """Convert JSON-like data to AIFENCE's canonical serialization domain.
 
     * object keys must be strings and are sorted lexicographically by Unicode code point
     * tuples become arrays
     * non-finite floats are rejected
-    * bytes are preserved for MessagePack but are not valid canonical JSON inputs
+    * bytes are preserved for MesaifencePack but are not valid canonical JSON inputs
     """
     if isinstance(value, dict):
         if not all(isinstance(k, str) for k in value):
-            raise TypeError("SAGE canonical objects require string keys")
+            raise TypeError("AIFENCE canonical objects require string keys")
         return {key: _normalized(value[key]) for key in sorted(value)}
     if isinstance(value, (list, tuple)):
         return [_normalized(item) for item in value]
     if isinstance(value, float) and not math.isfinite(value):
-        raise ValueError("SAGE canonical encoding forbids NaN and infinity")
+        raise ValueError("AIFENCE canonical encoding forbids NaN and infinity")
     if value is None or isinstance(value, (str, int, float, bool, bytes)):
         return value
     raise TypeError(f"unsupported canonical value type: {type(value).__name__}")
@@ -135,8 +135,8 @@ def _contains_bytes(value: Any) -> bool:
 
 def validate_wire_v2(value: dict[str, Any]) -> WirePacketV2:
     packet = WirePacketV2.model_validate(value)
-    if packet.version != SAGE_WIRE_VERSION:
-        raise ValueError(f"expected wire version {SAGE_WIRE_VERSION}, got {packet.version}")
+    if packet.version != AIFENCE_WIRE_VERSION:
+        raise ValueError(f"expected wire version {AIFENCE_WIRE_VERSION}, got {packet.version}")
     return packet
 
 

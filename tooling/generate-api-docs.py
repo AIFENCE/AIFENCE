@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""Regenerate ``docs/api.md`` from the composed application's OpenAPI document.
+"""Regenerate the wiki's API reference from the composed application's OpenAPI document.
+
+The reference is derived from this code but published from the documentation
+repository, so this writes into a checkout of AIFENCE.github.io. By default it
+looks for one beside this repository; pass ``--out`` for anywhere else.
 
 Run after adding or renaming endpoints so the reference cannot drift from the
 code: ``python tooling/generate-api-docs.py``.
 """
 from __future__ import annotations
 
+import argparse
 import collections
 import os
 import sys
@@ -15,6 +20,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
+
+# The documentation lives in its own repository. Point AIFENCE_DOCS_REPO at that
+# checkout; otherwise assume it sits beside this one.
+DOCS_REPO = Path(os.environ.get("AIFENCE_DOCS_REPO") or ROOT.parent / "AIFENCE.github.io")
+DEFAULT_OUT = DOCS_REPO / "docs" / "api.md"
 
 GROUPS = (
     ("Core", lambda p: True),  # fallback, evaluated last
@@ -35,6 +45,21 @@ def _group_for(path: str) -> str:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--out",
+        type=Path,
+        default=DEFAULT_OUT,
+        help=f"where to write the reference (default: {DEFAULT_OUT})",
+    )
+    out = parser.parse_args().out
+    if not out.parent.is_dir():
+        # Better to say which checkout is missing than to create a stray file.
+        parser.error(
+            f"{out.parent} does not exist. Clone https://github.com/AIFENCE/AIFENCE.github.io "
+            "beside this repository, or pass --out."
+        )
+
     os.environ.setdefault("AIFENCE_DATABASE_URL", f"sqlite+pysqlite:///{tempfile.mkdtemp()}/api.db")
     from aifence.app import create_app
     from aifence.core.config import CoreSettings
@@ -77,8 +102,8 @@ def main() -> int:
             lines.append(f"| `{method}` | `{path}` | {summary or '—'} |")
         lines.append("")
 
-    (ROOT / "docs" / "api.md").write_text("\n".join(lines), encoding="utf-8", newline="")
-    print(f"docs/api.md: {total} endpoints across {len(grouped)} groups")
+    out.write_text("\n".join(lines), encoding="utf-8", newline="")
+    print(f"{out}: {total} endpoints across {len(grouped)} groups")
     return 0
 
 

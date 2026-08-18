@@ -55,15 +55,15 @@ def test_environment_lists_accept_comma_and_json(monkeypatch) -> None:
 
     key_a = "a" * 32
     key_b = "b" * 32
-    monkeypatch.setenv("SAGE_AUTH_REQUIRED", "true")
-    monkeypatch.setenv("SAGE_API_KEYS", f"{key_a},{key_b}")
-    monkeypatch.setenv("SAGE_ALLOWED_HOSTS", "LOCALHOST,127.0.0.1")
+    monkeypatch.setenv("AIFENCE_BUS_AUTH_REQUIRED", "true")
+    monkeypatch.setenv("AIFENCE_BUS_API_KEYS", f"{key_a},{key_b}")
+    monkeypatch.setenv("AIFENCE_BUS_ALLOWED_HOSTS", "LOCALHOST,127.0.0.1")
     comma = Settings(_env_file=None)
     assert comma.api_keys == [key_a, key_b]
     assert comma.allowed_hosts == ["localhost", "127.0.0.1"]
 
-    monkeypatch.setenv("SAGE_API_KEYS", f'["{key_a}", "{key_b}"]')
-    monkeypatch.setenv("SAGE_ALLOWED_HOSTS", '["LOCALHOST", "127.0.0.1"]')
+    monkeypatch.setenv("AIFENCE_BUS_API_KEYS", f'["{key_a}", "{key_b}"]')
+    monkeypatch.setenv("AIFENCE_BUS_ALLOWED_HOSTS", '["LOCALHOST", "127.0.0.1"]')
     encoded = Settings(_env_file=None)
     assert encoded.api_keys == [key_a, key_b]
     assert encoded.allowed_hosts == ["localhost", "127.0.0.1"]

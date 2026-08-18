@@ -1,6 +1,6 @@
 {
   "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "title":"BizIQ Emission Substance Evidence",
+  "title":"AIFENCE Emission Substance Evidence",
   "type":"object",
   "additionalProperties":false,
   "required":["artifact_id","family","provenance","domain_terms","decisions","actions","states","outcomes","evidence_boundaries","surface_markers","status"],

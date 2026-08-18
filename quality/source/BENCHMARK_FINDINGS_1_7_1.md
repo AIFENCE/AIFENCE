@@ -9,7 +9,7 @@ Last-Updated: 2026-08-10
 # Revision 1.7.1 Real-Artifact Benchmark Findings
 <!-- id: benchmark-findings-1-7-1.root -->
 
-The controlled six-pair rerun raised the BizIQ treatment mean from 90.555 to 92.518 and moved strict 9.0-every-dimension passes from 2/6 to 3/6. Payments cleared the strict floor after interaction/mobile closure. The remaining misses were structurally different: SaaS genericity resistance 8.9, analytics genericity resistance 8.8, and B2B feature depth 8.9.
+The controlled six-pair rerun raised the AIFENCE treatment mean from 90.555 to 92.518 and moved strict 9.0-every-dimension passes from 2/6 to 3/6. Payments cleared the strict floor after interaction/mobile closure. The remaining misses were structurally different: SaaS genericity resistance 8.9, analytics genericity resistance 8.8, and B2B feature depth 8.9.
 
 ## Revision 1.7.2 Permanent Regressions
 <!-- id: benchmark-findings-1-7-1.regressions -->

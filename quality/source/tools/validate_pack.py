@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""BizIQ 4 integrity validator — Control-Plane Revision 1.8.8.
+"""AIFENCE 4 integrity validator — Control-Plane Revision 1.8.8.
 
 Default: full repository validation.
 --overlay-only: validate the drag-and-drop Revision 1.7 package before extraction.
@@ -341,7 +341,7 @@ for rel in ["tools/validate_pack.py","tools/prepare_benchmark.py","tools/score_b
 
 if not args.overlay_only:
     # Full repository foundation check. Revision 1.2 is cumulative and expects
-    # the original BizIQ 4 base pack to remain present.
+    # the original AIFENCE 4 base pack to remain present.
     foundation_required = [
         "INDUSTRIES.md",
         "PROFILE_MATRIX.md",
@@ -364,12 +364,12 @@ if not args.overlay_only:
     missing_foundation = [x for x in foundation_required if not (ROOT/x).is_file()]
     if missing_foundation:
         fail(
-            "Base BizIQ pack is incomplete. The complete BizIQ package is cumulative, but "
+            "Base AIFENCE pack is incomplete. The complete AIFENCE package is cumulative, but "
             f"{len(missing_foundation)} required foundation path(s) are missing. "
-            "Restore/re-extract the complete BizIQ package, then rerun validation. "
+            "Restore/re-extract the complete AIFENCE package, then rerun validation. "
             "Missing: " + ", ".join(missing_foundation)
         )
-        print(f"BizIQ validator mode=full: revision=1.8.8")
+        print(f"AIFENCE validator mode=full: revision=1.8.8")
         for w in warnings:
             print("WARN:", w)
         print(f"FAIL: {len(errors)} error(s)")
@@ -498,7 +498,7 @@ except Exception as e: fail(f"Could not execute Operations 2.0 regression runner
 # proves the tools remain runnable without mutating canonical or generated artifacts.
 try:
     import tempfile
-    with tempfile.TemporaryDirectory(prefix="biziq-governance-") as td:
+    with tempfile.TemporaryDirectory(prefix="aifence-governance-") as td:
         for tool,name in [("audit_control_coverage.py","coverage.json"),("lint_control_semantics.py","semantic-lint.json")]:
             out=Path(td)/name
             proc=subprocess.run([sys.executable,str(ROOT/"tools"/tool),"--out",str(out)],cwd=ROOT,text=True,capture_output=True)
@@ -518,10 +518,10 @@ try:
             except Exception as e: fail(f"Benchmark pipeline smoke artifacts invalid: {e}")
 except Exception as e: fail(f"Could not execute Revision 1.7 governance diagnostics: {e}")
 
-print(f"BizIQ validator mode={'overlay' if args.overlay_only else 'full'}: revision=1.8.8")
+print(f"AIFENCE validator mode={'overlay' if args.overlay_only else 'full'}: revision=1.8.8")
 for w in warnings:print("WARN:",w)
 if errors:
     print(f"FAIL: {len(errors)} error(s)")
     for e in errors:print("  -",e)
     sys.exit(1)
-print("PASS: BizIQ Control-Plane Revision 1.8.8 integrity checks passed.")
+print("PASS: AIFENCE Control-Plane Revision 1.8.8 integrity checks passed.")

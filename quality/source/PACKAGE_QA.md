@@ -7,13 +7,13 @@ Control-Plane-Revision: 1.8.8
 Last-Updated: 2026-08-10
 -->
 
-# BizIQ Revision 1.7.4 Package QA
+# AIFENCE Revision 1.7.4 Package QA
 
 ## Full repository validator
 
 ```text
-BizIQ validator mode=full: revision=1.7.4
-PASS: BizIQ Control-Plane Revision 1.7.4 integrity checks passed.
+AIFENCE validator mode=full: revision=1.7.4
+PASS: AIFENCE Control-Plane Revision 1.7.4 integrity checks passed.
 ```
 
 ## Operations 2.0 executable regression runner
@@ -46,7 +46,7 @@ Generation preflight rejects JavaScript parse errors, missing direct runtime evi
 Dense-product first-pass validator independently gates visual finish, P0/P1 completeness, accessibility, and Level-5 feature depth
 Payments and analytics Runtime plans carry workflow-specific Level-5 depth loops
 3 fresh-generation regressions cover payments, SaaS, and analytics first-pass floor misses
-Fresh six-pair no-repair benchmark: BizIQ 93.519 vs control 83.000; 6/6 pairwise wins; 6/6 BizIQ strict-floor passes
+Fresh six-pair no-repair benchmark: AIFENCE 93.519 vs control 83.000; 6/6 pairwise wins; 6/6 AIFENCE strict-floor passes
 59/59 generated Runtime tests pass
 Generated build lock verifies 798 files
 151 indexed wiki pages validate

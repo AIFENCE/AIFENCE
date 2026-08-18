@@ -28,11 +28,11 @@ test: ## Run the full Python test suite
 	pytest
 
 .PHONY: quality-build
-quality-build: ## Build the BizIQ quality subsystem (Node)
+quality-build: ## Build the AIFENCE quality subsystem (Node)
 	cd quality && npm ci && npm run build
 
 .PHONY: quality-test
-quality-test: ## Validate the BizIQ quality subsystem
+quality-test: ## Validate the AIFENCE quality subsystem
 	cd quality && npm test
 
 .PHONY: migrate

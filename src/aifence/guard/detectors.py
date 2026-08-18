@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -31,7 +31,7 @@ _PROMPT_INJECTION = (
 
 _CONTROL_EVASION = (
     re.compile(r"\b(?:delete|truncate|alter)\b.{0,60}\b(?:audit|logs?|telemetry|events?)\b", re.IGNORECASE),
-    re.compile(r"\b(?:bypass|evade|disable)\b.{0,60}\b(?:agentdance|monitor|policy|security)\b", re.IGNORECASE),
+    re.compile(r"\b(?:bypass|evade|disable)\b.{0,60}\b(?:aifence|monitor|policy|security)\b", re.IGNORECASE),
     re.compile(r"\bunset\b.{0,40}\b(?:OTEL|AUDIT|LOG)\b", re.IGNORECASE),
 )
 

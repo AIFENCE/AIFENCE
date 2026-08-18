@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://biziq.local/schemas/dense_product_quality_evidence.schema.json",
-  "title": "BizIQ Dense Product First-Pass Quality Evidence",
+  "$id": "https://aifence.local/schemas/dense_product_quality_evidence.schema.json",
+  "title": "AIFENCE Dense Product First-Pass Quality Evidence",
   "type": "object",
   "additionalProperties": false,
   "required": ["artifact_id","artifact_family","provenance","visual_finish","completeness","accessibility","feature_depth","status"],

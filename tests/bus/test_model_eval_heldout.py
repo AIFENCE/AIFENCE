@@ -4,7 +4,7 @@ Covers (issue #22, stage 3):
 
 * FROZEN-CODEBOOK PROOF: none of the held-out updates' canonicals appear in
   the frozen codebook (``heldout_scenario.establishment_canonicals`` -- the
-  establishment material ONLY), while the ORACLE codebook (``cb._sage_specs()``
+  establishment material ONLY), while the ORACLE codebook (``cb._aifence_specs()``
   under the patched held-out globals) DOES contain every held-out canonical;
 * CONTENT-TYPE COVERAGE: the fixture contains at least one update per issue
   section-C content type (paraphrased concept / unseen value / new
@@ -16,14 +16,14 @@ Covers (issue #22, stage 3):
   ``--held-out --sealed`` runs end-to-end with a 2-family fake adapter
   (exit 0, the leak detector never fires -- the sealed boundary holds);
 * LABELS: held-out rows carry ``oracle_codebook`` true/false (true for the
-  oracle SAGE rows, false for the frozen SAGE rows and the plain variants),
+  oracle AIFENCE rows, false for the frozen AIFENCE rows and the plain variants),
   table/delta rows distinguish the `` [oracle]`` / `` [frozen]`` modes, the
   artifact gains top-level ``dataset_split: "held_out"`` + an
   ``oracle_codebook`` variant->modes mapping; default-OFF artifacts carry
   NONE of these keys;
 * DETERMINISM: two fresh ``--held-out --sealed`` CLI runs produce
   byte-identical printed tables and JSON artifacts modulo ``latency_ms``;
-* FROZEN VS ORACLE: the frozen SAGE variants' re-encoded wire bytes differ
+* FROZEN VS ORACLE: the frozen AIFENCE variants' re-encoded wire bytes differ
   from the oracle ones on the update turns (the smaller frozen codebook
   inlines more literals) and are byte-identical across two re-encode calls
   (deterministic); turn 0 (the establishment exchange, present in BOTH
@@ -37,7 +37,7 @@ Covers (issue #22, stage 3):
   rendering).
 
 All tests are deterministic (fixed inputs, no network, no real model) and
-write their output directories under ``/opt/data/sage/scratch/`` -- never
+write their output directories under ``/opt/data/aifence/scratch/`` -- never
 ``/tmp``.
 """
 
@@ -60,10 +60,10 @@ import pytest
 ROOT = Path(__file__).resolve().parents[2]
 HARNESS_SCRIPT = ROOT / "scripts" / "model_eval_harness.py"
 HELDOUT_SCRIPT = ROOT / "scripts" / "heldout_scenario.py"
-SCRATCH_ROOT = Path(os.environ.get("SAGE_SCRATCH_ROOT", "/opt/data/sage/scratch")) / "stage22-heldout-tests"
+SCRATCH_ROOT = Path(os.environ.get("AIFENCE_BUS_SCRATCH_ROOT", "/opt/data/aifence/scratch")) / "stage22-heldout-tests"
 
-#: SAGE variants whose sealed direct-symbolic packets are rendered for real.
-SAGE_VARIANTS = ("v09", "v10", "v11", "v12")
+#: AIFENCE variants whose sealed direct-symbolic packets are rendered for real.
+AIFENCE_BUS_VARIANTS = ("v09", "v10", "v11", "v12")
 
 #: LEAK-DETECTING sealed fake adapter (mirrors the stage-1 tests): exits 3
 #: with {"error": "LEAK"} if any evaluator-only field reaches the adapter, else
@@ -109,7 +109,7 @@ def h() -> Any:
 
 @pytest.fixture()
 def scratch_dir() -> Iterator[Path]:
-    """A scratch output directory under /opt/data/sage/scratch (never /tmp)."""
+    """A scratch output directory under /opt/data/aifence/scratch (never /tmp)."""
     path = SCRATCH_ROOT / uuid.uuid4().hex[:12]
     path.mkdir(parents=True, exist_ok=True)
     yield path
@@ -135,13 +135,13 @@ def _run_cli_subprocess(argv: list[str], fake_home: Path) -> subprocess.Complete
     """Run the harness CLI in a FRESH subprocess (fake HOME + provider env).
 
     The provider env is set BEFORE the child env is built (the fake-adapter
-    no-op trap: without ``SAGE_BENCH_LLM_PROVIDER`` the CLI prints "not run,
-    no provider" and exits 0, exercising nothing); ``SAGE_DATABASE_URL`` is
+    no-op trap: without ``AIFENCE_BUS_BENCH_LLM_PROVIDER`` the CLI prints "not run,
+    no provider" and exits 0, exercising nothing); ``AIFENCE_BUS_DATABASE_URL`` is
     popped so the child's ``main()`` binds its own scratch database before
-    the first ``sage_plugin`` import.
+    the first ``aifence.bus`` import.
     """
-    env = {**os.environ, "HOME": str(fake_home), "SAGE_BENCH_LLM_PROVIDER": "fake"}
-    env.pop("SAGE_DATABASE_URL", None)
+    env = {**os.environ, "HOME": str(fake_home), "AIFENCE_BUS_BENCH_LLM_PROVIDER": "fake"}
+    env.pop("AIFENCE_BUS_DATABASE_URL", None)
     return subprocess.run(
         [sys.executable, str(HARNESS_SCRIPT), *argv],
         capture_output=True,
@@ -188,7 +188,7 @@ def test_frozen_codebook_excludes_every_heldout_update_canonical(h):
 
 def test_oracle_codebook_contains_every_heldout_update_canonical(h):
     cb, ho, frozen = _patched_heldout_cb(h)
-    oracle = next(spec for spec in cb._sage_specs() if spec["id"] == "v09")["codebook"]
+    oracle = next(spec for spec in cb._aifence_specs() if spec["id"] == "v09")["codebook"]
     oracle_set = set(oracle)
     assert len(oracle) > len(frozen)  # the oracle saw establishment + updates
     for index, update in enumerate(ho.HELDOUT_UPDATES, 1):
@@ -261,14 +261,14 @@ def test_heldout_without_sealed_exits_2_cleanly(scratch_dir, h, monkeypatch):
     assert not out_dir.exists()
 
     # in-process API: run_harness refuses with ValueError (CLI maps to exit 2)
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     with pytest.raises(ValueError, match="requires sealed"):
         h.run_harness(_two_family_config(), variants=["v01"], held_out=True)
     with pytest.raises(ValueError, match="requires sealed"):
         h.run_harness(_two_family_config(), variants=["v01"], held_out=True, sealed=False)
 
     # the conflict is a static CLI validation error: it fires even with no provider
-    monkeypatch.delenv("SAGE_BENCH_LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", raising=False)
     assert h.main(["--held-out"]) == 2
 
 
@@ -287,7 +287,7 @@ def test_heldout_with_record_feedback_exits_2_cleanly(scratch_dir, h, monkeypatc
     assert "--held-out cannot be combined with --record-feedback" in completed.stderr
     assert not out_dir.exists()
 
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     with pytest.raises(ValueError, match="record_feedback"):
         h.run_harness(_two_family_config(), variants=["v01"], sealed=True, held_out=True, record_feedback=True)
 
@@ -295,7 +295,7 @@ def test_heldout_with_record_feedback_exits_2_cleanly(scratch_dir, h, monkeypatc
 def test_heldout_requires_sealed_no_provider_still_validates(h, monkeypatch, capsys):
     # static validation fires before the provider gate (mirrors --sealed +
     # --with-examples): even with no provider, the flag conflict is exit 2
-    monkeypatch.delenv("SAGE_BENCH_LLM_PROVIDER", raising=False)
+    monkeypatch.delenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", raising=False)
     assert h.main(["--held-out"]) == 2
     assert "--held-out requires --sealed" in capsys.readouterr().err
     assert h.main(["--held-out", "--sealed", "--record-feedback"]) == 2
@@ -346,14 +346,14 @@ def test_heldout_sealed_end_to_end_two_families(scratch_dir):
         assert row["sealed"] is True
         assert row["task_response"]
         assert "receiver_prior" not in row
-    # oracle SAGE rows are labeled true; frozen SAGE and plain rows false
-    sage_labels = {(row["variant"], row["oracle_codebook"]) for row in rows if row["variant"] in SAGE_VARIANTS}
-    assert sage_labels == {
+    # oracle AIFENCE rows are labeled true; frozen AIFENCE and plain rows false
+    aifence_bus_labels = {(row["variant"], row["oracle_codebook"]) for row in rows if row["variant"] in AIFENCE_BUS_VARIANTS}
+    assert aifence_bus_labels == {
         ("v09", True), ("v09", False), ("v12", True), ("v12", False),
     }
-    plain_labels = {row["oracle_codebook"] for row in rows if row["variant"] not in SAGE_VARIANTS}
+    plain_labels = {row["oracle_codebook"] for row in rows if row["variant"] not in AIFENCE_BUS_VARIANTS}
     assert plain_labels == {False}
-    # table cells distinguish the two SAGE modes (the suffix sits before the
+    # table cells distinguish the two AIFENCE modes (the suffix sits before the
     # "[receiver] state" tail of the variant cell)
     cells = [line.split("|")[1].strip() for line in artifact["markdown_table"].splitlines()[2:]]
     assert any(" [oracle] " in cell for cell in cells)
@@ -391,7 +391,7 @@ def test_heldout_sealed_end_to_end_two_families(scratch_dir):
 
 
 def test_heldout_labels_and_default_off_absence(h, monkeypatch):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     config = _two_family_config()
 
     held = h.run_harness(config, variants=["v01", "v09"], sealed=True, held_out=True)
@@ -471,8 +471,8 @@ def test_heldout_determinism_modulo_latency(scratch_dir):
 
 def test_frozen_wire_bytes_differ_from_oracle_and_are_deterministic(h):
     cb, _ho, frozen = _patched_heldout_cb(h)
-    spec = next(s for s in cb._sage_specs() if s["id"] == "v09")
-    oracle_rendered = h._render_sage_variant_packets(cb, spec)
+    spec = next(s for s in cb._aifence_specs() if s["id"] == "v09")
+    oracle_rendered = h._render_aifence_variant_packets(cb, spec)
     frozen_a = h._render_frozen_variant_packets(cb, spec, frozen)
     frozen_b = h._render_frozen_variant_packets(cb, spec, frozen)
 
@@ -502,10 +502,10 @@ def test_frozen_wire_bytes_differ_from_oracle_and_are_deterministic(h):
 
 
 def test_frozen_rows_wire_bytes_are_the_frozen_measurement(h, monkeypatch):
-    monkeypatch.setenv("SAGE_BENCH_LLM_PROVIDER", "fake")
+    monkeypatch.setenv("AIFENCE_BUS_BENCH_LLM_PROVIDER", "fake")
     results = h.run_harness(_two_family_config(), variants=["v09"], sealed=True, held_out=True)
     cb, _ho, frozen = _patched_heldout_cb(h)
-    spec = next(s for s in cb._sage_specs() if s["id"] == "v09")
+    spec = next(s for s in cb._aifence_specs() if s["id"] == "v09")
     frozen_rendered = h._render_frozen_variant_packets(cb, spec, frozen)
 
     frozen_rows = [
@@ -539,7 +539,7 @@ def test_frozen_rows_wire_bytes_are_the_frozen_measurement(h, monkeypatch):
 
 def test_heldout_scoring_and_payload_under_patched_globals(h):
     cb, _ho, frozen = _patched_heldout_cb(h)
-    exchange = {"variant": "v05", "variant_name": "x", "turn": 1, "phase": "update", "sage": False}
+    exchange = {"variant": "v05", "variant_name": "x", "turn": 1, "phase": "update", "aifence": False}
 
     # the exact rendered ORION state scores a perfect turn
     ok = cb.render_state_text(cb.STATE_DICTS[1])
@@ -552,8 +552,8 @@ def test_heldout_scoring_and_payload_under_patched_globals(h):
 
     # oracle payload: the model-facing packet is the REAL held-out rendering
     # (orion bindings, no phoenix material anywhere in the payload)
-    sage_exchange = {"variant": "v09", "variant_name": "x", "turn": 1, "phase": "update", "sage": True, "wire_bytes": 123}
-    payload = h._build_sealed_payload(cb, sage_exchange, "cold", "direct-symbolic", {"family": "a", "version": "1"})
+    aifence_bus_exchange = {"variant": "v09", "variant_name": "x", "turn": 1, "phase": "update", "aifence": True, "wire_bytes": 123}
+    payload = h._build_sealed_payload(cb, aifence_bus_exchange, "cold", "direct-symbolic", {"family": "a", "version": "1"})
     rendered = json.loads(payload["model_facing_packet"])
     assert any("orion" in str(value) for value in rendered["bindings"].values())
     assert "phoenix" not in payload["model_facing_packet"]
@@ -563,7 +563,7 @@ def test_heldout_scoring_and_payload_under_patched_globals(h):
     # frozen payload: the model faces the FROZEN re-encode rendering (the one
     # the frozen exchange carries), not the oracle re-render
     frozen_exchange = {
-        **sage_exchange,
+        **aifence_bus_exchange,
         "frozen": True,
         "representation": "FROZEN-RENDER-MARKER",
     }
@@ -571,7 +571,7 @@ def test_heldout_scoring_and_payload_under_patched_globals(h):
     assert payload["model_facing_packet"] == "FROZEN-RENDER-MARKER"
 
     # the frozen rendering itself is the real codec packet shape
-    frozen_rendered = h._render_frozen_variant_packets(cb, next(s for s in cb._sage_specs() if s["id"] == "v09"), frozen)
+    frozen_rendered = h._render_frozen_variant_packets(cb, next(s for s in cb._aifence_specs() if s["id"] == "v09"), frozen)
     packet = json.loads(frozen_rendered[1]["rendering"])
     for key in ("act", "atoms", "bindings", "cb", "id", "meta", "prov", "receiver", "sender", "v"):
         assert key in packet

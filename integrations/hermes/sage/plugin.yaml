@@ -1,5 +1,0 @@
-name: sage
-version: "0.2.7"
-description: Vendor-neutral SAGE semantic bus with automatic context injection and structured handoff.
-requires_env:
-  - SAGE_URL

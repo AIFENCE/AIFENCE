@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+// SPDX-FileCopyrightText: 2026 AIFENCE contributors
 // SPDX-License-Identifier: Apache-2.0
 export type Outcome =
   | "allow"
@@ -61,7 +61,7 @@ export interface BinaryResponse {
   contentDisposition: string | null;
 }
 
-export class AgentDanceError extends Error {
+export class AifenceError extends Error {
   constructor(
     readonly statusCode: number,
     readonly code: string,
@@ -69,7 +69,7 @@ export class AgentDanceError extends Error {
     readonly details: JsonObject = {},
   ) {
     super(`${code}: ${message}`);
-    this.name = "AgentDanceError";
+    this.name = "AifenceError";
   }
 }
 
@@ -82,7 +82,7 @@ export interface ClientOptions {
 
 const RETRYABLE_STATUS_CODES = new Set([429, 502, 503, 504]);
 
-export class AgentDanceClient {
+export class AifenceClient {
   private readonly baseUrl: string;
   private readonly timeoutMs: number;
   private readonly maxRetries: number;
@@ -90,8 +90,8 @@ export class AgentDanceClient {
   private readonly fetchImpl: typeof globalThis.fetch;
 
   constructor(baseUrl: string, private readonly apiKey: string, options: ClientOptions = {}) {
-    if (!baseUrl.startsWith("https://")) throw new Error("AGENTDANCE base URL must use HTTPS");
-    if (!apiKey) throw new Error("AGENTDANCE API key is required");
+    if (!baseUrl.startsWith("https://")) throw new Error("AIFENCE base URL must use HTTPS");
+    if (!apiKey) throw new Error("AIFENCE API key is required");
     if ((options.maxRetries ?? 3) < 0) throw new Error("maxRetries cannot be negative");
     if ((options.maxResponseBytes ?? 16 * 1024 * 1024) < 1) {
       throw new Error("maxResponseBytes must be positive");
@@ -202,7 +202,7 @@ export class AgentDanceClient {
     form.set("artifact", upload.content, upload.filename);
     return this.requestJson("POST", "/v1/artifacts/scan", form, false, {
       Accept: "application/json",
-      "X-Agentdance-SDK": "typescript/1.0.0-rc.5",
+      "X-Aifence-SDK": "typescript/1.0.0-rc.5",
     });
   }
 
@@ -507,7 +507,7 @@ export class AgentDanceClient {
     try {
       return JSON.parse(new TextDecoder().decode(content)) as T;
     } catch (error) {
-      throw new Error(`AGENTDANCE returned invalid JSON: ${String(error)}`);
+      throw new Error(`AIFENCE returned invalid JSON: ${String(error)}`);
     }
   }
 
@@ -527,7 +527,7 @@ export class AgentDanceClient {
         const requestHeaders: Record<string, string> = {
           Authorization: `Bearer ${this.apiKey}`,
           Accept: "application/json",
-          "X-Agentdance-SDK": "typescript/1.0.0-rc.5",
+          "X-Aifence-SDK": "typescript/1.0.0-rc.5",
           ...headers,
         };
         let encodedBody: BodyInit | undefined;
@@ -555,7 +555,7 @@ export class AgentDanceClient {
       if (!RETRYABLE_STATUS_CODES.has(response.status) || attempt + 1 >= attempts) break;
       await this.sleep(this.retryDelay(response, attempt));
     }
-    if (!response) throw new Error("AGENTDANCE request did not produce a response");
+    if (!response) throw new Error("AIFENCE request did not produce a response");
     const content = await this.readBounded(response);
     if (!response.ok) {
       let error: JsonObject = {};
@@ -567,7 +567,7 @@ export class AgentDanceClient {
       } catch {
         error = {};
       }
-      throw new AgentDanceError(
+      throw new AifenceError(
         response.status,
         String(error.code ?? "http_error"),
         String(error.message ?? response.statusText),
@@ -582,7 +582,7 @@ export class AgentDanceClient {
   private async readBounded(response: Response): Promise<Uint8Array> {
     const declared = Number(response.headers.get("content-length"));
     if (Number.isFinite(declared) && declared > this.maxResponseBytes) {
-      throw new Error("AGENTDANCE response exceeds maxResponseBytes");
+      throw new Error("AIFENCE response exceeds maxResponseBytes");
     }
     if (!response.body) return new Uint8Array();
     const reader = response.body.getReader();
@@ -594,7 +594,7 @@ export class AgentDanceClient {
       total += value.byteLength;
       if (total > this.maxResponseBytes) {
         await reader.cancel("response too large");
-        throw new Error("AGENTDANCE response exceeds maxResponseBytes");
+        throw new Error("AIFENCE response exceeds maxResponseBytes");
       }
       chunks.push(value);
     }

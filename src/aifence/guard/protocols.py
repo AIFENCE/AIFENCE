@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ def discover_protocol_manifest(*, protocol: str, endpoint: str, auth_header_name
                                max_response_bytes: int,
                                validated_endpoint: ValidatedEndpoint | None = None
                                ) -> tuple[dict[str, Any], str, dict[str, Any]]:
-    headers = {"Accept": "application/json", "User-Agent": "AGENTDANCE-Protocol-Discovery/1.0.0-rc.5"}
+    headers = {"Accept": "application/json", "User-Agent": "AIFENCE-Protocol-Discovery/1.0.0-rc.5"}
     if auth_header_name and auth_value:
         headers[auth_header_name] = auth_value
     if protocol == "mcp":
@@ -34,7 +34,7 @@ def discover_protocol_manifest(*, protocol: str, endpoint: str, auth_header_name
                           proxy=proxy_url or None) as client:
             if protocol == "mcp":
                 response = client.post(target, headers={**headers, "Content-Type": "application/json"},
-                    json={"jsonrpc": "2.0", "id": "agentdance-discovery", "method": "tools/list", "params": {}},
+                    json={"jsonrpc": "2.0", "id": "aifence-discovery", "method": "tools/list", "params": {}},
                     extensions=request_extensions)
             else:
                 response = client.get(target, headers=headers, extensions=request_extensions)

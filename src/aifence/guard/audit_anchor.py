@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -159,7 +159,7 @@ def build_anchor_envelope(signing_key: SigningProvider, *, tenant_id: str, seque
                           chain_head: str, destination: str,
                           previous_receipt_id: str | None = None) -> dict[str, Any]:
     import secrets
-    unsigned = {"format": "agentdance.audit-anchor.v2", "tenant_id": tenant_id,
+    unsigned = {"format": "aifence.audit-anchor.v2", "tenant_id": tenant_id,
                 "sequence": sequence, "chain_head": chain_head, "destination": destination,
                 "nonce": secrets.token_urlsafe(24), "previous_receipt_id": previous_receipt_id,
                 "key_id": signing_key.key_id, "anchored_at": datetime.now(UTC).isoformat()}

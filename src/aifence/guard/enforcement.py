@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ _SECRET_VALUE_PATTERNS = (
     re.compile(r"\b(?:sk|pk|rk|ghp|github_pat)_[A-Za-z0-9_\-]{12,}\b"),
     re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH |)PRIVATE KEY-----.*?-----END (?:RSA |EC |OPENSSH |)PRIVATE KEY-----", re.DOTALL),
 )
-_REDACTED = "[REDACTED_BY_AGENTDANCE]"
+_REDACTED = "[REDACTED_BY_AIFENCE]"
 
 # Every baseline policy constraint must be represented here. Unknown constraints fail closed.
 _SUPPORTED_CONTROLS = frozenset(
@@ -361,7 +361,7 @@ def build_enforcement_plan(
     transformed_request["action"] = transformed_action
     transformed_hash = hash_object(transformed_request)
     return {
-        "version": "agentdance.enforcement.v1",
+        "version": "aifence.enforcement.v1",
         "original_request_hash": original_hash,
         "transformed_request_hash": transformed_hash,
         "transformed_action": transformed_action,

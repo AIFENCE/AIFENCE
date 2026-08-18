@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/component_spec.schema.json",
-  "title": "BizIQ Component Specification",
+  "$id": "aifence://schemas/component_spec.schema.json",
+  "title": "AIFENCE Component Specification",
   "type": "object",
   "required": [
     "component_id",

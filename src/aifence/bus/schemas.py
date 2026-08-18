@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -46,7 +46,7 @@ class TraceContext(BaseModel):
 
 
 class Packet(BaseModel):
-    v: str = "sage/0.2"
+    v: str = "aifence/0.2"
     id: str | None = None
     cb: str
     sender: str | None = None
@@ -135,7 +135,7 @@ class HandoffRequest(BaseModel):
     ordering_key: str | None = Field(default=None, max_length=128)
 
 
-class BusMessageResponse(BaseModel):
+class BusMesaifenceResponse(BaseModel):
     message_id: str
     packet_id: str
     sender: str | None = None
@@ -197,7 +197,7 @@ class A2AUnpackRequest(BaseModel):
     part: dict[str, JsonValue]
 
 
-class A2AMessagePackRequest(BaseModel):
+class A2AMesaifencePackRequest(BaseModel):
     wire: dict[str, JsonValue]
     message_id: str | None = None
     role: Literal["ROLE_USER", "ROLE_AGENT", "ROLE_UNSPECIFIED"] = "ROLE_USER"
@@ -206,7 +206,7 @@ class A2AMessagePackRequest(BaseModel):
     metadata: dict[str, JsonValue] = Field(default_factory=dict)
 
 
-class A2AMessageUnpackRequest(BaseModel):
+class A2AMesaifenceUnpackRequest(BaseModel):
     message: dict[str, JsonValue]
 
 
@@ -423,7 +423,7 @@ class PatternResponse(BaseModel):
 
 
 class LatentPacket(BaseModel):
-    v: str = "sage-latent/0.2"
+    v: str = "aifence-latent/0.2"
     space: str
     dims: int = Field(gt=0, le=262144)
     scale: float = Field(gt=0)
@@ -441,7 +441,7 @@ class LatentUnpackRequest(BaseModel):
 
 
 class Capabilities(BaseModel):
-    protocol_versions: list[str] = Field(default_factory=lambda: ["sage/0.2"])
+    protocol_versions: list[str] = Field(default_factory=lambda: ["aifence/0.2"])
     codebooks: list[str] = Field(default_factory=list)
     max_packet_bytes: int = Field(default=8192, gt=0)
     supports_refs: bool = True

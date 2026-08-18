@@ -1060,7 +1060,7 @@
     "capability": "Differentiation ledger",
     "domain": "06. Research, Benchmarking & Reference Intelligence",
     "case": "normal",
-    "requirement": "Record what the category commonly does, what is overused, what creates trust, and where BizIQ will deliberately diverge.",
+    "requirement": "Record what the category commonly does, what is overused, what creates trust, and where AIFENCE will deliberately diverge.",
     "expected": "produce a compliant result and observable evidence"
   },
   {
@@ -1068,7 +1068,7 @@
     "capability": "Differentiation ledger",
     "domain": "06. Research, Benchmarking & Reference Intelligence",
     "case": "ambiguous",
-    "requirement": "Record what the category commonly does, what is overused, what creates trust, and where BizIQ will deliberately diverge.",
+    "requirement": "Record what the category commonly does, what is overused, what creates trust, and where AIFENCE will deliberately diverge.",
     "expected": "use deterministic tie-breaking or preserve ambiguity without fabrication"
   },
   {
@@ -1076,7 +1076,7 @@
     "capability": "Differentiation ledger",
     "domain": "06. Research, Benchmarking & Reference Intelligence",
     "case": "failure",
-    "requirement": "Record what the category commonly does, what is overused, what creates trust, and where BizIQ will deliberately diverge.",
+    "requirement": "Record what the category commonly does, what is overused, what creates trust, and where AIFENCE will deliberately diverge.",
     "expected": "trigger recovery and refuse a false pass"
   },
   {

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "BizIQ Fixed Document Render and Accessibility Evidence",
+  "title": "AIFENCE Fixed Document Render and Accessibility Evidence",
   "type": "object",
   "additionalProperties": false,
   "required": [

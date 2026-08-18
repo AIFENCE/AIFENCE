@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "BizIQ Materialization Evidence",
+  "title": "AIFENCE Materialization Evidence",
   "type": "object",
   "additionalProperties": false,
   "required": ["artifact_id","family","provenance","records","user_facing_copy","checks","critical_dimensions","catastrophic_failures","status"],

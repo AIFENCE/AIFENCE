@@ -2,30 +2,30 @@
 
 ## Local stdio
 ```bash
-biziq mcp --stdio
+aifence mcp --stdio
 ```
 
 ## Local Streamable HTTP
 ```bash
-biziq mcp --http --host 127.0.0.1 --port 3888
+aifence mcp --http --host 127.0.0.1 --port 3888
 ```
-Endpoint: `/mcp`. Runtime refuses non-loopback binds unless `BIZIQ_ALLOW_REMOTE_HTTP=1` is explicitly set. That switch is not authentication; remote deployment still requires HTTPS, authentication/authorization, origin/host policy, rate limits, and deployment hardening.
+Endpoint: `/mcp`. Runtime refuses non-loopback binds unless `AIFENCE_ALLOW_REMOTE_HTTP=1` is explicitly set. That switch is not authentication; remote deployment still requires HTTPS, authentication/authorization, origin/host policy, rate limits, and deployment hardening.
 
 ## Tools
-- `biziq_initialize`
-- `biziq_plan`
-- `biziq_get_sections`
-- `biziq_get_control`
-- `biziq_get_artifact_contract`
-- `biziq_get_profile`
-- `biziq_compile_feature`
-- `biziq_compile_component`
-- `biziq_compile_operation`
-- `biziq_validate`
-- `biziq_status`
+- `aifence_quality_initialize`
+- `aifence_quality_plan`
+- `aifence_quality_get_sections`
+- `aifence_quality_get_control`
+- `aifence_quality_get_artifact_contract`
+- `aifence_quality_get_profile`
+- `aifence_quality_compile_feature`
+- `aifence_quality_compile_component`
+- `aifence_quality_compile_operation`
+- `aifence_quality_validate`
+- `aifence_quality_status`
 
 ## Resources
-`biziq://readme`, `biziq://control-index`, `biziq://control-manifest`, eight artifact-contract resources, and `ui://biziq/status`.
+`aifence://readme`, `aifence://control-index`, `aifence://control-manifest`, eight artifact-contract resources, and `ui://aifence/status`.
 
 ## UI fallback
-`biziq_plan` and `biziq_status` carry MCP Apps UI metadata. Hosts without MCP Apps still receive complete text/structured results.
+`aifence_quality_plan` and `aifence_quality_status` carry MCP Apps UI metadata. Hosts without MCP Apps still receive complete text/structured results.

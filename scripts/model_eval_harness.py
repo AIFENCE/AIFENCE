@@ -3,7 +3,7 @@
 This script runs the stage-2 compression benchmark's receivers on real model
 runtimes through external adapter commands, measuring COLD and WARM receivers
 separately.  It is opt-in: with no ``--adapters`` config (or when
-``SAGE_BENCH_LLM_PROVIDER`` is unset) it prints ``not run, no provider`` and
+``AIFENCE_BUS_BENCH_LLM_PROVIDER`` is unset) it prints ``not run, no provider`` and
 exits 0 -- provider numbers are never fabricated (mirroring
 ``scripts/compression_benchmark.py`` and ``scripts/model_matrix_benchmark.py``).
 
@@ -50,7 +50,7 @@ fields (model_matrix's full contract is the floor): ``task_success``,
 critical-fact-recall scoring) and ``critical_fact_recall`` (adapter-reported;
 preferred over the harness-side score).
 
-Payload contract (per exchange): ``protocol: "sage/0.2"``,
+Payload contract (per exchange): ``protocol: "aifence/0.2"``,
 ``benchmark: "compression_benchmark:phoenix_rfc"``, ``variant`` /
 ``variant_name``, ``turn`` / ``phase``, ``receiver_state`` (``"cold"`` =
 fresh receiver with no prior state; ``"warm"`` = receiver prior established
@@ -60,7 +60,7 @@ from the shared-context phase, e.g. codebook/patterns ACKed), ``receiver_prior``
 symbolic-format examples; when true an ``examples`` list with a sample packet
 + its meaning is included), ``representation`` (the symbolic wire form:
 the stage-2 reconstruction for plain variants, a deterministic symbolic
-packet rendering for SAGE variants), ``wire_bytes``, ``model_facing_text``
+packet rendering for AIFENCE variants), ``wire_bytes``, ``model_facing_text``
 (the text the model is asked to consume), ``content`` (the message/state the
 sender conveyed), ``expected`` (the per-turn ground-truth answer key) and
 ``change_markers``.
@@ -89,8 +89,8 @@ sealed mode.  ``--sealed`` cannot be combined with ``--with-examples``
 carry a top-level ``evaluation_boundary: "sealed"`` and per-row
 ``sealed: true`` + ``task_response``; default OFF keeps every artifact
 byte-identical to the stage-3/4 shape.  In sealed mode the warm receiver
-is established through the REAL SAGE lifecycle (issue #22, stage 4): for
-each SAGE variant, before its warm exchanges, the shared-context turn
+is established through the REAL AIFENCE lifecycle (issue #22, stage 4): for
+each AIFENCE variant, before its warm exchanges, the shared-context turn
 (``content_fn(0)`` -- ``SHARED_CONTEXT`` or the held-out
 ``ESTABLISHMENT_SHARED_CONTEXT``) is encoded with a pinned packet id and
 DECODED with ``acknowledge=True`` (receiver "bob"), which COMMITS receiver
@@ -112,12 +112,12 @@ exchanges (fresh receiver state per variant/run: per-process scratch DB +
 schema reset per variant).
 
 Sealed mode, stage 2 (issue #22 section B mode 1 -- actual packet rendering):
-for SAGE variants (v09-v12) in ``direct-symbolic`` mode the
+for AIFENCE variants (v09-v12) in ``direct-symbolic`` mode the
 ``model_facing_packet`` is NO LONGER the stage-1 canonical-clause proxy: it
 is a canonical compact-JSON rendering of the REAL codec packet for that
 ``(variant, turn)``, deterministically re-encoded through the codec exactly
-like the stage-2 benchmark (``_render_sage_variant_packets`` mirrors
-``cb._run_sage_variant``: schema reset, spec ``Settings``, codebook
+like the stage-2 benchmark (``_render_aifence_variant_packets`` mirrors
+``cb._run_aifence_variant``: schema reset, spec ``Settings``, codebook
 registration from ``spec["codebook"]`` in order, pinned packet ids, the v10
 pattern warm-up, per-turn encode+decode).  The re-encoded wire bytes equal
 the benchmark's recorded ``wire_bytes`` for the same ``(variant, turn)``
@@ -139,12 +139,12 @@ representation/reconstruction selection byte-identical.
 Sealed direct-symbolic RECONSTRUCTION-FIDELITY scope (stage-2 hardening,
 stage-4 warm update): in sealed direct-symbolic mode the CHAINED/REFERENCE
 variants are a reconstruction-fidelity signal, not a self-contained task
-payload.  v11's rendering is ``base`` (a ``sage:sha256:`` state hash) +
+payload.  v11's rendering is ``base`` (a ``aifence:sha256:`` state hash) +
 ``delta`` ops only -- the base state content lives evaluator-side behind
 the hash -- and v10 turn 0's single pattern atom covers 1 of 5 clauses, so
 a COLD sealed receiver cannot resolve the base-state/reference content: a
 perfect echo of the packet is structurally bounded (e.g. ~0.70/0.15
-task_success on v11 turns 1-2).  This is the real SAGE cold-receiver
+task_success on v11 turns 1-2).  This is the real AIFENCE cold-receiver
 behavior -- NOT a rendering defect (the rendering is faithful to the codec
 packet and round-trips) -- and sealed COLD v11 / v10-turn-0 scores must be
 read as reconstruction-fidelity signals.  The stage-4 lifecycle-primed
@@ -163,7 +163,7 @@ material is FROZEN before the held-out updates are revealed.  Three phases:
 
 * ESTABLISHMENT -- a NEW project ("Orion": distinct names/facts) is
   transmitted once as the shared context.  This is the ONLY material the
-  SAGE variants' FROZEN codebook is compiled from
+  AIFENCE variants' FROZEN codebook is compiled from
   (``heldout_scenario.establishment_canonicals`` -- the sorted canonical
   clauses of ``ESTABLISHMENT_SHARED_CONTEXT`` alone).  3 of the 5
   establishment canonicals differ from the default Phoenix scenario; the
@@ -172,7 +172,7 @@ material is FROZEN before the held-out updates are revealed.  Three phases:
   the generic migration-review sentence kept verbatim for the fidelity
   checker); the held-out UPDATE canonicals are fully disjoint from
   Phoenix.
-* FROZEN CODEBOOK -- the SAGE variants' codebook is pinned to the
+* FROZEN CODEBOOK -- the AIFENCE variants' codebook is pinned to the
   establishment canonicals BEFORE any held-out update is revealed.  The
   held-out updates (>= 8, covering every issue section-C content type:
   paraphrased concept / unseen value / new combination of known concepts /
@@ -184,13 +184,13 @@ material is FROZEN before the held-out updates are revealed.  Three phases:
   globals of the loaded benchmark module (``SHARED_CONTEXT`` / ``UPDATES`` /
   ``STATE_DICTS`` / ``CHANGE_MARKERS``) are patched from the held-out fixture
   BEFORE the spec builders / benchmark / scoring read them (they resolve the
-  globals at call time), so ``run_benchmark``, the plain variants, the SAGE
+  globals at call time), so ``run_benchmark``, the plain variants, the AIFENCE
   variants and the sealed scorer all operate on the held-out material.
 
-SAGE variants run in BOTH explicitly-labeled codebook modes:
+AIFENCE variants run in BOTH explicitly-labeled codebook modes:
 
 * ``oracle_codebook: true`` -- the ORACLE codebook (compiled from the
-  establishment material AND all held-out updates, as ``cb._sage_specs()``
+  establishment material AND all held-out updates, as ``cb._aifence_specs()``
   does): the benchmark-recorded upper bound where the codebook was allowed to
   see everything.  Rows are the standard sealed rows against the patched
   scenario; their variant_name carries a `` [oracle]`` suffix.  The
@@ -204,10 +204,10 @@ SAGE variants run in BOTH explicitly-labeled codebook modes:
   honest and deterministic; the labels keep the two modes from being
   merged.
 * ``oracle_codebook: false`` -- the FROZEN establishment-only codebook:
-  spec copies of the oracle SAGE specs with the ``codebook`` field replaced
+  spec copies of the oracle AIFENCE specs with the ``codebook`` field replaced
   by the sorted establishment canonicals, deterministically re-encoded
   through the REAL codec (``_render_frozen_variant_packets``, mirroring
-  ``_render_sage_variant_packets``: schema reset, codebook registration in
+  ``_render_aifence_variant_packets``: schema reset, codebook registration in
   order, pinned packet ids, v10 pattern warm-up).  Their wire bytes ARE the
   measurement -- no benchmark-recorded counterpart exists for the frozen
   codebook -- and they differ from the oracle rows' (the smaller frozen
@@ -215,10 +215,10 @@ SAGE variants run in BOTH explicitly-labeled codebook modes:
   `` [frozen]`` suffix.
 
 Every held-out row carries ``oracle_codebook: true|false`` (true for the
-oracle SAGE rows, false for the frozen SAGE rows and the plain variants --
+oracle AIFENCE rows, false for the frozen AIFENCE rows and the plain variants --
 a plain variant has no codebook mode; the label is false), and the artifact
 gains top-level keys ``dataset_split: "held_out"`` and ``oracle_codebook``
-(a mapping of each evaluated SAGE variant to its modes,
+(a mapping of each evaluated AIFENCE variant to its modes,
 ``{"v09": ["frozen", "oracle"], ...}``).  ``--held-out`` cannot be combined
 with ``--record-feedback`` (clean exit-2 error): feedback-loop semantics are
 defined against the standard scenario; held-out feedback is a future
@@ -301,7 +301,7 @@ deterministically::
 Raw artifacts (``--output <dir>``) are written OUTSIDE the repository:
 ``model_eval_harness.json`` (per-exchange rows + table rows + deltas) and
 ``model_eval_harness.md``.  The scratch codec database lives at a
-per-process-unique path ``~/.sage-bench/model_eval_harness-<pid>.db`` (the
+per-process-unique path ``~/.aifence-bench/model_eval_harness-<pid>.db`` (the
 pid suffix keeps concurrent harness processes on separate files) -- never
 inside the output dir -- and is stable for the lifetime of the process (it is
 never deleted while the module-level sqlalchemy engine may hold pooled
@@ -316,12 +316,12 @@ benchmark's fixed timestamp.
 
 Feedback loop (issue #16, stage 4 -- RFC "learned semantic shorthand"):
 with ``--record-feedback`` (default OFF), after the exchanges the harness
-records each selected SAGE variant's measured task success (the mean of the
+records each selected AIFENCE variant's measured task success (the mean of the
 adapter-reported ``task_success`` for that variant's rows) into the codec's
 pattern store via ``PatternStore.record_feedback``, mirroring
 ``runtime.feedback`` semantics: ``task_success`` must be in ``[0, 1]``
 (``ValueError``), an unknown ``packet_id`` raises ``KeyError``, and the
-decisions come from the ``MessageAudit`` rows the real encodes created
+decisions come from the ``MesaifenceAudit`` rows the real encodes created
 (pinned packet ids per variant/turn, re-encoded deterministically into the
 scratch database).  The feedback summary (patterns updated, ``task_utility``
 and ``utility_score`` before/after per pattern) is ADDITIVE JSON -- a new
@@ -330,20 +330,20 @@ fields or the RFC table; wire bytes are byte-identical with or without the
 flag (feedback is post-hoc DB bookkeeping, never touches encode).  Without
 the flag the artifacts are byte-identical to the stage-3 shape.
 
-``run_harness`` (the public API) refuses to run unless ``SAGE_DATABASE_URL``
+``run_harness`` (the public API) refuses to run unless ``AIFENCE_BUS_DATABASE_URL``
 is set to a writable scratch database path -- it never operates on the
-ambient default database (``~/sage.db``); ``main()`` sets this up
-automatically.  It also refuses when ``sage_plugin.db`` is already imported
-with an engine bound to a different database than ``SAGE_DATABASE_URL`` (the
+ambient default database (``~/aifence.db``); ``main()`` sets this up
+automatically.  It also refuses when ``aifence.bus.db`` is already imported
+with an engine bound to a different database than ``AIFENCE_BUS_DATABASE_URL`` (the
 module-level engine cannot be rebound in this process).  ``--timeout`` must
 be a positive finite number, an empty ``--variants`` value is an error, and
 ``family``/``version`` values are whitespace-stripped on load.
 
 Run it (provider configured):
 
-    SAGE_BENCH_LLM_PROVIDER=fake uv run --with '.[dev,mcp]' \\
+    AIFENCE_BUS_BENCH_LLM_PROVIDER=fake uv run --with '.[dev,mcp]' \\
         python scripts/model_eval_harness.py --adapters adapters.json \\
-        --output /opt/data/sage/scratch/stage3-smoke
+        --output /opt/data/aifence/scratch/stage3-smoke
 """
 
 from __future__ import annotations
@@ -363,12 +363,12 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-PROVIDER_ENV = "SAGE_BENCH_LLM_PROVIDER"
+PROVIDER_ENV = "AIFENCE_BUS_BENCH_LLM_PROVIDER"
 NO_PROVIDER_NOTE = "not run, no provider"
 
 #: Default codebook release label reported for receivers whose config does
-#: not pin one (SAGE codebook releases are signed manifests addressed by
-#: namespace/release label -- see ``sage_plugin.codebook_releases``).
+#: not pin one (AIFENCE codebook releases are signed manifests addressed by
+#: namespace/release label -- see ``aifence.bus.codebook_releases``).
 DEFAULT_CODEBOOK_VERSION = "global:1"
 
 #: Maximum accepted length (in characters) of a sealed-mode ``task_response``
@@ -408,7 +408,7 @@ def _scratch_db_path() -> Path:
     # HOME on Windows, which previously made isolated harness runs write to the
     # real user profile instead of the caller-provided scratch home.
     home = Path(os.environ["HOME"]) if os.environ.get("HOME") else Path.home()
-    return home / ".sage-bench" / f"model_eval_harness-{os.getpid()}.db"
+    return home / ".aifence-bench" / f"model_eval_harness-{os.getpid()}.db"
 
 
 def _cleanup_scratch_db() -> None:
@@ -453,7 +453,7 @@ def _load_compression_benchmark() -> Any:
 
 
 def provider_available() -> bool:
-    """True when ``SAGE_BENCH_LLM_PROVIDER`` is a non-empty environment value."""
+    """True when ``AIFENCE_BUS_BENCH_LLM_PROVIDER`` is a non-empty environment value."""
     return bool(os.environ.get(PROVIDER_ENV, "").strip())
 
 
@@ -495,22 +495,22 @@ def load_adapters(path: str | Path) -> dict[str, Any]:
 def _invoke(command: list[str], payload: dict[str, Any], timeout: float, identity: str) -> dict[str, Any]:
     """Invoke an adapter command (mirrors ``model_matrix_benchmark._invoke``).
 
-    The child environment is SCRUBBED of every ``SAGE_*`` variable: adapter
+    The child environment is SCRUBBED of every ``AIFENCE_*`` variable: adapter
     processes are hostile in the sealed threat model and must never be able
     to reach the evaluator's ground-truth codec database through an inherited
-    ``SAGE_DATABASE_URL`` (or any other ``SAGE_*`` setting) -- issue #22
+    ``AIFENCE_BUS_DATABASE_URL`` (or any other ``AIFENCE_*`` setting) -- issue #22
     adversary finding F1.  This is an INTERFACE-LEVEL boundary, not a
     security boundary against the same user: a same-user process with
     filesystem access could still read the harness's own source (which
     embeds the benchmark fixture) or guess the scratch database path
-    (``~/.sage-bench/model_eval_harness-<pid>.db``); the harness adds no
-    channel beyond that ambient reality. ``HOME``/``PATH`` and all non-SAGE
+    (``~/.aifence-bench/model_eval_harness-<pid>.db``); the harness adds no
+    channel beyond that ambient reality. ``HOME``/``PATH`` and all non-AIFENCE
     variables pass through unchanged, except that Windows receives a standard
     ``HOME`` value and ``USERPROFILE`` is aligned with it so child adapters
     resolve one isolated home directory consistently.
     """
     started = time.perf_counter()
-    child_env = {k: v for k, v in os.environ.items() if not k.startswith("SAGE_")}
+    child_env = {k: v for k, v in os.environ.items() if not k.startswith("AIFENCE_BUS_")}
     if os.name == "nt":
         child_env.setdefault("HOME", child_env.get("USERPROFILE", str(Path.home())))
         child_env["USERPROFILE"] = child_env["HOME"]
@@ -544,8 +544,8 @@ def _invoke(command: list[str], payload: dict[str, Any], timeout: float, identit
     return result
 
 
-def _sage_packet(spec: dict[str, Any], turn: int, content: Any, strategy_note: str) -> str:
-    """Deterministic symbolic rendering of a SAGE variant's packet."""
+def _aifence_packet(spec: dict[str, Any], turn: int, content: Any, strategy_note: str) -> str:
+    """Deterministic symbolic rendering of a AIFENCE variant's packet."""
     packet_id = "P" + hashlib.sha256(f"{spec['id']}:{turn}".encode()).hexdigest()[:32]
     if isinstance(content, dict):
         return json.dumps(
@@ -565,13 +565,13 @@ def _sage_packet(spec: dict[str, Any], turn: int, content: Any, strategy_note: s
 
 # ---------------------------------------------------------------------------
 # Sealed direct-symbolic actual-packet rendering (issue #22, stage 2 -- §B
-# mode 1).  The stage-1 ``_sage_packet`` proxy above stays byte-identical for
-# the UNSEALED path; sealed direct-symbolic SAGE payloads instead carry a
+# mode 1).  The stage-1 ``_aifence_packet`` proxy above stays byte-identical for
+# the UNSEALED path; sealed direct-symbolic AIFENCE payloads instead carry a
 # canonical rendering of the REAL codec packet for the (variant, turn).
 # ---------------------------------------------------------------------------
 
 #: The ONLY packet ``meta`` keys the wire codec exports (mirror of the
-#: whitelist in ``WireCodec.compact``, src/sage_plugin/wire_codec.py).  The
+#: whitelist in ``WireCodec.compact``, src/aifence/bus/wire_codec.py).  The
 #: rendering filters ``meta`` to exactly this set so it equals the real wire
 #: packet plus the ``bindings`` legend -- evaluator-side meta fields
 #: (``strategy``, ``codebook_fingerprint``, ``receiver_known_code_count``)
@@ -632,10 +632,10 @@ def _render_packet_json(codec: Any, packet: Any) -> str:
     return json.dumps(data, sort_keys=True, separators=(",", ":"))
 
 
-def _render_sage_variant_packets(cb: Any, variant_spec: dict[str, Any]) -> dict[int, dict[str, Any]]:
-    """Re-encode a SAGE variant through the REAL codec, exactly like the benchmark.
+def _render_aifence_variant_packets(cb: Any, variant_spec: dict[str, Any]) -> dict[int, dict[str, Any]]:
+    """Re-encode a AIFENCE variant through the REAL codec, exactly like the benchmark.
 
-    Mirrors ``cb._run_sage_variant``'s per-variant setup: schema reset,
+    Mirrors ``cb._run_aifence_variant``'s per-variant setup: schema reset,
     ``Settings`` from the spec, codebook registration from ``spec[\"codebook\"]``
     in order, pinned packet ids (per variant/turn), the v10 pattern warm-up
     exchange (learn + activate), and the per-turn encode+decode sequence
@@ -652,7 +652,7 @@ def _render_sage_variant_packets(cb: Any, variant_spec: dict[str, Any]) -> dict[
     from sqlalchemy import select
 
     from aifence.bus import db as db_module
-    from aifence.bus.codec import SageCodec
+    from aifence.bus.codec import AifenceCodec
     from aifence.bus.config import Settings
     from aifence.bus.db import SessionLocal
     from aifence.bus.db_models import LearnedPattern
@@ -661,7 +661,7 @@ def _render_sage_variant_packets(cb: Any, variant_spec: dict[str, Any]) -> dict[
     cb._reset_schema(db_module)
     settings = Settings(
         auth_required=False,
-        database_url=os.environ.get("SAGE_DATABASE_URL", "sqlite://"),
+        database_url=os.environ.get("AIFENCE_BUS_DATABASE_URL", "sqlite://"),
         context_accounting_enabled=True,
         learning_mode="managed",
         **variant_spec.get("settings", {}),
@@ -669,7 +669,7 @@ def _render_sage_variant_packets(cb: Any, variant_spec: dict[str, Any]) -> dict[
     results: dict[int, dict[str, Any]] = {}
     reconstruction = ""
     with SessionLocal() as db:
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         for canonical in variant_spec["codebook"]:
             codec.codebook.register("global", canonical)
         db.commit()
@@ -677,7 +677,7 @@ def _render_sage_variant_packets(cb: Any, variant_spec: dict[str, Any]) -> dict[
         warmup = variant_spec.get("warmup")
         if warmup is not None:
             cb._pin_packet_id(codec, variant_spec["id"], "warmup")
-            codec.encode(cb._sage_request(warmup, auto_learn=True, record_learning=True))
+            codec.encode(cb._aifence_request(warmup, auto_learn=True, record_learning=True))
             pattern = db.scalar(select(LearnedPattern))
             if pattern is not None:
                 codec.patterns.set_status(pattern.pattern_id, "active")
@@ -689,7 +689,7 @@ def _render_sage_variant_packets(cb: Any, variant_spec: dict[str, Any]) -> dict[
             content = variant_spec["content_fn"](turn)
             base_state = base_id if (turn > 0 and variant_spec.get("chain_states")) else None
             inline_limit = variant_spec.get("inline_limit") if turn == 0 else None
-            request = cb._sage_request(
+            request = cb._aifence_request(
                 content,
                 use_receiver_knowledge=variant_spec.get("ack", False),
                 use_patterns=variant_spec.get("patterns", True),
@@ -718,7 +718,7 @@ def _render_sage_variant_packets(cb: Any, variant_spec: dict[str, Any]) -> dict[
                 "reconstruction": reconstruction,
                 "piece": piece,
                 "strategy": encoded.strategy,
-                "note": f"sage strategy: {encoded.strategy}",
+                "note": f"aifence strategy: {encoded.strategy}",
                 "mechanism_used": _mechanism_for_encode(codec, encoded, decisions),
             }
     return results
@@ -751,40 +751,40 @@ _ORIGINAL_SCENARIO_GLOBALS: dict[Any, dict[str, Any]] = {}
 
 
 def _render_actual_packet(cb: Any, variant_spec: dict[str, Any], turn: int) -> str:
-    """The sealed direct-symbolic model-facing packet for a SAGE variant turn.
+    """The sealed direct-symbolic model-facing packet for a AIFENCE variant turn.
 
     A canonical compact-JSON rendering of the REAL codec packet for the
     ``(variant, turn)``, deterministically re-encoded exactly like the
-    benchmark (see ``_render_sage_variant_packets``) and cached per
+    benchmark (see ``_render_aifence_variant_packets``) and cached per
     (scenario tag, variant, turn).
     """
     key = (_SCENARIO_TAG, variant_spec["id"], turn)
     cached = _PACKET_RENDER_CACHE.get(key)
     if cached is not None:
         return cached
-    for t, entry in _render_sage_variant_packets(cb, variant_spec).items():
+    for t, entry in _render_aifence_variant_packets(cb, variant_spec).items():
         _PACKET_RENDER_CACHE[(_SCENARIO_TAG, variant_spec["id"], t)] = entry["rendering"]
     return _PACKET_RENDER_CACHE[key]
 
 
-_SAGE_VARIANT_SPECS_CACHE: dict[tuple[str, str], dict[str, Any]] = {}
+_AIFENCE_VARIANT_SPECS_CACHE: dict[tuple[str, str], dict[str, Any]] = {}
 
 
-def _sage_variant_spec(cb: Any, variant_id: str) -> dict[str, Any]:
-    """The stage-2 benchmark's spec for a SAGE variant (cached per scenario).
+def _aifence_variant_spec(cb: Any, variant_id: str) -> dict[str, Any]:
+    """The stage-2 benchmark's spec for a AIFENCE variant (cached per scenario).
 
     The cache key carries ``_SCENARIO_TAG`` because the spec is built from
-    ``cb._sage_specs()``, which reads the scenario globals at call time -- the
+    ``cb._aifence_specs()``, which reads the scenario globals at call time -- the
     held-out fixture yields DIFFERENT specs (oracle codebook over the
     held-out material) than the standard fixture.
     """
     key = (_SCENARIO_TAG, variant_id)
-    spec = _SAGE_VARIANT_SPECS_CACHE.get(key)
+    spec = _AIFENCE_VARIANT_SPECS_CACHE.get(key)
     if spec is None:
-        spec = next((s for s in cb._sage_specs() if s["id"] == variant_id), None)
+        spec = next((s for s in cb._aifence_specs() if s["id"] == variant_id), None)
         if spec is None:
-            raise RuntimeError(f"unknown SAGE variant {variant_id!r} in sealed packet rendering")
-        _SAGE_VARIANT_SPECS_CACHE[key] = spec
+            raise RuntimeError(f"unknown AIFENCE variant {variant_id!r} in sealed packet rendering")
+        _AIFENCE_VARIANT_SPECS_CACHE[key] = spec
     return spec
 
 
@@ -799,7 +799,7 @@ _FROZEN_PACKET_RENDER_CACHE: dict[tuple[str, str], dict[int, dict[str, Any]]] = 
 #: Lifecycle-primed warm re-encode cache: per (scenario tag, variant,
 #: frozen-flag), the full per-turn rendering dict from
 #: ``_render_warm_variant_packets``.  The warm re-encode primes the receiver
-#: through the REAL SAGE lifecycle (establishment encode -> ACK -> knowledge
+#: through the REAL AIFENCE lifecycle (establishment encode -> ACK -> knowledge
 #: commit, verified) ONCE per variant before its warm turns; the
 #: (tag, variant, frozen) key identifies the deterministic re-encode (the
 #: frozen flag matters because the frozen warm re-encode registers the
@@ -811,7 +811,7 @@ _WARM_PACKET_RENDER_CACHE: dict[tuple[str, str, bool], dict[int, dict[str, Any]]
 # Sealed mechanism attribution + lifecycle-primed warm receiver (issue #22,
 # stage 4).  ``mechanism_used`` is derived deterministically from the real
 # encode (packet strategy + the decision list the encode recorded), and the
-# warm receiver is established through the REAL SAGE lifecycle instead of a
+# warm receiver is established through the REAL AIFENCE lifecycle instead of a
 # simulated receiver_prior.
 # ---------------------------------------------------------------------------
 
@@ -819,20 +819,20 @@ _WARM_PACKET_RENDER_CACHE: dict[tuple[str, str, bool], dict[int, dict[str, Any]]
 def _encode_decisions(db: Any, packet_id: str | None) -> list[dict[str, Any]]:
     """The decision list the real encode recorded for a pinned packet.
 
-    ``codec.encode`` writes a ``MessageAudit`` row (with ``decisions``)
+    ``codec.encode`` writes a ``MesaifenceAudit`` row (with ``decisions``)
     before returning, so the authoritative decision list for a re-encoded
     packet is read back from the freshly reset schema -- exactly the same
     source ``_record_feedback_for_packets`` uses.
     """
     from sqlalchemy import select
 
-    from aifence.bus.db_models import MessageAudit
+    from aifence.bus.db_models import MesaifenceAudit
 
     if packet_id is None:  # pragma: no cover - encode always assigns the pinned id
         raise RuntimeError("encoded packet has no id during packet rendering")
-    audit = db.scalar(select(MessageAudit).where(MessageAudit.packet_id == packet_id))
+    audit = db.scalar(select(MesaifenceAudit).where(MesaifenceAudit.packet_id == packet_id))
     if audit is None:  # pragma: no cover - encode always writes the audit row
-        raise RuntimeError(f"no MessageAudit row for packet {packet_id!r} during packet rendering")
+        raise RuntimeError(f"no MesaifenceAudit row for packet {packet_id!r} during packet rendering")
     return list(audit.decisions or [])
 
 
@@ -932,7 +932,7 @@ def _verify_primed_knowledge(
 
 
 def _prime_receiver(codec: Any, cb: Any, variant_spec: dict[str, Any]) -> Any:
-    """Establish the warm receiver through the REAL SAGE lifecycle.
+    """Establish the warm receiver through the REAL AIFENCE lifecycle.
 
     The shared-context turn (``content_fn(0)`` -- ``SHARED_CONTEXT`` or the
     held-out ``ESTABLISHMENT_SHARED_CONTEXT``) is encoded with a pinned
@@ -946,7 +946,7 @@ def _prime_receiver(codec: Any, cb: Any, variant_spec: dict[str, Any]) -> Any:
     cb._pin_packet_id(codec, variant_spec["id"], "prime")
     prime_content = variant_spec["content_fn"](0)
     prime_encoded = codec.encode(
-        cb._sage_request(
+        cb._aifence_request(
             prime_content,
             use_receiver_knowledge=False,  # establishment precedes any knowledge
             use_patterns=variant_spec.get("patterns", True),
@@ -967,11 +967,11 @@ def _prime_receiver(codec: Any, cb: Any, variant_spec: dict[str, Any]) -> Any:
 def _render_warm_variant_packets(
     cb: Any, variant_spec: dict[str, Any], *, frozen: bool = False
 ) -> dict[int, dict[str, Any]]:
-    """Re-encode a SAGE variant with a LIFECYCLE-PRIMED warm receiver.
+    """Re-encode a AIFENCE variant with a LIFECYCLE-PRIMED warm receiver.
 
-    Mirrors ``_render_sage_variant_packets`` (schema reset, ``Settings``
+    Mirrors ``_render_aifence_variant_packets`` (schema reset, ``Settings``
     from the spec, codebook registration in order, pinned packet ids, the
-    v10 pattern warm-up) and THEN primes the receiver through the REAL SAGE
+    v10 pattern warm-up) and THEN primes the receiver through the REAL AIFENCE
     lifecycle before the per-turn loop: ``_prime_receiver`` encodes the
     shared-context turn with a pinned packet id and decodes it with
     ``acknowledge=True``, committing receiver knowledge (verified against
@@ -990,7 +990,7 @@ def _render_warm_variant_packets(
     from sqlalchemy import select
 
     from aifence.bus import db as db_module
-    from aifence.bus.codec import SageCodec
+    from aifence.bus.codec import AifenceCodec
     from aifence.bus.config import Settings
     from aifence.bus.db import SessionLocal
     from aifence.bus.db_models import LearnedPattern
@@ -999,7 +999,7 @@ def _render_warm_variant_packets(
     cb._reset_schema(db_module)
     settings = Settings(
         auth_required=False,
-        database_url=os.environ.get("SAGE_DATABASE_URL", "sqlite://"),
+        database_url=os.environ.get("AIFENCE_BUS_DATABASE_URL", "sqlite://"),
         context_accounting_enabled=True,
         learning_mode="managed",
         **variant_spec.get("settings", {}),
@@ -1007,7 +1007,7 @@ def _render_warm_variant_packets(
     results: dict[int, dict[str, Any]] = {}
     reconstruction = ""
     with SessionLocal() as db:
-        codec = SageCodec(db, settings)
+        codec = AifenceCodec(db, settings)
         for canonical in variant_spec["codebook"]:
             codec.codebook.register("global", canonical)
         db.commit()
@@ -1015,7 +1015,7 @@ def _render_warm_variant_packets(
         warmup = variant_spec.get("warmup")
         if warmup is not None:
             cb._pin_packet_id(codec, variant_spec["id"], "warmup")
-            codec.encode(cb._sage_request(warmup, auto_learn=True, record_learning=True))
+            codec.encode(cb._aifence_request(warmup, auto_learn=True, record_learning=True))
             pattern = db.scalar(select(LearnedPattern))
             if pattern is not None:
                 codec.patterns.set_status(pattern.pattern_id, "active")
@@ -1032,7 +1032,7 @@ def _render_warm_variant_packets(
             content = variant_spec["content_fn"](turn)
             base_state = base_id if (turn > 0 and variant_spec.get("chain_states")) else None
             inline_limit = variant_spec.get("inline_limit") if turn == 0 else None
-            request = cb._sage_request(
+            request = cb._aifence_request(
                 content,
                 use_receiver_knowledge=True,  # WARM: consume the primed knowledge
                 use_patterns=variant_spec.get("patterns", True),
@@ -1061,7 +1061,7 @@ def _render_warm_variant_packets(
                 "reconstruction": reconstruction,
                 "piece": piece,
                 "strategy": encoded.strategy,
-                "note": f"sage strategy: {encoded.strategy}",
+                "note": f"aifence strategy: {encoded.strategy}",
                 "mechanism_used": _mechanism_for_encode(codec, encoded, decisions),
             }
     _WARM_PACKET_RENDER_CACHE[key] = results
@@ -1071,8 +1071,8 @@ def _render_warm_variant_packets(
 def _attach_sealed_mechanisms(cb: Any, exchanges: list[dict[str, Any]]) -> None:
     """Attach the deterministic ``mechanism_used`` to every SEALED cold exchange.
 
-    SAGE mechanisms come from the same deterministic re-encode the sealed
-    payload rendering uses (``_render_sage_variant_packets`` for oracle
+    AIFENCE mechanisms come from the same deterministic re-encode the sealed
+    payload rendering uses (``_render_aifence_variant_packets`` for oracle
     rows; frozen exchanges already carry their mechanism from
     ``_build_frozen_exchanges``); plain variants (no codec lifecycle) carry
     ``"none"``.  Sealed rows only: unsealed rows never read this key.  The
@@ -1081,7 +1081,7 @@ def _attach_sealed_mechanisms(cb: Any, exchanges: list[dict[str, Any]]) -> None:
     """
     rendered_by_variant: dict[str, dict[int, dict[str, Any]]] = {}
     for exchange in exchanges:
-        if not exchange["sage"]:
+        if not exchange["aifence"]:
             exchange["mechanism_used"] = "none"
             continue
         if "mechanism_used" in exchange:
@@ -1089,7 +1089,7 @@ def _attach_sealed_mechanisms(cb: Any, exchanges: list[dict[str, Any]]) -> None:
         variant_id = exchange["variant"]
         rendered = rendered_by_variant.get(variant_id)
         if rendered is None:
-            rendered = _render_sage_variant_packets(cb, _sage_variant_spec(cb, variant_id))
+            rendered = _render_aifence_variant_packets(cb, _aifence_variant_spec(cb, variant_id))
             rendered_by_variant[variant_id] = rendered
             for turn, entry in rendered.items():
                 _PACKET_RENDER_CACHE[(_SCENARIO_TAG, variant_id, turn)] = entry["rendering"]
@@ -1102,9 +1102,9 @@ def _build_warm_exchanges(
     *,
     frozen_codebook: list[str] | None,
 ) -> list[dict[str, Any]]:
-    """SEALED-mode warm exchange records: lifecycle-primed SAGE re-encodes.
+    """SEALED-mode warm exchange records: lifecycle-primed AIFENCE re-encodes.
 
-    For every cold exchange of a SAGE variant the variant is re-encoded
+    For every cold exchange of a AIFENCE variant the variant is re-encoded
     through the REAL codec with a lifecycle-primed warm receiver
     (``_render_warm_variant_packets``: establishment encode -> ACK ->
     knowledge commit (verified) -> per-turn encode with
@@ -1118,8 +1118,8 @@ def _build_warm_exchanges(
     warm: list[dict[str, Any]] = []
     for exchange in cold_exchanges:
         entry = dict(exchange)
-        if exchange["sage"]:
-            spec = _sage_variant_spec(cb, exchange["variant"])
+        if exchange["aifence"]:
+            spec = _aifence_variant_spec(cb, exchange["variant"])
             if exchange.get("frozen"):
                 assert frozen_codebook is not None
                 spec = dict(spec)
@@ -1159,12 +1159,12 @@ def _mechanism_summary(rows: list[dict[str, Any]]) -> dict[str, dict[str, int]]:
 def _render_frozen_variant_packets(
     cb: Any, variant_spec: dict[str, Any], frozen_codebook: list[str]
 ) -> dict[int, dict[str, Any]]:
-    """Re-encode a SAGE variant against the FROZEN establishment-only codebook.
+    """Re-encode a AIFENCE variant against the FROZEN establishment-only codebook.
 
-    A copy of the ORACLE spec (``cb._sage_specs()`` under the patched
+    A copy of the ORACLE spec (``cb._aifence_specs()`` under the patched
     held-out globals) with the ``codebook`` field REPLACED by the sorted
     establishment canonicals, re-encoded through the REAL codec exactly like
-    ``_render_sage_variant_packets`` (schema reset, codebook registration in
+    ``_render_aifence_variant_packets`` (schema reset, codebook registration in
     order, pinned packet ids, the v10 pattern warm-up).  The resulting wire
     bytes ARE the frozen-codebook measurement -- no benchmark-recorded
     counterpart exists -- and they differ from the oracle rows' (the smaller
@@ -1177,7 +1177,7 @@ def _render_frozen_variant_packets(
         return cached
     frozen_spec = dict(variant_spec)
     frozen_spec["codebook"] = list(frozen_codebook)
-    rendered = _render_sage_variant_packets(cb, frozen_spec)
+    rendered = _render_aifence_variant_packets(cb, frozen_spec)
     _FROZEN_PACKET_RENDER_CACHE[key] = rendered
     return rendered
 
@@ -1185,7 +1185,7 @@ def _render_frozen_variant_packets(
 def _apply_scenario(cb: Any, *, held_out: bool) -> list[str] | None:
     """Point the loaded benchmark module at the requested scenario.
 
-    The benchmark's spec builders (``_plain_specs`` / ``_sage_specs``), its
+    The benchmark's spec builders (``_plain_specs`` / ``_aifence_specs``), its
     ``run_benchmark`` records, ``ground_truth_answers`` / ``evaluate_turn``
     and the harness's sealed scoring all resolve the scenario globals
     (``SHARED_CONTEXT`` / ``UPDATES`` / ``STATE_DICTS`` / ``CHANGE_MARKERS``)
@@ -1201,7 +1201,7 @@ def _apply_scenario(cb: Any, *, held_out: bool) -> list[str] | None:
     stash entry and stays byte-identical to stage 3.
 
     Returns the FROZEN codebook (the sorted establishment canonicals) when
-    ``held_out`` is true -- the SAGE variants' frozen ``codebook`` list -- and
+    ``held_out`` is true -- the AIFENCE variants' frozen ``codebook`` list -- and
     ``None`` for the standard scenario.
     """
     global _SCENARIO_TAG
@@ -1241,32 +1241,32 @@ def _build_exchanges(
     """Per-variant per-turn exchange records (representation, wire bytes, ...).
 
     In held-out mode every exchange carries an ``oracle_codebook`` label
-    (``True`` for the ORACLE SAGE rows -- the benchmark-recorded upper bound
+    (``True`` for the ORACLE AIFENCE rows -- the benchmark-recorded upper bound
     against the patched held-out scenario -- ``False`` for the plain
-    variants, which have no codebook mode) and the SAGE variant_name gains a
+    variants, which have no codebook mode) and the AIFENCE variant_name gains a
     `` [oracle]`` suffix so rows, payloads, table cells and delta rows
     distinguish the codebook modes.  Default OFF keeps the stage-1/2 shape
     byte-identical (no label, no suffix).
     """
     plain = {spec["id"]: spec for spec in cb._plain_specs()}
-    sage = {spec["id"]: spec for spec in cb._sage_specs()}
+    aifence = {spec["id"]: spec for spec in cb._aifence_specs()}
     by_id = {row["variant_id"]: row for row in benchmark["variants"]}
     exchanges: list[dict[str, Any]] = []
     for variant_id in selected:
         variant_row = by_id[variant_id]
         if variant_row["status"] != "ok":
             continue
-        spec = sage.get(variant_id) or plain.get(variant_id)
+        spec = aifence.get(variant_id) or plain.get(variant_id)
         if spec is None:
             continue
-        is_sage = variant_id in sage
+        is_aifence = variant_id in aifence
         for turn_record in variant_row["turns"]:
             if turn_record["turn"] < 0:  # pattern warm-up exchange (variant 10)
                 continue
             turn = turn_record["turn"]
-            if is_sage:
+            if is_aifence:
                 content = spec["content_fn"](turn)
-                representation = _sage_packet(spec, turn, content, turn_record.get("note", ""))
+                representation = _aifence_packet(spec, turn, content, turn_record.get("note", ""))
             else:
                 if variant_id in _STATE_VARIANTS:
                     content = cb.STATE_DICTS[turn]
@@ -1284,10 +1284,10 @@ def _build_exchanges(
                 "reconstruction": turn_record["reconstruction"],
                 "expected": cb.ground_truth_answers(turn),
                 "change_markers": cb.CHANGE_MARKERS.get(turn, []),
-                "sage": is_sage,
+                "aifence": is_aifence,
             }
             if held_out:
-                if is_sage:
+                if is_aifence:
                     exchange["variant_name"] = f"{exchange['variant_name']} [oracle]"
                     exchange["oracle_codebook"] = True
                 else:
@@ -1299,9 +1299,9 @@ def _build_exchanges(
 def _build_frozen_exchanges(
     cb: Any, selected: list[str], frozen_codebook: list[str]
 ) -> list[dict[str, Any]]:
-    """Frozen-codebook exchange records for the held-out SAGE variants.
+    """Frozen-codebook exchange records for the held-out AIFENCE variants.
 
-    For every selected SAGE variant the ORACLE spec (``cb._sage_specs()``
+    For every selected AIFENCE variant the ORACLE spec (``cb._aifence_specs()``
     under the patched held-out globals) is re-encoded through the REAL codec
     with the ``codebook`` field REPLACED by the sorted establishment
     canonicals (``_render_frozen_variant_packets``).  The re-encode's wire
@@ -1310,10 +1310,10 @@ def _build_frozen_exchanges(
     model-facing packet.  Rows carry ``oracle_codebook: False`` and a
     `` [frozen]`` variant_name suffix.
     """
-    sage = {spec["id"]: spec for spec in cb._sage_specs()}
+    aifence = {spec["id"]: spec for spec in cb._aifence_specs()}
     exchanges: list[dict[str, Any]] = []
     for variant_id in selected:
-        spec = sage.get(variant_id)
+        spec = aifence.get(variant_id)
         if spec is None:
             continue  # plain variants have no codebook mode
         rendered = _render_frozen_variant_packets(cb, spec, frozen_codebook)
@@ -1331,7 +1331,7 @@ def _build_frozen_exchanges(
                     "reconstruction": entry["reconstruction"],
                     "expected": cb.ground_truth_answers(turn),
                     "change_markers": cb.CHANGE_MARKERS.get(turn, []),
-                    "sage": True,
+                    "aifence": True,
                     "frozen": True,
                     "oracle_codebook": False,
                     "mechanism_used": entry["mechanism_used"],
@@ -1348,7 +1348,7 @@ def _build_payload(
     symbolic_examples: bool,
 ) -> dict[str, Any]:
     """The per-exchange JSON payload sent to the adapter."""
-    if exchange["sage"] and decoder_mode == "direct-symbolic":
+    if exchange["aifence"] and decoder_mode == "direct-symbolic":
         model_facing = exchange["representation"]
     else:
         model_facing = exchange["reconstruction"]
@@ -1361,7 +1361,7 @@ def _build_payload(
             "note": "receiver prior established in the shared-context phase (codebook/patterns ACKed)",
         }
     payload: dict[str, Any] = {
-        "protocol": "sage/0.2",
+        "protocol": "aifence/0.2",
         "benchmark": "compression_benchmark:phoenix_rfc",
         "variant": exchange["variant"],
         "variant_name": exchange["variant_name"],
@@ -1401,18 +1401,18 @@ def _build_sealed_payload(
     current state (``deployment_allowed``/``failed_tests``/
     ``migration_approved``/``blocker``) plus what changed; text variants ask
     for a summary of the latest update plus what changed.
-    ``model_facing_packet`` for SAGE variants in ``direct-symbolic`` mode is
+    ``model_facing_packet`` for AIFENCE variants in ``direct-symbolic`` mode is
     the stage-2 REAL packet rendering (``_render_actual_packet`` -- the
     canonical compact-JSON rendering of the actual codec packet for the
     ``(variant, turn)``, deterministically re-encoded exactly like the
     benchmark, cached per key); every other path keeps the stage-1
     reconstruction selection byte-identical (sealed non-direct-symbolic
-    modes and all non-SAGE variants use ``exchange["reconstruction"]``).
+    modes and all non-AIFENCE variants use ``exchange["reconstruction"]``).
     ``allowed_decoder_metadata`` carries the decoder-side knowledge the
     runner may legitimately use: the config's ``codebook_version`` (or
     ``global:1``), the receiver state and the decoder configuration.
     """
-    if exchange["sage"] and decoder_mode == "direct-symbolic":
+    if exchange["aifence"] and decoder_mode == "direct-symbolic":
         if exchange.get("frozen") or exchange.get("primed"):
             # FROZEN-codebook mode (held-out, issue #22 stage 3) and
             # LIFECYCLE-PRIMED WARM exchanges (stage 4) carry the re-encoded
@@ -1422,7 +1422,7 @@ def _build_sealed_payload(
             model_facing = exchange["representation"]
         else:
             model_facing = _render_actual_packet(
-                cb, _sage_variant_spec(cb, exchange["variant"]), exchange["turn"]
+                cb, _aifence_variant_spec(cb, exchange["variant"]), exchange["turn"]
             )
     else:
         model_facing = exchange["reconstruction"]
@@ -1438,7 +1438,7 @@ def _build_sealed_payload(
             "since the previous update."
         )
     return {
-        "protocol": "sage/0.2",
+        "protocol": "aifence/0.2",
         "benchmark": "compression_benchmark:phoenix_rfc",
         "variant": exchange["variant"],
         "variant_name": exchange["variant_name"],
@@ -1740,12 +1740,12 @@ def _row_from_sealed_result(
 
 
 def _row_codebook_mode(row: dict[str, Any]) -> str:
-    """Grouping discriminator for the two SAGE codebook modes.
+    """Grouping discriminator for the two AIFENCE codebook modes.
 
     ``"true"`` for oracle-codebook rows, ``"false"`` for frozen-codebook
     (and plain held-out) rows, ``"default"`` when the row carries no
     ``oracle_codebook`` label (standard scenario) -- the mode is uniform per
-    run, so the oracle and frozen rows of the same SAGE variant never merge
+    run, so the oracle and frozen rows of the same AIFENCE variant never merge
     and default-OFF grouping stays byte-identical to the stage-1/2 shape.
     """
     if row.get("oracle_codebook") is True:
@@ -1788,7 +1788,7 @@ def _aggregate_rows(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
         }
         if "oracle_codebook" in first:
             # Held-out mode only: keep the codebook-mode label on the table row
-            # so delta grouping (and consumers) can tell the two SAGE modes
+            # so delta grouping (and consumers) can tell the two AIFENCE modes
             # apart.  Default-OFF table rows carry no such key (byte-identical
             # to the stage-1/2 shape).
             table_row["oracle_codebook"] = first["oracle_codebook"]
@@ -1881,12 +1881,12 @@ def _urls_point_at_same_database(engine_url: Any, env_url: str) -> bool:
     return str(engine_parsed) == str(env_parsed)
 
 
-def _prebound_sage_plugin_conflict() -> str | None:
-    """Describe a ``sage_plugin.db`` engine that cannot be rebound, else None.
+def _prebound_aifence_plugin_conflict() -> str | None:
+    """Describe a ``aifence.bus.db`` engine that cannot be rebound, else None.
 
-    ``sage_plugin.db`` creates its module-level engine at import time; if it
+    ``aifence.bus.db`` creates its module-level engine at import time; if it
     is already imported and bound to a database other than the one
-    ``SAGE_DATABASE_URL`` names, resetting the schema would hit the pre-bound
+    ``AIFENCE_BUS_DATABASE_URL`` names, resetting the schema would hit the pre-bound
     database (data loss), so the harness must refuse instead.
     """
     db_module = sys.modules.get("aifence.bus.db")
@@ -1898,16 +1898,16 @@ def _prebound_sage_plugin_conflict() -> str | None:
     engine_url = getattr(engine, "url", None)
     if engine_url is None:
         return None
-    env_url = os.environ.get("SAGE_DATABASE_URL", "").strip()
+    env_url = os.environ.get("AIFENCE_BUS_DATABASE_URL", "").strip()
     if _urls_point_at_same_database(engine_url, env_url):
         return None
     return (
         "aifence.bus.db is already imported and its engine is bound to "
-        f"{engine_url!r}, which differs from SAGE_DATABASE_URL ({env_url!r}); "
+        f"{engine_url!r}, which differs from AIFENCE_BUS_DATABASE_URL ({env_url!r}); "
         "the module-level engine cannot be rebound in this process, so the "
         "harness refuses to run (a schema reset would otherwise hit the "
-        "pre-bound database). Run in a fresh process or set SAGE_DATABASE_URL "
-        "before the first sage_plugin import."
+        "pre-bound database). Run in a fresh process or set AIFENCE_BUS_DATABASE_URL "
+        "before the first aifence.bus import."
     )
 
 
@@ -1923,12 +1923,12 @@ def _record_feedback_for_packets(
     Mirrors ``runtime.feedback`` semantics exactly: ``task_success`` must be
     in ``[0, 1]`` (``ValueError`` otherwise, validated BEFORE any lookup),
     an unknown ``packet_id`` raises ``KeyError``, and the decisions consumed
-    by ``PatternStore.record_feedback`` come from the ``MessageAudit`` row
+    by ``PatternStore.record_feedback`` come from the ``MesaifenceAudit`` row
     the real encode created.  Returns a per-packet + merged per-pattern
     before/after summary (status, ``task_utility``, ``utility_score``) --
     additive JSON only, never a change to any existing field.
 
-    ``packets`` is a list of ``(turn, packet_id)`` pairs for one SAGE variant.
+    ``packets`` is a list of ``(turn, packet_id)`` pairs for one AIFENCE variant.
 
     NOTE (cumulative semantics): each packet's ``patterns_updated`` field is
     CUMULATIVE -- ``len(merged)`` across all packets processed so far for
@@ -1941,14 +1941,14 @@ def _record_feedback_for_packets(
         raise ValueError("task_success must be in [0, 1]")
     from sqlalchemy import select
 
-    from aifence.bus.db_models import MessageAudit
+    from aifence.bus.db_models import MesaifenceAudit
     from aifence.bus.patterns import PatternStore
 
     store = PatternStore(db, settings)
     packets_summary: list[dict[str, Any]] = []
     merged: dict[str, dict[str, Any]] = {}
     for turn, packet_id in packets:
-        audit = db.scalar(select(MessageAudit).where(MessageAudit.packet_id == packet_id))
+        audit = db.scalar(select(MesaifenceAudit).where(MesaifenceAudit.packet_id == packet_id))
         if audit is None:
             raise KeyError(packet_id)
         touched_ids = sorted(
@@ -1997,13 +1997,13 @@ def _record_feedback_for_packets(
 
 
 def _record_benchmark_feedback(cb: Any, selected: list[str], rows: list[dict[str, Any]]) -> dict[str, Any]:
-    """Record each selected SAGE variant's measured task success into the
+    """Record each selected AIFENCE variant's measured task success into the
     codec's pattern store (issue #16, stage 4).
 
-    For every selected SAGE variant (v09-v12) the variant's six exchanges
+    For every selected AIFENCE variant (v09-v12) the variant's six exchanges
     are re-encoded into the scratch database through the REAL codec with the
     benchmark's pinned packet ids (deterministic, exactly like the
-    benchmark's own ``_run_sage_variant``), so the ``MessageAudit`` rows the
+    benchmark's own ``_run_aifence_variant``), so the ``MesaifenceAudit`` rows the
     real encodes created exist; each packet's decisions are then recorded
     with the variant's measured task success -- the mean of the
     adapter-reported ``task_success`` values for that variant's rows -- via
@@ -2011,7 +2011,7 @@ def _record_benchmark_feedback(cb: Any, selected: list[str], rows: list[dict[str
 
     This is post-hoc DB bookkeeping: the wire bytes reported in the artifact
     come from the benchmark's recorded turn data, never from this re-encode,
-    so the SAGE variants' wire bytes are byte-identical with or without the
+    so the AIFENCE variants' wire bytes are byte-identical with or without the
     flag.  The returned summary is additive JSON (a top-level ``feedback``
     key) and never alters existing row fields or the RFC table.
     """
@@ -2020,27 +2020,27 @@ def _record_benchmark_feedback(cb: Any, selected: list[str], rows: list[dict[str
     from aifence.bus.db import SessionLocal
 
     db_module.init_db()
-    sage_specs = {spec["id"]: spec for spec in cb._sage_specs()}
+    aifence_bus_specs = {spec["id"]: spec for spec in cb._aifence_specs()}
     rows_by_variant: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
         rows_by_variant[row["variant"]].append(row)
     variants: list[dict[str, Any]] = []
-    for variant_id in sorted(set(selected) & set(sage_specs)):
+    for variant_id in sorted(set(selected) & set(aifence_bus_specs)):
         variant_rows = rows_by_variant.get(variant_id)
         if not variant_rows:
             continue
         task_success = statistics.mean(row["task_success"] for row in variant_rows)
-        spec = sage_specs[variant_id]
+        spec = aifence_bus_specs[variant_id]
         settings = Settings(
             auth_required=False,
-            database_url=os.environ.get("SAGE_DATABASE_URL", "sqlite://"),
+            database_url=os.environ.get("AIFENCE_BUS_DATABASE_URL", "sqlite://"),
             context_accounting_enabled=True,
             learning_mode="managed",
             **spec.get("settings", {}),
         )
-        # Real encodes -> MessageAudit rows for this variant (schema reset per
+        # Real encodes -> MesaifenceAudit rows for this variant (schema reset per
         # variant, exactly like the benchmark's own run loop).
-        cb._run_sage_variant(spec)
+        cb._run_aifence_variant(spec)
         packets = [
             (turn, "P" + hashlib.sha256(f"{variant_id}:{turn}".encode()).hexdigest()[:32])
             for turn in range(6)
@@ -2075,11 +2075,11 @@ def run_harness(
 ) -> dict[str, Any]:
     """Run the model evaluation harness end-to-end and return the full results.
 
-    Requires ``SAGE_DATABASE_URL`` to be set to a writable scratch database
-    path (the harness refuses to run against the ambient default ``~/sage.db``;
-    the CLI ``main()`` sets it up automatically).  If ``sage_plugin.db`` is
+    Requires ``AIFENCE_BUS_DATABASE_URL`` to be set to a writable scratch database
+    path (the harness refuses to run against the ambient default ``~/aifence.db``;
+    the CLI ``main()`` sets it up automatically).  If ``aifence.bus.db`` is
     already imported with an engine bound to a different database than
-    ``SAGE_DATABASE_URL``, refuses with ``RuntimeError`` (the module-level
+    ``AIFENCE_BUS_DATABASE_URL``, refuses with ``RuntimeError`` (the module-level
     engine cannot be rebound in this process).
 
     With ``sealed=True`` (issue #22, stage 1) the adapter boundary is split:
@@ -2093,7 +2093,7 @@ def run_harness(
     With ``held_out=True`` (issue #22, stage 3 -- REQUIRES ``sealed=True``;
     a ``ValueError`` otherwise) the scenario globals of the loaded benchmark
     module are patched from ``scripts/heldout_scenario.py`` BEFORE the
-    benchmark/specs/scoring read them, the SAGE variants run in BOTH
+    benchmark/specs/scoring read them, the AIFENCE variants run in BOTH
     explicitly-labeled codebook modes (``oracle_codebook: true`` -- the
     benchmark-recorded upper bound over the held-out material -- and
     ``oracle_codebook: false`` -- the FROZEN establishment-only codebook,
@@ -2107,7 +2107,7 @@ def run_harness(
 
     Raises ``ValueError`` for invalid configuration (including configs with
     fewer than 2 distinct model families) and ``RuntimeError`` for adapter
-    failures or a missing ``SAGE_DATABASE_URL`` -- results are never
+    failures or a missing ``AIFENCE_BUS_DATABASE_URL`` -- results are never
     fabricated.
     """
     if held_out and not sealed:
@@ -2121,13 +2121,13 @@ def run_harness(
             "are defined against the standard scenario; held-out feedback is a future "
             "refinement"
         )
-    if not os.environ.get("SAGE_DATABASE_URL", "").strip():
+    if not os.environ.get("AIFENCE_BUS_DATABASE_URL", "").strip():
         raise RuntimeError(
-            "SAGE_DATABASE_URL is not set; set it to a writable scratch database "
-            "path (e.g. sqlite:///<scratch>/sage_bench.db) before running the "
-            "harness -- refusing to touch the ambient default database (~/sage.db)"
+            "AIFENCE_BUS_DATABASE_URL is not set; set it to a writable scratch database "
+            "path (e.g. sqlite:///<scratch>/aifence_bus_bench.db) before running the "
+            "harness -- refusing to touch the ambient default database (~/aifence.db)"
         )
-    conflict = _prebound_sage_plugin_conflict()
+    conflict = _prebound_aifence_plugin_conflict()
     if conflict is not None:
         raise RuntimeError(conflict)
     validate_adapters(adapters)
@@ -2135,7 +2135,7 @@ def run_harness(
         raise ValueError(f"decoder_mode must be one of {DECODER_MODES}")
     cb = _load_compression_benchmark()
     # Patch the scenario globals BEFORE anything reads them: the spec builders
-    # (_plain_specs/_sage_specs), run_benchmark's records, ground_truth_answers
+    # (_plain_specs/_aifence_specs), run_benchmark's records, ground_truth_answers
     # / evaluate_turn and the sealed scorer all resolve SHARED_CONTEXT /
     # UPDATES / STATE_DICTS / CHANGE_MARKERS at call time.
     frozen_codebook = _apply_scenario(cb, held_out=held_out)
@@ -2216,8 +2216,8 @@ def run_harness(
                     )
                 if held_out:
                     # Every held-out row is labeled with its codebook mode:
-                    # True for the oracle SAGE rows (upper bound), False for
-                    # the frozen SAGE rows and the plain variants (no codebook
+                    # True for the oracle AIFENCE rows (upper bound), False for
+                    # the frozen AIFENCE rows and the plain variants (no codebook
                     # mode).  Absent entirely when --held-out is OFF.
                     row["oracle_codebook"] = exchange["oracle_codebook"]
                 rows.append(row)
@@ -2227,7 +2227,7 @@ def run_harness(
     markdown_full = markdown + ("\n\n" + _format_delta_table(deltas) if deltas else "")
     feedback = _record_benchmark_feedback(cb, selected, rows) if record_feedback else None
     results = {
-        "schema": "sage.model_eval_harness.v1",
+        "schema": "aifence.model_eval_harness.v1",
         "generated_at": cb.FIXED_TIMESTAMP,
         "scenario": benchmark["scenario"],
         "provider": {"configured": True, "env": PROVIDER_ENV},
@@ -2250,11 +2250,11 @@ def run_harness(
         results["evaluation_boundary"] = "sealed"
         results["mechanism_summary"] = _mechanism_summary(rows)
     if held_out:
-        sage_ids = {spec["id"] for spec in cb._sage_specs()}
+        aifence_bus_ids = {spec["id"] for spec in cb._aifence_specs()}
         results["dataset_split"] = "held_out"
         results["oracle_codebook"] = {
             variant_id: ["frozen", "oracle"]
-            for variant_id in sorted(set(selected) & sage_ids)
+            for variant_id in sorted(set(selected) & aifence_bus_ids)
         }
     if feedback is not None:
         results["feedback"] = feedback
@@ -2349,8 +2349,8 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help=(
             "held-out split (issue #22, stage 3; REQUIRES --sealed): evaluate the sealed "
-            "harness against the unseen scripts/heldout_scenario.py fixture with the SAGE "
-            "codebook FROZEN to the establishment material, running every SAGE variant in "
+            "harness against the unseen scripts/heldout_scenario.py fixture with the AIFENCE "
+            "codebook FROZEN to the establishment material, running every AIFENCE variant in "
             "BOTH labeled modes -- oracle_codebook true (upper bound) and false (frozen "
             "re-encode); rows carry oracle_codebook labels and the artifact gains "
             "dataset_split/oracle_codebook keys.  Cannot be combined with --record-feedback."
@@ -2365,7 +2365,7 @@ def main(argv: list[str] | None = None) -> int:
         "--record-feedback",
         action="store_true",
         help=(
-            "record each SAGE variant's measured task success into the codec's pattern store "
+            "record each AIFENCE variant's measured task success into the codec's pattern store "
             "via PatternStore.record_feedback (runtime.feedback semantics; additive 'feedback' "
             "JSON summary key, zero wire-byte change).  Default OFF: artifacts are byte-identical "
             "to a run without the flag."
@@ -2442,15 +2442,15 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         variants = [item for item in segments if item]
 
-    # Bind a STABLE per-process scratch database BEFORE any sage_plugin import
+    # Bind a STABLE per-process scratch database BEFORE any aifence.bus import
     # (db.py creates the engine at import time).  The file lives in
-    # ~/.sage-bench -- never in the --output dir -- and is never deleted
+    # ~/.aifence-bench -- never in the --output dir -- and is never deleted
     # mid-process (the module-level engine may hold pooled connections to it);
     # it is removed at process exit via _cleanup_scratch_db.
     scratch_db = _scratch_db_path()
     scratch_db.parent.mkdir(parents=True, exist_ok=True)
-    prior_db_url = os.environ.get("SAGE_DATABASE_URL")
-    os.environ["SAGE_DATABASE_URL"] = f"sqlite:///{scratch_db}"
+    prior_db_url = os.environ.get("AIFENCE_BUS_DATABASE_URL")
+    os.environ["AIFENCE_BUS_DATABASE_URL"] = f"sqlite:///{scratch_db}"
     try:
         results = run_harness(
             adapters,
@@ -2470,9 +2470,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     finally:
         if prior_db_url is None:
-            os.environ.pop("SAGE_DATABASE_URL", None)
+            os.environ.pop("AIFENCE_BUS_DATABASE_URL", None)
         else:
-            os.environ["SAGE_DATABASE_URL"] = prior_db_url
+            os.environ["AIFENCE_BUS_DATABASE_URL"] = prior_db_url
 
     boundary = ", sealed boundary: yes" if args.sealed else ""
     split = ", held-out split: yes" if args.held_out else ""
@@ -2504,7 +2504,7 @@ def main(argv: list[str] | None = None) -> int:
                 f"{item['variant']} (patterns updated: {len(item['patterns_updated'])})"
                 for item in feedback["variants"]
             )
-            print(f"Feedback recorded (--record-feedback): {variants_note or 'no SAGE variants selected'}")
+            print(f"Feedback recorded (--record-feedback): {variants_note or 'no AIFENCE variants selected'}")
     return 0
 
 

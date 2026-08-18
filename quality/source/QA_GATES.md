@@ -108,7 +108,7 @@ Before substantial production completion:
 
 Every mandatory active capability must be PASS, FAIL, or UNVERIFIED; no release-blocking FAIL may remain; no UNVERIFIED requirement may be described as passed.
 
-For BizIQ releases, `python tools/validate_pack.py` MUST pass. Behaviorally meaningful changes additionally require applicable curated end-to-end and benchmark protocol review.
+For AIFENCE releases, `python tools/validate_pack.py` MUST pass. Behaviorally meaningful changes additionally require applicable curated end-to-end and benchmark protocol review.
 
 # Control Plane Hooks
 <!-- id: qa-gates.control-plane-hooks -->
@@ -159,7 +159,7 @@ Before production release, where applicable verify:
 
 # Benchmark Render-State Integrity Gate
 <!-- id: qa-gates.benchmark-render-state-integrity -->
-When BizIQ efficacy evidence uses browser screenshots, verify that each capture starts from the declared viewport and normalized scroll/focus/overlay state. Random prior-artifact browser state is a benchmark-integrity failure and requires symmetric rerendering before visual conclusions are accepted.
+When AIFENCE efficacy evidence uses browser screenshots, verify that each capture starts from the declared viewport and normalized scroll/focus/overlay state. Random prior-artifact browser state is a benchmark-integrity failure and requires symmetric rerendering before visual conclusions are accepted.
 
 # Revision 1.5 Operations 2.0 Gate
 <!-- id: qa-gates.operations-2 -->
@@ -174,7 +174,7 @@ For substantial operational procedures, PASS requires:
 - observable definition of done and proportionate evidence;
 - reproducible KPI definitions with target provenance when metrics are material;
 - currentness/reauthorization checks for authoritative or changed procedures;
-- no claim that a baseline `operations/*.md` SOP is organization-approved merely because it exists in BizIQ.
+- no claim that a baseline `operations/*.md` SOP is organization-approved merely because it exists in AIFENCE.
 
 High-consequence external requirements remain `UNVERIFIED` if the authoritative source/applicability cannot be confirmed.
 
@@ -205,12 +205,12 @@ For high-fidelity SaaS/dashboard/portal artifacts, final acceptance requires a s
 # Revision 1.8.3 Emission Naturalization & Universal Executable Preflight Gate
 <!-- id: qa-gates.revision-1-8-3-emission-preflight -->
 
-Before artifact freeze or delivery, applicable high-fidelity work requires direct finished-surface emission evidence. Run `validate_emission_preflight.py` against the emitted artifact plus concrete substance evidence; any forbidden internal BizIQ/compiler/QA label, missing declared domain/decision/action/state/outcome/evidence marker, or generic scaffold substitution blocks acceptance. For every generated executable artifact, run `validate_universal_executable_preflight.py`; syntax/grammar failure is catastrophic, and interface/CLI work requiring execution must provide direct schema-valid runtime evidence. Planning or materialization records cannot average away a failed post-emission gate.
+Before artifact freeze or delivery, applicable high-fidelity work requires direct finished-surface emission evidence. Run `validate_emission_preflight.py` against the emitted artifact plus concrete substance evidence; any forbidden internal AIFENCE/compiler/QA label, missing declared domain/decision/action/state/outcome/evidence marker, or generic scaffold substitution blocks acceptance. For every generated executable artifact, run `validate_universal_executable_preflight.py`; syntax/grammar failure is catastrophic, and interface/CLI work requiring execution must provide direct schema-valid runtime evidence. Planning or materialization records cannot average away a failed post-emission gate.
 
 # Revision 1.8.2 Domain Materialization & Naturalization Gate
 <!-- id: qa-gates.revision-1-8-2-materialization -->
 
-Before accepting a substantial high-fidelity artifact in an applicable family, require direct `materialization_evidence` PASS. Reject artifacts that merely expose the compiler/evidence scaffold, use generic placeholder material, lack domain-specific P0/P1 content/states/actions, or leak internal BizIQ/QA terminology onto production-facing surfaces. The gate is non-averagable with aggregate quality scores.
+Before accepting a substantial high-fidelity artifact in an applicable family, require direct `materialization_evidence` PASS. Reject artifacts that merely expose the compiler/evidence scaffold, use generic placeholder material, lack domain-specific P0/P1 content/states/actions, or leak internal AIFENCE/QA terminology onto production-facing surfaces. The gate is non-averagable with aggregate quality scores.
 
 # Revision 1.8.1 Family-Depth & Composite Containment Gate
 <!-- id: qa-gates.revision-1-8-1-family-depth -->

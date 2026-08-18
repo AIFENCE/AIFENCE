@@ -6,7 +6,7 @@ Module-Version: 5
 Control-Plane-Revision: 1.8.8
 Last-Updated: 2026-08-11
 -->
-# BizIQ Stable 2.0 Architecture Freeze Status
+# AIFENCE Stable 2.0 Architecture Freeze Status
 <!-- id: architecture-freeze-status.stable-2-0-approved -->
 
 **Decision: APPROVED for Stable 2.0 freeze.**
@@ -45,4 +45,4 @@ The six-case development benchmarks, Holdouts 1-9, and their routing/adversarial
 ## Methodological boundary
 <!-- id: architecture-freeze-status.methodological-boundary -->
 
-Stable 2.0 is an **internal engineering qualification**, not independent third-party validation. Quality scores were produced in the same environment using an anchored nine-dimension engineering rubric grounded in direct browser, runtime, native-file, render, and containment evidence. Stable status means BizIQ satisfied its predeclared internal release gates on a new sealed corpus; it does not claim universal superiority or independent replication.
+Stable 2.0 is an **internal engineering qualification**, not independent third-party validation. Quality scores were produced in the same environment using an anchored nine-dimension engineering rubric grounded in direct browser, runtime, native-file, render, and containment evidence. Stable status means AIFENCE satisfied its predeclared internal release gates on a new sealed corpus; it does not claim universal superiority or independent replication.

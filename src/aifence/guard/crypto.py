@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -48,11 +48,11 @@ def generate_api_key() -> tuple[str, str, str]:
 
 def parse_api_key(token: str) -> tuple[str, str]:
     if not token.startswith("adk_key_") or "." not in token:
-        raise ValueError("invalid AGENTDANCE API key format")
+        raise ValueError("invalid AIFENCE API key format")
     left, secret = token.split(".", 1)
     key_id = left.removeprefix("adk_")
     if not key_id or len(secret) < 32:
-        raise ValueError("invalid AGENTDANCE API key format")
+        raise ValueError("invalid AIFENCE API key format")
     return key_id, secret
 
 
@@ -133,7 +133,7 @@ class SigningKey:
             raise RuntimeError("private signing key is unavailable")
         now = datetime.now(UTC)
         payload = dict(claims)
-        payload.setdefault("iss", "agentdance")
+        payload.setdefault("iss", "aifence")
         payload.setdefault("iat", int(now.timestamp()))
         if lifetime_seconds is not None:
             payload.setdefault("exp", int(now.timestamp()) + lifetime_seconds)
@@ -143,7 +143,7 @@ class SigningKey:
     def verify_token(self, token: str, *, audience: str | None = None,
                      required: tuple[str, ...] = ("iss", "iat", "exp")) -> dict[str, Any]:
         options: dict[str, Any] = {"require": list(required)}
-        kwargs: dict[str, Any] = {"algorithms": ["EdDSA"], "options": options, "issuer": "agentdance"}
+        kwargs: dict[str, Any] = {"algorithms": ["EdDSA"], "options": options, "issuer": "aifence"}
         if audience:
             kwargs["audience"] = audience
         else:
@@ -217,7 +217,7 @@ class VaultTransitSigningKey:
         now = datetime.now(UTC)
         header = {"alg": "EdDSA", "typ": "JWT", "kid": self.key_id, **(headers or {})}
         payload = dict(claims)
-        payload.setdefault("iss", "agentdance")
+        payload.setdefault("iss", "aifence")
         payload.setdefault("iat", int(now.timestamp()))
         if lifetime_seconds is not None:
             payload.setdefault("exp", int(now.timestamp()) + lifetime_seconds)
@@ -227,7 +227,7 @@ class VaultTransitSigningKey:
     def verify_token(self, token: str, *, audience: str | None = None,
                      required: tuple[str, ...] = ("iss", "iat", "exp")) -> dict[str, Any]:
         options: dict[str, Any] = {"require": list(required)}
-        kwargs: dict[str, Any] = {"algorithms": ["EdDSA"], "options": options, "issuer": "agentdance"}
+        kwargs: dict[str, Any] = {"algorithms": ["EdDSA"], "options": options, "issuer": "aifence"}
         if audience:
             kwargs["audience"] = audience
         else:

@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
-// SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+// AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 // Contact sage@digitalacre.org for commercial licensing.
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 
 /**
- * SAGE JavaScript TCK conformance runner.
+ * AIFENCE JavaScript TCK conformance runner.
  *
- * Implements the SAGE wire-format canonicalization, MessagePack-style
+ * Implements the AIFENCE wire-format canonicalization, MesaifencePack-style
  * encoding, and validation rules, then verifies every vector in the TCK
  * corpus. Used by `npm run tck` and the three-runtime conformance matrix.
  */
@@ -174,7 +174,7 @@ for (const test of vectors.valid) {
     const packed = encode(canonical);
     const digest = `sha256:${createHash("sha256").update(packed).digest("hex")}`;
     if (typeof test.canonical_json === "string" && json !== test.canonical_json) throw new Error("canonical JSON mismatch");
-    if (packed.toString("hex") !== test.canonical_msgpack_hex) throw new Error("canonical MessagePack mismatch");
+    if (packed.toString("hex") !== test.canonical_msgpack_hex) throw new Error("canonical MesaifencePack mismatch");
     if (digest !== test.canonical_sha256) throw new Error("digest mismatch");
   } catch (error) {
     failures.push(`${test.name}: ${error instanceof Error ? error.message : String(error)}`);

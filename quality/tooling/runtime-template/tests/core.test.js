@@ -4,6 +4,6 @@ const c=new CoreProvider();test('core hash lock and revision',()=>{const v=c.ver
 test('CoreProvider rejects traversal and unsupported paths', () => {
   const core = new CoreProvider();
   assert.throws(() => core.read('../README.md'), /traversal/i);
-  assert.throws(() => core.read('/etc/passwd'), /Unsupported BizIQ path|traversal/i);
-  assert.throws(() => core.read('src/cli.js'), /Unsupported BizIQ path/i);
+  assert.throws(() => core.read('/etc/passwd'), /Unsupported AIFENCE path|traversal/i);
+  assert.throws(() => core.read('src/cli.js'), /Unsupported AIFENCE path/i);
 });

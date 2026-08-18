@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/decision_depth_evidence.schema.json",
-  "title": "BizIQ B2B Decision Depth Evidence",
+  "$id": "aifence://schemas/decision_depth_evidence.schema.json",
+  "title": "AIFENCE B2B Decision Depth Evidence",
   "type": "object",
   "additionalProperties": false,
   "required": [

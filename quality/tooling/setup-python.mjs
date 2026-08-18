@@ -4,7 +4,7 @@ import {checkPythonDependencies, installPythonDependencies} from './python-env.m
 try {
   installPythonDependencies();
   const checked = checkPythonDependencies();
-  console.log('PASS: BizIQ Python validation environment ready');
+  console.log('PASS: AIFENCE Python validation environment ready');
   if(checked.versions) console.log(checked.versions);
 } catch (error) {
   console.error(`SETUP FAIL: ${error.message}`);

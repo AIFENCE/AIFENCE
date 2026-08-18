@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -15,7 +15,7 @@ from .cache import CacheStore, cache_key
 from .codebook import Codebook
 from .compiler import compile_content
 from .config import Settings
-from .db_models import Concept, MessageAudit
+from .db_models import Concept, MesaifenceAudit
 from .knowledge import KnowledgeStore
 from .patterns import PatternStore
 from .references import ReferenceAccessError, ReferenceExpiredError, ReferenceStore, canonical_bytes
@@ -36,7 +36,7 @@ from .telemetry import Telemetry
 from .wire_codec import WireCodec
 
 
-class SageCodec:
+class AifenceCodec:
     def __init__(self, db: Session, settings: Settings) -> None:
         self.db = db
         self.settings = settings
@@ -524,7 +524,7 @@ class SageCodec:
                     pass
         pattern_count = sum(1 for d in decisions if d.get("action") == "pattern_code")
         ref_bytes_avoided = len(input_raw) if strategy == "reference" else 0
-        audit = MessageAudit(
+        audit = MesaifenceAudit(
             packet_id=packet.id,
             run_id=request.run_id,
             sender=request.sender,

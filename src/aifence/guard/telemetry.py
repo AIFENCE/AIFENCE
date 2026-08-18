@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ def configure_telemetry(app: FastAPI, engine: Engine, settings: Settings) -> Non
         "service.name": settings.otel_service_name,
         "service.version": __version__,
         "deployment.environment.name": settings.environment,
-        "service.namespace": "agentdance",
+        "service.namespace": "aifence",
     }))
     exporter = OTLPSpanExporter(endpoint=settings.otel_exporter_otlp_endpoint)
     provider.add_span_processor(BatchSpanProcessor(exporter))

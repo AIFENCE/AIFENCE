@@ -14,7 +14,7 @@ loop, ``--record-feedback``):
    differ ONLY in the new ``feedback`` fields;
 4. out-of-range ``task_success`` (1.5, -0.1) raises a clear error; unknown
    ``packet_id`` raises ``KeyError`` (mirror ``runtime.feedback``);
-5. ZERO wire-byte change: with ``--record-feedback`` ON, the SAGE variants'
+5. ZERO wire-byte change: with ``--record-feedback`` ON, the AIFENCE variants'
    wire bytes are byte-identical to the default run (feedback is post-hoc DB
    bookkeeping, never touches encode).
 
@@ -24,7 +24,7 @@ against the session test database exactly like test_patterns.py; the
 end-to-end determinism/wire-byte tests run the CLI in subprocesses with a
 fake HOME (the prebound-engine guard makes in-process happy-path runs
 impossible), mirroring test_model_eval_harness.py's ``_run_cli_subprocess``.
-Output directories are written under /opt/data/sage/scratch/ -- never
+Output directories are written under /opt/data/aifence/scratch/ -- never
 /tmp.
 """
 
@@ -44,15 +44,15 @@ from typing import Any
 import pytest
 from sqlalchemy import select
 
-from aifence.bus.codec import SageCodec
+from aifence.bus.codec import AifenceCodec
 from aifence.bus.config import Settings
 from aifence.bus.db import SessionLocal
-from aifence.bus.db_models import LearnedPattern, MessageAudit
+from aifence.bus.db_models import LearnedPattern, MesaifenceAudit
 from aifence.bus.schemas import EncodeRequest
 
 ROOT = Path(__file__).resolve().parents[2]
 HARNESS_SCRIPT = ROOT / "scripts" / "model_eval_harness.py"
-SCRATCH_ROOT = Path(os.environ.get("SAGE_SCRATCH_ROOT", "/opt/data/sage/scratch")) / "stage4-tests"
+SCRATCH_ROOT = Path(os.environ.get("AIFENCE_BUS_SCRATCH_ROOT", "/opt/data/aifence/scratch")) / "stage4-tests"
 
 #: A deterministic fake adapter: reads the JSON payload from stdin, echoes a
 #: fixed result.  Warm receivers succeed at 1.0, cold receivers at 0.5, so the
@@ -79,7 +79,7 @@ def h() -> Any:
 
 @pytest.fixture()
 def scratch_dir() -> Iterator[Path]:
-    """A scratch output directory under /opt/data/sage/scratch (never /tmp)."""
+    """A scratch output directory under /opt/data/aifence/scratch (never /tmp)."""
     path = SCRATCH_ROOT / uuid.uuid4().hex[:12]
     path.mkdir(parents=True, exist_ok=True)
     yield path
@@ -125,15 +125,15 @@ def _pattern_settings(**overrides: Any) -> Settings:
 
 
 def _shadow_pattern_and_audit(db: Any, settings: Settings, content: dict[str, Any]) -> tuple[Any, Any]:
-    """Create a shadow pattern + a MessageAudit row whose decisions carry a
+    """Create a shadow pattern + a MesaifenceAudit row whose decisions carry a
     ``pattern_shadow_match`` for it (mirror test_patterns), returning
     ``(pattern, audit)``."""
-    codec = SageCodec(db, settings)
+    codec = AifenceCodec(db, settings)
     codec.encode(EncodeRequest(content=content, auto_learn=True, record_learning=True, use_cache=False))
     second = codec.encode(EncodeRequest(content=content, auto_learn=True, record_learning=True, use_cache=False))
     pattern = db.scalar(select(LearnedPattern).where(LearnedPattern.status == "shadow"))
     assert pattern is not None
-    audit = db.scalar(select(MessageAudit).where(MessageAudit.packet_id == second.packet.id))
+    audit = db.scalar(select(MesaifenceAudit).where(MesaifenceAudit.packet_id == second.packet.id))
     assert audit is not None
     assert any(
         d.get("action") == "pattern_shadow_match" and d.get("pattern_id") == pattern.pattern_id
@@ -159,8 +159,8 @@ def _adapters_config() -> dict[str, Any]:
 
 def _run_cli_subprocess(argv: list[str], fake_home: Path) -> subprocess.CompletedProcess:
     """Run the harness CLI in a FRESH subprocess (fake HOME + provider env)."""
-    env = {**os.environ, "HOME": str(fake_home), "SAGE_BENCH_LLM_PROVIDER": "fake"}
-    env.pop("SAGE_DATABASE_URL", None)
+    env = {**os.environ, "HOME": str(fake_home), "AIFENCE_BUS_BENCH_LLM_PROVIDER": "fake"}
+    env.pop("AIFENCE_BUS_DATABASE_URL", None)
     return subprocess.run(
         [sys.executable, str(HARNESS_SCRIPT), *argv],
         capture_output=True,
@@ -367,7 +367,7 @@ def test_feedback_unknown_packet_raises_key_error(h, isolated_db):
 
 
 def test_record_feedback_zero_wire_byte_change(h, scratch_dir):
-    """With --record-feedback ON, the SAGE variants' wire bytes are
+    """With --record-feedback ON, the AIFENCE variants' wire bytes are
     byte-identical to the default run (feedback is post-hoc DB bookkeeping,
     never touches encode)."""
     cfg = scratch_dir / "adapters.json"

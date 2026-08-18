@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Heuristic duplicate/conflict lint for BizIQ control requirements."""
+"""Heuristic duplicate/conflict lint for AIFENCE control requirements."""
 from __future__ import annotations
 import csv,re,json,argparse
 from pathlib import Path

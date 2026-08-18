@@ -17,7 +17,7 @@ def expect(cmd,ok=True,label='case'):
  if (p.returncode==0)!=ok:
   print(p.stdout+p.stderr); raise SystemExit(f'FAIL: {label}')
 
-with tempfile.TemporaryDirectory(prefix='biziq-185-') as td:
+with tempfile.TemporaryDirectory(prefix='aifence-185-') as td:
  td=Path(td)
  shallow=td/'shallow.txt'; shallow.write_text('Cold-storage safety review. Questions: dock exposure and freezer access. Evidence: inspection log, maintenance note, incident summary, training roster. Finding: access controls require review. Action: review controls. Source boundary: supplied sample records only. Reader takeaway: follow up.')
  sev=evidence(td/'shallow.json','fixed-document',['cold-storage','freezer access','dock exposure'],['supplied sample records only','no field verification'],['dock exposure','freezer access','inspection log','maintenance note','incident summary','training roster','access controls require review','review controls','Reader takeaway','supplied sample records only','no field verification'],{

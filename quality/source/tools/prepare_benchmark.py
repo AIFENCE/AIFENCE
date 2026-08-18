@@ -20,7 +20,7 @@ if a.private_holdout:
     cases+=h
 rng=random.Random(a.seed);blind=[];key=[];n=1
 for c in cases:
-    cond=["control","biziq"];rng.shuffle(cond)
+    cond=["control","aifence"];rng.shuffle(cond)
     for condition in cond:
         bid=f"A{n:04d}";n+=1
         blind.append({"blind_id":bid,"case_id":c["id"],"split":c["split"],"category":c.get("category"),"title":c.get("title"),"prompt":c["prompt"],"artifact_contracts":c.get("artifact_contracts",[])})

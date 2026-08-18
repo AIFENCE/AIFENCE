@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a BizIQ Operational Procedure against Revision 1.6 machine semantics."""
+"""Validate a AIFENCE Operational Procedure against Revision 1.6 machine semantics."""
 from __future__ import annotations
 import argparse, json, sys
 from pathlib import Path
@@ -133,7 +133,7 @@ def validate_data(data):
 
 
 def main():
-    ap=argparse.ArgumentParser(description='Validate a compiled BizIQ operational procedure JSON artifact (Revision 1.6).')
+    ap=argparse.ArgumentParser(description='Validate a compiled AIFENCE operational procedure JSON artifact (Revision 1.6).')
     ap.add_argument('file',type=Path)
     args=ap.parse_args()
     try: data=json.loads(args.file.read_text(encoding='utf-8'))

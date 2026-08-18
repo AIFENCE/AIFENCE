@@ -1,14 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
-"""Additive context-accounting instrumentation for the SAGE codec.
+"""Additive context-accounting instrumentation for the AIFENCE codec.
 
 This module implements Stage 1 of the semantic-context-compression benchmark
 cycle (issue #16): a pure, dependency-free recorder that measures, per
-exchange, the cost components that determine whether SAGE actually reduces the
+exchange, the cost components that determine whether AIFENCE actually reduces the
 context an agent must process:
 
-* transport bytes -- wire (canonical JSON + MessagePack) and stored
+* transport bytes -- wire (canonical JSON + MesaifencePack) and stored
   (bytes materialized into reference / state stores on behalf of the exchange);
 * model-facing token estimate -- a deterministic token estimate of the
   representation the receiving model must process (tiktoken when importable,
@@ -39,7 +39,7 @@ Design constraints
   no-op singleton and the module-level token-estimator cache are the only
   other module state and are safe to share.
 * Additive: this module must never change wire output. It imports nothing
-  from the rest of ``sage_plugin``. Recorders never raise on any input
+  from the rest of ``aifence.bus``. Recorders never raise on any input
   value; the only way a recorder can raise is a caller-supplied
   ``estimate`` callable that misbehaves (raises, or returns a non-int);
   the default estimator never raises.

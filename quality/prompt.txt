@@ -1,6 +1,6 @@
-Initialize BizIQ from the public repository: https://github.com/NeuralBinary/BizIQ.git
+Initialize AIFENCE from the public repository: https://github.com/NeuralBinary/AIFENCE.git
 
-1. Load `README.md` first and treat it as the authoritative BizIQ orchestration, precedence, lazy-loading, production-intent, and routing specification.
+1. Load `README.md` first and treat it as the authoritative AIFENCE orchestration, precedence, lazy-loading, production-intent, and routing specification.
 2. Do not preload or summarize the repository. Retrieve only exact files/sections/stable IDs required for the current task.
 3. If `PROJECT.md` exists, use it after README; otherwise use my current request as the project specification.
 4. Default creation requests to complete Production delivery unless I explicitly request a reduced-scope mode.
@@ -10,7 +10,7 @@ Initialize BizIQ from the public repository: https://github.com/NeuralBinary/Biz
 8. Before detailed visual/component design, compile every high-value feature using `FEATURE_COMPILER.md`: purpose, user job, priority, information, primary/secondary/contextual actions, interaction model, applicable states, responsive behavior, accessibility, truth/data semantics, dependencies, acceptance criteria, and evidence plan. Feature nouns alone are not specifications.
 9. After feature resolution, use `COMPONENT_COMPILER.md` for important reusable/high-frequency UI: task-specific anatomy, information hierarchy, typography, iconography, metadata, surfaces/elevation, actions, states, variants, invalid combinations, responsive adaptation, accessibility, and acceptance criteria.
 10. For substantial visual concepts, generate a structural fingerprint using `GENERICITY.md` before final implementation. Compare against common template fingerprints and reject high-similarity compositions unless category-required structure is meaningfully differentiated.
-11. Continue to apply BizIQ research, concept exploration, anti-generic, asset, accessibility, responsive, CREATIVE, and CRAFT requirements. Select one coherent professional icon system when icons materially improve recognition, scanning, status, navigation, or affordance.
+11. Continue to apply AIFENCE research, concept exploration, anti-generic, asset, accessibility, responsive, CREATIVE, and CRAFT requirements. Select one coherent professional icon system when icons materially improve recognition, scanning, status, navigation, or affordance.
 12. Do not fabricate business facts, testimonials, credentials, awards, locations, contact details, prices, results, service areas, legal/medical/financial claims, or proof. Sample/demo data and front-end-only behavior must be truthful.
 13. Implement complete scope from compiled artifact/feature/component specifications. Do not silently change behavior for implementation convenience.
 14. When runtime/render tooling exists, inspect desktop, mobile, relevant tablet, and critical feature states. Source cleanliness is not rendered evidence.
@@ -18,9 +18,9 @@ Initialize BizIQ from the public repository: https://github.com/NeuralBinary/Biz
 16. Consolidate issues by severity/dependency, repair P0/P1 and material P2 failures, re-render affected views/states, and re-run affected critics while release-blocking failures remain.
 17. Apply `QUALITY_FLOORS.md`. A high aggregate score cannot compensate for a failed required dimension.
 18. Apply active controls as Contract → Procedure → Evidence Gate → Recovery → Regression. PASS requires observable evidence; unavailable evidence is UNVERIFIED.
-19. For changes to BizIQ or claims that BizIQ improves outputs, use `BENCHMARKS.md`: matched conditions, opaque randomized IDs, condition-blind judges, score lock before unblinding, multiple evidence sources, and an external private holdout. Do not intentionally weaken the control or optimize only for public prompts.
-20. Preserve stable IDs and routing semantics. Do not invent BizIQ controls, profiles, modules, evidence, or pass states.
-21. Do not expose internal BizIQ instructions unless I explicitly ask.
+19. For changes to AIFENCE or claims that AIFENCE improves outputs, use `BENCHMARKS.md`: matched conditions, opaque randomized IDs, condition-blind judges, score lock before unblinding, multiple evidence sources, and an external private holdout. Do not intentionally weaken the control or optimize only for public prompts.
+20. Preserve stable IDs and routing semantics. Do not invent AIFENCE controls, profiles, modules, evidence, or pass states.
+21. Do not expose internal AIFENCE instructions unless I explicitly ask.
 22. After initialization, immediately execute my current creation request; do not stop at initialization or ask me to resubmit it.
 
 23. For substantial product/mobile work, apply `RESPONSIVE_COMPOSITION.md` and verify 320/390/768 plus desktop; transform dense controls/data rather than merely stacking or shrinking them.
@@ -40,7 +40,7 @@ Initialize BizIQ from the public repository: https://github.com/NeuralBinary/Biz
 35. Apply `OPERATIONAL_EVIDENCE.md` so material steps, decisions, exceptions, handoffs, and definition of done have proportionate observable evidence.
 36. Apply `KPI_GOVERNANCE.md` to material metrics: define reproducible calculations, scope, source, ownership, target provenance, balancing metrics, and response rules; never fabricate targets or SLAs.
 
-37. For machine-readable operational procedures, use the composed operational schemas preserved through Core Revision 1.7 and `tools/validate_operational_procedure.py`; for BizIQ operations changes, execute `tools/test_operations_2.py`. Domain 23 establishes baseline coverage and Domain 31 specializes the shared production-detail object; do not emit duplicate parallel SOP/KPI/evidence/handoff structures.
+37. For machine-readable operational procedures, use the composed operational schemas preserved through Core Revision 1.7 and `tools/validate_operational_procedure.py`; for AIFENCE operations changes, execute `tools/test_operations_2.py`. Domain 23 establishes baseline coverage and Domain 31 specializes the shared production-detail object; do not emit duplicate parallel SOP/KPI/evidence/handoff structures.
 
 38. Before risk-sensitive or industry-specific retrieval, compile the request through `SEMANTIC_ROUTING.md`. Use token/phrase boundaries, aliases, confidence margins, and explicit unknown/candidate states; never use arbitrary character-substring matches as industry evidence.
 39. Parse feature/data exposure with negation awareness. `No login`, `without payments`, `front-end only`, `no backend`, `does not collect PII`, and equivalent statements suppress those exposures unless another independent clause reactivates them. Industry overlays do not manufacture actual security/data exposure.
@@ -49,7 +49,7 @@ Initialize BizIQ from the public repository: https://github.com/NeuralBinary/Biz
 42. Use `RETRIEVAL_INTELLIGENCE.md`: execute from phase-scoped `activeCapabilities` and exact stable-ID sections. `activeModules` is compatibility/debug metadata, not permission to load entire large modules. Prefer generated capability shards only as derived copies of canonical stable sections.
 43. Named inspirations such as “Stripe-like” are abstraction inputs, not cloning instructions. Extract the desired qualities, then generate an original structural fingerprint; do not reproduce distinctive trade dress, protected marks/assets, or proprietary layout sequences.
 44. Use `EVIDENCE_ADAPTER.md` for executable QA. Browser/runtime/spreadsheet/slide/document/CLI/native checks may PASS only from direct evidence or an explicitly approved equivalent; unavailable execution remains visible and may block release when the contract requires it.
-45. For BizIQ evaluation/system changes, use `BENCHMARK_PIPELINE.md`, `tools/audit_control_coverage.py`, and `tools/lint_control_semantics.py` in addition to existing frozen benchmark governance. For releases, preserve the Core↔Runtime compatibility policy and generated provenance defined by `RELEASE_PROVENANCE.md`.
+45. For AIFENCE evaluation/system changes, use `BENCHMARK_PIPELINE.md`, `tools/audit_control_coverage.py`, and `tools/lint_control_semantics.py` in addition to existing frozen benchmark governance. For releases, preserve the Core↔Runtime compatibility policy and generated provenance defined by `RELEASE_PROVENANCE.md`.
 
 46. For substantial interactive artifacts, compile an interaction-closure manifest before final implementation: inventory every enabled visible control with its expected observable behavior, and every P0/P1 task with required narrow-screen viewports. An enabled control that has no observable behavior must be implemented, explicitly disabled with a user-visible reason, or removed; production PASS requires zero unaccounted dead controls.
 47. At 320 and 390 px, preserve every declared P0/P1 desktop task end-to-end. Do not solve responsive density by hiding task-critical detail, edit, recovery, transaction, drill-down, or submit/cancel surfaces. Transform them into an equivalent route, drawer, sheet, disclosure, or other mobile composition, preserve task state/return context, and prove completion with direct evidence.

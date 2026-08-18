@@ -1,6 +1,6 @@
 # Generated wire fields
 
-This file is generated from `sage_plugin.protocol_spec.WirePacketV2`.
+This file is generated from `aifence.bus.protocol_spec.WirePacketV2`.
 
 | Field | Required |
 |---|---|

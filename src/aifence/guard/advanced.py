@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -1104,7 +1104,7 @@ class AdvancedOperations:
             consumed[key]=consumed.get(key,Decimal("0"))+value
         grant.consumed_budget=self._serialize_decimal_map(consumed)
         message_hash=hash_object({"task_id":body.task_id,"message":body.message,"artifacts":body.artifacts})
-        receipt=self.service.signing_key.issue_receipt({"aud":"agentdance-a2a-task","sub":body.task_id,
+        receipt=self.service.signing_key.issue_receipt({"aud":"aifence-a2a-task","sub":body.task_id,
             "tenant_id":auth.tenant_id,"trace_id":body.trace_id,"delegation_grant_id":grant.id,
             "parent_agent_id":grant.parent_agent_id,"child_agent_id":grant.child_agent_id,
             "registration_id":registration.id,"message_hash":message_hash,"request_hash":request_hash},

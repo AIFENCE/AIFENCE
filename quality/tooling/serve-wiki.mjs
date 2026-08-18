@@ -16,4 +16,4 @@ const server=http.createServer((req,res)=>{
   const p=fs.existsSync(target)&&fs.statSync(target).isFile()?target:path.join(SITE,'index.html');
   res.writeHead(200,{'Content-Type':types[path.extname(p)]||'application/octet-stream','Cache-Control':'no-store'});fs.createReadStream(p).pipe(res);
 });
-server.listen(port,host,()=>console.log(`BizIQ Wiki http://${host}:${port}`));
+server.listen(port,host,()=>console.log(`AIFENCE Wiki http://${host}:${port}`));

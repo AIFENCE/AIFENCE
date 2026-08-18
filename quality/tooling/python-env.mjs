@@ -29,12 +29,12 @@ export function checkPythonDependencies(){
   if(result.status !== 0){
     const detail = (result.stderr || result.stdout || '').trim();
     const error = new Error(
-      `BizIQ Python validation dependencies are missing or unusable.\n` +
+      `AIFENCE Python validation dependencies are missing or unusable.\n` +
       `Run: npm run setup:python\n` +
       `Requirements: source/requirements.txt` +
       (detail ? `\nPython detail: ${detail.split(/\r?\n/).at(-1)}` : '')
     );
-    error.code = 'BIZIQ_PYTHON_DEPS';
+    error.code = 'AIFENCE_PYTHON_DEPS';
     throw error;
   }
   return {py, versions:(result.stdout || '').trim()};

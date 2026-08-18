@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -109,7 +109,7 @@ from .workload_identity import (
 )
 
 router = APIRouter()
-bearer_scheme = HTTPBearer(auto_error=False, scheme_name="AgentDanceBearer")
+bearer_scheme = HTTPBearer(auto_error=False, scheme_name="AifenceBearer")
 
 
 def get_session(request: Request) -> Generator[Session, None, None]:
@@ -138,7 +138,7 @@ def get_auth(
         auth = authenticate_workload(session, assertion, settings)
         set_tenant_context(session, auth.tenant_id)
     else:
-        raise AuthenticationError("a Bearer AGENTDANCE API key is required")
+        raise AuthenticationError("a Bearer AIFENCE API key is required")
     request.app.state.rate_limiter.enforce_authenticated(
         tenant_id=auth.tenant_id,
         key_id=auth.key_id,
@@ -243,7 +243,7 @@ def metrics(request: Request) -> Response:
 def source_information(request: Request) -> dict[str, Any]:
     settings = request.app.state.settings
     return {
-        "service": "AGENTDANCE",
+        "service": "AIFENCE",
         "version": request.app.state.version,
         "server_license": "AGPL-3.0-only OR commercial",
         "sdk_license": "Apache-2.0",
@@ -253,10 +253,10 @@ def source_information(request: Request) -> dict[str, Any]:
     }
 
 
-@router.get("/.well-known/agentdance.json", include_in_schema=False)
+@router.get("/.well-known/aifence.json", include_in_schema=False)
 def well_known(request: Request) -> dict[str, Any]:
     return {
-        "service": "AGENTDANCE",
+        "service": "AIFENCE",
         "version": request.app.state.version,
         "server_license": "AGPL-3.0-only OR commercial",
         "sdk_license": "Apache-2.0",
@@ -265,12 +265,12 @@ def well_known(request: Request) -> dict[str, Any]:
         "decision_endpoint": f"{request.app.state.settings.public_base_url}/v1/decisions",
         "signing_key_id": request.app.state.signing_key.key_id,
         "signing_public_key_pem": request.app.state.signing_key.public_pem(),
-        "event_spec": "agentdance.event.v1",
-        "policy_spec": "agentdance.policy.v1",
+        "event_spec": "aifence.event.v1",
+        "policy_spec": "aifence.policy.v1",
     }
 
 
-@router.get("/.well-known/agentdance-signing-keys.json", include_in_schema=False)
+@router.get("/.well-known/aifence-signing-keys.json", include_in_schema=False)
 def signing_keys(session: SessionDep) -> dict[str, Any]:
     keys = list(session.scalars(select(SigningPublicKey).order_by(SigningPublicKey.created_at.asc())))
     return {
@@ -680,7 +680,7 @@ async def invoke_provider(
     if result.outcome not in {"allow", "allow_with_limits", "redact_or_transform"} or not result.enforcement_plan.executable:
         BROKER_CALLS.labels("provider", "blocked").inc()
         raise AuthorizationError(
-            "provider invocation was blocked by AGENTDANCE",
+            "provider invocation was blocked by AIFENCE",
             details={
                 "decision_id": result.decision_id,
                 "approval_id": result.approval_id,
@@ -1179,8 +1179,8 @@ async def call_mcp_tool(registration_id: str, body: MCPToolCallRequest, request:
     resource = str(descriptor.get("resource", f"mcp:{registration.external_id}:{body.tool_name}"))
 
     # Preserve compatibility with explicitly brokered legacy MCP descriptors, but native
-    # MCP registrations require no AGENTDANCE-specific routing metadata.
-    tool_id = descriptor.get("agentdance_tool_id")
+    # MCP registrations require no AIFENCE-specific routing metadata.
+    tool_id = descriptor.get("aifence_guard_tool_id")
     path = descriptor.get("path")
     if isinstance(tool_id, str) and tool_id and isinstance(path, str) and path:
         tool_request = ToolExecuteRequest(
@@ -1261,12 +1261,12 @@ def operator_proxy_policies(session: SessionDep, auth: OperatorAuthDep) -> list[
 def operator_console(request: Request, _auth: OperatorAuthDep) -> HTMLResponse:
     nonce = secrets.token_urlsafe(24)
     request.state.csp_nonce = nonce
-    html = """<!doctype html><html><head><meta charset='utf-8'><title>AGENTDANCE Operator</title>
+    html = """<!doctype html><html><head><meta charset='utf-8'><title>AIFENCE Operator</title>
 <meta name='viewport' content='width=device-width,initial-scale=1'><style nonce='__NONCE__'>
 body{font-family:system-ui,sans-serif;max-width:1100px;margin:2rem auto;padding:0 1rem;background:#101216;color:#eef}
 button{font:inherit;padding:.65rem;margin:.25rem;border-radius:.35rem;border:1px solid #667;background:#191d24;color:#eef}
 pre{white-space:pre-wrap;background:#191d24;padding:1rem;border-radius:.5rem;min-height:20rem}.row{display:flex;gap:.5rem;flex-wrap:wrap}
-</style></head><body><h1>AGENTDANCE Operator Console</h1>
+</style></head><body><h1>AIFENCE Operator Console</h1>
 <p>Authenticated by the configured OIDC identity proxy. No API key is accepted or stored by this page.</p>
 <div class='row'><button id='load' type='button'>Refresh posture</button></div>
 <pre id='out'>Loading…</pre><script nonce='__NONCE__'>
@@ -1301,9 +1301,9 @@ async def _forward_json(
         auth_header: auth_value,
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "User-Agent": f"AGENTDANCE/{request.app.state.version}",
-        "X-Agentdance-Request-ID": request.state.request_id,
-        "X-Agentdance-Execution-ID": upstream_idempotency_key.removeprefix("agentdance-"),
+        "User-Agent": f"AIFENCE/{request.app.state.version}",
+        "X-Aifence-Request-ID": request.state.request_id,
+        "X-Aifence-Execution-ID": upstream_idempotency_key.removeprefix("aifence-"),
         "Idempotency-Key": upstream_idempotency_key,
     }
     headers["Host"] = host_header

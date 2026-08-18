@@ -1,6 +1,6 @@
 # Source-Driven Build System
 
-`tooling/build.mjs` turns canonical BizIQ source into portable builds.
+`tooling/build.mjs` turns canonical AIFENCE source into portable builds.
 
 ## Inputs
 
@@ -43,7 +43,7 @@ The Skill itself remains compact. Its `references/` files are regenerated from s
 
 Inside the repository, Runtime reads `source/` directly. A release archive vendors the same source tree as `core/`, allowing the identical Runtime to operate standalone.
 
-`BIZIQ_SOURCE_DIR` may explicitly point Runtime at another canonical source checkout.
+`AIFENCE_SOURCE_DIR` may explicitly point Runtime at another canonical source checkout.
 
 ## Build safety
 
@@ -71,7 +71,7 @@ npm run check:python
 
 ## Cross-platform deterministic text identity
 
-Git can normalize text line endings during commit/checkout. BizIQ therefore treats LF and CRLF as the same source content for integrity purposes.
+Git can normalize text line endings during commit/checkout. AIFENCE therefore treats LF and CRLF as the same source content for integrity purposes.
 
 The builder canonicalizes textual bytes to LF **before hashing** source documents and registries. The standalone Runtime uses the same rule when verifying its vendored Core, and the release packager writes textual release files with canonical LF bytes.
 
@@ -81,7 +81,7 @@ This prevents a Windows-generated source tree from producing different `CORE_LOC
 
 ## Source-driven wiki
 
-The same generator creates `build/wiki/`. It copies canonical Markdown into an on-demand content tree, derives titles/summaries/headings/search metadata, creates curated navigation for high-value BizIQ documentation, and stamps the current Core/Runtime/control-plane metadata into the wiki index.
+The same generator creates `build/wiki/`. It copies canonical Markdown into an on-demand content tree, derives titles/summaries/headings/search metadata, creates curated navigation for high-value AIFENCE documentation, and stamps the current Core/Runtime/control-plane metadata into the wiki index.
 
 The wiki shell is dependency-free and supports full-text search, responsive sidebar navigation, a page outline, light/dark themes, copyable commands, and source-provenance links. `npm run test:wiki` validates generated routes/content and JavaScript syntax. `npm run wiki:serve` previews the generated Pages artifact locally.
 

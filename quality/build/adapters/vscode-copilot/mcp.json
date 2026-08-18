@@ -1,8 +1,8 @@
 {
   "servers": {
-    "biziq": {
+    "aifence": {
       "type": "stdio",
-      "command": "biziq",
+      "command": "aifence",
       "args": [
         "mcp",
         "--stdio"

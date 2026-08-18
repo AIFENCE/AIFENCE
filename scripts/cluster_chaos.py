@@ -80,11 +80,11 @@ def main() -> None:
     verify_round_trip(args.url, args.api_key, args.workspace, "baseline", args.ca_cert)
     # Stop (not pause) the worker: a paused process keeps TCP alive so the load
     # balancer waits on it; a stopped worker fails over via connection refusal.
-    compose(args.compose_file, "stop", "sage-b")
+    compose(args.compose_file, "stop", "aifence-b")
     try:
         verify_round_trip(args.url, args.api_key, args.workspace, "worker-stopped", args.ca_cert)
     finally:
-        compose(args.compose_file, "start", "sage-b")
+        compose(args.compose_file, "start", "aifence-b")
 
     if args.disrupt_postgres:
         compose(args.compose_file, "stop", "postgres")

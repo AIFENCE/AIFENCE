@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from aifence.guard.crypto import SigningKey
 
 @pytest.fixture()
 def app_and_key(tmp_path) -> Generator[tuple[object, str], None, None]:
-    database = tmp_path / "agentdance-test.db"
+    database = tmp_path / "aifence-test.db"
     settings = Settings(
         environment="test",
         database_url=f"sqlite+pysqlite:///{database}",

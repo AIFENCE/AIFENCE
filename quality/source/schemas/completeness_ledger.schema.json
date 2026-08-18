@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "biziq://schemas/completeness_ledger.schema.json",
+  "$id": "aifence://schemas/completeness_ledger.schema.json",
   "type": "object",
   "required": [
     "artifact_id",

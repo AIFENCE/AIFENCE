@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2026 AGENTDANCE contributors
+# SPDX-FileCopyrightText: 2026 AIFENCE contributors
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
@@ -158,8 +158,8 @@ def validate_policy_document(document: dict[str, Any]) -> None:
             "policy document contains unsupported fields",
             details={"fields": sorted(unknown_document_keys)},
         )
-    if document.get("spec_version") != "agentdance.policy.v1":
-        raise PolicyError("policy spec_version must be agentdance.policy.v1")
+    if document.get("spec_version") != "aifence.policy.v1":
+        raise PolicyError("policy spec_version must be aifence.policy.v1")
     version = document.get("version")
     if not isinstance(version, str) or not version or len(version) > 128:
         raise PolicyError("policy version must be a non-empty string of at most 128 characters")

@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-# SAGE is dual-licensed under AGPL-3.0-or-later and a commercial license.
+# AIFENCE is dual-licensed under AGPL-3.0-or-later and a commercial license.
 # Contact sage@digitalacre.org for commercial licensing.
 from __future__ import annotations
 
@@ -14,10 +14,10 @@ from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="SAGE_", env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_prefix="AIFENCE_BUS_", env_file=".env", extra="ignore")
 
     env: Literal["development", "test", "production"] = "development"
-    database_url: str = f"sqlite:///{Path.home() / 'sage.db'}"
+    database_url: str = f"sqlite:///{Path.home() / 'aifence.db'}"
     db_pool_size: int = 10
     db_max_overflow: int = 20
     db_pool_timeout_seconds: int = 30
@@ -107,7 +107,7 @@ class Settings(BaseSettings):
     packet_signing_key_id: str = "default"
     require_packet_signatures: bool = False
     otel_enabled: bool = False
-    otel_service_name: str = "sage"
+    otel_service_name: str = "aifence"
     federation_timeout_seconds: float = 10.0
     routing_cost_weight: float = 1.0
     routing_latency_weight: float = 0.001
@@ -271,9 +271,9 @@ class Settings(BaseSettings):
 
 @lru_cache
 def get_settings() -> Settings:
-    # Accept the unified AIFENCE_BUS_ prefix, bridging to the historical SAGE_
-    # names this settings model reads. Legacy SAGE_ still works.
-    from ..core.env import apply_legacy_prefix
+    # Accept the unified AIFENCE_BUS_ prefix, bridging to the historical AIFENCE_
+    # names this settings model reads. Legacy AIFENCE_ still works.
+    from ..core.env import adopt_legacy_prefix
 
-    apply_legacy_prefix("AIFENCE_BUS_", "SAGE_")
+    adopt_legacy_prefix("SAGE_", "AIFENCE_BUS_")
     return Settings()

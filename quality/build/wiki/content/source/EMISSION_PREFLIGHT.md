@@ -14,7 +14,7 @@ Core 1.8.5 preserves Core 1.8.4 family-aware emission, finished-surface naturali
 # Finished-Surface Naturalization Scan
 <!-- id: emission-preflight.naturalization-scan -->
 
-Acceptance MUST scan the actual production-facing surfaces, not only an evidence summary. User-visible HTML/text, deck and document text, spreadsheet labels, campaign copy, brand guidance, and directly observed CLI/runtime output MUST NOT expose internal BizIQ/compiler/QA vocabulary unless the user explicitly requested process documentation. Forbidden language includes control priorities (`P0`, `P1`), closure/gate names, `truth boundary`, `feature depth`, `genericity`, `artifact contract`, `evidence plan`, `acceptance ledger`, and equivalent orchestration labels.
+Acceptance MUST scan the actual production-facing surfaces, not only an evidence summary. User-visible HTML/text, deck and document text, spreadsheet labels, campaign copy, brand guidance, and directly observed CLI/runtime output MUST NOT expose internal AIFENCE/compiler/QA vocabulary unless the user explicitly requested process documentation. Forbidden language includes control priorities (`P0`, `P1`), closure/gate names, `truth boundary`, `feature depth`, `genericity`, `artifact contract`, `evidence plan`, `acceptance ledger`, and equivalent orchestration labels.
 
 A violation is release-blocking. Repair rewrites the emitted copy into natural domain language and reruns the scan; it does not suppress the finding.
 
@@ -77,7 +77,7 @@ The adapter validates spreadsheet-native semantics; it does not require a workbo
 
 Scaffold phrases are evaluated in family context rather than globally banned. Ordinary language such as `next state`, `relevant evidence`, or `decision path` MAY be legitimate in some documents, emails, or analytical surfaces. A scaffold finding becomes release-blocking when generic phrases dominate, when evidence records themselves rely on generic placeholders, or when direct family-specific marker coverage is too weak.
 
-Production-facing internal BizIQ/compiler/QA vocabulary remains globally forbidden under the Finished-Surface Naturalization Scan.
+Production-facing internal AIFENCE/compiler/QA vocabulary remains globally forbidden under the Finished-Surface Naturalization Scan.
 
 # Universal Executable Grammar Preflight
 <!-- id: emission-preflight.universal-executable -->

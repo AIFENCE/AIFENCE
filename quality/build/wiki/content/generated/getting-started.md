@@ -1,6 +1,6 @@
 # Getting Started
 
-BizIQ keeps canonical standards in `source/` and generates portable interoperability under `build/`.
+AIFENCE keeps canonical standards in `source/` and generates portable interoperability under `build/`.
 
 ## Clone and validate
 
@@ -10,7 +10,7 @@ npm run build
 npm test
 ```
 
-The build validates BizIQ Core 1.8.8, runs Operations 2.0 executable regressions, regenerates the Skill/Runtime/adapters/wiki, and verifies generated integrity locks.
+The build validates AIFENCE Core 1.8.8, runs Operations 2.0 executable regressions, regenerates the Skill/Runtime/adapters/wiki, and verifies generated integrity locks.
 
 ## Start the Runtime
 
@@ -39,8 +39,8 @@ node src/cli.js mcp --http --host 127.0.0.1 --port 3888
 After linking the Runtime CLI with `npm link`, install integrations into a project scope:
 
 ```bash
-biziq install all --project . --dry-run
-biziq install all --project .
+aifence install all --project . --dry-run
+aifence install all --project .
 ```
 
-BizIQ intentionally does not mutate global/home configuration automatically.
+AIFENCE intentionally does not mutate global/home configuration automatically.
