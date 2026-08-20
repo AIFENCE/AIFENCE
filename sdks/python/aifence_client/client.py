@@ -79,6 +79,9 @@ class AifenceClient:
         if max_retries < 0:
             raise ValueError("max_retries cannot be negative")
         self.max_retries = max_retries
+        normalized_base = base_url.rstrip("/")
+        root_base = normalized_base[:-len("/guard")] if normalized_base.endswith("/guard") else normalized_base
+        self._fence_url = root_base + "/v1/fence/submit"
         headers = {"Accept": "application/json", "User-Agent": "aifence-python/1.0.0-rc.5"}
         if api_key:
             headers["Authorization"] = f"Bearer {api_key}"
@@ -136,7 +139,7 @@ class AifenceClient:
         returns the effective request id in the receipt.
         """
         headers = {"X-Request-ID": request_id} if request_id else None
-        return self._json("POST", "/v1/fence/submit", json=request, headers=headers)
+        return self._json("POST", self._fence_url, json=request, headers=headers)
 
     def ingest_event(self, event: dict[str, Any]) -> dict[str, Any]:
         return self._json("POST", "/v1/events", json=event)
@@ -451,6 +454,9 @@ class AsyncAifenceClient:
         if max_retries < 0:
             raise ValueError("max_retries cannot be negative")
         self.max_retries = max_retries
+        normalized_base = base_url.rstrip("/")
+        root_base = normalized_base[:-len("/guard")] if normalized_base.endswith("/guard") else normalized_base
+        self._fence_url = root_base + "/v1/fence/submit"
         headers = {"Accept": "application/json", "User-Agent": "aifence-python/1.0.0-rc.5"}
         if api_key:
             headers["Authorization"] = f"Bearer {api_key}"
@@ -503,7 +509,7 @@ class AsyncAifenceClient:
         self, request: dict[str, Any], *, request_id: str | None = None
     ) -> dict[str, Any]:
         headers = {"X-Request-ID": request_id} if request_id else None
-        return await self._json("POST", "/v1/fence/submit", json=request, headers=headers)
+        return await self._json("POST", self._fence_url, json=request, headers=headers)
 
     async def ingest_event(self, event: dict[str, Any]) -> dict[str, Any]:
         return await self._json("POST", "/v1/events", json=event)

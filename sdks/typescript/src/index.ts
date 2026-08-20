@@ -97,6 +97,7 @@ const RETRYABLE_STATUS_CODES = new Set([429, 502, 503, 504]);
 
 export class AifenceClient {
   private readonly baseUrl: string;
+  private readonly fenceUrl: string;
   private readonly timeoutMs: number;
   private readonly maxRetries: number;
   private readonly maxResponseBytes: number;
@@ -110,6 +111,8 @@ export class AifenceClient {
       throw new Error("maxResponseBytes must be positive");
     }
     this.baseUrl = baseUrl.replace(/\/$/, "");
+    const rootBaseUrl = this.baseUrl.endsWith("/guard") ? this.baseUrl.slice(0, -6) : this.baseUrl;
+    this.fenceUrl = `${rootBaseUrl}/v1/fence/submit`;
     this.timeoutMs = options.timeoutMs ?? 30_000;
     this.maxRetries = options.maxRetries ?? 3;
     this.maxResponseBytes = options.maxResponseBytes ?? 16 * 1024 * 1024;
@@ -155,7 +158,7 @@ export class AifenceClient {
 
   submitFence(request: JsonObject, requestId?: string): Promise<FenceReceipt> {
     const headers = requestId ? {"X-Request-ID": requestId} : undefined;
-    return this.requestJson("POST", "/v1/fence/submit", request, false, headers);
+    return this.requestJson("POST", this.fenceUrl, request, false, headers);
   }
 
   ingestEvent(event: JsonObject): Promise<JsonObject> {
@@ -562,7 +565,7 @@ export class AifenceClient {
           redirect: "error",
         };
         if (encodedBody !== undefined) init.body = encodedBody;
-        response = await this.fetchImpl(`${this.baseUrl}${path}`, init);
+        response = await this.fetchImpl(path.startsWith("https://") ? path : `${this.baseUrl}${path}`, init);
       } catch (error) {
         if (attempt + 1 >= attempts) throw error;
         await this.sleep(this.retryDelay(undefined, attempt));

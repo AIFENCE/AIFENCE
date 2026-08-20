@@ -9,3 +9,13 @@ func TestRejectsInsecureBaseURL(t *testing.T) {
 		t.Fatal("expected insecure URL to be rejected")
 	}
 }
+
+func TestFenceURLResolvesOutsideGuardMount(t *testing.T) {
+	client, err := NewClient("https://aifence.local/guard", "key", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if got, want := client.fenceURL.String(), "https://aifence.local/v1/fence/submit"; got != want {
+		t.Fatalf("fence URL = %q, want %q", got, want)
+	}
+}

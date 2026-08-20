@@ -40,6 +40,7 @@ type Options struct {
 
 type Client struct {
 	baseURL          *url.URL
+	fenceURL         *url.URL
 	apiKey           string
 	httpClient       *http.Client
 	maxRetries       int
@@ -85,8 +86,15 @@ func NewClientWithOptions(baseURL, apiKey string, options Options) (*Client, err
 	if options.MaxResponseBytes < 1 {
 		return nil, errors.New("MaxResponseBytes must be positive")
 	}
+	fenceURL := *u
+	basePath := strings.TrimRight(fenceURL.Path, "/")
+	if strings.HasSuffix(basePath, "/guard") {
+		basePath = strings.TrimSuffix(basePath, "/guard")
+	}
+	fenceURL.Path = strings.TrimRight(basePath, "/") + "/v1/fence/submit"
 	return &Client{
 		baseURL:          u,
+		fenceURL:         &fenceURL,
 		apiKey:           apiKey,
 		httpClient:       options.HTTPClient,
 		maxRetries:       options.MaxRetries,
@@ -143,7 +151,7 @@ func (c *Client) GetDecision(ctx context.Context, decisionID string, out any) er
 
 // SubmitFence runs the composed Quality -> Guard -> Bus enforcement path.
 func (c *Client) SubmitFence(ctx context.Context, request any, out any) error {
-	return c.doJSON(ctx, http.MethodPost, "/v1/fence/submit", request, out, false)
+	return c.doJSON(ctx, http.MethodPost, c.fenceURL.String(), request, out, false)
 }
 
 func (c *Client) IngestEvent(ctx context.Context, event any, out any) error {
@@ -510,8 +518,18 @@ func (c *Client) perform(ctx context.Context, method, path string, body []byte, 
 	var response *http.Response
 	var err error
 	for attempt := 0; attempt < attempts; attempt++ {
-		target := *c.baseURL
-		target.Path = strings.TrimRight(target.Path, "/") + path
+		var target *url.URL
+		if strings.HasPrefix(path, "https://") {
+			parsed, parseErr := url.Parse(path)
+			if parseErr != nil {
+				return nil, nil, parseErr
+			}
+			target = parsed
+		} else {
+			resolved := *c.baseURL
+			resolved.Path = strings.TrimRight(resolved.Path, "/") + path
+			target = &resolved
+		}
 		req, requestErr := http.NewRequestWithContext(ctx, method, target.String(), bytes.NewReader(body))
 		if requestErr != nil {
 			return nil, nil, requestErr

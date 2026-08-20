@@ -47,6 +47,18 @@ The client requires HTTPS, disables redirects, supports mTLS, applies bounded re
 
 See the repository [SDK guide](../../docs/SDK.md) for the complete API and framework integrations.
 
+## Full composed fence
+
+A client configured with the Guard mount can also call the root composed fence; the SDK resolves the root endpoint automatically:
+
+```python
+receipt = client.submit_fence({
+    "artifact": "Validated artifact",
+    "receiver": "release-agent",
+    "action": {"operation": "read"},
+})
+```
+
 ## License
 
 This SDK is licensed under the [Apache License 2.0](LICENSE).

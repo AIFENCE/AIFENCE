@@ -17,6 +17,19 @@ The client requires HTTPS, applies bounded request behavior, and exposes the cor
 
 See the repository [SDK guide](../../docs/SDK.md) for the complete integration model.
 
+## Full composed fence
+
+A Guard-mounted client resolves the root composed fence automatically through `SubmitFence`.
+
+```go
+var receipt map[string]any
+err = client.SubmitFence(ctx, map[string]any{
+    "artifact": "Validated artifact",
+    "receiver": "release-agent",
+    "action": map[string]any{"operation": "read"},
+}, &receipt)
+```
+
 ## License
 
 This SDK is licensed under the [Apache License 2.0](LICENSE).

@@ -107,9 +107,9 @@ jobs:
           npm install --ignore-scripts
           npm run build
           node dist/conformance.js ../../src/aifence/bus/tck/vectors/core.json
+      - name: Install AIFENCE runtime for Bus TCK
+        run: pip install -e .
       - name: Python Bus TCK and mutation suite
-        env:
-          PYTHONPATH: src
         run: python -m aifence.bus.conformance --json --fuzz 200
       - name: Cross-implementation conformance matrix
         run: python scripts/conformance_matrix.py

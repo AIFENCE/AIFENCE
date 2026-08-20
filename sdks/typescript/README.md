@@ -40,6 +40,18 @@ console.log(decision.outcome);
 
 See the repository [SDK guide](../../docs/SDK.md) for the complete API.
 
+## Full composed fence
+
+The Guard-mounted client resolves the root composed fence automatically:
+
+```ts
+const receipt = await client.submitFence({
+  artifact: "Validated artifact",
+  receiver: "release-agent",
+  action: {operation: "read"},
+});
+```
+
 ## License
 
 This SDK is licensed under the [Apache License 2.0](LICENSE).
