@@ -28,16 +28,11 @@ def test_guard_inherits_core_database_url(app: FastAPI) -> None:
     assert app.state.guard_app.state.settings.database_url == core_url
 
 
-def test_production_propagates_and_guard_fails_closed(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
-    """A production fence must not be able to start an unhardened guard tier."""
-    for name in ("AIFENCE_GUARD_ENVIRONMENT", "AIFENCE_GUARD_ENVIRONMENT"):
-        monkeypatch.delenv(name, raising=False)
-
+def test_programmatic_production_settings_fail_closed_before_boot(tmp_path) -> None:
+    """Passing CoreSettings directly cannot bypass production validation."""
     settings = CoreSettings(
         environment="production",
         database_url=f"sqlite+pysqlite:///{tmp_path/'p.db'}",
     )
-    # Guard inherits production and rejects the insecure defaults instead of
-    # silently starting in development mode.
-    with pytest.raises(ValueError, match="invalid production configuration"):
+    with pytest.raises(ValueError, match="production|HTTPS"):
         create_app(settings)

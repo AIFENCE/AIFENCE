@@ -12,7 +12,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-__version__ = "1.0.0rc5"
+from ..versions import GUARD_VERSION
+
+__version__ = GUARD_VERSION
 
 if TYPE_CHECKING:
     from fastapi import FastAPI

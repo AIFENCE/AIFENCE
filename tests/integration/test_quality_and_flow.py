@@ -76,7 +76,9 @@ def test_fence_full_passthrough_delivers_claimable_handoff(client: TestClient) -
 
     app = client.app
     with app.state.session_factory() as db:
-        claimed = SemanticBus(db, get_settings()).pull(receiver="analytics-agent", claim=True)
+        claimed = SemanticBus(db, get_settings()).pull(
+            receiver="analytics-agent", workspace=bus["workspace"], claim=True
+        )
         db.commit()
     assert [m.id for m in claimed] == [bus["message_id"]]
 

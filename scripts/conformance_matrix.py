@@ -10,7 +10,7 @@ from pathlib import Path
 
 def main() -> int:
     root = Path(__file__).resolve().parents[1]
-    manifest = json.loads((root / "tck" / "implementations.json").read_text())
+    manifest = json.loads((root / "src" / "aifence" / "bus" / "tck" / "implementations.json").read_text())
     env = os.environ.copy()
     src = str(root / "src")
     env["PYTHONPATH"] = src + (os.pathsep + env["PYTHONPATH"] if env.get("PYTHONPATH") else "")

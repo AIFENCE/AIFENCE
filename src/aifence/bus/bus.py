@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import uuid
 from datetime import UTC, datetime, timedelta
 from typing import Any
@@ -20,6 +21,12 @@ from .schemas import Budget, EncodeRequest, Packet, Provenance
 
 def _utcnow() -> datetime:
     return datetime.now(UTC)
+
+
+def _payload_digest(value: Any) -> str:
+    """Stable digest used to bind an idempotency key to one logical payload."""
+    encoded = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 class SemanticBus:
@@ -95,10 +102,15 @@ class SemanticBus:
         receiver = receiver.strip()
         if not receiver:
             raise ValueError("receiver is required")
+        payload_digest = _payload_digest(content)
         if idempotency_key:
             existing = self.db.scalar(select(BusMessage).where(BusMessage.workspace == workspace, BusMessage.idempotency_key == idempotency_key))
             if existing is not None:
-                if existing.receiver != receiver or existing.sender != sender:
+                if (
+                    existing.receiver != receiver
+                    or existing.sender != sender
+                    or existing.payload_digest != payload_digest
+                ):
                     raise ValueError("idempotency key reused for a different handoff")
                 return existing
         self.quotas.enforce_handoff(workspace, sender)
@@ -131,6 +143,7 @@ class SemanticBus:
             run_id=run_id,
             correlation_id=correlation_id,
             idempotency_key=idempotency_key,
+            payload_digest=payload_digest,
             partition_key=effective_partition,
             ordering_key=ordering_key,
             sequence_no=sequence_no,
@@ -165,10 +178,15 @@ class SemanticBus:
     ) -> BusMessage:
         if not refs:
             raise ValueError("at least one ref is required")
+        payload_digest = _payload_digest({"refs": refs})
         if idempotency_key:
             existing = self.db.scalar(select(BusMessage).where(BusMessage.workspace == workspace, BusMessage.idempotency_key == idempotency_key))
             if existing is not None:
-                if existing.receiver != receiver or existing.sender != sender:
+                if (
+                    existing.receiver != receiver
+                    or existing.sender != sender
+                    or existing.payload_digest != payload_digest
+                ):
                     raise ValueError("idempotency key reused for a different handoff")
                 return existing
         self.quotas.enforce_handoff(workspace, sender)
@@ -205,7 +223,7 @@ class SemanticBus:
         sequence_no = self._next_sequence(workspace, ordering_key) if ordering_key else None
         item = BusMessage(
             id="M" + uuid.uuid4().hex, packet_id=packet.id or "", sender=sender, receiver=receiver, workspace=workspace,
-            run_id=run_id, correlation_id=correlation_id, idempotency_key=idempotency_key, partition_key=effective_partition,
+            run_id=run_id, correlation_id=correlation_id, idempotency_key=idempotency_key, payload_digest=payload_digest, partition_key=effective_partition,
             ordering_key=ordering_key, sequence_no=sequence_no, priority=priority, status="pending", wire=wire,
             strategy="zero_copy", estimated_tokens=max(1, len(str(wire)) // 4), wire_bytes=len(packed), expires_at=expires_at,
         )

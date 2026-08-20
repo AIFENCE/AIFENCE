@@ -89,23 +89,22 @@ full pass-through, the delivered handoff is a real durable message the receiver 
 
 ```bash
 python -m venv .venv
-. .venv/Scripts/activate        # Windows PowerShell: .venv\Scripts\Activate.ps1
+. .venv/bin/activate            # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"
-aifence-api                     # serves on 0.0.0.0:8080
+aifence demo                    # proves Quality -> Guard -> Bus end to end
+aifence doctor                  # validates this configured installation
 ```
 
-Then:
-
-```bash
-curl http://127.0.0.1:8080/health/ready
-```
+For a persistent development server and authenticated bootstrap flow, see [docs/QUICKSTART.md](docs/QUICKSTART.md).
 
 ## Development
 
 ```bash
-make verify        # ruff + mypy(strict) + pytest
+make verify        # lint + strict typing + tests + repo gates + conformance
 make test
 ```
+
+The synchronous fence runs the bounded **Quality admission** evaluator; the broader Quality 2.0 runtime is an explicit deep mode. See [Quality modes](docs/QUALITY_MODES.md), [versioning](docs/VERSIONS.md), and [Bus protocol compatibility](docs/BUS_PROTOCOL.md).
 
 Configuration uses the `AIFENCE_` environment prefix (a small set of legacy
 variable names is also honored for backward compatibility). See

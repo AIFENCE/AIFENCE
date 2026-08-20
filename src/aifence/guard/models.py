@@ -138,6 +138,8 @@ class Decision(Base):
     enforcement_plan: Mapped[dict[str, object]] = mapped_column(JSON, nullable=False, default=dict)
     findings: Mapped[list[dict[str, object]]] = mapped_column(JSON, nullable=False)
     policy_version: Mapped[str] = mapped_column(String(128), nullable=False)
+    matched_rule: Mapped[str] = mapped_column(Text, nullable=False, default="")
+    reason_codes: Mapped[list[str]] = mapped_column(JSON, nullable=False, default=list)
     receipt: Mapped[str] = mapped_column(Text, nullable=False)
     approval_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
     idempotency_key: Mapped[str | None] = mapped_column(String(128), nullable=True)

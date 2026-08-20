@@ -8,12 +8,12 @@
     },
     {
       "id": "javascript",
-      "command": "node integrations/openclaw/dist/conformance.js tck/vectors/core.json",
+      "command": "node integrations/openclaw/dist/conformance.js src/aifence/bus/tck/vectors/core.json",
       "required": true
     },
     {
       "id": "go",
-      "command": "go run integrations/go/conformance.go tck/vectors/core.json",
+      "command": "go run integrations/go/conformance.go src/aifence/bus/tck/vectors/core.json",
       "required": true
     }
   ]

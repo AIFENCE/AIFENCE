@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import logging
+import secrets
 from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import AsyncExitStack, asynccontextmanager
 from typing import Any
@@ -79,6 +80,8 @@ def _install_tier_handler(app: FastAPI) -> None:
 
 def create_app(settings: CoreSettings | None = None) -> FastAPI:
     settings = settings or CoreSettings.from_env()
+    # Programmatic callers must receive the same fail-fast validation as env-based startup.
+    settings.validate()
     logging.basicConfig(level=getattr(logging, settings.log_level, logging.INFO))
 
     engine = create_database_engine(settings)
@@ -157,7 +160,21 @@ def create_app(settings: CoreSettings | None = None) -> FastAPI:
         }
 
     @app.get("/metrics", include_in_schema=False)
-    def metrics() -> object:
+    def metrics(request: Request) -> object:
+        if not settings.metrics_public:
+            authorization = request.headers.get("authorization", "")
+            scheme, _, value = authorization.partition(" ")
+            expected = settings.metrics_bearer_token
+            if (
+                scheme.lower() != "bearer"
+                or not expected
+                or not secrets.compare_digest(value.strip(), expected)
+            ):
+                return JSONResponse(
+                    status_code=401,
+                    headers={"WWW-Authenticate": "Bearer"},
+                    content={"error": {"code": "metrics_auth_required", "message": "metrics bearer token required"}},
+                )
         return metrics_response()
 
     # --- subsystem composition (the merge seam) ---

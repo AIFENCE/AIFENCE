@@ -9,7 +9,8 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from ..security import IdentityDep
 from .controls import load_controls, registry_summary
-from .gate import QualityGate
+from .deep import deep_runtime_status, plan_deep_evaluation
+from .gate import ADMISSION_PROFILE, QualityGate
 
 # Authenticated at the router level: the quality tier is part of the fence, not
 # a public surface, so every endpoint requires the same identity guard enforces.
@@ -32,6 +33,11 @@ class EvaluateRequest(BaseModel):
         default=None,
         description="Optional source material; numeric claims absent from it are reported as unsupported.",
     )
+
+
+class DeepPlanRequest(BaseModel):
+    intent: str = Field(min_length=1, max_length=20000)
+    hints: dict[str, Any] = Field(default_factory=dict)
 
 
 class ControlSummary(BaseModel):
@@ -66,6 +72,26 @@ def controls(
         )
         for c in items[:limit]
     ]
+
+
+
+
+@router.get("/modes", summary="Describe admission and deep Quality modes")
+def modes(identity: IdentityDep) -> dict[str, object]:
+    return {
+        "admission": {
+            "mode": "admission",
+            "profile": ADMISSION_PROFILE,
+            "available": True,
+            "semantics": "Bounded deterministic checks executed synchronously inside the fence.",
+        },
+        "deep": deep_runtime_status(),
+    }
+
+
+@router.post("/deep/plan", summary="Plan a family-native deep Quality 2.0 evaluation")
+def deep_plan(request: DeepPlanRequest, identity: IdentityDep) -> dict[str, Any]:
+    return plan_deep_evaluation(request.intent, request.hints)
 
 
 @router.post("/evaluate", summary="Run the quality gate over an artifact")

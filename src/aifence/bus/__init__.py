@@ -13,7 +13,9 @@ from __future__ import annotations
 import os
 from typing import TYPE_CHECKING
 
-__version__ = "0.2.7"
+from ..versions import BUS_VERSION
+
+__version__ = BUS_VERSION
 
 if TYPE_CHECKING:
     from fastapi import FastAPI

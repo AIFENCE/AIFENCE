@@ -15,6 +15,8 @@ identity, one audit chain, and one telemetry pipeline.
 """
 from __future__ import annotations
 
-__version__ = "0.1.0"
+from .versions import PLATFORM_VERSION
+
+__version__ = PLATFORM_VERSION
 
 __all__ = ["__version__"]

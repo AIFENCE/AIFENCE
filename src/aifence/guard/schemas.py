@@ -152,6 +152,8 @@ class DecisionResponse(BaseModel):
     enforcement_plan: EnforcementPlan
     findings: list[Finding]
     policy_version: str
+    matched_rule: str
+    reason_codes: list[str]
     approval_id: str | None = None
     receipt: str
     expires_at: datetime

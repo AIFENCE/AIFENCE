@@ -38,3 +38,5 @@ full_suite*.txt
 
 # Local documentation preview builds
 /site/
+
+quality/build/

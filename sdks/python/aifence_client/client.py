@@ -127,6 +127,17 @@ class AifenceClient:
     def get_decision(self, decision_id: str) -> dict[str, Any]:
         return self._json("GET", f"/v1/decisions/{_path(decision_id)}", retryable=True)
 
+    def submit_fence(
+        self, request: dict[str, Any], *, request_id: str | None = None
+    ) -> dict[str, Any]:
+        """Run the composed Quality -> Guard -> Bus contract.
+
+        ``request_id`` is optional caller correlation metadata; the server always
+        returns the effective request id in the receipt.
+        """
+        headers = {"X-Request-ID": request_id} if request_id else None
+        return self._json("POST", "/v1/fence/submit", json=request, headers=headers)
+
     def ingest_event(self, event: dict[str, Any]) -> dict[str, Any]:
         return self._json("POST", "/v1/events", json=event)
 
@@ -487,6 +498,12 @@ class AsyncAifenceClient:
 
     async def get_decision(self, decision_id: str) -> dict[str, Any]:
         return await self._json("GET", f"/v1/decisions/{_path(decision_id)}", retryable=True)
+
+    async def submit_fence(
+        self, request: dict[str, Any], *, request_id: str | None = None
+    ) -> dict[str, Any]:
+        headers = {"X-Request-ID": request_id} if request_id else None
+        return await self._json("POST", "/v1/fence/submit", json=request, headers=headers)
 
     async def ingest_event(self, event: dict[str, Any]) -> dict[str, Any]:
         return await self._json("POST", "/v1/events", json=event)

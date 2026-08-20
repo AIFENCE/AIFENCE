@@ -26,6 +26,22 @@ LATENCY = Histogram(
     ("method", "route"),
 )
 
+FENCE_STAGE_CALLS = Counter(
+    "aifence_fence_stage_calls_total",
+    "Fence tier calls by result and breaker state",
+    ("tier", "result", "breaker_state"),
+)
+FENCE_STAGE_LATENCY = Histogram(
+    "aifence_fence_stage_duration_seconds",
+    "Fence tier call duration",
+    ("tier",),
+)
+FENCE_OUTCOMES = Counter(
+    "aifence_fence_outcomes_total",
+    "Final fence outcomes",
+    ("outcome", "allowed"),
+)
+
 
 class MetricsMiddleware(BaseHTTPMiddleware):
     async def dispatch(

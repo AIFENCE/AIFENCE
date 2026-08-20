@@ -28,9 +28,22 @@ export interface DecisionResponse {
   constraints: JsonObject;
   findings: Finding[];
   policy_version: string;
+  matched_rule: string;
+  reason_codes: string[];
   approval_id: string | null;
   receipt: string;
   expires_at: string;
+}
+
+
+export interface FenceReceipt {
+  request_id: string;
+  tenant_id: string;
+  allowed: boolean;
+  final_outcome: string;
+  degraded_tiers: string[];
+  audit: JsonObject;
+  stages: JsonObject;
 }
 
 export interface CapabilityIssueRequest {
@@ -138,6 +151,11 @@ export class AifenceClient {
 
   getDecision(decisionId: string): Promise<DecisionResponse> {
     return this.requestJson("GET", `/v1/decisions/${this.segment(decisionId)}`, undefined, true);
+  }
+
+  submitFence(request: JsonObject, requestId?: string): Promise<FenceReceipt> {
+    const headers = requestId ? {"X-Request-ID": requestId} : undefined;
+    return this.requestJson("POST", "/v1/fence/submit", request, false, headers);
   }
 
   ingestEvent(event: JsonObject): Promise<JsonObject> {

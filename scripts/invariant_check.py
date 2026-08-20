@@ -4,10 +4,11 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+CATALOG = ROOT / "src" / "aifence" / "bus" / "spec" / "invariants.json"
 
 
 def main() -> None:
-    catalog = json.loads((ROOT / "spec" / "invariants.json").read_text())
+    catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
     ids: set[str] = set()
     missing: list[str] = []
     for item in catalog.get("invariants", []):

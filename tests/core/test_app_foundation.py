@@ -11,7 +11,7 @@ from aifence.core.config import CoreSettings
 
 @pytest.fixture()
 def client(tmp_path) -> TestClient:
-    settings = CoreSettings(database_url=f"sqlite+pysqlite:///{tmp_path/'aifence.db'}")
+    settings = CoreSettings(database_url=f"sqlite+pysqlite:///{tmp_path/'aifence.db'}", metrics_public=True)
     return TestClient(create_app(settings))
 
 
@@ -61,3 +61,16 @@ def test_settings_from_env_reads_legacy_names(monkeypatch: pytest.MonkeyPatch) -
 def test_invalid_environment_rejected() -> None:
     with pytest.raises(ValueError):
         CoreSettings(environment="banana").validate()
+
+
+def test_metrics_private_mode_requires_bearer(tmp_path) -> None:
+    settings = CoreSettings(
+        database_url=f"sqlite+pysqlite:///{tmp_path/'private-metrics.db'}",
+        metrics_public=False,
+        metrics_bearer_token="m" * 32,
+    )
+    client = TestClient(create_app(settings))
+    assert client.get("/metrics").status_code == 401
+    response = client.get("/metrics", headers={"Authorization": f"Bearer {'m' * 32}"})
+    assert response.status_code == 200
+    assert "aifence_http_requests_total" in response.text

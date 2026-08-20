@@ -324,6 +324,7 @@ class BusMessage(Base):
     run_id: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
     correlation_id: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
     idempotency_key: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
+    payload_digest: Mapped[str] = mapped_column(String(64), nullable=False, default="")
     partition_key: Mapped[str] = mapped_column(String(128), default="default", index=True)
     ordering_key: Mapped[str | None] = mapped_column(String(128), nullable=True, index=True)
     sequence_no: Mapped[int | None] = mapped_column(Integer, nullable=True)

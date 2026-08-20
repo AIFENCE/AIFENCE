@@ -43,8 +43,22 @@ migrate: ## Apply database migrations to head
 run: ## Run the composed API locally (aifence-api)
 	aifence-api
 
+.PHONY: repo-checks
+repo-checks: ## Security, architecture, invariant, registry and release consistency gates
+	$(PY) scripts/security_check.py
+	$(PY) scripts/architecture_check.py
+	$(PY) scripts/invariant_check.py
+	$(PY) scripts/quality_registry_check.py
+	$(PY) scripts/protocol_fixture_check.py
+	$(PY) scripts/release_check.py
+
+.PHONY: conformance
+conformance: ## Run the composed fence and Bus protocol contracts
+	$(PY) -m pytest tests/conformance
+	$(PY) -m aifence.bus.conformance --fuzz 100
+
 .PHONY: verify
-verify: lint typecheck test ## Full local gate for the Python tiers
+verify: lint typecheck test repo-checks conformance ## Full local release-oriented gate
 
 .PHONY: build
 build: ## Build the Python distribution

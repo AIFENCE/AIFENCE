@@ -23,6 +23,7 @@ from fastapi import APIRouter, Request
 from pydantic import BaseModel, Field
 
 from .core.config import CoreSettings
+from .core.metrics import FENCE_OUTCOMES, FENCE_STAGE_CALLS, FENCE_STAGE_LATENCY
 from .resilience import BreakerPolicy, CircuitBreaker, TierOutcome
 from .security import IdentityDep
 
@@ -149,14 +150,34 @@ def _run_guard(
         "tier": "guard",
         "outcome": result.outcome,
         "reasons": result.reasons,
+        "reason_codes": result.reason_codes,
         "constraints": result.constraints,
         "policy_version": result.policy_version,
         "matched_rule": result.matched_rule,
         "signals": sorted({f.category for f in findings}),
+        "explain": {
+            "principal": {"type": req.principal.type, "id": req.principal.id},
+            "action": {
+                "type": req.action.type,
+                "operation": req.action.operation,
+                "tool": req.action.tool,
+                "target": req.action.target,
+                "destructive": req.action.destructive,
+            },
+            "security_context": {
+                "environment": req.security.environment,
+                "network_destination": req.security.network_destination,
+            },
+            "risk_score": req.risk_score,
+            "policy": {
+                "version": result.policy_version,
+                "matched_rule": result.matched_rule,
+            },
+        },
     }
 
 
-def _run_bus(req: FenceRequest, request: Request) -> dict[str, Any]:
+def _run_bus(req: FenceRequest, request: Request, tenant_id: str) -> dict[str, Any]:
     """Durably enqueue the vetted artifact as a real, claimable handoff.
 
     Uses the composed application's shared session factory so the handoff is
@@ -172,11 +193,13 @@ def _run_bus(req: FenceRequest, request: Request) -> dict[str, Any]:
     units = compile_content(req.artifact)
     raw_bytes = len(req.artifact.encode("utf-8"))
     digest = hashlib.sha256(req.artifact.encode("utf-8")).hexdigest()
+    workspace = f"tenant:{tenant_id}"
     with session_factory() as db:
         message = SemanticBus(db, bus_settings()).handoff(
             receiver=req.receiver,
             content=req.artifact,
             sender="aifence-fence",
+            workspace=workspace,
             correlation_id=getattr(request.state, "request_id", None),
         )
         db.commit()
@@ -201,6 +224,7 @@ def _run_bus(req: FenceRequest, request: Request) -> dict[str, Any]:
     return {
         "tier": "bus",
         "receiver": req.receiver,
+        "workspace": workspace,
         "message_id": message_id,
         "delivered": True,
         "strategy": strategy,
@@ -219,6 +243,7 @@ def _degraded_stage(tier: str, outcome: TierOutcome[Any]) -> dict[str, Any]:
         "degraded": True,
         "reason": outcome.reason,
         "breaker_state": outcome.state,
+        "elapsed_ms": round(outcome.elapsed_ms, 3),
         "detail": f"{tier} tier failed open by policy",
     }
 
@@ -233,13 +258,68 @@ def submit(req: FenceRequest, request: Request, identity: IdentityDep) -> dict[s
     stages: dict[str, Any] = {}
     degraded: list[str] = []
 
+    def observe_tier(tier: str, outcome: TierOutcome[Any]) -> None:
+        result = "ok" if outcome.ok else (outcome.reason or "degraded")
+        FENCE_STAGE_CALLS.labels(tier, result, outcome.state).inc()
+        FENCE_STAGE_LATENCY.labels(tier).observe(outcome.elapsed_ms / 1000.0)
+
     def receipt(final_outcome: str, *, allowed: bool) -> dict[str, Any]:
+        """Persist a tamper-evident fence completion event and return its receipt."""
+        from .core.db import set_tenant_context
+        from .guard.audit import append_event
+        from .guard.ids import new_id
+
+        FENCE_OUTCOMES.labels(final_outcome, str(allowed).lower()).inc()
+        audit_payload = {
+            "request_id": request_id,
+            "allowed": allowed,
+            "final_outcome": final_outcome,
+            "degraded_tiers": list(degraded),
+            "artifact_sha256": hashlib.sha256(req.artifact.encode("utf-8")).hexdigest(),
+            "quality": {
+                "mode": stages.get("quality", {}).get("mode"),
+                "profile": stages.get("quality", {}).get("profile"),
+                "score": stages.get("quality", {}).get("score"),
+                "outcome": stages.get("quality", {}).get("outcome"),
+            },
+            "guard": {
+                "outcome": stages.get("guard", {}).get("outcome"),
+                "policy_version": stages.get("guard", {}).get("policy_version"),
+                "matched_rule": stages.get("guard", {}).get("matched_rule"),
+                "reason_codes": stages.get("guard", {}).get("reason_codes", []),
+            },
+            "bus": {
+                "message_id": stages.get("bus", {}).get("message_id"),
+                "receiver": stages.get("bus", {}).get("receiver"),
+            },
+        }
+        guard_app = request.app.state.guard_app
+        with request.app.state.session_factory() as session:
+            set_tenant_context(session, identity.tenant_id)
+            event = append_event(
+                session,
+                guard_app.state.signing_key,
+                event_id=new_id("evt"),
+                tenant_id=identity.tenant_id,
+                trace_id=request_id or new_id("trc"),
+                parent_event_id=None,
+                event_type="fence.completed",
+                payload=audit_payload,
+            )
+            session.commit()
+            audit = {
+                "event_id": event.id,
+                "sequence": event.sequence,
+                "event_hash": event.event_hash,
+                "key_id": event.key_id,
+            }
         return {
             "request_id": request_id,
             "tenant_id": identity.tenant_id,
             "allowed": allowed,
             "final_outcome": final_outcome,
             "degraded_tiers": degraded,
+            "audit": audit,
             "stages": stages,
         }
 
@@ -247,6 +327,7 @@ def submit(req: FenceRequest, request: Request, identity: IdentityDep) -> dict[s
     # that cannot answer raises TierUnavailable, which surfaces as 503 rather
     # than letting the request through unchecked.
     quality_result = breakers.quality.call(lambda: _run_quality(req))
+    observe_tier("quality", quality_result)
     if quality_result.ok and quality_result.value is not None:
         stages["quality"] = quality_result.value
         if not quality_result.value["passed"]:
@@ -264,6 +345,7 @@ def submit(req: FenceRequest, request: Request, identity: IdentityDep) -> dict[s
     guard_result = breakers.guard.call(
         lambda: _run_guard(req, quality_result_value, window, agent_key)
     )
+    observe_tier("guard", guard_result)
     # Guard is always fail-closed, so reaching here means it answered.
     guard_stage = guard_result.value or {}
     stages["guard"] = guard_stage
@@ -285,7 +367,8 @@ def submit(req: FenceRequest, request: Request, identity: IdentityDep) -> dict[s
         ),
     )
 
-    bus_result = breakers.bus.call(lambda: _run_bus(req, request))
+    bus_result = breakers.bus.call(lambda: _run_bus(req, request, identity.tenant_id))
+    observe_tier("bus", bus_result)
     if bus_result.ok and bus_result.value is not None:
         stages["bus"] = bus_result.value
         return receipt("handed_off", allowed=True)

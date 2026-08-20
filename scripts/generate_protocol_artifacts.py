@@ -8,7 +8,8 @@ from pathlib import Path
 from aifence.bus.protocol_spec import AIFENCE_PROTOCOL, AIFENCE_WIRE_VERSION, WirePacketV2
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "spec" / "generated"
+SPEC = ROOT / "src" / "aifence" / "bus" / "spec"
+OUT = SPEC / "generated"
 
 
 def render_typescript() -> str:
@@ -52,8 +53,7 @@ def artifacts() -> dict[Path, str]:
         OUT / "wire-v2.ts": render_typescript(),
         OUT / "wire-v2.go": render_go(),
         OUT / "WIRE-FIELDS.md": render_field_table(),
-        ROOT / "spec" / "aifence-v0.2.proto": render_proto(),
-        ROOT / "src" / "aifence.bus" / "spec" / "aifence-v0.2.proto": render_proto(),
+        SPEC / "aifence-v0.2.proto": render_proto(),
     }
 
 

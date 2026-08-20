@@ -1,15 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-or-later
-"""The AIFENCE quality gate.
+"""Fast deterministic AIFENCE admission-quality gate.
 
-A deterministic, dependency-free gate that runs concrete, checkable quality
-controls over an AI-generated artifact and attributes each check back to a
-canonical control capability. This is the fast in-process gate that fronts the
-fence; deep, family-native evaluation is delegated to the quality-control
-runtime under ``quality/`` and is out of scope for this bridge.
+This module is intentionally *not* the full AIFENCE Quality 2.0 runtime.  It is
+the synchronous admission gate used by ``/v1/fence/submit``: bounded,
+deterministic checks that are safe to execute in the request path.  The larger
+``quality/`` runtime plans family-native evidence and validation workflows and
+is exposed separately as the deep-quality capability.
 
-The gate returns one of three outcomes, mirroring how the fence treats it
-downstream: ``accept`` (pass to guard), ``revise`` (soft-fail, quality too low),
-or ``reject`` (hard-fail on a mandatory control).
+Every admission finding has a stable machine-readable identifier.  Human text
+may evolve; automation should key on ``finding_id``/``capability_id`` instead.
 """
 from __future__ import annotations
 
@@ -23,21 +22,27 @@ from .controls import controls_by_capability
 
 CheckStatus = Literal["pass", "warn", "fail"]
 Outcome = Literal["accept", "revise", "reject"]
+Severity = Literal["info", "low", "medium", "high", "critical"]
+
+ADMISSION_EVALUATOR_VERSION = "1.0"
+ADMISSION_PROFILE = "admission/default-v1"
 
 _PLACEHOLDER_PATTERN = re.compile(
     r"\b(TODO|TBD|FIXME|XXX|PLACEHOLDER|LOREM IPSUM|INSERT[ _]|CHANGEME)\b",
     re.IGNORECASE,
 )
 _EMPTY_LINK_PATTERN = re.compile(
-    r"""href\s*=\s*["'](?:\s*|#|javascript:void\(0\))["']""",
+    r'''href\s*=\s*["'](?:\s*|#|javascript:void\(0\))["']''',
     re.IGNORECASE,
 )
 _EMPTY_MD_LINK_PATTERN = re.compile(r"\]\(\s*\)")
-_HEADING_OR_TAG = re.compile(r"(^#{1,6}\s)|(<h[1-6][\s>])|(<section|<article|<main)", re.IGNORECASE | re.MULTILINE)
-#: Numbers that read as factual claims: money, percentages, and multi-digit
-#: figures. Small bare integers are excluded — they are usually list indices,
-#: version fragments, or ordinary prose rather than sourced claims.
-_CLAIM_NUMBER = re.compile(r"(?<![\w.])(?:\$\s?)?\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+|\b\d{2,}\b")
+_HEADING_OR_TAG = re.compile(
+    r"(^#{1,6}\s)|(<h[1-6][\s>])|(<section|<article|<main)",
+    re.IGNORECASE | re.MULTILINE,
+)
+_CLAIM_NUMBER = re.compile(
+    r"(?<![\w.])(?:\$\s?)?\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+|\b\d{2,}\b"
+)
 
 
 def _normalize_number(value: str) -> str:
@@ -45,12 +50,6 @@ def _normalize_number(value: str) -> str:
 
 
 def _ungrounded_numbers(text: str, sources: Sequence[str]) -> list[str]:
-    """Numeric claims in ``text`` that appear nowhere in ``sources``.
-
-    A deliberately conservative groundedness signal: it proves nothing about
-    prose accuracy, but an invented figure is the most common and most costly
-    fabrication in generated business artifacts, and it is checkable.
-    """
     haystack = " ".join(sources)
     normalized_haystack = _normalize_number(haystack)
     unsupported: list[str] = []
@@ -67,13 +66,6 @@ def _ungrounded_numbers(text: str, sources: Sequence[str]) -> list[str]:
 
 
 def _schema_violations(document: Any, schema: dict[str, Any]) -> list[str]:
-    """Validate against JSON Schema, degrading to a structural subset.
-
-    Full validation is used when ``jsonschema`` is installed (it ships with the
-    quality pack's validators). Otherwise the required-property and type subset
-    is enforced, so a missing contract field is still caught rather than the
-    check silently passing.
-    """
     try:
         import jsonschema
     except ImportError:
@@ -86,8 +78,12 @@ def _schema_violations(document: Any, schema: dict[str, Any]) -> list[str]:
 
 
 _JSON_TYPES: dict[str, type | tuple[type, ...]] = {
-    "object": dict, "array": list, "string": str,
-    "integer": int, "number": (int, float), "boolean": bool,
+    "object": dict,
+    "array": list,
+    "string": str,
+    "integer": int,
+    "number": (int, float),
+    "boolean": bool,
 }
 
 
@@ -106,7 +102,9 @@ def _structural_violations(document: Any, schema: dict[str, Any]) -> list[str]:
         for key, subschema in (schema.get("properties") or {}).items():
             if key in document and isinstance(subschema, dict):
                 violations.extend(
-                    f"{key}/{v}" if not v.startswith("<root>") else f"{key}: {v.split(': ', 1)[-1]}"
+                    f"{key}/{v}"
+                    if not v.startswith("<root>")
+                    else f"{key}: {v.split(': ', 1)[-1]}"
                     for v in _structural_violations(document[key], subschema)
                 )
     return violations
@@ -114,6 +112,7 @@ def _structural_violations(document: Any, schema: dict[str, Any]) -> list[str]:
 
 @dataclass(frozen=True)
 class QualityCheck:
+    finding_id: str
     check: str
     capability_id: str
     status: CheckStatus
@@ -121,6 +120,24 @@ class QualityCheck:
     detail: str
     mandatory: bool = False
     backed_by: tuple[str, ...] = ()
+    severity: Severity = "info"
+    remediation: str = ""
+    evidence: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, object]:
+        return {
+            "finding_id": self.finding_id,
+            "check": self.check,
+            "capability_id": self.capability_id,
+            "status": self.status,
+            "severity": self.severity,
+            "weight": self.weight,
+            "mandatory": self.mandatory,
+            "detail": self.detail,
+            "remediation": self.remediation,
+            "evidence": list(self.evidence),
+            "backed_by": list(self.backed_by),
+        }
 
 
 @dataclass
@@ -130,33 +147,32 @@ class QualityDecision:
     score: int
     checks: list[QualityCheck] = field(default_factory=list)
     violations: list[str] = field(default_factory=list)
+    mode: str = "admission"
+    profile: str = ADMISSION_PROFILE
+    evaluator_version: str = ADMISSION_EVALUATOR_VERSION
 
     def to_dict(self) -> dict[str, object]:
+        findings = [c.to_dict() for c in self.checks if c.status != "pass"]
         return {
             "passed": self.passed,
             "outcome": self.outcome,
             "score": self.score,
+            "mode": self.mode,
+            "profile": self.profile,
+            "evaluator_version": self.evaluator_version,
             "violations": self.violations,
-            "checks": [
-                {
-                    "check": c.check,
-                    "capability_id": c.capability_id,
-                    "status": c.status,
-                    "weight": c.weight,
-                    "mandatory": c.mandatory,
-                    "detail": c.detail,
-                    "backed_by": list(c.backed_by),
-                }
-                for c in self.checks
-            ],
+            "findings": findings,
+            # ``checks`` remains for backwards compatibility and includes passes.
+            "checks": [c.to_dict() for c in self.checks],
         }
 
 
 class QualityGate:
-    """Runs the concrete quality controls and scores an artifact 0–100."""
+    """Run bounded admission controls and score an artifact from 0 to 100."""
 
-    def __init__(self, min_score: int = 70) -> None:
+    def __init__(self, min_score: int = 70, profile: str = ADMISSION_PROFILE) -> None:
         self.min_score = min_score
+        self.profile = profile
 
     def evaluate(
         self,
@@ -166,131 +182,154 @@ class QualityGate:
         schema: dict[str, Any] | None = None,
         sources: Sequence[str] | None = None,
     ) -> QualityDecision:
-        """Score an artifact.
-
-        ``schema`` enables JSON Schema conformance checking for structured
-        output; ``sources`` enables grounding — numeric claims that appear
-        nowhere in the supplied source material are reported as unsupported.
-        """
         checks: list[QualityCheck] = []
         text = artifact or ""
         stripped = text.strip()
         is_markup = content_type in {"text/html", "text/markdown"} or "html" in content_type
         is_json = "json" in content_type
 
-        # 1) Completeness — mandatory: an empty artifact fails hard.
         checks.append(
             self._check(
+                "AQ-COMPLETE-001",
                 "completeness",
                 "controls.capability.completeness-ledger",
                 status="fail" if not stripped else "pass",
                 weight=40,
                 mandatory=True,
+                severity="critical" if not stripped else "info",
                 detail="artifact is empty" if not stripped else "artifact has content",
+                remediation="Provide the complete artifact before submitting it to the fence.",
+                evidence=("artifact.trimmed_length=0",) if not stripped else (),
             )
         )
 
-        # 2) Anti-template — mandatory: unresolved placeholders fail hard.
         placeholders = sorted({m.group(0).upper() for m in _PLACEHOLDER_PATTERN.finditer(text)})
         checks.append(
             self._check(
+                "AQ-TEMPLATE-001",
                 "anti_template",
                 "controls.capability.anti-template-heuristics",
                 status="fail" if placeholders else "pass",
                 weight=25,
                 mandatory=True,
-                detail=f"unresolved placeholders: {', '.join(placeholders)}" if placeholders else "no placeholder tokens",
+                severity="high" if placeholders else "info",
+                detail=(
+                    f"unresolved placeholders: {', '.join(placeholders)}"
+                    if placeholders
+                    else "no placeholder tokens"
+                ),
+                remediation="Replace unresolved template markers with final content.",
+                evidence=tuple(placeholders),
             )
         )
 
-        # 3) Answerability — enough substance to be useful.
         length = len(stripped)
+        status: CheckStatus = "pass" if length >= 120 else "warn" if length >= 20 else "fail"
         checks.append(
             self._check(
+                "AQ-ANSWER-001",
                 "answerability",
                 "controls.capability.answerability-design",
-                status="pass" if length >= 120 else "warn" if length >= 20 else "fail",
+                status=status,
                 weight=15,
+                severity="medium" if status == "fail" else "low" if status == "warn" else "info",
                 detail=f"{length} characters of substance",
+                remediation="Add enough task-relevant substance for the receiver to act on the result.",
+                evidence=(f"artifact.trimmed_length={length}",),
             )
         )
 
-        # 4) Link integrity — only meaningful for markup artifacts.
         if is_markup:
             empty_links = len(_EMPTY_LINK_PATTERN.findall(text)) + len(_EMPTY_MD_LINK_PATTERN.findall(text))
             checks.append(
                 self._check(
+                    "AQ-LINK-001",
                     "link_integrity",
                     "controls.capability.artifact-link-integrity",
                     status="fail" if empty_links else "pass",
                     weight=10,
-                    detail=f"{empty_links} empty/placeholder link(s)" if empty_links else "no empty links",
+                    severity="medium" if empty_links else "info",
+                    detail=(
+                        f"{empty_links} empty/placeholder link(s)" if empty_links else "no empty links"
+                    ),
+                    remediation="Replace empty links with valid destinations or remove the inactive affordance.",
+                    evidence=(f"empty_links={empty_links}",) if empty_links else (),
                 )
             )
-            # 5) Structure — headings/landmarks present.
             has_structure = bool(_HEADING_OR_TAG.search(text))
             checks.append(
                 self._check(
+                    "AQ-STRUCTURE-001",
                     "structure",
                     "controls.capability.structure",
                     status="pass" if has_structure else "warn",
                     weight=10,
+                    severity="low" if not has_structure else "info",
                     detail="structural landmarks present" if has_structure else "no headings/landmarks found",
+                    remediation="Add meaningful headings or semantic landmarks for non-trivial markup.",
                 )
             )
 
-        # 6) Structured output must actually parse — mandatory for JSON artifacts.
         parsed: Any = None
+        json_error: str | None = None
         if is_json:
             try:
                 parsed = json.loads(stripped) if stripped else None
-                json_error = None
             except json.JSONDecodeError as exc:
                 json_error = f"line {exc.lineno} column {exc.colno}: {exc.msg}"
             checks.append(
                 self._check(
+                    "AQ-JSON-001",
                     "json_validity",
                     "controls.capability.artifact-format-constraints",
                     status="fail" if json_error else "pass",
                     weight=35,
                     mandatory=True,
+                    severity="critical" if json_error else "info",
                     detail=f"invalid JSON ({json_error})" if json_error else "valid JSON",
+                    remediation="Emit syntactically valid JSON matching the declared content type.",
+                    evidence=(json_error,) if json_error else (),
                 )
             )
 
-        # 7) Schema conformance, when the caller supplies a contract.
         if schema is not None and parsed is not None:
             violations = _schema_violations(parsed, schema)
             checks.append(
                 self._check(
+                    "AQ-SCHEMA-001",
                     "schema_conformance",
                     "controls.capability.artifact-contract-completeness",
                     status="fail" if violations else "pass",
                     weight=25,
                     mandatory=True,
+                    severity="critical" if violations else "info",
                     detail="; ".join(violations[:5]) if violations else "conforms to the supplied schema",
+                    remediation="Correct the structured output so it conforms to the supplied JSON Schema.",
+                    evidence=tuple(violations[:10]),
                 )
             )
 
-        # 8) Grounding — numeric claims must be traceable to the source material.
         if sources:
             unsupported = _ungrounded_numbers(text, sources)
-            # One stray figure is a warning; a cluster of unsourced numbers is
-            # fabrication, and weighted scoring alone would let it through.
             fabricated = len(unsupported) > 2
+            status = "fail" if fabricated else "warn" if unsupported else "pass"
             checks.append(
                 self._check(
+                    "AQ-GROUND-001",
                     "grounding",
                     "controls.capability.truth-boundaries",
-                    status="fail" if fabricated else "warn" if unsupported else "pass",
+                    status=status,
                     weight=20,
                     mandatory=fabricated,
+                    severity="high" if fabricated else "medium" if unsupported else "info",
                     detail=(
                         f"{len(unsupported)} numeric claim(s) absent from sources: "
                         + ", ".join(unsupported[:5])
                         if unsupported
                         else "all numeric claims appear in the sources"
                     ),
+                    remediation="Remove unsupported figures or provide source material containing the claims.",
+                    evidence=tuple(unsupported[:10]),
                 )
             )
 
@@ -298,6 +337,7 @@ class QualityGate:
 
     def _check(
         self,
+        finding_id: str,
         name: str,
         capability_id: str,
         *,
@@ -305,9 +345,13 @@ class QualityGate:
         weight: int,
         detail: str,
         mandatory: bool = False,
+        severity: Severity = "info",
+        remediation: str = "",
+        evidence: tuple[str, ...] = (),
     ) -> QualityCheck:
         backing = controls_by_capability(capability_id)
         return QualityCheck(
+            finding_id=finding_id,
             check=name,
             capability_id=capability_id,
             status=status,
@@ -315,6 +359,9 @@ class QualityGate:
             detail=detail,
             mandatory=mandatory,
             backed_by=tuple(c.control_id for c in backing[:5]),
+            severity=severity,
+            remediation=remediation,
+            evidence=evidence,
         )
 
     def _decide(self, checks: list[QualityCheck]) -> QualityDecision:
@@ -322,14 +369,14 @@ class QualityGate:
         earned = 0
         violations: list[str] = []
         hard_fail = False
-        for c in checks:
-            if c.status == "pass":
-                earned += c.weight
-            elif c.status == "warn":
-                earned += c.weight // 2
-            if c.status == "fail":
-                violations.append(f"{c.check}: {c.detail}")
-                if c.mandatory:
+        for check in checks:
+            if check.status == "pass":
+                earned += check.weight
+            elif check.status == "warn":
+                earned += check.weight // 2
+            if check.status == "fail":
+                violations.append(f"{check.check}: {check.detail}")
+                if check.mandatory:
                     hard_fail = True
         score = round(100 * earned / total_weight)
         if hard_fail:
@@ -341,4 +388,11 @@ class QualityGate:
         else:
             outcome = "revise"
             passed = False
-        return QualityDecision(passed=passed, outcome=outcome, score=score, checks=checks, violations=violations)
+        return QualityDecision(
+            passed=passed,
+            outcome=outcome,
+            score=score,
+            checks=checks,
+            violations=violations,
+            profile=self.profile,
+        )

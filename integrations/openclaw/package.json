@@ -37,11 +37,11 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/NeuralBinary/AIFENCE.git"
+    "url": "git+https://github.com/AIFENCE/AIFENCE.git"
   },
-  "homepage": "https://github.com/NeuralBinary/AIFENCE",
+  "homepage": "https://github.com/AIFENCE/AIFENCE",
   "bugs": {
-    "url": "https://github.com/NeuralBinary/AIFENCE/issues"
+    "url": "https://github.com/AIFENCE/AIFENCE/issues"
   },
   "engines": {
     "node": ">=22.22.3"

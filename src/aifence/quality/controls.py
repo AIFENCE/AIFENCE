@@ -43,7 +43,11 @@ def registry_path() -> Path:
         candidate = parent / "quality" / "source" / "control_registry.csv"
         if candidate.is_file():
             return candidate
-    # Fall back to the conventional location relative to the repo root.
+    # Installed wheels vendor a synchronized snapshot beside this module.
+    packaged = here.with_name("control_registry.csv")
+    if packaged.is_file():
+        return packaged
+    # Fall back to the conventional source-tree location for diagnostics.
     return here.parents[3] / "quality" / "source" / "control_registry.csv"
 
 

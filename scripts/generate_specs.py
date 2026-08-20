@@ -28,19 +28,18 @@ def main() -> None:
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
 
-    repo = ROOT / "spec" / "schemas"
-    packaged = ROOT / "src" / "aifence.bus" / "spec" / "schemas"
+    packaged = ROOT / "src" / "aifence" / "bus" / "spec" / "schemas"
     mismatches: list[str] = []
     for name, model in SPEC_MODELS.items():
         payload = model.model_json_schema()
         filename = f"{name}-v0.2.schema.json"
-        for path in (repo / filename, packaged / filename):
-            if not write_or_check(path, payload, args.check):
-                mismatches.append(str(path.relative_to(ROOT)))
-    wire = WirePacketV2.model_json_schema(by_alias=True)
-    for path in (repo / "wire-v2.schema.json", packaged / "wire-v2.schema.json"):
-        if not write_or_check(path, wire, args.check):
+        path = packaged / filename
+        if not write_or_check(path, payload, args.check):
             mismatches.append(str(path.relative_to(ROOT)))
+    wire = WirePacketV2.model_json_schema(by_alias=True)
+    path = packaged / "wire-v2.schema.json"
+    if not write_or_check(path, wire, args.check):
+        mismatches.append(str(path.relative_to(ROOT)))
 
     if mismatches:
         raise SystemExit("schema artifacts differ: " + ", ".join(sorted(mismatches)))

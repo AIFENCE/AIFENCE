@@ -19,7 +19,7 @@ from aifence.core.config import CoreSettings
 
 @pytest.fixture()
 def app(tmp_path) -> FastAPI:
-    return create_app(CoreSettings(database_url=f"sqlite+pysqlite:///{tmp_path/'aifence.db'}"))
+    return create_app(CoreSettings(database_url=f"sqlite+pysqlite:///{tmp_path/'aifence.db'}", metrics_public=True))
 
 
 @pytest.fixture()

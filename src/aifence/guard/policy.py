@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import fnmatch
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -122,6 +123,7 @@ class PolicyResult:
     constraints: dict[str, Any]
     policy_version: str
     matched_rule: str
+    reason_codes: list[str]
 
 
 @dataclass(frozen=True)
@@ -405,7 +407,19 @@ class PolicyEngine:
             constraints=constraints,
             policy_version=version,
             matched_rule=",".join(matched_rules),
+            reason_codes=[self._reason_code(rule, outcome) for rule in matched_rules],
         )
+
+
+    @staticmethod
+    def _reason_code(matched_rule: str, outcome: Outcome) -> str:
+        """Return a stable automation-safe code for a policy match.
+
+        Policy prose is intentionally free to improve over time.  Clients that
+        need durable branching semantics should key on this code instead.
+        """
+        token = re.sub(r"[^A-Za-z0-9]+", "_", matched_rule).strip("_").upper()
+        return f"GUARD_{outcome.upper()}_{token or 'DEFAULT'}"
 
     def _evaluate_document(
         self,

@@ -141,6 +141,11 @@ func (c *Client) GetDecision(ctx context.Context, decisionID string, out any) er
 	return c.doJSON(ctx, http.MethodGet, "/v1/decisions/"+url.PathEscape(decisionID), nil, out, true)
 }
 
+// SubmitFence runs the composed Quality -> Guard -> Bus enforcement path.
+func (c *Client) SubmitFence(ctx context.Context, request any, out any) error {
+	return c.doJSON(ctx, http.MethodPost, "/v1/fence/submit", request, out, false)
+}
+
 func (c *Client) IngestEvent(ctx context.Context, event any, out any) error {
 	return c.doJSON(ctx, http.MethodPost, "/v1/events", event, out, false)
 }

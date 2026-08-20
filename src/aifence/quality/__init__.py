@@ -15,7 +15,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-__version__ = "2.0.0"
+from ..versions import QUALITY_VERSION
+
+__version__ = QUALITY_VERSION
 
 if TYPE_CHECKING:
     from fastapi import FastAPI

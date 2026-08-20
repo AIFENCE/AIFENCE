@@ -65,6 +65,7 @@ class CoreSettings:
     otel_service_name: str = "aifence"
     otel_exporter_otlp_endpoint: str = ""
     metrics_public: bool = False
+    metrics_bearer_token: str = ""
 
     # Fence flow resilience. Guard is fail-closed and cannot be opened: an
     # unavailable enforcement tier must never become an open door.
@@ -150,6 +151,7 @@ class CoreSettings:
                 legacy=("AGENTDANCE_OTEL_EXPORTER_OTLP_ENDPOINT",),
             ),
             metrics_public=env_bool("AIFENCE_METRICS_PUBLIC", False, legacy=("SAGE_METRICS_PUBLIC",)),
+            metrics_bearer_token=env_secret("AIFENCE_METRICS_BEARER_TOKEN"),
             flow_quality_timeout_seconds=env_float("AIFENCE_FLOW_QUALITY_TIMEOUT_SECONDS", 5.0),
             flow_guard_timeout_seconds=env_float("AIFENCE_FLOW_GUARD_TIMEOUT_SECONDS", 5.0),
             flow_bus_timeout_seconds=env_float("AIFENCE_FLOW_BUS_TIMEOUT_SECONDS", 10.0),
@@ -214,6 +216,37 @@ class CoreSettings:
             )
         if self.bus_transport in {"redis", "kafka", "rabbitmq"} and not self.bus_transport_url:
             raise ValueError(f"the {self.bus_transport} transport requires AIFENCE_BUS_TRANSPORT_URL")
+
+        if self.environment == "production":
+            public = urlparse(self.public_base_url)
+            if (
+                public.scheme.lower() != "https"
+                or not public.hostname
+                or public.username is not None
+                or public.password is not None
+                or public.query
+                or public.fragment
+            ):
+                raise ValueError(
+                    "AIFENCE_PUBLIC_BASE_URL must be a canonical HTTPS origin in production"
+                )
+            if self.is_sqlite:
+                raise ValueError("production requires a server database; SQLite is not supported")
+            if self.auto_create_schema:
+                raise ValueError("AIFENCE_AUTO_CREATE_SCHEMA must be false in production")
+            if self.docs_enabled:
+                raise ValueError("interactive API docs must be disabled in production")
+            if not self.allowed_hosts or any(host in {"*", "*.*"} for host in self.allowed_hosts):
+                raise ValueError("production requires an explicit non-wildcard AIFENCE_ALLOWED_HOSTS")
+            if "*" in self.allowed_origins:
+                raise ValueError("wildcard CORS is prohibited in production")
+            if self.bus_transport == "memory":
+                raise ValueError("the in-memory bus transport is not supported in production")
+            if not self.metrics_public and len(self.metrics_bearer_token.encode("utf-8")) < 32:
+                raise ValueError(
+                    "private production metrics require AIFENCE_METRICS_BEARER_TOKEN with at least 32 bytes"
+                )
+
         unknown = set(self.flow_fail_open_tiers) - {"quality", "bus"}
         if unknown:
             # Naming "guard" here is a configuration error, not a silent no-op:
