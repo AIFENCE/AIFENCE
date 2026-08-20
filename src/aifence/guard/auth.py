@@ -37,6 +37,10 @@ KNOWN_SCOPES = frozenset({
     "dispatch:run",
 })
 
+# Canonical complete administrative scope set. Keep this alongside KNOWN_SCOPES so
+# every CLI/service consumes the authorization model from one source of truth.
+FULL_ADMIN_SCOPES: list[str] = sorted(KNOWN_SCOPES)
+
 
 @dataclass(frozen=True)
 class AuthContext:

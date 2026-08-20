@@ -18,7 +18,7 @@ from alembic.config import Config
 
 from .application import create_app
 from .audit import export_tenant_audit, verify_tenant_chain
-from .auth import KNOWN_SCOPES, AuthContext
+from .auth import FULL_ADMIN_SCOPES, AuthContext
 from .config import Settings
 from .crypto import SigningKey, generate_key_files
 from .db import set_tenant_context
@@ -27,7 +27,6 @@ from .maintenance import run_tenant_maintenance
 from .policy import PolicyEngine, load_baseline_policy
 from .service import AifenceService
 
-FULL_ADMIN_SCOPES = sorted(KNOWN_SCOPES)
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="aifence")
