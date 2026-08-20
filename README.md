@@ -111,6 +111,10 @@ variable names is also honored for backward compatibility). See
 [Configuration](https://aifence.github.io/configuration.html) and
 [Architecture](https://aifence.github.io/architecture.html).
 
+### Releases
+
+GitHub Actions provides a tag-driven release pipeline. Run the **Release** workflow manually to produce certified release-candidate artifacts without publishing, or push an exact platform-version tag such as `v0.1.0` to create a draft GitHub Release after the tagged commit's required CI checks pass. See [docs/RELEASING.md](docs/RELEASING.md).
+
 ### Documentation
 
 The documentation lives in its own repository,

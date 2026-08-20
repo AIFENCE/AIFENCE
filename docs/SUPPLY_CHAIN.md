@@ -12,7 +12,9 @@ The release gate certifies built artifacts rather than treating a passing source
 6. Build the Python wheel and source archive.
 7. Run package integrity checks and install the built wheel into a clean environment for smoke/conformance checks.
 8. Generate dependency vulnerability and SBOM artifacts in CI/release workflows.
-9. Publish checksums/provenance alongside release artifacts; sign artifacts/images where the target registry supports it.
+9. Require the exact tagged commit to have successful Python, Quality, SDK/TCK, and built-artifact CI checks before publication.
+10. Create a draft GitHub Release from an exact `v<platform-version>` tag and attach the certified wheel, source ZIP, SBOM, and SHA-256 checksums.
+11. Sign artifacts/images where the target registry supports it before enabling external package-registry publication.
 
 ## Generated Quality tree
 
@@ -21,3 +23,7 @@ The release gate certifies built artifacts rather than treating a passing source
 ## Dependency policy
 
 Production dependencies should remain explicitly bounded/pinned where reproducibility or signature review requires it. Dependabot/renovation changes should pass the complete release gate rather than being merged solely because an individual package builds.
+
+## GitHub release automation
+
+`.github/workflows/release.yml` is the release boundary. Manual runs create certified release-candidate artifacts only. Tag pushes such as `v0.1.0` must match `pyproject.toml`, require the tagged commit's mandatory CI checks to be green, and then create a draft GitHub Release. See `docs/RELEASING.md` for the operator procedure.

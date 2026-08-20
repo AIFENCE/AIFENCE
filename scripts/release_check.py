@@ -37,6 +37,30 @@ def main() -> None:
     for ecosystem in ("sdks/python", "sdks/typescript", "sdks/go", "integrations/openclaw"):
         require(ecosystem in ci, f"CI does not cover {ecosystem}", failures)
 
+    release_workflow_path = ROOT / ".github/workflows/release.yml"
+    require(release_workflow_path.is_file(), "tag-driven release workflow missing", failures)
+    if release_workflow_path.is_file():
+        release_workflow = release_workflow_path.read_text(encoding="utf-8")
+        for fragment in (
+            'tags:',
+            'python scripts/build_release.py --output dist',
+            'python scripts/package_check.py',
+            'aifence doctor --json',
+            'aifence demo',
+            'aifence-python-sbom.cdx.json',
+            'gh release create',
+            '--verify-tag',
+            '--draft',
+        ):
+            require(fragment in release_workflow, f"release workflow missing required behavior: {fragment}", failures)
+        for check_name in (
+            "Python release gate",
+            "Quality 2.0 deterministic build",
+            "SDKs, adapters and Bus TCK",
+            "Built-artifact certification",
+        ):
+            require(check_name in release_workflow, f"release workflow does not require CI check: {check_name}", failures)
+
     # Public repository identity is singular even though historical authorship is preserved.
     stale = "github.com/NeuralBinary/AIFENCE"
     for root in (ROOT / "integrations", ROOT / "sdks", ROOT / "src"):
@@ -76,6 +100,7 @@ def main() -> None:
         "docs/SUPPLY_CHAIN.md",
         "docs/BUS_PROTOCOL.md",
         "docs/FENCE_FLOW.md",
+        "docs/RELEASING.md",
     )
     for relative in required_docs:
         require((ROOT / relative).is_file(), f"required release documentation missing: {relative}", failures)

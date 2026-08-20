@@ -17,7 +17,7 @@ install: ## Install the package (editable) with dev + optional extras
 
 .PHONY: lint
 lint: ## Ruff lint
-	ruff check src tests
+	ruff check src tests scripts
 
 .PHONY: typecheck
 typecheck: ## Strict mypy over the package
@@ -63,3 +63,11 @@ verify: lint typecheck test repo-checks conformance ## Full local release-orient
 .PHONY: build
 build: ## Build the Python distribution
 	$(PY) -m build
+
+.PHONY: release-build
+release-build: ## Build and validate local release artifacts
+	rm -rf dist
+	$(PY) scripts/build_release.py --output dist
+	@VERSION=$$($(PY) -c 'import tomllib; print(tomllib.load(open("pyproject.toml", "rb"))["project"]["version"])'); \
+	WHEEL=$$(find dist -maxdepth 1 -name "aifence-$$VERSION-*.whl" -print -quit); \
+	$(PY) scripts/package_check.py --source "dist/aifence-v$$VERSION-source.zip" --wheel "$$WHEEL"
