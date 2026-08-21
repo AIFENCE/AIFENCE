@@ -1,0 +1,45 @@
+# Measured coverage gates. These are regression floors, not end-state targets.
+# See docs/TESTING.md for the 90% line / 80% branch maturity target.
+[profiles.ci]
+line = 82.0
+branch = 63.0
+
+[profiles.release]
+line = 82.5
+branch = 63.25
+
+[profiles.nightly]
+line = 82.75
+branch = 63.5
+
+[modules."src/aifence/flow.py"]
+line = 100.0
+branch = 95.0
+
+[modules."src/aifence/guard/auth.py"]
+line = 92.0
+branch = 76.0
+
+[modules."src/aifence/guard/enforcement.py"]
+line = 85.0
+branch = 83.0
+
+[modules."src/aifence/guard/crypto.py"]
+line = 82.0
+branch = 55.0
+
+[modules."src/aifence/guard/policy.py"]
+line = 75.0
+branch = 61.0
+
+[modules."src/aifence/bus/protocol_spec.py"]
+line = 89.0
+branch = 79.0
+
+[modules."src/aifence/bus/wire_codec.py"]
+line = 94.0
+branch = 95.0
+
+[modules."src/aifence/quality/gate.py"]
+line = 87.0
+branch = 61.0

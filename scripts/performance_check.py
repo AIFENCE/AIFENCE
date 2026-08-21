@@ -158,9 +158,9 @@ def main() -> None:
     os.environ["AIFENCE_BUS_PATTERN_LEARNING_ENABLED"] = "false"
     os.environ["AIFENCE_BUS_SEMANTIC_CACHE_ENABLED"] = "false"
 
-    from aifence.bus.db import Base, engine
+    from aifence.bus.db import Base, engine, init_db
 
-    Base.metadata.create_all(engine)
+    init_db()
     for round_index in range(1, args.best_of + 1):
         report = measure_round(args, db_path)
         report["round"] = round_index

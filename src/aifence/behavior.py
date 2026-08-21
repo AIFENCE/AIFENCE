@@ -245,7 +245,7 @@ class AgentWindows:
             return window
 
     def _expire(self, now: float) -> None:
-        stale = [k for k, (seen, _) in self._windows.items() if now - seen > self._ttl]
+        stale = [k for k, (seen, _) in self._windows.items() if now - seen >= self._ttl]
         for key in stale:
             del self._windows[key]
 

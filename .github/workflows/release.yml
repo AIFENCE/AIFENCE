@@ -2,107 +2,62 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"
+    tags: ["v*"]
   workflow_dispatch:
-
-permissions:
-  contents: read
-  checks: read
 
 concurrency:
   group: release-${{ github.ref }}
   cancel-in-progress: false
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
 jobs:
   build:
     name: Build and certify release artifacts
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      checks: read
+      id-token: write
+      attestations: write
     outputs:
       version: ${{ steps.version.outputs.version }}
       tag: ${{ steps.version.outputs.tag }}
       publish: ${{ steps.version.outputs.publish }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: pip
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with: { python-version: "3.12", cache: pip }
 
       - name: Resolve and validate release version
         id: version
-        shell: bash
-        run: |
-          set -euo pipefail
-          VERSION="$(python - <<'PY'
-          import tomllib
-          from pathlib import Path
-          print(tomllib.loads(Path('pyproject.toml').read_text(encoding='utf-8'))['project']['version'])
-          PY
-          )"
-          EXPECTED_TAG="v${VERSION}"
-          PUBLISH=false
-          TAG=""
-          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
-            TAG="${GITHUB_REF_NAME}"
-            if [[ "${TAG}" != "${EXPECTED_TAG}" ]]; then
-              echo "Release tag ${TAG} does not match pyproject.toml version ${EXPECTED_TAG}." >&2
-              exit 1
-            fi
-            PUBLISH=true
-          fi
-          echo "version=${VERSION}" >> "${GITHUB_OUTPUT}"
-          echo "tag=${TAG}" >> "${GITHUB_OUTPUT}"
-          echo "publish=${PUBLISH}" >> "${GITHUB_OUTPUT}"
-          echo "Resolved AIFENCE ${VERSION}; publish=${PUBLISH}"
+        env:
+          RELEASE_REF_TYPE: ${{ github.ref_type }}
+          RELEASE_REF_NAME: ${{ github.ref_name }}
+        run: python scripts/release_preflight.py --ref-type "$RELEASE_REF_TYPE" --ref-name "$RELEASE_REF_NAME" --github-output "$GITHUB_OUTPUT"
 
       - name: Require successful CI for tagged releases
         if: steps.version.outputs.publish == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
+        env: { GH_TOKEN: "${{ github.token }}" }
         shell: bash
         run: |
           set -euo pipefail
-          gh api \
-            -H "Accept: application/vnd.github+json" \
-            "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/check-runs?per_page=100" \
-            > /tmp/aifence-check-runs.json
+          gh api -H "Accept: application/vnd.github+json" "repos/${GITHUB_REPOSITORY}/commits/${GITHUB_SHA}/check-runs?per_page=100" > /tmp/checks.json
           python - <<'PY'
           import json
           from pathlib import Path
-
-          required = {
-              "Python release gate",
-              "Quality 2.0 deterministic build",
-              "SDKs, adapters and Bus TCK",
-              "Built-artifact certification",
-          }
-          payload = json.loads(Path("/tmp/aifence-check-runs.json").read_text(encoding="utf-8"))
-          latest = {}
-          for run in payload.get("check_runs", []):
-              name = run.get("name")
-              if name not in required:
-                  continue
-              stamp = run.get("completed_at") or run.get("started_at") or ""
-              if name not in latest or stamp > latest[name][0]:
-                  latest[name] = (stamp, run.get("status"), run.get("conclusion"), run.get("html_url"))
-
-          missing = sorted(required - latest.keys())
-          failed = {
-              name: values
-              for name, values in latest.items()
-              if values[1] != "completed" or values[2] != "success"
-          }
+          required={"Python release gate","Quality 2.0 deterministic build","SDKs, adapters and Bus TCK","Built-artifact certification"}
+          runs=json.loads(Path('/tmp/checks.json').read_text())['check_runs']; latest={}
+          for r in runs:
+              if r.get('name') in required:
+                  stamp=r.get('completed_at') or r.get('started_at') or ''
+                  if r['name'] not in latest or stamp>latest[r['name']][0]: latest[r['name']]=(stamp,r.get('status'),r.get('conclusion'),r.get('html_url'))
+          missing=required-set(latest); failed={n:v for n,v in latest.items() if v[1]!='completed' or v[2]!='success'}
           if missing or failed:
-              if missing:
-                  print("Missing required CI checks:", ", ".join(missing))
-              for name, (_, status, conclusion, url) in failed.items():
-                  print(f"{name}: status={status} conclusion={conclusion} {url or ''}")
-              raise SystemExit("Tagged commit is not fully certified by CI")
-          print("All required CI checks succeeded for the tagged commit.")
+              print('missing:',sorted(missing)); print('failed:',failed); raise SystemExit('Tagged commit is not fully certified by CI')
+          print('All required CI checks succeeded.')
           PY
 
       - name: Install release tooling and runtime
@@ -111,64 +66,62 @@ jobs:
           pip install -e ".[dev,postgres,mcp,otel,s3,bench,quality,redis,kafka,rabbitmq]"
           pip install build wheel setuptools pip-audit
 
-      - name: Release consistency and vulnerability gates
+      - name: Release line + branch coverage profile
+        run: |
+          pytest --cov=aifence --cov-branch --cov-report=term-missing --cov-report=json:coverage-release.json --cov-fail-under=0
+          python scripts/coverage_policy.py --profile release --coverage-json coverage-release.json
+
+      - name: Release consistency and security gates
         run: |
           ruff check src tests scripts
           mypy src
           python scripts/security_check.py
+          python scripts/secret_scan.py
+          python scripts/security_regression_check.py
           python scripts/architecture_check.py
           python scripts/invariant_check.py
           python scripts/quality_registry_check.py
           python scripts/protocol_fixture_check.py
+          python scripts/api_compat_check.py
           python scripts/release_check.py
           pip-audit --strict
 
-      - name: Build reproducible source and wheel
+      - name: Build reproducibly twice
         shell: bash
         run: |
           set -euo pipefail
-          rm -rf dist
           export SOURCE_DATE_EPOCH="$(git show -s --format=%ct "${GITHUB_SHA}")"
+          python scripts/reproducibility_check.py --source-date-epoch "$SOURCE_DATE_EPOCH"
+          rm -rf dist
           python scripts/build_release.py --output dist
 
-      - name: Validate built artifacts
+      - name: Validate built artifacts and clean-wheel behavior
         shell: bash
         run: |
           set -euo pipefail
           VERSION="${{ steps.version.outputs.version }}"
           WHEEL="$(find dist -maxdepth 1 -name "aifence-${VERSION}-*.whl" -print -quit)"
-          test -n "${WHEEL}"
-          python scripts/package_check.py \
-            --source "dist/aifence-v${VERSION}-source.zip" \
-            --wheel "${WHEEL}"
-
-      - name: Clean-wheel smoke test
-        shell: bash
-        run: |
-          set -euo pipefail
-          VERSION="${{ steps.version.outputs.version }}"
-          WHEEL="$(find dist -maxdepth 1 -name "aifence-${VERSION}-*.whl" -print -quit)"
+          python scripts/package_check.py --source "dist/aifence-v${VERSION}-source.zip" --wheel "$WHEEL"
           python -m venv /tmp/aifence-release-smoke
           /tmp/aifence-release-smoke/bin/pip install --upgrade pip
-          /tmp/aifence-release-smoke/bin/pip install "${WHEEL}"
+          /tmp/aifence-release-smoke/bin/pip install "$WHEEL"
           /tmp/aifence-release-smoke/bin/aifence doctor --json
           /tmp/aifence-release-smoke/bin/aifence demo
-          /tmp/aifence-release-smoke/bin/python scripts/generate_sbom.py \
-            --output dist/aifence-python-sbom.cdx.json
+          /tmp/aifence-release-smoke/bin/python scripts/generate_sbom.py --output dist/aifence-python-sbom.cdx.json
+          sha256sum dist/aifence-python-sbom.cdx.json >> "dist/AIFENCE-v${VERSION}-SHA256SUMS.txt"
+          sort -k2 -o "dist/AIFENCE-v${VERSION}-SHA256SUMS.txt" "dist/AIFENCE-v${VERSION}-SHA256SUMS.txt"
 
-      - name: Finalize release checksums
-        shell: bash
-        run: |
-          set -euo pipefail
-          VERSION="${{ steps.version.outputs.version }}"
-          CHECKSUMS="dist/AIFENCE-v${VERSION}-SHA256SUMS.txt"
-          SBOM="dist/aifence-python-sbom.cdx.json"
-          sha256sum "${SBOM}" >> "${CHECKSUMS}"
-          sort -k2 -o "${CHECKSUMS}" "${CHECKSUMS}"
-          cat "${CHECKSUMS}"
+      - name: Attest release artifacts
+        if: steps.version.outputs.publish == 'true'
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # pinned v3 line
+        with:
+          subject-path: |
+            dist/*.whl
+            dist/*source.zip
+            dist/*SHA256SUMS.txt
+            dist/*sbom*.json
 
-      - name: Upload certified build artifact
-        uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: aifence-v${{ steps.version.outputs.version }}-release-assets
           if-no-files-found: error
@@ -180,17 +133,63 @@ jobs:
             dist/*sbom*.json
 
   publish:
-    name: Create GitHub Release
+    name: Publish GitHub Release and GHCR image
     if: needs.build.outputs.publish == 'true'
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      packages: write
+      id-token: write
+      attestations: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Download certified assets from this run
+        env: { GH_TOKEN: "${{ github.token }}" }
+        run: gh run download "$GITHUB_RUN_ID" -n "aifence-v${{ needs.build.outputs.version }}-release-assets" -D dist
+
+      - name: Build container for scan
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+          IMAGE: ghcr.io/${{ github.repository_owner }}/aifence
+        run: |
+          IMAGE="${IMAGE,,}"
+          docker build --pull -t "$IMAGE:$VERSION" .
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+
+      - name: Scan final container
+        uses: aquasecurity/trivy-action@57a97c7e7821a5776cebc9bb87c984fa69cba8f1 # v0.35.0 / Trivy 0.69.3 safe pin
         with:
-          name: aifence-v${{ needs.build.outputs.version }}-release-assets
-          path: dist
+          image-ref: ${{ env.IMAGE }}:${{ needs.build.outputs.version }}
+          format: table
+          scanners: vuln
+          severity: CRITICAL,HIGH
+          ignore-unfixed: true
+          exit-code: "1"
+          version: v0.69.3
+
+      - name: Push GHCR image
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          echo "$GH_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+          docker tag "$IMAGE:$VERSION" "$IMAGE:${VERSION%.*}"
+          docker tag "$IMAGE:$VERSION" "$IMAGE:latest"
+          docker push "$IMAGE:$VERSION"
+          docker push "$IMAGE:${VERSION%.*}"
+          docker push "$IMAGE:latest"
+          docker pull "$IMAGE:$VERSION" >/dev/null
+          DIGEST="$(docker inspect --format='{{index .RepoDigests 0}}' "$IMAGE:$VERSION" | sed 's/.*@//')"
+          test -n "$DIGEST"
+          echo "IMAGE_DIGEST=$DIGEST" >> "$GITHUB_ENV"
+
+      - name: Attest container provenance
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # pinned v3 line
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ env.IMAGE_DIGEST }}
+          push-to-registry: true
 
       - name: Create draft GitHub Release
         env:
@@ -201,12 +200,5 @@ jobs:
         run: |
           set -euo pipefail
           PRERELEASE=()
-          if [[ "${VERSION}" == *-* || "${VERSION}" == *rc* || "${VERSION}" == *a* || "${VERSION}" == *b* ]]; then
-            PRERELEASE=(--prerelease)
-          fi
-          gh release create "${TAG}" dist/* \
-            --verify-tag \
-            --draft \
-            --generate-notes \
-            --title "AIFENCE ${TAG}" \
-            "${PRERELEASE[@]}"
+          if [[ "$VERSION" == *-* || "$VERSION" == *rc* || "$VERSION" == *a* || "$VERSION" == *b* ]]; then PRERELEASE=(--prerelease); fi
+          gh release create "$TAG" dist/* --verify-tag --draft --generate-notes --title "AIFENCE $TAG" "${PRERELEASE[@]}"

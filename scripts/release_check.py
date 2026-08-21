@@ -31,8 +31,8 @@ def main() -> None:
 
     ci = (ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
     require("permissions:\n  contents: read" in ci, "least-privilege CI permissions missing", failures)
-    require("--cov=aifence" in ci and "--cov-fail-under=80" in ci, "coverage gate missing", failures)
-    for gate in ("security_check.py", "architecture_check.py", "invariant_check.py", "quality_registry_check.py", "protocol_fixture_check.py", "release_check.py"):
+    require("--cov=aifence" in ci and "--cov-branch" in ci and "coverage_policy.py --profile ci" in ci, "line/branch coverage policy gate missing", failures)
+    for gate in ("security_check.py", "secret_scan.py", "security_regression_check.py", "architecture_check.py", "invariant_check.py", "quality_registry_check.py", "protocol_fixture_check.py", "api_compat_check.py", "release_check.py"):
         require(gate in ci, f"CI does not execute {gate}", failures)
     for ecosystem in ("sdks/python", "sdks/typescript", "sdks/go", "integrations/openclaw"):
         require(ecosystem in ci, f"CI does not cover {ecosystem}", failures)
@@ -43,11 +43,17 @@ def main() -> None:
         release_workflow = release_workflow_path.read_text(encoding="utf-8")
         for fragment in (
             'tags:',
+            'release_preflight.py',
+            'reproducibility_check.py',
             'python scripts/build_release.py --output dist',
             'python scripts/package_check.py',
             'aifence doctor --json',
             'aifence demo',
             'aifence-python-sbom.cdx.json',
+            'attest-build-provenance@',
+            'ghcr.io/',
+            'trivy-action@',
+            'docker push',
             'gh release create',
             '--verify-tag',
             '--draft',
@@ -60,6 +66,22 @@ def main() -> None:
             "Built-artifact certification",
         ):
             require(check_name in release_workflow, f"release workflow does not require CI check: {check_name}", failures)
+
+    # All third-party/GitHub actions are immutable SHA pins; comments retain human-readable versions.
+    import re
+    sha_pin = re.compile(r"^[ ]*- uses: [^@\s]+(?:/[^@\s]+)*@([0-9a-f]{40})(?:\s+#.*)?$", re.MULTILINE)
+    uses_line = re.compile(r"^[ ]*- uses: (.+)$", re.MULTILINE)
+    for workflow in sorted((ROOT / ".github/workflows").glob("*.yml")):
+        text = workflow.read_text(encoding="utf-8")
+        for match in uses_line.finditer(text):
+            line = match.group(0)
+            require(sha_pin.fullmatch(line) is not None, f"workflow action is not SHA-pinned: {workflow.name}: {line.strip()}", failures)
+
+    for workflow_name in ("security.yml", "nightly.yml", "compatibility.yml"):
+        require((ROOT / ".github/workflows" / workflow_name).is_file(), f"hardening workflow missing: {workflow_name}", failures)
+    require((ROOT / "coverage-policy.toml").is_file(), "coverage policy missing", failures)
+    require((ROOT / "compat/openapi-platform-0.1.0.json").is_file(), "OpenAPI compatibility baseline missing", failures)
+    require((ROOT / "compat/db/aifence-v0.1.0.sql").is_file(), "database compatibility fixture missing", failures)
 
     # Public repository identity is singular even though historical authorship is preserved.
     stale = "github.com/NeuralBinary/AIFENCE"
@@ -101,6 +123,9 @@ def main() -> None:
         "docs/BUS_PROTOCOL.md",
         "docs/FENCE_FLOW.md",
         "docs/RELEASING.md",
+        "docs/TESTING.md",
+        "docs/SECURITY_REGRESSIONS.md",
+        "docs/BENCHMARKS.md",
     )
     for relative in required_docs:
         require((ROOT / relative).is_file(), f"required release documentation missing: {relative}", failures)

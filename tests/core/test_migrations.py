@@ -53,3 +53,33 @@ def test_migration_history_has_a_single_head() -> None:
     config.set_main_option("script_location", str(ROOT / "alembic"))
     heads = ScriptDirectory.from_config(config).get_heads()
     assert len(heads) == 1, f"merged history must have exactly one head, found: {heads}"
+
+
+def test_v010_release_database_fixture_upgrades_and_preserves_data(tmp_path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """The first public schema snapshot becomes the migration fixture for every later release."""
+    import sqlite3
+
+    from sqlalchemy import text
+
+    fixture = ROOT / "compat/db/aifence-v0.1.0.sql"
+    assert fixture.is_file()
+    database = tmp_path / "from-v0.1.0.db"
+    raw = sqlite3.connect(database)
+    try:
+        raw.executescript(fixture.read_text(encoding="utf-8"))
+        raw.commit()
+    finally:
+        raw.close()
+
+    url = f"sqlite+pysqlite:///{database}"
+    monkeypatch.setenv("AIFENCE_DATABASE_URL", url)
+    _upgrade_to_head(url)
+
+    engine = create_engine(url)
+    try:
+        with engine.connect() as connection:
+            row = connection.execute(text("SELECT name, status FROM tenants WHERE id='ten_compat_001'")).one()
+            assert row.name == "Compatibility Fixture"
+            assert row.status == "active"
+    finally:
+        engine.dispose()

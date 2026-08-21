@@ -34,8 +34,15 @@ from .state import StateStore
 def build_server() -> Any:
     try:
         from mcp.server.fastmcp import FastMCP
+        from mcp.server.fastmcp.server import Settings as FastMCPSettings
     except ImportError as exc:  # pragma: no cover
         raise RuntimeError("Install AIFENCE with the 'mcp' extra: pip install '.[mcp]'") from exc
+
+    # MCP 1.29's Settings model contains a forward-referenced lifespan type.
+    # Rebuild it after FastMCP has imported all of the relevant symbols so
+    # pydantic-settings can resolve the annotation without emitting an
+    # IncompleteFieldDefinitionWarning during server construction.
+    FastMCPSettings.model_rebuild()
 
     mcp = FastMCP(
         "AIFENCE",

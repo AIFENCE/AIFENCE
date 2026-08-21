@@ -61,6 +61,11 @@ dev = [
   "pytest-cov>=7,<8",
   "ruff>=0.15.22,<1",
   "mypy>=2.3,<3",
+  "httpx2>=2.9.1,<3",
+  "hypothesis>=6.140,<7",
+]
+hardening = [
+  "mutmut>=3.7,<4",
 ]
 
 [project.urls]
@@ -152,7 +157,37 @@ ignore_missing_imports = true
 
 [tool.coverage.run]
 source = ["aifence"]
+branch = true
+parallel = false
 
 [tool.coverage.report]
-fail_under = 80
+# Risk-weighted line/branch floors are enforced by scripts/coverage_policy.py.
+# Keep coverage.py itself non-gating because its single combined percentage
+# mixes lines and branches and obscures which dimension regressed.
+fail_under = 0
 show_missing = true
+precision = 2
+
+[tool.mutmut]
+source_paths = ["src/aifence"]
+only_mutate = [
+  "src/aifence/flow.py",
+  "src/aifence/security.py",
+  "src/aifence/guard/auth.py",
+  "src/aifence/guard/enforcement.py",
+  "src/aifence/guard/policy.py",
+  "src/aifence/bus/protocol_spec.py",
+  "src/aifence/bus/wire_codec.py",
+  "src/aifence/quality/gate.py",
+]
+pytest_add_cli_args_test_selection = [
+  "tests/conformance",
+  "tests/guard/test_security_hardening.py",
+  "tests/guard/test_adversarial_regressions.py",
+  "tests/bus/test_protocol_v02.py",
+  "tests/bus/test_protocol_properties_hypothesis.py",
+  "tests/quality",
+]
+max_stack_depth = 8
+mutate_only_covered_lines = true
+type_check_command = "mypy src/aifence/flow.py src/aifence/security.py src/aifence/guard/auth.py src/aifence/guard/enforcement.py src/aifence/guard/policy.py src/aifence/bus/protocol_spec.py src/aifence/bus/wire_codec.py src/aifence/quality/gate.py"

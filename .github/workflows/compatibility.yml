@@ -1,0 +1,102 @@
+name: Compatibility matrix
+
+on:
+  schedule:
+    - cron: "17 5 * * 2,5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  python:
+    name: Python ${{ matrix.python }} / ${{ matrix.database }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.12", "3.13"]
+        database: [sqlite, postgres]
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: aifence
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with: { python-version: "${{ matrix.python }}" }
+      - run: pip install -e ".[dev,postgres]"
+      - name: SQLite compatibility
+        if: matrix.database == 'sqlite'
+        run: pytest tests/core tests/conformance -q
+      - name: PostgreSQL migration compatibility
+        if: matrix.database == 'postgres'
+        env:
+          AIFENCE_DATABASE_URL: postgresql+psycopg://postgres:postgres@127.0.0.1:5432/aifence
+        run: |
+          alembic upgrade head
+          python -c "from sqlalchemy import create_engine,text; import os; e=create_engine(os.environ['AIFENCE_DATABASE_URL']); c=e.connect(); assert c.execute(text('select 1')).scalar_one()==1; c.close()"
+
+  brokers:
+    name: Optional transport dependencies
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+      rabbitmq:
+        image: rabbitmq:4-alpine
+        ports: ["5672:5672"]
+      kafka:
+        image: apache/kafka:4.0.0
+        ports: ["9092:9092"]
+        env:
+          KAFKA_NODE_ID: 1
+          KAFKA_PROCESS_ROLES: broker,controller
+          KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+          KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+          KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+          KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+          KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+          KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+          KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+        options: >-
+          --health-cmd "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1"
+          --health-interval 10s --health-timeout 5s --health-retries 12 --health-start-period 20s
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with: { python-version: "3.12" }
+      - run: pip install -e ".[dev,redis,kafka,rabbitmq]"
+      - run: |
+          python scripts/broker_smoke.py --redis redis://127.0.0.1:6379/0 --kafka 127.0.0.1:9092 --rabbitmq amqp://guest:guest@127.0.0.1:5672/%2F
+          pytest tests/bus/test_transport.py -q
+
+  sdks:
+    name: Node ${{ matrix.node }} / Go ${{ matrix.go }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["22", "24"]
+        go: ["1.23", "1.24"]
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with: { node-version: "${{ matrix.node }}" }
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with: { go-version: "${{ matrix.go }}", cache: false }
+      - run: npm ci && npm test
+        working-directory: sdks/typescript
+      - run: go test ./...
+        working-directory: sdks/go
