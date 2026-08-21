@@ -30,7 +30,7 @@ jobs:
         options: >-
           --health-cmd "pg_isready -U postgres" --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with: { python-version: "${{ matrix.python }}" }
       - run: pip install -e ".[dev,postgres]"
@@ -74,7 +74,7 @@ jobs:
           --health-cmd "/opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1"
           --health-interval 10s --health-timeout 5s --health-retries 12 --health-start-period 20s
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with: { python-version: "3.12" }
       - run: pip install -e ".[dev,redis,kafka,rabbitmq]"
@@ -91,7 +91,7 @@ jobs:
         node: ["22", "24"]
         go: ["1.23", "1.24"]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with: { node-version: "${{ matrix.node }}" }
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0

@@ -26,7 +26,7 @@ jobs:
       tag: ${{ steps.version.outputs.tag }}
       publish: ${{ steps.version.outputs.publish }}
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with: { fetch-depth: 0 }
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with: { python-version: "3.12", cache: pip }
@@ -143,7 +143,7 @@ jobs:
       id-token: write
       attestations: write
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Download certified assets from this run
         env: { GH_TOKEN: "${{ github.token }}" }
         run: gh run download "$GITHUB_RUN_ID" -n "aifence-v${{ needs.build.outputs.version }}-release-assets" -D dist
