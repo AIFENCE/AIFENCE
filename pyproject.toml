@@ -42,7 +42,7 @@ dependencies = [
 postgres = ["psycopg[binary]>=3.3.4,<4"]
 s3 = ["boto3>=1.43.18,<2"]
 mcp = ["mcp>=1.9,<2"]
-bench = ["tiktoken>=0.13,<1"]
+bench = ["tiktoken>=0.14.0,<1"]
 # Full JSON Schema validation in the quality gate; without it the gate falls
 # back to a required-property and type subset rather than skipping the check.
 quality = ["jsonschema>=4.26,<5"]
