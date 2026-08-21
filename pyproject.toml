@@ -190,4 +190,18 @@ pytest_add_cli_args_test_selection = [
 ]
 max_stack_depth = 8
 mutate_only_covered_lines = true
-type_check_command = "mypy src/aifence/flow.py src/aifence/security.py src/aifence/guard/auth.py src/aifence/guard/enforcement.py src/aifence/guard/policy.py src/aifence/bus/protocol_spec.py src/aifence/bus/wire_codec.py src/aifence/quality/gate.py"
+type_check_command = [
+  "mypy",
+  "src/aifence/flow.py",
+  "src/aifence/security.py",
+  "src/aifence/guard/auth.py",
+  "src/aifence/guard/enforcement.py",
+  "src/aifence/guard/policy.py",
+  "src/aifence/bus/protocol_spec.py",
+  "src/aifence/bus/wire_codec.py",
+  "src/aifence/quality/gate.py",
+  "--output",
+  "json",
+  "--disable-error-code",
+  "unused-ignore",
+]
