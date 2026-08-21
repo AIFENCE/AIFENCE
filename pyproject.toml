@@ -24,7 +24,7 @@ classifiers = [
 # only uvicorn moved up to satisfy AIFENCE's floor.
 dependencies = [
   "fastapi>=0.139.2,<1",
-  "uvicorn[standard]>=0.52,<1",
+  "uvicorn[standard]>=0.52.3,<1",
   "sqlalchemy>=2.0.51,<2.1",
   "alembic>=1.18.5,<2",
   "pydantic>=2.13.4,<3",
