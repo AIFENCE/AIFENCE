@@ -35,7 +35,7 @@ jobs:
           pytest --cov=aifence --cov-branch --cov-report=term-missing --cov-report=json:coverage.json --cov-fail-under=0
           python scripts/coverage_policy.py --profile ci --coverage-json coverage.json
       - name: Warning regression smoke
-        run: pytest -W error tests/bus/test_api.py tests/core/test_cli.py tests/quality/test_deep_runtime.py
+        run: pytest -W error tests/bus/test_api.py tests/test_operator_cli.py tests/quality/test_deep_runtime.py
       - name: Product conformance and failure injection
         run: pytest tests/conformance
       - name: Adversarial evaluation
