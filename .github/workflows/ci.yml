@@ -119,7 +119,7 @@ jobs:
       - name: OpenClaw adapter
         working-directory: integrations/openclaw
         run: |
-          npm install --ignore-scripts
+          npm ci --ignore-scripts
           npm run build
           npm audit --omit=dev --audit-level=high
           node dist/conformance.js ../../src/aifence/bus/tck/vectors/core.json

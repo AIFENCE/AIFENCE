@@ -35,7 +35,7 @@ jobs:
       - name: Build cross-language conformance adapters
         working-directory: integrations/openclaw
         run: |
-          npm install --ignore-scripts
+          npm ci --ignore-scripts
           npm run build
       - name: Property, fuzz and chaos regressions
         run: |

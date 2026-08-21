@@ -70,6 +70,7 @@ governed flow across three tiers — quality, enforcement, and semantic transpor
   [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ### Fixed
+- The Bus chaos harness now paginates workloads larger than the 100-message pull batch, deterministically expires unacknowledged leases, and always disposes its SQLite engine so Windows can remove the temporary database after both success and failure.
 - OpenClaw adapter compilation now uses the real peer SDK types instead of a local `api: any` shim. Tool registrations use the SDK factory context with explicit discovery names, so agent/session identity is no longer confused with the tool execution abort signal.
 - **Mounted sub-applications never started or cleaned up.** Starlette does not run
   a mounted app's lifespan, so each subsystem's HTTP client, durable workers, and
