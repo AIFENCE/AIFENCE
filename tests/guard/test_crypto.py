@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 from __future__ import annotations
 
+import hashlib
+
+from cryptography.hazmat.primitives import serialization
+
 from aifence.guard.crypto import EnvelopeCipher, SigningKey, canonical_json, hash_object
 
 
@@ -26,6 +30,23 @@ def test_signing_receipt_round_trip() -> None:
     token = key.issue_receipt({"aud": "aifence-decision", "sub": "dec_1"})
     claims = key.verify_receipt(token, audience="aifence-decision")
     assert claims["sub"] == "dec_1"
+
+
+def test_ephemeral_signing_keys_use_material_bound_unique_ids() -> None:
+    first = SigningKey.ephemeral_for_tests()
+    second = SigningKey.ephemeral_for_tests()
+
+    assert first.key_id.startswith("test-signing-key-")
+    assert second.key_id.startswith("test-signing-key-")
+    assert first.key_id != second.key_id
+
+    for key in (first, second):
+        raw = key.public_key.public_bytes(
+            serialization.Encoding.Raw,
+            serialization.PublicFormat.Raw,
+        )
+        expected = hashlib.sha256(raw).hexdigest()[:16]
+        assert key.key_id == f"test-signing-key-{expected}"
 
 
 def test_envelope_cipher_supports_key_rotation_and_legacy_reads() -> None:

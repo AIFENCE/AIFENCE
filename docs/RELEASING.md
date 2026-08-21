@@ -4,6 +4,14 @@ AIFENCE uses a tag-driven GitHub Actions release pipeline. Normal pushes are cer
 
 ## Release candidate build
 
+Repository hygiene must pass before building artifacts:
+
+```bash
+python scripts/repo_hygiene_check.py
+```
+
+The release source archive independently excludes local caches, coverage output, mutation artifacts, dependency trees, and generated build directories.
+
 Run the **Release** workflow manually from GitHub Actions. A manual run validates release metadata, runs the release consistency/security gates, rebuilds the source archive and wheel reproducibly, validates both packages, installs the wheel into a clean virtual environment, runs `aifence doctor` and `aifence demo`, generates a Python SBOM, and uploads the resulting files as a workflow artifact.
 
 A manual run does **not** create a GitHub Release or publish a container.

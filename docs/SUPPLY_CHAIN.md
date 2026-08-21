@@ -38,3 +38,10 @@ Tagged releases build the final image before publishing it. The workflow scans t
 ## GitHub release automation
 
 `.github/workflows/release.yml` is the release boundary. Manual runs create certified release-candidate artifacts only. Tag pushes such as `v0.1.0` must match `pyproject.toml`, require the tagged commit's mandatory CI checks to be green, and then create a draft GitHub Release plus the certified GHCR image. See `docs/RELEASING.md` for the operator procedure.
+
+
+## Repository hygiene
+
+Generated caches, coverage output, local databases, mutation artifacts, dependency trees, and build directories are not source-of-truth. `.gitignore`, `scripts/repo_hygiene_check.py`, and `scripts/build_release.py` enforce complementary boundaries so local test output cannot silently enter Git or source release archives.
+
+Lockfiles are source when they represent a verified dependency graph. In particular, the OpenClaw adapter lockfile should be committed after its zero-vulnerability `npm audit` and TCK run, and CI should consume it with `npm ci --ignore-scripts`.

@@ -111,7 +111,14 @@ class SigningKey:
     @classmethod
     def ephemeral_for_tests(cls) -> SigningKey:
         private = Ed25519PrivateKey.generate()
-        return cls(private, private.public_key(), "test-signing-key")
+        public = private.public_key()
+        fingerprint = hashlib.sha256(
+            public.public_bytes(
+                serialization.Encoding.Raw,
+                serialization.PublicFormat.Raw,
+            )
+        ).hexdigest()[:16]
+        return cls(private, public, f"test-signing-key-{fingerprint}")
 
     def sign(self, data: bytes) -> str:
         if self.private_key is None:

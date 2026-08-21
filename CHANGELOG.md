@@ -25,6 +25,13 @@ governed flow across three tiers — quality, enforcement, and semantic transpor
   single Alembic history, Dockerfile, `compose.yaml`, CI workflow, one unified
   OpenAPI document, and a single dual-license set.
 
+### Release hardening
+- Raised the runtime `cryptography` floor to `>=50,<51` after the 49.x security advisory and verified the full crypto regression suite on 50.0.0.
+- Promoted `httpx2>=2.9.1,<3` to a base runtime dependency so clean-wheel `aifence demo` uses the supported Starlette TestClient transport path.
+- Removed the permissive OpenClaw SDK declaration shim and compile against the real OpenClaw plugin contract.
+- Ephemeral Ed25519 signing-key IDs are derived from their public-key fingerprint, preventing repeated development/doctor runs from colliding on a constant key ID with different key material.
+- Added repository-hygiene enforcement and broader release-source exclusions for caches, coverage output, mutation artifacts, and generated build trees.
+
 ### Security
 - **The fence flow and quality endpoints served anonymous callers.** They are
   composed onto the application rather than mounted inside the guard sub-app, so
@@ -63,6 +70,7 @@ governed flow across three tiers — quality, enforcement, and semantic transpor
   [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
 
 ### Fixed
+- OpenClaw adapter compilation now uses the real peer SDK types instead of a local `api: any` shim. Tool registrations use the SDK factory context with explicit discovery names, so agent/session identity is no longer confused with the tool execution abort signal.
 - **Mounted sub-applications never started or cleaned up.** Starlette does not run
   a mounted app's lifespan, so each subsystem's HTTP client, durable workers, and
   object-store/KMS clients leaked on every restart. `create_app` now bridges every

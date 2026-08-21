@@ -9,34 +9,46 @@ venv/
 .mypy_cache/
 .ruff_cache/
 .pytest_cache/
+.hypothesis/
+.tox/
+.nox/
 .coverage
+.coverage.*
+coverage.json
+coverage.xml
 htmlcov/
+.mutmut-cache
+mutants/
 
 # Local data / secrets
 .env
 *.db
 *.db-wal
 *.db-shm
+*.sqlite
+*.sqlite3
+*.db-journal
 /data/
 /secrets/
 
-# Node (quality subsystem)
+# Node / generated frontend output
 node_modules/
-quality/dist/
+**/dist/
+quality/build/
+
+# Logs / scratch
+*.log
+*.tmp
+verify*.txt
+final*.txt
+full_suite*.txt
 
 # OS
 .DS_Store
 Thumbs.db
-
-# Local test-run scratch output
-verify*.txt
-final*.txt
-full_suite*.txt
 
 # Local editor/agent tooling
 .claude/
 
 # Local documentation preview builds
 /site/
-
-quality/build/

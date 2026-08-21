@@ -20,10 +20,12 @@ SOURCE_NAME = f"aifence-v{VERSION}-source.zip"
 CHECKSUM_NAME = f"AIFENCE-v{VERSION}-SHA256SUMS.txt"
 DEFAULT_SOURCE_DATE_EPOCH = 1_704_067_200  # 2024-01-01 UTC; stable default for reproducible local builds.
 EXCLUDED_PARTS = {
-    ".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".venv", "__pycache__",
-    "node_modules", "dist", "build",
+    ".git", ".mypy_cache", ".pytest_cache", ".ruff_cache", ".hypothesis", ".mutmut-cache",
+    ".nox", ".tox", ".venv", "__pycache__", "node_modules", "dist", "build", "mutants",
 }
-EXCLUDED_NAMES = {".coverage", ".env", "aifence.db", "ci-migration.db"}
+EXCLUDED_NAMES = {
+    ".coverage", ".env", "aifence.db", "ci-migration.db", "coverage.json", "coverage.xml",
+}
 
 
 def _epoch() -> int:

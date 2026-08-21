@@ -42,6 +42,7 @@ jobs:
         run: aifence-redteam --behavioral --max-false-positive-rate 0 --min-detection-rate 100
       - name: Repository security and architecture gates
         run: |
+          python scripts/repo_hygiene_check.py
           python scripts/security_check.py
           python scripts/secret_scan.py
           python scripts/security_regression_check.py

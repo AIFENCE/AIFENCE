@@ -21,3 +21,27 @@ Mutation testing is intentionally scoped to decision boundaries (`flow`, Guard a
 Hypothesis/property tests exercise protocol invariants. The Bus TCK and differential fuzzing exercise malformed and cross-language wire behavior. Chaos/failure-injection tests validate documented fail-closed semantics. CodeQL and secret/dependency/container scanning provide independent static and supply-chain evidence.
 
 See `docs/SECURITY_REGRESSIONS.md` for the permanent regression ledger and `docs/BENCHMARKS.md` for performance-regression methodology.
+
+
+## Local release verification
+
+Before a tag, run the fast repository gates before the long suite:
+
+```bash
+ruff check src tests scripts
+mypy src
+python scripts/repo_hygiene_check.py
+python scripts/security_check.py
+python scripts/secret_scan.py
+python scripts/security_regression_check.py
+python scripts/architecture_check.py
+python scripts/invariant_check.py
+python scripts/quality_registry_check.py
+python scripts/protocol_fixture_check.py
+python scripts/api_compat_check.py
+python scripts/release_check.py
+```
+
+Then run the full Python suite and coverage policy, ecosystem/TCK checks, reproducibility check, package certification, and a clean-wheel `aifence doctor --json` / `aifence demo` smoke. See `docs/RELEASING.md` for the tag boundary.
+
+The OpenClaw adapter is pinned in `integrations/openclaw/package.json`. A release checkout should commit its verified `package-lock.json` and use `npm ci --ignore-scripts`; do not regenerate the lock as part of a release workflow.
