@@ -48,7 +48,7 @@ bench = ["tiktoken>=0.13,<1"]
 quality = ["jsonschema>=4.26,<5"]
 # Optional broker fan-out for the semantic bus (see aifence.bus.transport).
 redis = ["redis>=5.0,<7"]
-kafka = ["kafka-python>=2.0,<3"]
+kafka = ["kafka-python>=3.0.11,<4"]
 rabbitmq = ["pika>=1.3,<2"]
 otel = [
   "opentelemetry-api>=1.44,<2",
