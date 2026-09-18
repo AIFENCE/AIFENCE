@@ -23,7 +23,7 @@
   "devDependencies": {
     "typescript": "7.0.2",
     "@types/node": "24.13.3",
-    "openclaw": "2026.8.1-beta.2"
+    "openclaw": "2026.9.4"
   },
   "openclaw": {
     "extensions": [
