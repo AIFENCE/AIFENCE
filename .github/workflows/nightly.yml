@@ -45,7 +45,7 @@ jobs:
           python scripts/chaos_suite.py --messages 128
       - name: Targeted mutation test
         run: mutmut run
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: nightly-python-assurance
@@ -66,7 +66,7 @@ jobs:
       - run: |
           python scripts/benchmark_fence.py --iterations 200 --warmup 20 --output dist/fence-benchmark.json --max-p95-ms 500
           python scripts/performance_check.py
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: nightly-benchmarks
           path: dist/fence-benchmark.json
